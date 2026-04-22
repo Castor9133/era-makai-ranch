@@ -33,6 +33,11 @@ CASE "调教命令"
 	CALL KOJO_GENERAL_虔诚1_TRAIN(ARGS:0,ARGS:1,ARGS:2,ARGS:3)
 
 CASE "绝顶"
+	;深喉中的高潮（新增：深喉性癖相关口上）
+	SIF TEQUIP:深喉
+		CALL MESSAGE_BOX,@"「……呛……♥ 这窒息的羞辱……也要我承受吗……愿我不再逃避……♥」"
+	SIF TEQUIP:深喉
+		CALL MESSAGE_BOX,@"「……神啊……我明明在祈祷……身体却先屈膝……啊……♥」"
 	IF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／隶属＃
 		CALL MESSAGE_BOX,@"「啊……♥ 我愿献上……一切……♥」"
 		CALL MESSAGE_BOX,@"「请引导我……让我更堕落……♥♥」"
@@ -52,12 +57,16 @@ CASE "绝顶"
 			CALL MESSAGE_BOX,@"「……只有痛楚……才是真实……」"
 		ENDIF
 	SIF NOWEX:Ｕ绝顶
-		IF TALENT:尿道敏感 || EX:尿道调教经验 >= 15
-			CALL MESSAGE_BOX,@"「……这也是……试炼吗……刺痛里……竟有麻痒……♥」"
-			CALL MESSAGE_BOX,@"「……洁净被撕碎……可身体却……♥」"
+		IF TEQUIP:尿道塞 || TFLAG:尿道装备
+			SIF TALENT:尿道敏感 || EX:尿道调教经验 >= 15
+				CALL MESSAGE_BOX,@"「……尿道塞像钉子一样……把我钉在快感上……♥ 我、我不该渴求的……♥」"
+			SIF !(TALENT:尿道敏感 || EX:尿道调教经验 >= 15)
+				CALL MESSAGE_BOX,@"「……不洁……那处被塞住……只剩尖锐的痛……请、请停下……！」"
 		ELSE
-			CALL MESSAGE_BOX,@"「……不洁……只有刺与急……！」"
-			CALL MESSAGE_BOX,@"「……神啊……只有痛……」"
+			SIF TALENT:尿道敏感 || EX:尿道调教经验 >= 15
+				CALL MESSAGE_BOX,@"「……刺痛之下……竟有轻微的甜……这是诱惑……我会忏悔……♥」"
+			SIF !(TALENT:尿道敏感 || EX:尿道调教经验 >= 15)
+				CALL MESSAGE_BOX,@"「……只有剧痛与尿意……神啊……救我……请停下……！」"
 		ENDIF
 
 CASE "射精"

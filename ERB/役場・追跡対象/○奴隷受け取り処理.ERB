@@ -6,6 +6,14 @@
 CFLAG:捕获日 = DAY
 EQUIP:魔力枷锁 = 1
 
+;捕获并运到牧场后的体力补正：当前体力与最大体力都变为捕获前的 130%
+;（只作用于“捕获受领”流程，不影响随机生成/角色自定义）
+MAXBASE:体力 = LIMIT(MAXBASE:体力 * 130 / 100, 0, HP_MAX)
+BASE:体力 = LIMIT(BASE:体力 * 130 / 100, 0, MAXBASE:体力)
+;同样处理气力（SP）
+MAXBASE:气力 = LIMIT(MAXBASE:气力 * 130 / 100, 0, HP_MAX)
+BASE:气力 = LIMIT(BASE:气力 * 130 / 100, 0, MAXBASE:气力)
+
 ;ゴブリン輪姦でなければ反抗ON　輪姦だと屈服してる可能性とかあるので
 SIF !CFLAG:轮奸次数
 	CSTR:陷落状态 = 反抗

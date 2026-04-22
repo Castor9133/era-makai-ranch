@@ -29,6 +29,9 @@ CASE "工作休息体力"
 CASE "搾乳休息母乳量"
 	PRINTFORM [{ARG,2}] %FLAG_NAME,32%：{FLAG:FLAG_NAME}%MILK_COUNTING()%不足时休息
 
+CASE "调教回合数"
+	PRINTFORM [{ARG,2}] %FLAG_NAME,32%：{FLAG:FLAG_NAME}回合（默认：20）
+
 CASEELSE
 	PRINTFORM [{ARG,2}] %FLAG_NAME,32%
 	CALL PRINT_ONOFF(FLAG:FLAG_NAME)
@@ -81,6 +84,15 @@ CASE "搾乳休息母乳量"
 	PRINTL 或输入0～1000之间的数字。
 	INPUT
 	SIF RESULT >= 0 && RESULT <= 1000
+		FLAG:FLAG_NUM = RESULT
+
+CASE "调教回合数"
+	PRINTL 设定每次调教开始时的可用回合数（影响“剩余时间”初值）。
+	PRINTL
+	PRINTL [20] 20回合（默认）
+	PRINTL 或输入 1～200 之间的数字。
+	INPUT
+	SIF RESULT >= 1 && RESULT <= 200
 		FLAG:FLAG_NUM = RESULT
 
 CASE "晚餐菜单交给我"

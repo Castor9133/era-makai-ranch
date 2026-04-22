@@ -33,6 +33,11 @@ CASE "调教命令"
 	CALL KOJO_GENERAL_女仆1_TRAIN(ARGS:0,ARGS:1,ARGS:2,ARGS:3)
 
 CASE "绝顶"
+	;深喉中的高潮（新增：深喉性癖相关口上）
+	SIF TEQUIP:深喉
+		CALL MESSAGE_BOX,@"「……咳……♥ 命令……太深了……喉咙这样被占满……失礼……♥」"
+	SIF TEQUIP:深喉
+		CALL MESSAGE_BOX,@"「……请允许我回避视线……这种用喉咙失态的反应……不该被记录……♥」"
 	IF ＃陷落状态／恋慕以上＃
 		CALL MESSAGE_BOX,@"「啊……♥ 失礼了……女仆要失态了……♥」"
 		CALL MESSAGE_BOX,@"「请、请继续命令……我会更舒服地服侍您……♥」"
@@ -48,12 +53,16 @@ CASE "绝顶"
 			CALL MESSAGE_BOX,@"「……只有那里……太勉强了……」"
 		ENDIF
 	SIF NOWEX:Ｕ绝顶
-		IF TALENT:尿道敏感 || EX:尿道调教经验 >= 15
-			CALL MESSAGE_BOX,@"「……失礼……那处竟……有侍奉般的麻意……♥」"
-			CALL MESSAGE_BOX,@"「……这也是……身体被训练后的……失礼反应……♥」"
+		IF TEQUIP:尿道塞 || TFLAG:尿道装备
+			SIF TALENT:尿道敏感 || EX:尿道调教经验 >= 15
+				CALL MESSAGE_BOX,@"「……尿道塞在里面顶住……每一次颤动都被放大……失礼……♥」"
+			SIF !(TALENT:尿道敏感 || EX:尿道调教经验 >= 15)
+				CALL MESSAGE_BOX,@"「……尿道里塞着……疼痛超出可承受范围……请、请停止……」"
 		ELSE
-			CALL MESSAGE_BOX,@"「……好痛……失礼了……请、请轻些……」"
-			CALL MESSAGE_BOX,@"「……只有刺与急……太失礼了……」"
+			SIF TALENT:尿道敏感 || EX:尿道调教经验 >= 15
+				CALL MESSAGE_BOX,@"「……尿道也……出现反应……失礼……这种地方不该……♥」"
+			SIF !(TALENT:尿道敏感 || EX:尿道调教经验 >= 15)
+				CALL MESSAGE_BOX,@"「……只有刺痛与尿意……请、请轻些……」"
 		ENDIF
 
 CASE "射精"

@@ -14,6 +14,8 @@ CASE "事务","奶农","清洁","料理","药学"
 	EXP:EXP_CALL = LIMIT(EXP:EXP_CALL +EXPUP,0,EXP_MAX)
 	SIF EXP:EXP_CALL < EXP_MAX || GETBIT(＃上限到达后显示／事务经验值＃)
 		CALL PRINT_EXP_UP(ARGS)
+	;捕获/隶属后的奴隶也能通过日程与工作获得灵力（EP），从而升级
+	CALL SLAVE_EP_GAIN_FROM_SCHEDULE(ARGS)
 	
 ;性経験値：今レズっ気だけ
 CASE "百合调教经验"
@@ -21,6 +23,8 @@ CASE "百合调教经验"
 	EXP:ARGS = LIMIT(EXP:ARGS +EXPUP,0,EXP_MAX)
 	SIF EXP:ARGS < EXP_MAX || GETBIT(＃上限到达后显示／性经验值＃)
 		PRINTFORM %ARGS%+{EXPUP} 
+	;百合调教同样给少量灵力成长
+	CALL SLAVE_EP_GAIN_FROM_SCHEDULE(ARGS)
 ENDSELECT
 
 
@@ -95,6 +99,100 @@ SIF ARGS == "料理" && TALENT:不擅长料理
 	PRINT 【不擅长料理】
 SIF ARGS == "清洁" && TALENT:不擅长清洁
 	PRINT 【不擅长清洁】
+
+
+;日程/工作带来的奴隶灵力（EP）成长（用于等级提升）
+;ARGS→"事务"/"奶农"/"清洁"/"料理"/"药学"/"百合调教经验"
+@SLAVE_EP_GAIN_FROM_SCHEDULE(ARGS)
+#DIM EP_GAIN
+#DIM NOW_LEVEL
+#DIM EP_STOCK
+
+;只给奴隶（0 通常是你/主角）
+SIF !TARGET
+	RETURN
+SIF TARGET == 0
+	RETURN
+
+;基础值：让“做事/调教”能缓慢推高等级，但不会比“注入灵力”更快
+SELECTCASE ARGS
+CASE "事务"
+	EP_GAIN = 240
+CASE "奶农"
+	EP_GAIN = 260
+CASE "清洁"
+	EP_GAIN = 220
+CASE "料理"
+	EP_GAIN = 220
+CASE "药学"
+	EP_GAIN = 240
+CASE "百合调教经验"
+	EP_GAIN = 300
+CASEELSE
+	RETURN
+ENDSELECT
+
+;按熟练度微调（避免 0ABL 也涨太慢）
+IF ARGS == "百合调教经验"
+	EP_GAIN += ABL:百合癖 * 10
+ELSE
+	EP_GAIN += ABL:ARGS * 10
+ENDIF
+
+;学习素质影响（与作业EXP一致）
+SIF TALENT:学得快
+	TIMES EP_GAIN,1.20
+SIF TALENT:学得慢
+	TIMES EP_GAIN,0.80
+EP_GAIN = LIMIT(EP_GAIN,0,99999)
+
+;如果奴隶没有灵力槽（MAXBASE:灵力==0），则先通过日常积累“灵力蓄积”来唤醒灵力
+;达到 1000 即可觉醒（更快），但觉醒时将灵力槽初始化到 Lv1 的安全基准（10000EP），避免 EP_LEVEL_CALC 算出 0 级
+IF MAXBASE:灵力 <= 0
+	;复用不易冲突的单独蓄积变量（不占用现有“灵力蓄积量”那条 HP 增长链）
+	EP_STOCK = CFLAG:日常灵力蓄积量 + EP_GAIN
+	IF EP_STOCK >= 1000
+		MAXBASE:灵力 = 10000
+		BASE:灵力 = 10000
+		CFLAG:日常灵力蓄积量 = 0
+		;解锁后立刻刷新等级（通常为 Lv1）
+		CALL EP_LEVEL_CALC
+		NOW_LEVEL = RESULT
+		SIF NOW_LEVEL > BASE:等级
+			BASE:等级 = NOW_LEVEL
+		SIF MAXBASE:等级 < BASE:等级
+			MAXBASE:等级 = BASE:等级
+	ELSE
+		CFLAG:日常灵力蓄积量 = EP_STOCK
+	ENDIF
+	RETURN
+ENDIF
+
+;优先加当前灵力；满了则在满足隶属条件时微增上限（避免“满条就永远不涨”）
+IF BASE:灵力 < MAXBASE:灵力
+	BASE:灵力 = LIMIT(BASE:灵力 + EP_GAIN, 0, MAXBASE:灵力)
+ELSE
+	;隷属 & 你的上限更高时，缓慢抬高最大灵力
+	IF ＃陷落状态／隶属＃ && MAXBASE:灵力 < MAXBASE:0:灵力
+		FIX = EP_GAIN / 5
+		FIX -= (FIX % 10)
+		SIF FIX <= 0
+			FIX = 10
+		SIF FIX > MAXBASE:0:灵力 - MAXBASE:灵力
+			FIX = MAXBASE:0:灵力 - MAXBASE:灵力
+		SIF FIX > 0
+			MAXBASE:灵力 += FIX
+		BASE:灵力 = MAXBASE:灵力
+	ENDIF
+ENDIF
+
+;根据灵力重新计算等级
+CALL EP_LEVEL_CALC
+NOW_LEVEL = RESULT
+SIF NOW_LEVEL > BASE:等级
+	BASE:等级 = NOW_LEVEL
+SIF MAXBASE:等级 < BASE:等级
+	MAXBASE:等级 = BASE:等级
 
 
 

@@ -32,6 +32,13 @@ SIF !BASE:体力
 	TIMES LOSEBASE:气力,1.50
 SIF !BASE:气力
 	TIMES LOSEBASE:体力,1.50
+
+;榨乳体力/气力消耗减轻（为当前的 60%）
+;以本回合是否发生喷乳（含母乳不足结算）作为判定，避免误伤其他指令
+IF NOWEX:喷乳 + NOWEX:母乳不足 > 0
+	TIMES LOSEBASE:体力,0.60
+	TIMES LOSEBASE:气力,0.60
+ENDIF
 BASE:体力 = LIMIT(BASE:体力 -LOSEBASE:体力,0,MAXBASE:体力)
 BASE:气力 = LIMIT(BASE:气力 -LOSEBASE:气力,0,MAXBASE:气力)
 
@@ -113,9 +120,19 @@ IF NOWEX:总绝顶
 ENDIF
 CFLAG:总搾乳量 += NOWEX:喷乳
 EX:喷乳 += NOWEX:喷乳
-IF NOWEX:喷乳 +NOWEX:母乳不足 > 0
-	EXP:搾乳绝顶次数 += NOWEX:Ｎ绝顶
-	EXP:搾乳绝顶次数 += NOWEX:Ｂ绝顶
+;奶牛堕（精神相关）：使用「搾乳绝顶次数」作为累积值
+;- 榨乳回合：累积速度降为现有的 60%
+;- 非榨乳回合：提供缓慢下降，并在“气力/体力回复”发生时额外下降（作为安抚/休息/恢复类手段）
+IF NOWEX:喷乳 + NOWEX:母乳不足 > 0
+	EXP:搾乳绝顶次数 += ((NOWEX:Ｎ绝顶 + NOWEX:Ｂ绝顶) * 60 / 100)
+ELSE
+	FIX = 1
+	;有恢复量时，视作“精神/身体回稳”，加速降低堕落累积
+	SIF SOURCE:调教对象气力回复 > 0
+		FIX += SOURCE:调教对象气力回复 / 50
+	SIF SOURCE:调教对象体力回复 > 0
+		FIX += SOURCE:调教对象体力回复 / 80
+	EXP:搾乳绝顶次数 = LIMIT(EXP:搾乳绝顶次数 - FIX, 0, ECSTASY_MAX)
 ENDIF
 
 ;潤滑上限は99999

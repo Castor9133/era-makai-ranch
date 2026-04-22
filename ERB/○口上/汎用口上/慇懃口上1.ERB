@@ -37,14 +37,14 @@ ELSEIF CFLAG:崩坏 && !CFLAG:洗脑
 	ELSE
 		IF NOWEX:总绝顶
 			IF NOWEX:总绝顶 >= 50
-				CALL MESSAGE_BOX,@"「んぁあ゛っ♥♥♥ 啊♥ 啊♥ 啊♥ 啊♥ んぃぃぃっ♥♥♥♥♥♥」"
-				CALL MESSAGE_BOX,@"「ぉお゛っ♥♥♥ ??? ……ふおっ♥♥ んぉお゛～～っ♥♥♥♥♥」"
+				CALL MESSAGE_BOX,@"「嗯啊♥♥♥ 啊♥ 啊♥ 啊♥ 啊♥ 嗯咿咿咿♥♥♥♥♥♥」"
+				CALL MESSAGE_BOX,@"「哦啊♥♥♥ ??? ……呼哦♥♥ 嗯哦～～♥♥♥♥♥」"
 			ENDIF
-			CALL MESSAGE_BOX,@"「あ゛っ♥ あ゛っ♥ んああ゛っ♥♥♥」"
-			CALL MESSAGE_BOX,@"「…んっ♥ ひぐっ♥ ……んんっ…♥♥♥」"
+			CALL MESSAGE_BOX,@"「啊♥ 啊♥ 嗯啊啊♥♥♥」"
+			CALL MESSAGE_BOX,@"「…嗯♥ 呜咽♥ ……嗯嗯…♥♥♥」"
 		ELSE
-			CALL MESSAGE_BOX,@"「ん…ふっ……ひぅ…」"
-			CALL MESSAGE_BOX,@"「…ぁぅ…ぁ…ぁぁ…」"
+			CALL MESSAGE_BOX,@"「嗯…呼……咻…」"
+			CALL MESSAGE_BOX,@"「…啊呜…啊…啊啊…」"
 		ENDIF
 		RETURN
 	ENDIF
@@ -66,18 +66,24 @@ CASE "进入魔界的","事件","Ｍ装备中事件"
 	CALL KOJO_GENERAL_慇懃口上1_EVENT(ARGS:0,ARGS:1,ARGS:2,ARGS:3)
 	
 CASE "绝顶"
+	;深喉中的高潮（新增：深喉性癖相关口上）
+	SIF TEQUIP:深喉
+		CALL MESSAGE_BOX,@"「唔……咳……♥　如此失礼的深入……明明难以呼吸……身体却先行崩塌……♥」"
+	SIF TEQUIP:深喉
+		CALL MESSAGE_BOX,@"「呜……♥　恳请您别凝视……这种被迫失态的反应……我实在无地自容……♥」"
 	IF CFLAG:乳牛 || CFLAG:洗脑
-		CALL MESSAGE_BOX,@"「已经不行了呀♥♥ とっくに限界♥♥ 已经超越极限了呀♥♥♥」"
-		CALL MESSAGE_BOX,@"「んあっ♥ おおきいのっ♥♥ イぐぅぅぅぅ～～～♥♥♥」"
+		CALL MESSAGE_BOX,@"「已经不行了呀♥♥ 早就到极限了♥♥ 已经超越极限了呀♥♥♥」"
+		CALL MESSAGE_BOX,@"「嗯啊♥ 好大♥♥ 要去了了了了～～～♥♥♥」"
 	ELSEIF ＃陷落状态／恋慕以上＃
-		CALL MESSAGE_BOX,@"「ふーっ♥ ふーっ♥ もぅダメぇ♥ アタマまっしろでぇ♥ ふわふわぁって…♥♥♥」"
-		CALL MESSAGE_BOX,@"「ん゛っ♥ んん゛っ♥♥♥ 啊♥ 啊♥ あっ♥\n　%SELF_CALL()%のイき顔ぉ♥♥ 看不到了呀♥♥♥♥」"
+		CALL MESSAGE_BOX,@"「呼——♥ 呼——♥ 已经不行了♥ 脑袋一片空白♥ 轻飘飘的…♥♥♥」"
+		CALL MESSAGE_BOX,@"「嗯♥ 嗯嗯♥♥♥ 啊♥ 啊♥ 啊♥\n　%SELF_CALL()%的高潮脸哦♥♥ 看不到了呀♥♥♥♥」"
 	ELSEIF ＃陷落状态／屈服以上＃
-		CALL MESSAGE_BOX,@"「ふあぁっ♥ 啊♥ 啊♥ 啊♥ ～～～～っ♥♥♥♥」"
-		CALL MESSAGE_BOX,@"「はひぃ♥ ま、まって♥ 已经到达了呀♥♥ 已经到达了呀♥♥♥」"
+		CALL MESSAGE_BOX,@"「呼啊♥ 啊♥ 啊♥ 啊♥ ～～～～♥♥♥♥」"
+		CALL MESSAGE_BOX,@"「哈咿♥ 等、等一下♥ 已经到达了呀♥♥ 已经到达了呀♥♥♥」"
 	ENDIF
 	IF EX:总绝顶 >= 100
-		CALL MESSAGE_BOX,@"「ぁあ゛～っ♥ あ゛っ♥ あ゛っ♥ 已经不行了呀♥♥\n　イキしゅぎてぇ♥♥♥ あ゛っ♥ アタマやきぎれりゅぅ♥♥♥♥♥」"
+		CALL MESSAGE_BOX,@"「啊～♥ 啊♥ 啊♥ 已经不行了呀♥♥
+　高潮过头了♥♥♥ 啊♥ 脑袋要坏掉了♥♥♥♥♥」"
 		CALL MESSAGE_BOX,@"「イぎゅっ♥ イぎゅぅっ♥ イぎゅイぎゅイぎゅイぎゅう゛ぅぅぅぅ♥♥♥♥♥」"
 		CALL MESSAGE_BOX,@"「んぉおおオ゛っ♥♥♥ アクメっ♥ 深っ♥♥ とっ♥ とまらっ♥♥\n　哦♥ お゛っ♥♥ 哦♥♥♥ ぉおおオ゛オ゛オ゛っ♥♥♥♥♥♥」"
 	ELSEIF EX:总绝顶 >= 50
@@ -99,12 +105,20 @@ CASE "绝顶"
 			CALL MESSAGE_BOX,@"「……至少……请放过后面……求您……！」"
 		ENDIF
 	SIF NOWEX:Ｕ绝顶
-		IF TALENT:尿道敏感 || EX:尿道调教经验 >= 15
-			CALL MESSAGE_BOX,@"「那种地方……竟会……有酥麻的快感……♥　太羞耻了……♥」"
-			CALL MESSAGE_BOX,@"「……除了刺痛……还有……好奇怪的感觉……♥」"
+		IF TEQUIP:尿道塞 || TFLAG:尿道装备
+			IF TALENT:尿道敏感 || EX:尿道调教经验 >= 15
+				CALL MESSAGE_BOX,@"「尿道塞……一直抵着……♥　每次颤动都被它牵着走……请、请容我失礼……♥」"
+				CALL MESSAGE_BOX,@"「……这种器具竟能让人如此狼狈……♥　还请您……稍稍怜惜……♥」"
+			ELSE
+				CALL MESSAGE_BOX,@"「呜……！　尿道里……请不要再……！　仅是塞着就痛得发抖……！」"
+				CALL MESSAGE_BOX,@"「……恳请取出……那处会承受不住的……！」"
+			ENDIF
+		ELSEIF TALENT:尿道敏感 || EX:尿道调教经验 >= 15
+			CALL MESSAGE_BOX,@"「那种地方……竟也会生出微妙的酥意……♥　我、我实在羞愧……♥」"
+			CALL MESSAGE_BOX,@"「……刺痛之中混着异样的甜……让人无从辩解……♥」"
 		ELSE
-			CALL MESSAGE_BOX,@"「好痛……只有像被针拽着尿道一样……！」"
-			CALL MESSAGE_BOX,@"「……请、请住手……那里会坏掉的……！」"
+			CALL MESSAGE_BOX,@"「好痛……像被细针扯着尿道一般……！」"
+			CALL MESSAGE_BOX,@"「……请、请住手……那处会坏掉的……！」"
 		ENDIF
 	
 CASE "射精"

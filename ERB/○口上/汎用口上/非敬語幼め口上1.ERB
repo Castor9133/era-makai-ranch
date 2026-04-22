@@ -66,6 +66,11 @@ CASE "调教命令"
 	CALL KOJO_GENERAL_非敬語幼め1_TRAIN(ARGS:0,ARGS:1,ARGS:2,ARGS:3)
 	
 CASE "绝顶"
+	;深喉中的高潮（新增：深喉性癖相关口上）
+	SIF TEQUIP:深喉
+		CALL MESSAGE_BOX,@"「咳、咳咳……♥ 喉咙麻麻的……不要……这样也会去……♥」"
+	SIF TEQUIP:深喉
+		CALL MESSAGE_BOX,@"「呜……♥ 别看啦……被喉咙顶到高潮……太丢脸了……♥」"
 	; 绝顶时显示（无射精、无母乳等情形；多数会绝顶）
 	CALL MESSAGE_BOX,@"「不要、不可以♥ 去了、要去了♥」"
 	
@@ -85,12 +90,16 @@ CASE "绝顶"
 			CALL MESSAGE_BOX,@"「……屁股……只有痛……骗人的吧……！」"
 		ENDIF
 	SIF NOWEX:Ｕ绝顶
-		IF TALENT:尿道敏感 || EX:尿道调教经验 >= 15
-			CALL MESSAGE_BOX,@"「痛……可下面……又刺又痒……好怪……♥」"
-			CALL MESSAGE_BOX,@"「……尿尿的地方也会这样……骗人的吧……♥」"
+		IF TEQUIP:尿道塞 || TFLAG:尿道装备
+			SIF TALENT:尿道敏感 || EX:尿道调教经验 >= 15
+				CALL MESSAGE_BOX,@"「呜哇……♥ 尿道塞顶着……一抖就麻……要去了……♥」"
+			SIF !(TALENT:尿道敏感 || EX:尿道调教经验 >= 15)
+				CALL MESSAGE_BOX,@"「好痛……尿道里塞着……别弄了……！」"
 		ELSE
-			CALL MESSAGE_BOX,@"「好痛……尿道像要裂开了……别弄……！」"
-			CALL MESSAGE_BOX,@"「……只有疼……好难受……」"
+			SIF TALENT:尿道敏感 || EX:尿道调教经验 >= 15
+				CALL MESSAGE_BOX,@"「痛……可下面……又刺又痒……好怪……♥」"
+			SIF !(TALENT:尿道敏感 || EX:尿道调教经验 >= 15)
+				CALL MESSAGE_BOX,@"「尿道像要裂开了……好难受……！」"
 		ENDIF
 
 CASE "射精"

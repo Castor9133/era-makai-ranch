@@ -34,6 +34,11 @@ CASE "调教命令"
 	CALL KOJO_GENERAL_仇恨1_TRAIN(ARGS:0,ARGS:1,ARGS:2,ARGS:3)
 
 CASE "绝顶"
+	;深喉中的高潮（新增：深喉性癖相关口上）
+	SIF TEQUIP:深喉
+		CALL MESSAGE_BOX,@"「呕……咳……♥ 喉咙被你当成玩具……哈……去死……！」"
+	SIF TEQUIP:深喉
+		CALL MESSAGE_BOX,@"「……别看……我现在这种样子……明明想掐死你……身体却先抖……♥」"
 	IF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／隶属＃
 		CALL MESSAGE_BOX,@"「啊……♥ ……我会照做……因为我恨你……♥」"
 		CALL MESSAGE_BOX,@"「……别以为你赢了……我只是……身体坏了……♥」"
@@ -54,12 +59,16 @@ CASE "绝顶"
 			CALL MESSAGE_BOX,@"「……只有痛……去死……！」"
 		ENDIF
 	SIF NOWEX:Ｕ绝顶
-		IF TALENT:尿道敏感 || EX:尿道调教经验 >= 15
-			CALL MESSAGE_BOX,@"「……去死……可尿道那里……竟跟着颤……♥」"
-			CALL MESSAGE_BOX,@"「……我恨你……身体别抖……♥」"
+		IF TEQUIP:尿道塞 || TFLAG:尿道装备
+			SIF TALENT:尿道敏感 || EX:尿道调教经验 >= 15
+				CALL MESSAGE_BOX,@"「……尿道塞在里面搅……哈……我恨你……可这股酸麻……去死……♥」"
+			SIF !(TALENT:尿道敏感 || EX:尿道调教经验 >= 15)
+				CALL MESSAGE_BOX,@"「……尿道里塞着还敢动？疼得我发黑……滚开……！」"
 		ELSE
-			CALL MESSAGE_BOX,@"「……只有痛……像针一样……滚……！」"
-			CALL MESSAGE_BOX,@"「……去死……别戳那里……」"
+			SIF TALENT:尿道敏感 || EX:尿道调教经验 >= 15
+				CALL MESSAGE_BOX,@"「……别碰那条缝……哈……可恶……一碰就电得我腿软……♥」"
+			SIF !(TALENT:尿道敏感 || EX:尿道调教经验 >= 15)
+				CALL MESSAGE_BOX,@"「……像把针往里送……别戳尿道……我会把你剁了……！」"
 		ENDIF
 
 CASE "射精"

@@ -16,7 +16,7 @@ ELSEIF CFLAG:崩坏 && !CFLAG:洗脑
 	ELSEIF GROUPMATCH(ARGS:1,"洗脑触手","崩坏")
 	ELSE
 		IF NOWEX:总绝顶
-			CALL MESSAGE_BOX,@"「……失礼……♥ 身体……自己……嗯、啊……♥」"
+			CALL MESSAGE_BOX,@"「……失礼了……♥ 身体……自己……嗯、啊……♥」"
 			CALL MESSAGE_BOX,@"「不、不成体统……♥ ……可、可停不下来……♥」"
 		ELSE
 			CALL MESSAGE_BOX,@"「……呼……失礼了……」"
@@ -33,6 +33,11 @@ CASE "调教命令"
 	CALL KOJO_GENERAL_大和抚子1_TRAIN(ARGS:0,ARGS:1,ARGS:2,ARGS:3)
 
 CASE "绝顶"
+	;深喉中的高潮（新增：深喉性癖相关口上）
+	SIF TEQUIP:深喉
+		CALL MESSAGE_BOX,@"「……咳……♥ 呜……请、请慢些……喉咙这样被逼着……太失礼了……♥」"
+	SIF TEQUIP:深喉
+		CALL MESSAGE_BOX,@"「……请别盯着我……我、我会努力忍住……可身体……不听话……♥」"
 	IF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／隶属＃
 		CALL MESSAGE_BOX,@"「啊……♥ 已到极限……请、请尽情……使用我……♥」"
 		CALL MESSAGE_BOX,@"「失礼了……♥ ……我、我去了……♥♥」"
@@ -48,19 +53,23 @@ CASE "绝顶"
 	ENDIF
 	SIF NOWEX:Ａ绝顶
 		IF TALENT:Ａ名器 || TALENT:肛门嗜好 || ABL:Ａ感觉 >= 3
-			CALL MESSAGE_BOX,@"「……失礼……！？　%ANAL_CALL()%……痛……可是……深处……像被火撩过……好羞耻……♥」"
+			CALL MESSAGE_BOX,@"「……抱歉……！？　%ANAL_CALL()%……好痛……可是……深处……像被火燎过……好羞耻……♥」"
 			CALL MESSAGE_BOX,@"「……这种事……不该……在身体里……留下痕迹……♥」"
 		ELSE
-			CALL MESSAGE_BOX,@"「……痛……！？　%ANAL_CALL()%……请、请住手……！」"
+			CALL MESSAGE_BOX,@"「……疼……！？　%ANAL_CALL()%……请、请停下……！」"
 			CALL MESSAGE_BOX,@"「……失礼了……只有那里……真的……不行……」"
 		ENDIF
 	SIF NOWEX:Ｕ绝顶
-		IF TALENT:尿道敏感 || EX:尿道调教经验 >= 15
-			CALL MESSAGE_BOX,@"「……失礼……那处竟……有羞耻的麻……♥」"
-			CALL MESSAGE_BOX,@"「……除痛外……还有……说不出口的酥……♥」"
+		IF TEQUIP:尿道塞 || TFLAG:尿道装备
+			SIF TALENT:尿道敏感 || EX:尿道调教经验 >= 15
+				CALL MESSAGE_BOX,@"「……尿道塞顶着……每次颤一下就被拽走……♥ ……要、要失态了……♥」"
+			SIF !(TALENT:尿道敏感 || EX:尿道调教经验 >= 15)
+				CALL MESSAGE_BOX,@"「……尿道里塞着……太痛了……求您……请停下……！」"
 		ELSE
-			CALL MESSAGE_BOX,@"「……好痛……请、请住手……只有急与刺……」"
-			CALL MESSAGE_BOX,@"「……失礼了……那里……真的不行……」"
+			SIF TALENT:尿道敏感 || EX:尿道调教经验 >= 15
+				CALL MESSAGE_BOX,@"「……那处竟也会发软……好、好羞耻……♥」"
+			SIF !(TALENT:尿道敏感 || EX:尿道调教经验 >= 15)
+				CALL MESSAGE_BOX,@"「……只有急与刺痛……失礼……请别再碰那里……！」"
 		ENDIF
 
 CASE "射精"
@@ -119,7 +128,7 @@ CASE "搾乳"
 		CALL MESSAGE_BOX,@"「……我会……好好配合……♥」"
 	ELSEIF ＃陷落状态／恋慕以上＃
 		CALL MESSAGE_BOX,@"「……轻一些……♥ 胸口……有点酸……」"
-		CALL MESSAGE_BOX,@"「……失礼……声音……忍不住……♥」"
+		CALL MESSAGE_BOX,@"「……失礼了……声音……忍不住……♥」"
 	ELSE
 		CALL MESSAGE_BOX,@"「请、请别这样……那、那里……」"
 	ENDIF

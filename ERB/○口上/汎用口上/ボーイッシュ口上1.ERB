@@ -55,7 +55,9 @@ ENDIF
 SELECTCASE ARGS:0
 CASE "例文"
 	{
-	CALL MESSAGE_BOX,@"「【泛用假小子口上1】装好了啦。」\n「嘛，就是说话像汉子那种调调。」\n「我觉得还是配活泼的人。」"
+	CALL MESSAGE_BOX,@"「【泛用假小子口上1】装好了啦。」
+「嘛，就是说话像汉子那种调调。」
+「我觉得还是配活泼的人。」"
 	}
 	
 CASE "调教命令"
@@ -67,82 +69,88 @@ CASE "日程"
 CASE "进入魔界的","事件","Ｍ装备中事件"
 	CALL KOJO_GENERAL_ボーイッシュ口上1_EVENT(ARGS:0,ARGS:1,ARGS:2,ARGS:3)
 	
-CASE "绝顶"
-	IF CFLAG:乳牛 || CFLAG:洗脑
+CASE "绝顶"@"「不行了啦♥♥ 早超极限了♥♥ 早爆表了好吗啊啊♥♥♥」"
+	IF CFLAG:乳牛 || CFL@"「嗯啊♥ 好猛♥♥ 去了去了去————♥♥♥」"
 		CALL MESSAGE_BOX,@"「不行了啦♥♥ 早超极限了♥♥ 早爆表了好吗啊啊♥♥♥」"
-		CALL MESSAGE_BOX,@"「嗯啊♥ 好猛♥♥ 去了去了去————♥♥♥」"
-	ELSEIF ＃陷落状态／恋慕以上＃
 		CALL MESSAGE_BOX,@"「哈……♥ 哈……♥ 不行了……♥ 脑袋一片空白……♥ 轻飘飘的……♥♥♥」"
-		CALL MESSAGE_BOX,@"「嗯……♥ 嗯啊……♥♥♥ 啊♥ 啊♥ 啊……\n　%SELF_CALL()%要去了脸……♥♥ 别盯着看啊……♥♥♥♥」"
-	ELSEIF ＃陷落状态／屈服以上＃
+	ELSEIF ＃陷落状态／恋慕以上＃@"「嗯……♥ 嗯啊……♥♥♥ 啊♥ 啊♥ 啊……
+　%SELF_CALL()%要去了脸……♥♥ 别盯着看啊……♥♥♥♥」"
 		CALL MESSAGE_BOX,@"「呼啊……♥ 啊♥ 啊♥ 啊♥ ～～～～♥♥♥♥」"
 		CALL MESSAGE_BOX,@"「哈啊……♥ 等、等下♥ 在去了啊♥♥ 在去了啊……♥♥♥」"
-	ENDIF
-	IF EX:总绝顶 >= 100
-		CALL MESSAGE_BOX,@"「啊……～♥ 啊……♥ 啊……♥ 不行了～♥♥\n　要去了要去了要去了♥♥♥ 啊……♥ 脑子要断片了……♥♥♥♥♥」"
-		CALL MESSAGE_BOX,@"「去了去了♥ 去了啊♥ 去去去去去啊啊……♥♥♥♥」"
-		CALL MESSAGE_BOX,@"「嗯哦哦啊……♥♥♥ 要去了……♥ 顶穿……♥♥ 停、停不下来……♥♥\n　哦♥ 啊……♥ 哦……♥♥ 呜啊啊啊……♥♥♥♥♥」"
-	ELSEIF EX:总绝顶 >= 50
-		CALL MESSAGE_BOX,@"「呼……♥ 哈啊……♥ 眼、眼前直闪白♥ 又、又要……♥♥♥」"
+	ELSEIF ＃陷落状态／屈服以上＃
+		CALL MESSAGE_BOX,@"「呼啊……♥ 啊♥ 啊♥ 啊♥ ～～～～♥♥♥♥」"
+		CALL MESSAGE_BOX,@"「啊……～♥ 啊……♥ 啊……♥ 不行了～♥♥
+　要去了要去了要去了♥♥♥ 啊……♥ @"「去了去了♥ 去了啊♥ 去去去去去啊啊……♥♥♥♥」"
+	ENDIF@"「嗯哦哦啊……♥♥♥ 要去了……♥ 顶穿……♥♥ 停、停不下来……♥♥
+　哦♥ 啊……♥ 哦……♥♥ 呜啊啊啊……♥♥♥♥♥」"
+	IF EX:总绝顶 >= 100@"@"「呼……♥ 哈啊……♥ 眼、眼前直闪白♥ 又、又要……♥♥♥」"
 		CALL MESSAGE_BOX,@"「啊♥ 啊♥ 啊♥ 顶、顶不住……♥♥ 这种的……♥♥」"
-	ELSEIF EX:总绝顶 >= 20
+		CALL MESSAGE_BOX,@"「去了去了♥ 去了啊♥ 去去去去去啊啊……♥♥♥♥」"
+		CALL MESSAGE_BOX,@"「呜……♥♥ 被、被弄成那样…♥ 哈啊……♥♥」"
+	ELSEIF EX:总绝顶 >= 5@"「嗯啊……♥♥ 这样…♥ 别……♥♥ 嗯嗯嗯……♥♥♥♥」"
+		CALL MESSAGE_BOX,@"「呼……♥ 哈啊……♥ 眼、眼前直闪白♥ 又、又要……♥♥♥」"
+		CALL MESSAGE_BOX,@"「啊♥ ♥ ……嗯……♥ 啊……♥」"
+	ELSEIF EX:总绝顶 >= 2@"「啊♥ 嗯……♥ 啊♥ 啊……♥ 嗯啊……♥」"
 		CALL MESSAGE_BOX,@"「呜……♥♥ 被、被弄成那样…♥ 哈啊……♥♥」"
 		CALL MESSAGE_BOX,@"「嗯啊……♥♥ 这样…♥ 别……♥♥ 嗯嗯嗯……♥♥♥♥」"
 	ELSE
-		CALL MESSAGE_BOX,@"「啊♥ ♥ ……嗯……♥ 啊……♥」"
-		CALL MESSAGE_BOX,@"「啊♥ 嗯……♥ 啊♥ 啊……♥ 嗯啊……♥」"
+		CALL MESSAGE_BOX,@@"「啊……！？　用%ANAL_CALL()%……也要去了……！？　好痛……里面却自己绞……♥」"
+		CALL MESSAGE_BOX,@@"「……用后面……还能爽成这样……真的假的……♥」"
 	ENDIF
-	SIF NOWEX:Ａ绝顶
-		IF TALENT:Ａ名器 || TALENT:肛门嗜好 || ABL:Ａ感觉 >= 3
+	SIF NOWEX:Ａ绝顶@"「好痛…@"「好痛……！？　%ANAL_CALL()%……像要裂开……！」"
+		IF TALENT:Ａ名器 || T@"「……不许用后面……把我弄去……开什么玩笑……！」"
 			CALL MESSAGE_BOX,@"「啊……！？　用%ANAL_CALL()%……也要去了……！？　好痛……里面却自己绞……♥」"
 			CALL MESSAGE_BOX,@"「……用后面……还能爽成这样……真的假的……♥」"
 		ELSE
-			CALL MESSAGE_BOX,@"「好痛……！？　%ANAL_CALL()%……像要裂开……！」"
-			CALL MESSAGE_BOX,@"「……不许用后面……把我弄去……开什么玩笑……！」"
+			CALL MESSAGE_BOX,@"「靠……连尿道都能去……又麻又热……离谱……♥」"
+			CALL MESSAGE_BOX,@"「……身体别给我添乱……♥」"
 		ENDIF
-	SIF NOWEX:Ｕ绝顶
-		IF TALENT:尿道敏感 || EX:尿道调教经验 >= 15
+	SIF NOWEX:Ｕ绝顶@"「痛……@"「痛……尿道像要烧起来……别捅……！」"
+		IF TALENT:尿道敏感 || @"「……只有刺痛……要尿崩了似的……」"
 			CALL MESSAGE_BOX,@"「靠……连尿道都能去……又麻又热……离谱……♥」"
 			CALL MESSAGE_BOX,@"「……身体别给我添乱……♥」"
 		ELSE
 			CALL MESSAGE_BOX,@"「痛……尿道像要烧起来……别捅……！」"
 			CALL MESSAGE_BOX,@"「……只有刺痛……要尿崩了似的……」"
-		ENDIF
-	
-CASE "射精"
+		ENDIF@"「%SELF_CALL@"「%SELF_CALL()%可是%MASTER_CALL()%的人了啊♥♥
+　哈啊……♥ 随便怎么操都行啊♥♥♥」"@"「啊♥ 啊……♥ 这冲劲……要去了啊♥♥ 子宫都投降了……♥♥♥」"
+　哈啊……♥ 随便怎么操都行啊♥♥♥」"@"「嗯呀……♥♥ %SELF_CALL()%的%VAGINA_CALL()%♥♥ 被精液训得服服帖帖……♥♥♥」"
+	@"「嗯呀……♥♥ %SELF_CALL()%的%VAGINA_CALL()%♥♥ 被精液训得服服帖帖……♥♥♥」"
+CASE "射精"@"「嗯嘻……♥♥♥ 精@"「嗯嘻……♥♥♥ 精液奶的奖励……要去了啊……♥♥♥ 啊嘻……♥♥♥」"
 	IF SOURCE:膣内射精经验
-		IF CFLAG:乳牛 || CFLAG:洗脑
-			CALL MESSAGE_BOX,@"「%SELF_CALL()%可是%MASTER_CALL()%的人了啊♥♥\n　哈啊……♥ 随便怎么操都行啊♥♥♥」"
+		IF CFLAG:乳牛 || CFLA@"「哈啊……♥ %MASTER_CALL()%专用泄欲桶，想怎么射烂都行啊♥♥」"
+			CALL MESSAGE_BOX,@@"「啊……%VAGINA_CALL()%里被灌太多……精液中毒了……♥♥♥」"　哈啊……♥ 随便怎么操都行啊♥♥♥」"
 			CALL MESSAGE_BOX,@"「啊♥ 啊……♥ 这冲劲……要去了啊♥♥ 子宫都投降了……♥♥♥」"
-			CALL MESSAGE_BOX,@"「嗯呀……♥♥ %SELF_CALL()%的%VAGINA_CALL()%♥♥ 被精液训得服服帖帖……♥♥♥」"
+			CALL MESSAGE_BOX,@"@"「嗯啊……♥♥ 被内射到高潮……丢人的样子……全被看光了……♥♥♥」"♥♥ 被精液训得服服帖帖……♥♥♥」"
 			SIF NOWEX:Ｖ绝顶
 				CALL MESSAGE_BOX,@"「嗯嘻……♥♥♥ 精液奶的奖励……要去了啊……♥♥♥ 啊嘻……♥♥♥」"
-			IF ABL:膣内射精中毒 >= 5
+			IF ABL:膣内射精中毒 >= 5@"@"「来了来了♥ 来了来了♥ 播种奖励……太爽了要去了……♥♥♥」"
 				CALL MESSAGE_BOX,@"「哈啊……♥ %MASTER_CALL()%专用泄欲桶，想怎么射烂都行啊♥♥」"
 				CALL MESSAGE_BOX,@"「啊……%VAGINA_CALL()%里被灌太多……精液中毒了……♥♥♥」"
-				IF NOWEX:Ｖ绝顶
+				IF NOWEX:Ｖ绝顶@"「嗯哦……@"「嗯哦……♥♥♥ 怀着孕呢还射得这么爽……要去了啊……♥♥♥」"
 					CALL MESSAGE_BOX,@"「嗯啊……♥♥ 被内射到高潮……丢人的样子……全被看光了……♥♥♥」"
 					IF CFLAG:妊娠日数 < 10 || CFLAG:妊娠日数 == 91 || CFLAG:妊娠日数 == 92
 					;妊娠していないor判明していないとき
 						CALL MESSAGE_BOX,@"「来了来了♥ 来了来了♥ 播种奖励……太爽了要去了……♥♥♥」"
-					ELSEIF CFLAG:妊娠日数 > 9 && CFLAG:妊娠日数 < 16
-					;あなたの子の妊娠が判明中
-						CALL MESSAGE_BOX,@"「嗯哦……♥♥♥ 怀着孕呢还射得这么爽……要去了啊……♥♥♥」"
+					ELSEIF CFLAG:妊娠@"「软乎乎……♥♥ 肚子里面热流散开了……好舒服…♥♥」"
+					;あなたの子の妊娠が判明中@"@"「这么多……♥♥ 被%MASTER_CALL()%爱着我好幸福…♥♥」"
+						CALL MESSAGE_B@"「嘻嘻 %SELF_CALL()%的%VAGINA_CALL()%♥ 爽吗♥♥」"
  					ENDIF
-				ENDIF
+				ENDIF@"「啊……♥♥ 对小孩@"「啊……♥♥ 对小孩的%VAGINA_CALL()%也一点不手软啊……♥♥」"
 			ENDIF
-		ELSEIF ＃陷落状态／恋慕以上＃
-			CALL MESSAGE_BOX,@"「软乎乎……♥♥ 肚子里面热流散开了……好舒服…♥♥」"
+		ELSEIF ＃陷落状态／恋慕以上＃@@"「%SWEET_MASTER_CALL()%……♥♥ 喜欢……♥♥ 好喜欢啊……♥♥♥」"
+			CALL MESSAGE_BOX,@@"「嗯啊……♥♥ 一、一起啊♥ 和%MASTER_CALL()%一起去……♥♥♥」"
 			CALL MESSAGE_BOX,@"「这么多……♥♥ 被%MASTER_CALL()%爱着我好幸福…♥♥」"
 			CALL MESSAGE_BOX,@"「嘻嘻 %SELF_CALL()%的%VAGINA_CALL()%♥ 爽吗♥♥」"
-			SIF CHILD_HEIGHT_CHECK(CSTR:身高) && CFLAG:外表年龄 <= VISUAL_AGE_CHILD_MAX
+			SIF CHILD_HEIGHT_C@"「哈啊……♥ 中了精液毒的小穴咬死%PENIS_CALL()%不肯放呢……♥♥」"HILD_MAX
 				CALL MESSAGE_BOX,@"「啊……♥♥ 对小孩的%VAGINA_CALL()%也一点不手软啊……♥♥」"
 			IF NOWEX:Ｖ绝顶
 				CALL MESSAGE_BOX,@"「%SWEET_MASTER_CALL()%……♥♥ 喜欢……♥♥ 好喜欢啊……♥♥♥」"
-				CALL MESSAGE_BOX,@"「嗯啊……♥♥ 一、一起啊♥ 和%MASTER_CALL()%一起去……♥♥♥」"
-			ENDIF
+				CALL MESSAGE_BOX,@"@"「啊～～～～♥♥ 同时播种高潮……太幸福了啊啊……♥♥♥」"起去……♥♥♥」"
+			ENDIF@"「啊♥ 啊♥ 子宫口下去接@"「啊♥ 啊♥ 子宫口下去接精呢……♥♥♥」"
 			IF ABL:膣内射精中毒 >= 5
-				CALL MESSAGE_BOX,@"「哈啊……♥ 中了精液毒的小穴咬死%PENIS_CALL()%不肯放呢……♥♥」"
+				CALL MESSAGE_BOX,@"「@"「等……！？%PENIS_CALL()%把宫口都撬开了…直、直接灌进去……♥♥
+　这种……这种……太幸福了不去怎么行啊啊啊！♥♥♥」"
 				IF NOWEX:Ｖ绝顶
 					IF CFLAG:妊娠日数 < 10 || CFLAG:妊娠日数 == 91 || CFLAG:妊娠日数 == 92
 					;妊娠していないor判明していないとき

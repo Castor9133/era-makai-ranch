@@ -12,7 +12,10 @@ TARGET = RESULT
 TFLAG:调教前母乳体质 = MARK:母乳体质
 TFLAG:调教中 = 1
 TFLAG:尿道塞调教经过回合 = 0
-TFLAG:剩余时间 = 10 +ITEM:调教时间増加
+;调教回合数：可配置，默认 20（仅当未设置时）
+SIF FLAG:调教回合数 <= 0
+	FLAG:调教回合数 = 20
+TFLAG:剩余时间 = FLAG:调教回合数 +ITEM:调教时间増加
 TFLAG:训练前体力 = BASE:体力
 BASE:0:射精 = 0
 SELECTCOM = 0

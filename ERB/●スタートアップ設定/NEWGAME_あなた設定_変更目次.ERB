@@ -1,0 +1,158 @@
+﻿
+;入力目次
+;ARG→PAGE
+;ARG:1→INPUT_NUM
+@PLAYER_DATA_CONFIG_INPUT(ARG,ARG:1)
+
+;ページ+INPUT_NUMでINPUT_NUMを上書き
+;INPUT_NUMで変更箇所を指定する
+INPUT_NUM = (ARG -1) *100 +ARG:1
+SELECTCASE INPUT_NUM
+CASE 0
+	CHANGE_STATE = 名称
+CASE 1
+	CHANGE_STATE = 全名
+CASE 2
+	CHANGE_STATE = 第一人称
+CASE 3
+	CHANGE_STATE = 语气
+CASE 4
+	CHANGE_STATE = 颜色编码／口上
+CASE 5
+	CHANGE_STATE = 种族
+CASE 10
+	CHANGE_STATE = 身高
+CASE 11
+	CHANGE_STATE = 两角
+CASE 12
+	CHANGE_STATE = 眼镜
+CASE 13
+	CHANGE_STATE = 外表年龄
+
+
+;女あなたの場合だけ
+CASE 14
+	CHANGE_STATE = 胸围大小
+CASE 15
+	CHANGE_STATE = 乳房弹性
+
+
+;外見追加
+CASE 100
+	CHANGE_STATE = 发色
+CASE 101
+	CHANGE_STATE = 头发特征
+CASE 102
+	CHANGE_STATE = 发型
+CASE 103
+	CHANGE_STATE = 发型一键调整
+CASE 104
+	CHANGE_STATE = 颜色编码／发
+CASE 105
+	CHANGE_STATE = 体型
+CASE 106
+	CHANGE_STATE = 肤色
+CASE 107
+	CHANGE_STATE = 阴毛
+CASE 108
+	CHANGE_STATE = 乳头颜色
+CASE 109
+	CHANGE_STATE = 颜色编码／乳头
+CASE 110
+	CHANGE_STATE = 右瞳色
+CASE 111
+	CHANGE_STATE = 颜色编码／右目
+CASE 112
+	CHANGE_STATE = 左瞳色
+CASE 113
+	CHANGE_STATE = 颜色编码／左目
+CASE 114
+	CHANGE_STATE = 瞳孔形状
+CASE 115
+	CHANGE_STATE = 眼睛特征
+
+
+;性経験
+CASE 200
+	CHANGE_STATE = 童贞
+CASE 201
+	CHANGE_STATE = Ａ童贞
+CASE 202
+	CHANGE_STATE = Ｍ童贞
+CASE 203
+	CHANGE_STATE = 无乳交经验
+CASE 204
+	CHANGE_STATE = 无接吻经验
+CASE 210
+	CHANGE_STATE = 初经验／Ｖ
+CASE 211
+	CHANGE_STATE = 初经验／Ａ
+CASE 212
+	CHANGE_STATE = 初经验／Ｍ性交
+CASE 213
+	CHANGE_STATE = 初经验／乳交
+CASE 214
+	CHANGE_STATE = 初经验／接吻
+CASE 220
+	CHANGE_STATE = 主人公经验人数／Ｖ
+CASE 221
+	CHANGE_STATE = 主人公经验人数／Ａ
+CASE 222
+	CHANGE_STATE = 主人公经验人数／Ｍ
+CASE 223
+	CHANGE_STATE = 主人公经验人数／乳交
+CASE 224
+	CHANGE_STATE = 主人公经验人数／接吻
+ENDSELECT
+
+;SELF_CHARA_MAKE_RANDOMが有効かどうかで呼ぶ関数変更
+IF SELF_CHARA_MAKE_RANDOM
+	CALL PLAYER_DATA_CONFIG_INPUT_SHUFFLE(CHANGE_STATE)
+ELSE
+	CALL PLAYER_DATA_CONFIG_INPUT_MANUAL(CHANGE_STATE)
+ENDIF
+
+
+
+;未経験リセット
+@SELECT_VIRGIN_RESET_PLAYER
+
+IF TALENT:童贞
+	CSTR:初经验／Ｖ =
+	FLAG:主人公经验人数／Ｖ = 0
+ELSEIF !FLAG:主人公经验人数／Ｖ
+	FLAG:主人公经验人数／Ｖ ++
+ENDIF
+IF TALENT:Ａ童贞
+	CSTR:初经验／Ａ =
+	FLAG:主人公经验人数／Ａ = 0
+ELSEIF !FLAG:主人公经验人数／Ａ
+	FLAG:主人公经验人数／Ａ ++
+ENDIF
+IF TALENT:Ｍ童贞
+	CSTR:初经验／Ｍ性交 =
+	FLAG:主人公经验人数／Ｍ = 0
+ELSEIF !FLAG:主人公经验人数／Ｍ
+	FLAG:主人公经验人数／Ｍ ++
+ENDIF
+IF TALENT:无乳交经验
+	CSTR:初经验／乳交 =
+	FLAG:主人公经验人数／乳交 = 0
+ELSEIF !FLAG:主人公经验人数／乳交
+	FLAG:主人公经验人数／乳交 ++
+ENDIF
+IF TALENT:无接吻经验
+	CSTR:初经验／接吻 =
+	FLAG:主人公经验人数／接吻 = 0
+ELSEIF !FLAG:主人公经验人数／接吻
+	FLAG:主人公经验人数／接吻 ++
+ENDIF
+IF TALENT:无授乳经验
+	CSTR:初经验／授乳 =
+	FLAG:主人公经验人数／授乳 = 0
+ELSEIF !FLAG:主人公经验人数／授乳
+	FLAG:主人公经验人数／授乳 ++
+ENDIF
+
+
+

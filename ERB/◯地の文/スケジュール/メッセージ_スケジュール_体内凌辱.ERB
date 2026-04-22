@@ -1,0 +1,165 @@
+﻿
+;吐き出し時地の文
+@MASTER_REMOVE_MESSAGE
+#DIMS CATTLE_NAME
+
+;出した奴隷全員並べようかな
+CATTLE_NAME =
+PRINTFORML %CALLNAME:0%从自己的体内空间
+FOR TARGET_COUNT,1,CHARANUM
+	TARGET = TARGET_COUNT
+	SIF CSTR:日程 != "释放准备"
+		CONTINUE
+	
+	;2人目以降区切り
+	IF CATTLE_NAME == ""
+		PRINTFORM %CALLNAME%
+		CATTLE_NAME = %CALLNAME%
+		SIF CATTLE_COUNT >= 2
+			CATTLE_NAME += "们"
+	ELSE
+		PRINTFORM 、%CALLNAME%
+	ENDIF
+NEXT
+PRINTL 释放了。
+
+;一番目に当たったキャラの名前を出す
+PRINTFORMW 从触手肉壁里出来的%CATTLE_NAME%以全身被粘液覆盖的状态下痉挛着…
+
+
+
+;虚脱状態
+@MASTER_REMOVE_COLLAPSE_MESSAGE
+
+PRINTFORML %CALLNAME%已经筋疲力尽了…看来如果不让她休息一会的话，她连一根手指都动不了。
+WAIT_ON ++
+
+
+
+
+
+;取り込み時地の文
+@MASTER_VORE_MOVE_MESSAGE
+
+PRINTFORML %CALLNAME:0%身体变成异样的形状，无数触手缠绕住%CALLNAME%的身体…
+PRINTFORML 而且%CALLNAME:0%把自己的身体哗啦哗啦地打开，把%CALLNAME%拉过来…
+CALL KOJO_PRINT("日程","体内凌辱","开始捕获",KOJO_TYPE)
+
+IF CFLAG:崩坏
+	PRINTFORML %CALLNAME%隐约露出绝望的表情…
+ELSEIF ＃陷落状态／隶属＃ || MARK:触手的苗床
+	PRINTFORML %CALLNAME%任由%CALLNAME:0%摆布，脸上露出欣喜的表情，完全没有抵抗…
+	
+;最初かどうか
+ELSEIF !EXP:执行次数／体内凌辱
+	PRINTFORML %CALLNAME%面色苍白，拼命想逃却被触手拘束得动弹不得…
+ELSE
+	IF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／恋慕以上＃
+		PRINTFORML %CALLNAME%要挣脱触手，但是随着快感的记忆浮现在脑海中，逐渐放弃了抵抗…
+	ELSE
+		PRINTFORML %CALLNAME%面色苍白，拼命想逃却被触手拘束得动弹不得…
+	ENDIF
+ENDIF
+PRINTFORML 就这样将%CALLNAME%慢慢吞入%CALLNAME:0%体内…
+
+
+
+;取り込み時簡易版
+@MASTER_VORE_MOVE_MESSAGE_SIMPLE
+
+PRINTFORML %CALLNAME:0%将%CALLNAME%吞入体内…
+
+
+
+
+
+;体内凌辱待機表示地の文
+@MASTER_VORE_SEX_STANDBY_MESSAGE
+
+IF !EXP:执行次数／体内凌辱
+	PRINTFORML …%CALLNAME%睁开眼睛，入目所及之处仿佛是在阴暗的洞穴之中，四周被粉红色的墙壁包围。
+	PRINTFORML 刚才被%CALLNAME:0%吞掉…被困在这个空间里了。
+	PRINTL 两只脚都有不舒服的感觉，看着自己的身体，衣服都被去掉了。
+	PRINTL 而且四肢被肉块吞没，完全无法动弹…
+	PRINTL 不过，即使没有肉块，被困在这个狭小的空间里，也什么也做不了吧…
+ELSEIF CFLAG:继续体内凌辱
+	PRINTFORML …%CALLNAME%依然被困在%CALLNAME:0%体内空间，
+	IF MARK:母乳体质
+		PRINTFORML 全身触手凌辱，榨乳触手也在不断的榨取%SLANG_MILK()%的快感地狱…
+	ELSE
+		PRINTL 全身都被触手凌辱的快感地狱…
+	ENDIF
+ELSE
+	PRINTFORML …%CALLNAME%睁开眼睛，入目所及之处仿佛是在阴暗的洞穴之中，四周被粉红色的墙壁包围。
+	PRINTFORML 再次被%CALLNAME:0%吞噬，被困在持续遭受触手凌辱的体内空间…
+ENDIF
+CALL KOJO_PRINT("日程","体内凌辱","执行前",KOJO_TYPE)
+PRINTL
+
+
+
+;体内凌辱開始
+@MASTER_VORE_SEX_RUN_MESSAGE
+
+IF CFLAG:继续体内凌辱
+	IF BASE:母乳生产力
+		PRINTFORML 无法抵抗的%CALLNAME%全身不停地享受着巨大的快感
+		PRINTFORML %SLANG_B()%被源源不断榨出%SLANG_MILK()%，
+		PRINTL 只能永远重复搾乳绝顶…
+	ELSE
+		PRINTFORML 无法抵抗的%CALLNAME%
+		PRINTL 只默默忍受着仿佛让全身绝顶的巨大快感…
+	ENDIF
+ELSE
+	PRINTFORML 触手慢慢接近已经没有抵抗能力的%CALLNAME%的躯体…
+	CALL KOJO_PRINT("调教命令","包乳花瓣搾乳触手","挑逗")
+	PRINTFORML 内测无数细小的榨乳触手，紧紧的吸附在%SLANG_B()%开，
+	PRINTFORML 所有触手都开始了对%CALLNAME%的快感凌辱…
+ENDIF
+PRINTW
+
+
+
+;継続メッセージ
+@MASTER_VORE_SEX_CONTINUE_MESSAGE
+
+IF CFLAG:崩坏
+	PRINTFORML 谁也听不到%CALLNAME%求助的声音…
+ELSEIF ＃陷落状态／隶属＃
+	PRINTFORML 『%CSTR:主人公的称呼／陷落后%』と1つになれ，持续接受来自『%CSTR:主人公的称呼／陷落后%』的极致快感…
+	PRINTFORML %CALLNAME%全身承受着极上的快感…
+ELSEIF CFLAG:乳牛
+	IF !CFLAG:非战斗职业
+		PRINTL 被触手折磨的永无止境的榨乳快感调教…　以及面对自己彻底失败的羞辱，
+	ELSE
+		PRINTL 被触手折磨的永无止境的榨乳快感调教…　让人心碎的凌辱，
+	ENDIF
+	PRINTFORML 对于%CALLNAME%来说，这是不断被给予最高幸福的天堂…
+ELSEIF ＃陷落状态／恋慕以上＃ || CFLAG:洗脑
+	PRINTFORML 『%CSTR:主人公的称呼／陷落后%』所希望的，正为『%CSTR:主人公的称呼／陷落后%』提供帮助…
+	PRINTFORML 就连让人快要发疯的全身快感凌辱，%CALLNAME%也接受了这一事实…
+ELSEIF ＃陷落状态／拒绝以上＃
+	PRINTFORML 看不到尽头，为了让自己完全堕落的快感凌辱，%CALLNAME%的心快要坏掉了…
+ELSE
+	IF !CFLAG:非战斗职业
+		PRINTFORML 在%CALLNAME:0%的体内空间里，%CALLNAME%因触手凌辱而面临着自己彻底的失败…
+	ELSE
+		PRINTFORML 在%CALLNAME:0%的体内空间，%CALLNAME%持续遭受触手的凌辱…
+	ENDIF
+ENDIF
+
+
+
+;虚脱化
+@BECOME_COLLAPSE_MESSAGE
+
+SETCOLOR 0xEE10EE
+PRINTFORML 在%CALLNAME:0%体内不断遭受无休止的凌辱，%CALLNAME%处于放心不下的状态…
+PRINTFORML %CALLNAME%变成【虚脱】了
+RESETCOLOR
+
+
+
+
+
+

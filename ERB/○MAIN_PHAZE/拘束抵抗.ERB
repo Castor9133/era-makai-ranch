@@ -1,0 +1,89 @@
+﻿
+;拘束に抵抗する　魔力枷使用中
+@RESIST_SHACKLE
+#DIM RESIST_POWER
+#DIM REMOVE
+
+;一旦1でOK
+REMOVE = 1
+
+;魔力枷外す処理
+;家畜　乳牛堕ちと同日ということがあるかもなのでいちおう分岐
+IF CFLAG:家畜
+	CALL RESIST_SHACKLE_MESSAGE("家畜")
+ELSEIF ＃陷落状态／恋慕以上＃ || CFLAG:乳牛
+	CALL RESIST_SHACKLE_MESSAGE("完堕")
+ELSEIF CFLAG:崩坏
+	CALL RESIST_SHACKLE_MESSAGE("崩坏")
+ELSEIF ＃陷落状态／陷落以上＃
+	CALL RESIST_SHACKLE_MESSAGE("陷落")
+ELSEIF ＃陷落状态／屈服以上＃
+	CALL RESIST_SHACKLE_MESSAGE("屈服")
+
+;戦闘能力による判定
+ELSEIF CFLAG:非战斗职业
+	CALL RESIST_SHACKLE_MESSAGE("非战斗职业")
+ELSEIF !BASE:灵力
+	CALL RESIST_SHACKLE_MESSAGE("灵力0")
+ELSEIF !CFLAG:上位种族 && MARK:处女结界破坏
+	CALL RESIST_SHACKLE_MESSAGE("处女结界破坏")
+ELSEIF MARK:魔力母乳体质 && CFLAG:魔力量 >= CFLAG:级别 && !CFLAG:上位种族
+	CALL RESIST_SHACKLE_MESSAGE("魔力母乳体质")
+ELSEIF CSTR:陷落状态 == "拒绝"
+	CALL RESIST_SHACKLE_MESSAGE("反抗消除")
+
+;取り外し処理にかからない場合リセット
+ELSE
+	REMOVE = 0
+ENDIF
+
+;REMOVEが入っていれば枷を外して帰る
+IF REMOVE
+	CALL REMOVE_SHACKLE
+	RETURN
+ENDIF
+
+;触手服を着ている場合責められて大人しくする
+IF ＃穿着内衣下装／名称＃ == "触手服装" && BASE:0:魔力
+	CALL RESIST_SHACKLE_MESSAGE("触手服装")
+	CALL TRAIN_T_CLOTHE_S
+	RETURN
+ENDIF
+
+;体力が30%以下なら休む
+IF BASE:体力 < MAXBASE:体力 *30 /100
+	CALL RESIST_SHACKLE_MESSAGE("休息")
+	RETURN
+ENDIF
+
+;全部かからなかったら抵抗
+CALL RESIST_SHACKLE_MESSAGE("抵抗")
+
+;現在レベル*100のバッテリー消費、レベル50ごとに倍率+1　魔力母乳で枷外れない場合は半分にする
+RESIST_POWER = BASE:等级 *100 *(BASE:等级 /50 +1)
+SIF MARK:魔力母乳体质
+	RESIST_POWER /= 2
+
+;HP500+乱数消費
+DAMAGE = 500
+CALL RANDOM_FIX(DAMAGE,20,"ダメージ")
+DAMAGE += FIX
+DAMAGE -= (DAMAGE %10)
+BASE:体力 = LIMIT(BASE:体力 -DAMAGE,0,MAXBASE:体力)
+PRINTFORM %CALLNAME%　HP-{DAMAGE}　
+SIF !BASE:体力
+	PRINT 【HP0】
+FLAG:区间电池消耗量 = RESIST_POWER
+CALL SECTION_MP_COST
+
+
+
+;魔力枷外し
+@REMOVE_SHACKLE
+
+CALL PRINTL_WORD_COLOR,@"把[魔力枷锁]从%CALLNAME%上取下来了。","黄"
+PRINTL
+EQUIP:魔力枷锁 = 0
+
+
+

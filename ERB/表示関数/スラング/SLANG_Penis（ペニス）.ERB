@@ -1,0 +1,59 @@
+﻿;**********************************************************
+;Penis(ちんぽ)の淫語
+;**********************************************************
+@SLANG_PENIS(ARG)
+#FUNCTIONS
+
+;初期化
+EXIST = 0
+SLANGWORD =
+
+SIF GETBIT(FLAG:黑话前缀／阴茎,3) && RAND:100 < 10
+	SLANGWORD += "颤抖跳动的"
+SIF GETBIT(FLAG:黑话前缀／阴茎,0) && RAND:100 < 10
+	SLANGWORD += "高高耸立的"
+SIF GETBIT(FLAG:黑话前缀／阴茎,2) && RAND:100 < 10
+	SLANGWORD += "硬邦邦的"
+SIF GETBIT(FLAG:黑话前缀／阴茎,1) && RAND:100 < 10
+	SLANGWORD += "发烫的"
+
+IF GETBIT(FLAG:黑话替换／阴茎,9)
+	EXIST ++
+	SIF RAND:100 < 50
+		RETURNF SAVESTR:标识／阴茎
+ENDIF
+SIF GETBIT(FLAG:黑话替换／阴茎,0) && EXIST
+	RESTART
+
+IF GETBIT(FLAG:黑话标识／阴茎,0) && RAND:100 < 50
+	SLANGWORD += "阴茎"
+	RETURNF SLANGWORD
+ELSEIF GETBIT(FLAG:黑话标识／阴茎,1) && RAND:100 < 30
+	SLANGWORD += "鸡巴"
+	RETURNF SLANGWORD
+ELSEIF GETBIT(FLAG:黑话标识／阴茎,2) && RAND:100 < 30
+	SLANGWORD += "男根"
+	RETURNF SLANGWORD
+ELSEIF GETBIT(FLAG:黑话标识／阴茎,3) && RAND:100 < 30
+	SLANGWORD += "阴茎"
+	RETURNF SLANGWORD
+ELSEIF GETBIT(FLAG:黑话标识／阴茎,4) && RAND:100 < 30
+	SLANGWORD += "男性器"
+	RETURNF SLANGWORD
+ELSEIF GETBIT(FLAG:黑话标识／阴茎,5) && RAND:100 < 30
+	SLANGWORD += "鸡鸡"
+	RETURNF SLANGWORD
+ELSEIF GETBIT(FLAG:黑话标识／阴茎,6) && RAND:100 < 30
+	SLANGWORD += "小鸡鸡"
+	RETURNF SLANGWORD
+ELSEIF GETBIT(FLAG:黑话标识／阴茎,7) && RAND:100 < 30
+	SLANGWORD += "大鸡鸡"
+	RETURNF SLANGWORD
+ELSEIF GETBIT(FLAG:黑话标识／阴茎,8)
+	SLANGWORD += "肉棒"
+	RETURNF SLANGWORD
+ENDIF
+RESTART
+
+
+

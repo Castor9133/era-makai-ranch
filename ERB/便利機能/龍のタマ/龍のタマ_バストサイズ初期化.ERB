@@ -1,0 +1,33 @@
+﻿
+;バストサイズ初期化
+@SELECT_WISH_DEFAULT_BUSTSIZE
+
+PRINTFORML %CALLNAME%的胸围大小恢复为【%PRINT_BUSTSIZE(ABL:初始值／胸围大小)%】（{ABL:初始值／胸围大小}）吗？
+CALL ASK_YN
+SIF RESULT
+	RETURN
+ABL:胸围大小 = ABL:初始值／胸围大小
+CALL PRINTL_WORD_COLOR,@"%CALLNAME%的胸围已恢复为原来的尺寸！","桃"
+
+;母乳容量一度リセット
+BASE:母乳容量 = 0
+MAXBASE:母乳容量 = 0
+BASE:母乳生产力 = 0
+MAXBASE:母乳生产力 = 0
+BASE:基础喷乳量 = 0
+MAXBASE:基础喷乳量 = 0
+
+;キャラメイク時のバストサイズ処理を呼ぶ
+CALL BUSTSIZE_TALENT_SET
+
+;改めて母乳容量計算
+CALL MILKTANK_CALC
+CALL PRINT_BUST_C(1,1,1)
+PRINTW
+ITEM:龙之珠 = 0
+
+
+
+
+
+

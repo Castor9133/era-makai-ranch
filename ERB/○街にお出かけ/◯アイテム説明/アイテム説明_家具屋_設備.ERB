@@ -1,0 +1,85 @@
+﻿
+;家具屋今のとこ1ページ
+@ITEM_SHOP_FURNITURE_DETAIL_DEVICE
+
+;アイテム名・価格
+PRINTFORML 　《 %ITEMNAME:SELECT_ITEM% 》%VALUE_DIGIT(ITEMPRICE:SELECT_ITEM)%G 
+SELECTCASE ITEMNAME:SELECT_ITEM
+CASE "手铐"
+	PRINTL ＜解锁＞
+	PRINTL 调教中：＜手铐屈脚拘束＞
+	PRINTL
+	PRINTL 一种戴在奴隶手上以剥夺其自由的束缚装置。
+	PRINTL 由于相当的重量，被束缚的手不得不放下，变得像跪坐一样的姿势。
+	PRINTL 结果就会变成臀部翘起的状态。
+	
+CASE "吊索链"
+	PRINTL ＜解锁＞
+	PRINTL 调教中：＜吊索拘束＞
+	PRINTL
+	PRINTL 一种挂在天花板上的链子末端配有手铐的拘束工具。
+	PRINTL 将手铐戴在奴隶手腕上，通过拉动链子使手臂抬起并悬挂。
+	PRINTL
+	PRINTL 调整链子的高度，使奴隶的脚尖勉强触地，既不会太过负担也不会过于自由，似乎正好适中。
+	
+CASE "调教用搾乳台"
+	PRINTL ＜解锁＞
+	PRINTL 调教中：＜搾乳台拘束＞
+	PRINTL
+	PRINTFORML 一种将颈部和双手固定在栅栏状的框架上，并突出强调%SAVESTR:标识／乳房%的拘束工具。
+	PRINTFORML 成为榨取%SAVESTR:标识／母乳%的牛奶机般适合的屈辱姿势。
+	
+CASE "十字架拘束台"
+	PRINTL ＜解锁＞
+	PRINTL 调教中：＜十字架拘束＞
+	PRINTL
+	PRINTL 将双臂水平展开，双脚齐平并在三个位置固定的十字架型拘束工具。
+	PRINTL 看起来像是某个仪式的祭品。
+	
+CASE "Ｘ字拘束台"
+	PRINTL ＜解锁＞
+	PRINTL 调教中：＜Ｘ字拘束＞
+	PRINTL
+	PRINTL 通过将四肢广泛张开并在4个位置固定，形成「Ｘ」形状的拘束工具。
+	PRINTL 这样一直转下去，内耳的三半规管就会失去功能，正好符合拷问的本来意义。
+	
+CASE "拘束床"
+	PRINTL ＜解锁＞
+	PRINTL 调教中：＜床上仰卧拘束＞＜床上俯卧拘束＞
+	PRINTL
+	PRINTL 一张床上有四个脚镣，上面有铁链，用来束缚奴隶的四肢。
+	PRINTL 作为床，辉夜小姐用了心思，应该是柔软舒适的，但遗憾的是对调教没有特别的意义。
+	
+CASE "吊索＋束缚带"
+	PRINTL ＜解锁＞
+	PRINTL 调教中：<束缚带拘束>　※＜束缚技术＞也必要。
+	PRINTL
+	PRINTL 从天花板悬挂的链子末端有手铐、脚铐，还带有可穿过身体和大腿的束缚带。
+	PRINTL 因为可以在高度上自由移动奴隶，所以大多数体位都可以做到。
+	PRINTL 安全通过坚固的束缚带得到了保障，如果有手柄的话，还能当作玩具使用，充满了期待感。
+	
+CASE "壁乳拘束台"
+	PRINTL ＜解锁＞
+	PRINTL 调教中：<下半身填壁乳拘束>
+	PRINTL
+	PRINTFORML 一种拘束工具，使奴隶的躯干和双臂完全固定，只有头部和%SAVESTR:标识／乳房%露出墙壁。
+	PRINTFORML 成为榨取%SAVESTR:标识／母乳%的牛奶机般适合的屈辱姿势。
+	PRINTL
+	PRINTFORML 因为下半身看不见的状态，%SAVESTR:标识／膣%和%SAVESTR:标识／肛门%的插入变得不能了。
+	PRINTL （对于触手，可以插入）
+	
+CASE "三角木马"
+	PRINTL ＜解锁＞
+	PRINTL 调教中：＜三角木马拘束＞
+	PRINTL
+	PRINTL 原本是用于拷问的、三角形状尖锐的基座。
+	PRINTFORML 跨坐在上面的奴隶的下体由于重力而卡在了基座上，给%SAVESTR:标识／阴蒂%和%SAVESTR:标识／膣%带来疼痛等刺激。
+	PRINTL 这本身并不是拘束器具，但会用绳子等把奴隶绑住以防止自行下来，所以视作拘束器具使用。
+	PRINTL 当然这不是用于拷问的，所以进行了设计以避免受伤。
+	PRINTL
+	PRINTFORML 被拘束时无法进行插入等动作，也无法对%SAVESTR:标识／阴蒂%或%SAVESTR:标识／膣%进行刺激。
+	;↓は蛇足かな？
+	;PRINTFORML 前傾姿勢気味に跨らせるので%SAVESTR:表記／アナル%への責めは可能。
+ENDSELECT
+
+

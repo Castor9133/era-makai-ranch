@@ -1,0 +1,173 @@
+﻿
+;崩壊時の素質消去
+@CAPITULATION_MIND_BREAK_DELETE_TALENT
+
+;さすがに地の文と分けるにはめんどい
+IF TALENT:自尊心高
+	TALENT:自尊心高 = 0
+	MARK:自尊心崩坏 = 1
+	PRINTFORML %CALLNAME%的【自尊心崩坏】了。
+ENDIF
+IF TALENT:高傲
+	TALENT:高傲 = 0
+	MARK:高傲消失 = 1
+	PRINTFORML %CALLNAME%失去了她的【高傲】。
+ENDIF
+IF TALENT:坚强
+	TALENT:坚强 = 0
+	MARK:坚强崩坏 = 1
+	PRINTFORML %CALLNAME%丧失了她的【坚强】。
+ENDIF
+IF TALENT:抗拒
+	TALENT:抗拒 = 0
+	MARK:抗拒消失 = 1
+	PRINTFORML %CALLNAME%的【抗拒】完全消失了。
+ENDIF
+IF TALENT:傲慢
+	TALENT:傲慢 = 0
+	MARK:傲慢消失 = 1
+	PRINTFORML %CALLNAME%的【傲慢】完全消失了。
+ENDIF
+IF TALENT:乐观
+	TALENT:乐观 = 0
+	MARK:乐观消失 = 1
+	PRINTFORML %CALLNAME%的【乐观】消失了。
+ENDIF
+IF TALENT:领袖魅力
+	TALENT:领袖魅力 = 0
+	MARK:领袖魅力崩坏 = 1
+	PRINTFORML %CALLNAME%丧失了她的【领袖魅力】
+ENDIF
+IF TALENT:正义感
+	TALENT:正义感 = 0
+	MARK:正义败北 = 1
+	PRINTFORML %CALLNAME%的【正义感】被凌辱殆尽。
+ENDIF
+IF TALENT:少女心
+	TALENT:少女心 = 0
+	MARK:凌辱少女心 = 1
+	PRINTFORML %CALLNAME%的【少女心】被凌辱殆尽。
+ENDIF
+IF TALENT:自制力
+	TALENT:自制力 = 0
+	MARK:自制力崩坏 = 1
+	PRINTFORML %CALLNAME%的【自制心】崩溃了
+ENDIF
+
+
+
+;心境変化の共通処理
+;ARGS→変化後の心境
+@MIND_CHANGE_CALC(ARGS)
+
+SELECTCASE ARGS
+CASE "反抗消除"
+	CSTR:陷落状态 = 拒绝
+	
+CASE "屈服"
+	CSTR:陷落状态 = 屈服
+	
+CASE "陷落"
+	CSTR:陷落状态 = 陷落
+	
+CASE "恋慕"
+	CSTR:陷落状态 = 恋慕
+
+CASE "隶属"
+	CSTR:陷落状态 = 隶属
+	
+CASE "崩坏"
+	;屈服していない場合屈服にする
+	SIF !＃陷落状态／屈服以上＃
+		CSTR:陷落状态 = 屈服
+	CFLAG:崩坏 = 1
+
+CASE "乳牛"
+	;陥落していない場合陥落にする
+	SIF !＃陷落状态／陷落以上＃
+		CSTR:陷落状态 = 陷落
+	CFLAG:乳牛 = 1
+ENDSELECT
+CALL DROP_OUT_MIND
+
+;屈服以上or崩壊なら無抵抗
+SIF ＃陷落状态／屈服以上＃ || CFLAG:崩坏
+	CFLAG:无抵抗 = 1
+
+;区間実行回数をリセット
+;EXP:区間実行回数／酪農→450
+VARSET EXP,0,450,500
+
+;陥落して陥落日が入ってないなら記録
+SIF ＃陷落状态／陷落以上＃ && !CFLAG:陷落日
+	CFLAG:陷落日 = DAY
+SIF !LINEISEMPTY()
+	PRINTL
+
+
+
+;恋慕・隷属・乳牛堕ちでマイナス感情が0
+@DROP_OUT_MIND
+
+;恋慕・隷属・乳牛堕ちでなければおわり
+SIF !＃陷落状态／恋慕以上＃ && !CFLAG:乳牛
+	RETURN
+BASE:抵抗心 = 0
+BASE:尊严 = 0
+BASE:厌恶感 = 0
+BASE:理性 = 0
+
+
+
+;苦痛・恐怖刻印の消去
+@DELETE_BAD_MARK
+
+IF MARK:痛苦刻印
+	MARK:痛苦刻印 = 0
+	PRINTFORML %CALLNAME%的【痛苦刻印】消失了。
+ENDIF
+IF MARK:恐怖刻印
+	MARK:恐怖刻印 = 0
+	PRINTFORML %CALLNAME%的【恐怖刻印】消失了。
+ENDIF
+
+
+
+;処女結界を自ら無くす
+;調教終了後が確定しているのでここで奪うか選択肢出すとか
+@DELETE_VARGIN_BARRIER
+
+SIF !TALENT:处女结界
+	RETURN
+TALENT:处女结界 = 0
+MARK:处女结界解除 = 1
+CALL KOJO_PRINT("事件","处女结界解除","前")
+CALL DELETE_VARGIN_BARRIER_MESSAGE_1
+CALL KOJO_PRINT("事件","处女结界解除","后")
+PRINTFORML %CALLNAME%希望把处女献给%CALLNAME:0%…
+PRINTFORMLC [ 0] 插入%SAVESTR:标识／阴茎%
+PRINTLC [ 1] 今天还是算了
+BINPUT
+SIF RESULT
+	RETURN
+PLAYER = MASTER
+VARSET SOURCE
+CALL COM30
+
+;調教外判定にする前に装備整理を通す
+CALL TEQUIP_ADJUST
+CALL PRINT_IMAGE("调教执行")
+TFLAG:调教中 = 0
+TFLAG:日程外Ｈ = 1
+V_PENIS = %CALLNAME:0%
+CALL LOST_VARGIN
+CALL LOST_VARGIN_PLAYER
+PRINTW
+SELECTCOM = 30
+CALL KOJO_PRINT("调教命令",TRAINNAME:SELECTCOM,"执行")
+CALL SOURCE_CHECK
+
+;射精するまでピストン
+CALL EJACULATION_PISTON
+
+

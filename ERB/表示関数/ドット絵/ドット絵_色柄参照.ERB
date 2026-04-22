@@ -1,0 +1,112 @@
+﻿
+;衣服の色柄
+;ARGS→装備
+@PRINT_PORTRAIT_CLOTHE_COLOR(ARGS)
+#FUNCTIONS
+#DIMS COLOR
+
+SELECTCASE ARGS
+CASE "衣服"
+	COLOR = %CSTR:(EQUIP:装备中ID／衣服)%
+CASE "内衣上装"
+	COLOR = %CSTR:(EQUIP:装备中ID／内衣上装)%
+CASE "内衣下装"
+	COLOR = %CSTR:(EQUIP:装备中ID／内衣下装)%
+CASE "头装备"
+	COLOR = %CSTR:(EQUIP:装备中ID／头)%
+ENDSELECT
+
+;色柄が含まれていればそれを返す
+IF STRCOUNT(COLOR,"黑")
+	RETURNF "黑色"
+
+;「紅白」あるかもなので白より上
+ELSEIF STRCOUNT(COLOR,"红") || STRCOUNT(COLOR,"红")
+	RETURNF "红色"
+ELSEIF STRCOUNT(COLOR,"白")
+	RETURNF "白色"
+
+;「萌黄」があるので黄色より上
+ELSEIF STRCOUNT(COLOR,"萌黄") || STRCOUNT(COLOR,"绿")
+	RETURNF "绿色"
+
+;「紫紺」対応で青より上
+ELSEIF STRCOUNT(COLOR,"紫")
+	RETURNF "紫色"
+ELSEIF STRCOUNT(COLOR,"蓝") || STRCOUNT(COLOR,"绀")
+	RETURNF "青色"
+ELSEIF STRCOUNT(COLOR,"黄")
+	RETURNF "黄色的"
+ELSEIF STRCOUNT(COLOR,"桃") || STRCOUNT(COLOR,"粉红色")
+	RETURNF "粉红色的"
+ELSEIF STRCOUNT(COLOR,"琥珀") || STRCOUNT(COLOR,"橙")
+	RETURNF "橙色的"
+ELSEIF STRCOUNT(COLOR,"水")
+	RETURNF "水色的"
+ENDIF
+
+;それ以外の場合衣服によりデフォルトカラー
+;軽装時代用いらないっぽい？
+SELECTCASE ＃穿着衣服／名称＃
+CASE "工作服","连体背带裤","和服"
+	RETURNF "绿色"
+CASE "白衣","围裙装","护士服","罩衣"
+	RETURNF "白色"
+
+;スク水衣服ではないけど来るようになるかもなので
+CASE "军服","忍装束","法衣","哥特萝莉装","兔女郎装","淫乱修女服","淫乱女仆装","学校游泳衣"
+	RETURNF "黑色"
+CASE "阿尔卑斯少女连衣裙","旗袍","淫乱旗袍","淫乱巫女服"
+	RETURNF "红色"
+CASE "越南长袄","水手服"
+	RETURNF "青色"
+CASE "淫乱礼服"
+	RETURNF "粉红色的"
+
+;他はデフォにする
+CASEELSE
+	RETURNF ""
+ENDSELECT
+
+
+
+;猫耳カチューシャの色
+@PRINT_PORTRAIT_CATEAR
+#FUNCTIONS
+
+SELECTCASE RESULTS
+CASE "黑色"
+	RETURNF "黑色头发"
+CASE "白色"
+	RETURNF "白色头发"
+CASE "红色"
+	RETURNF "红色头发"
+CASE "青色"
+	RETURNF "青色头发"
+CASE "黄色的"
+	;金髪で代用
+	RETURNF "金色头发"
+CASE "粉红色的"
+	RETURNF "桃色头发"
+CASE "绿色"
+	RETURNF "绿色头发"
+CASE "紫色"
+	RETURNF "紫色头发"
+CASE "橙色的"
+	RETURNF "橙色头发"
+CASE "水色的"
+	RETURNF "天蓝色头发"
+CASE "米色的"
+	;栗毛で代用
+	RETURNF "栗色头发"
+CASE "金色"
+	RETURNF "金色头发"
+CASE "银色"
+	RETURNF "银色头发"
+CASEELSE
+	RETURNF CSTR:颜色类别／发色
+ENDSELECT
+
+
+
+

@@ -1,0 +1,85 @@
+﻿
+;選択肢番号→建築物名の参照
+;ARG→INPUT
+@TOWN_ESTATE_BUILDING_REF(ARG)
+
+SELECTCASE ARG
+CASE 10
+	RESULTS = 牛舍建筑
+CASE 12
+	RESULTS = 事务所扩建
+CASE 13
+	RESULTS = 家庭浴池
+CASE 14
+	RESULTS = 大浴场
+CASE 15
+	RESULTS = 宠物小屋
+CASE 16
+	RESULTS = 奴隶寮
+CASE 17
+	RESULTS = 奴隶寮扩建
+CASE 18
+	RESULTS = 系统化厨房
+ENDSELECT
+
+
+
+;店員口上
+;ARG→INPUT
+;ARGS→選択建築物
+@TOWN_ESTATE_BUY_MESSAGE(ARG,ARGS)
+
+;INPUT_NUMを持ってきて疑似定数を使うことで日数表記を楽にした
+SELECTCASE ARGS
+CASE "牛舍建筑"
+	PRINTFORML 福多　「如果要建造新的牛舍，包括所有相关费用共计 %VALUE_DIGIT(ITEMPRICE:牛舍)%G是必需的」
+		;PRINTFORML 「建築には【 {ESTATE_DAY:ARG}日】かかるみたいだね」
+	PRINTL 「提出这个依赖吗？」
+	
+CASE "牛舍扩建"
+	PRINTL 福多　「扩建这养牛场？扩建一次可以加家畜上限10只。」
+		;PRINTFORML 「工事には【{ESTATE_DAY:ARG}日】かかるみたいだね」
+	PRINTFORML 「扩建价格 %VALUE_DIGIT(ESTATE_COWSHED_EXTENSION)%G，不过这样可以吗？」
+	
+CASE "事务所扩建"
+	PRINTFORML 福多　「如果要扩建事务所的话，包括很多 %VALUE_DIGIT(ITEMPRICE:事务所扩建)%G是必需的」
+		;PRINTFORML 「工事には 【{ESTATE_DAY:ARG}日】かかるみたいだね」
+	PRINTL 「如果扩建的话，分配给工作奴隶的房间大概会增加4个。」
+	PRINTL 「以这个内容委托？」
+	
+CASE "家庭浴池"
+	PRINTL 福多　「想要宽敞的浴室吗？没关系，这些也是我承包的~」
+		;PRINTFORML 「この間取りだと【{ESTATE_DAY:ARG}日】あれば交換できちゃいそうだね」
+	PRINTFORML 「改装费用 %VALUE_DIGIT(ITEMPRICE:家庭浴池)%G，不过这样可以吗？」
+	
+CASE "大浴场"
+	PRINTL 福多　「诶~奴隶用的大浴场！福利啊~」
+		;PRINTFORML 「新しくここに建てるとなると…【{ESTATE_DAY:ARG}日】必要かな」
+	PRINTFORML 「%VALUE_DIGIT(ITEMPRICE:大浴场)%G要花，但要不要果断地建造呢？」
+	
+CASE "奴隶寮"
+	PRINTL 福多　「是奴隶用的宿舍吗？确实多了起来比较方便呢。」
+		;PRINTFORML 「建築ってなると…【{ESTATE_DAY:ARG}日】必要かな」
+	PRINTFORML 「费用是%VALUE_DIGIT(ITEMPRICE:奴隶寮)%G吧」
+	
+CASE "奴隶寮扩建"
+	PRINTL 福多　「哎呀，是宿舍房间不够用的感觉吗？」
+		;PRINTFORML 「増築なら【{ESTATE_DAY:ARG}日】で済みそうだね」
+	PRINTFORML 「费用稍微低一点，%VALUE_DIGIT(ITEMPRICE:奴隶寮扩建)%G吧」
+	
+CASE "系统化厨房"
+	PRINTL 福多　「要扩大厨房呢～，家庭成员变多了，或许是必要的呢。」
+	PRINTL 「资料就在这里…啊最近很时髦地叫『系统化厨房』啊。」
+		;PRINTFORML 「【{ESTATE_DAY:ARG}日】で改装ができるみたいだよ」
+	PRINTFORML 「改装费用 %VALUE_DIGIT(ITEMPRICE:系统化厨房)%G，要不要请求改装呢？」
+	
+CASE "宠物小屋"
+	PRINTL 福多　「想增加宠物小屋吗？是想新养点什么的感觉吗？」
+		;PRINTFORML 「【{ESTATE_DAY:ARG}日】あれば作れそうだよ」
+	PRINTFORML 「费用似乎是%VALUE_DIGIT(ITEMPRICE:宠物小屋)%G」
+ENDSELECT
+
+;イベント時日数増加フラグがあれば所要日数を出す
+;PRINTFORML 所要日数： {ESTATE_DAY:ARG}日
+
+

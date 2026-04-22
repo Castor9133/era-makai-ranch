@@ -1,0 +1,166 @@
+﻿
+;おっぱい吸わせてと頼んだ時の反応
+@BREAST_FEEDING_MESSAGE_BEFORE
+
+IF CFLAG:崩坏
+	PRINTFORML %CALLNAME%的眼神空洞…
+	
+	;先に露出フラグ判定通したのでＮ露出かどうか判断でOK
+	SIF TFLAG:Ｎ露出
+		PRINTFORML %CALLNAME%的%SLANG_N()%被完全暴露…
+	
+ELSEIF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／隶属＃
+	IF TFLAG:Ｎ露出
+		PRINTFORML %CALLNAME%以充满情欲的表情露出了%SLANG_B()%…
+	ELSE
+		PRINTFORML %CALLNAME%以充满情欲的表情开始脱衣…
+	ENDIF
+ELSEIF ＃陷落状态／恋慕以上＃
+	IF TFLAG:Ｎ露出
+		PRINTFORML %CALLNAME%脸颊泛红，带着微笑露出了%SLANG_B()%…
+	ELSE
+		PRINTFORML %CALLNAME%脸颊泛红，似乎已经顿悟开始脱衣…
+	ENDIF
+ELSEIF ＃陷落状态／陷落以上＃
+	IF TFLAG:Ｎ露出
+		PRINTFORML %CALLNAME%脸颊泛红，似乎已经顿悟露出了%SLANG_B()%…
+	ELSE
+		PRINTFORML %CALLNAME%脸颊泛红，似乎已经顿悟开始脱衣…
+	ENDIF
+ELSEIF ＃陷落状态／屈服以上＃
+	IF TFLAG:Ｎ露出
+		PRINTFORML %CALLNAME%似乎不情愿，但终究无法抵抗，顿时伸出了%SLANG_B()%…
+	ELSE
+		PRINTFORML %CALLNAME%似乎不情愿，但终究无法抵抗，开始脱衣…
+	ENDIF
+ELSE
+	IF TFLAG:Ｎ露出
+		PRINTFORML %CALLNAME%试图抵抗，用手臂遮挡暴露出的%SLANG_N()%…
+		PRINTFORML %CALLNAME%被压制住，绑起来，%SLANG_N()%被完全暴露…
+	ELSE
+		PRINTFORML %CALLNAME%试图抵抗，用手臂遮挡%SLANG_B()%…
+		PRINTFORML %CALLNAME%被压制住，绑起来，开始脱衣…
+	ENDIF
+ENDIF
+
+
+
+;おっぱい吸い開始
+@BREAST_FEEDING_MESSAGE_ACTION
+
+IF CFLAG:崩坏
+	PRINTFORM %CALLNAME%完全没有抵抗，仿佛是毫无自主行动的状态…
+
+ELSEIF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／隶属＃
+	SETCOLOR 0xFF70FF
+	IF MARK:母乳体质
+		PRINTFORM %CALLNAME%看起来急不可耐地呼吸急促，仿佛在等待%CALLNAME:0%亲自吸食%SAVESTR:标识／母乳%…
+	ELSE
+		PRINTFORM %CALLNAME%看起来急不可耐地呼吸急促，仿佛在等待%CALLNAME:0%刺激%SAVESTR:标识／乳房%…
+	ENDIF
+	CALL HEARTCB(0xD02830)
+
+ELSEIF ＃陷落状态／恋慕以上＃
+	SETCOLOR 0xFF70FF
+	IF MARK:母乳体质
+		PRINTFORM %CALLNAME%迫不及待地等待着%CALLNAME:0%喝下%SAVESTR:标识／母乳%…
+	ELSE
+		PRINTFORM %CALLNAME%迫不及待地等待着%CALLNAME:0%刺激%SAVESTR:标识／乳房%…
+	ENDIF
+	CALL HEARTCB(0xD02830)
+
+ELSEIF ＃陷落状态／陷落以上＃
+	PRINTFORM %CALLNAME%看起来并不怎么抗拒…
+
+ELSEIF ＃陷落状态／屈服以上＃
+	PRINTFORM %CALLNAME%脸上带着不情愿的表情，但看不出有任何抵抗意愿…
+
+ELSE
+	PRINTFORM %CALLNAME%脸涨得通红，对%CALLNAME:0%大声责骂着…
+ENDIF
+PRINTL
+
+IF BASE:母乳容量 >= 5000 && ABL:胸围大小 >= BUSTSIZE_巨乳
+	SELECTCASE RAND:5
+	CASE 0
+		PRINTFORM 仿佛希望能吸食%SLANG_MILK()%而摇摆不定
+	CASE 1
+		PRINTFORM 充满了丰富的滋味%SLANG_MILK()%
+	CASE 2
+		PRINTFORM 仿佛%SLANG_MILK()%马上就要溢出来
+	CASEELSE
+		SIF BASE:好感度 >= BASE_FIRST_MAX
+			PRINTFORM 为了%CALLNAME:0%
+		PRINTFORM 储备了丰富的%SLANG_MILK()%
+	ENDSELECT
+
+ELSEIF MARK:母乳体质
+	SELECTCASE RAND:3
+	CASE 0
+		PRINTFORM 仿佛弥漫着%SLANG_MILK()%的雌性气息
+	CASE 1
+		PRINTFORM 轻微地散发着%SLANG_MILK()%的香气
+	CASEELSE
+		PRINTFORM %SLANG_MILK()%开始从尖端滴下了
+	ENDSELECT
+ENDIF
+PRINTFORM %CALLNAME%的%SLANG_B()%
+SELECTCASE RAND:5
+CASE 0
+	PRINT 亲吻着吸吮了一会…
+CASE 1
+	PRINT 嘴巴含住了一段时间…
+CASE 2
+	PRINT 一边吸着一边揉捏…
+CASEELSE
+	PRINT 吸在上面…
+ENDSELECT
+CALL HEARTCB(0xD02830)
+PRINTW
+PRINTL
+RESETCOLOR
+
+
+
+;おっぱい吸い終了
+@BREAST_FEEDING_MESSAGE_AFTER
+
+IF CFLAG:乳牛
+	IF BASE:母乳容量
+		PRINTFORM %CALLNAME%的%SLANG_B()%不断地溢出仿佛%SLANG_MILK()%，是在希望被更多地吸吮的…
+	ELSE
+		PRINTFORM %CALLNAME%的%SLANG_B()%不停地晃动，仿佛是在希望被更多地吸吮的
+	ENDIF
+	CALL HEARTCB(0xD02830)
+	PRINTL
+ELSEIF ＃陷落状态／隶属＃ || CFLAG:洗脑
+	IF BASE:母乳容量
+		PRINTFORM %CALLNAME%露出一张幸福而懒散的表情%SLANG_MILK()%四溢…
+	ELSE
+		PRINTFORM %CALLNAME%露出一张幸福而懒散的表情%SAVESTR:标识／乳房%上下波动…
+	ENDIF
+	CALL HEARTCB(0xD02830)
+	PRINTL
+ELSEIF CFLAG:崩坏
+	IF EX:总绝顶
+		PRINTFORML %CALLNAME%一边在吸奶中绝顶一边流泪…
+	ELSE
+		PRINTFORML %CALLNAME%在流泪…
+	ENDIF
+ELSEIF ＃陷落状态／恋慕以上＃
+	PRINTFORML %CALLNAME%幸福地微笑着…
+ELSE
+	IF BASE:母乳容量
+		PRINTFORML %CALLNAME%试图调整呼吸，但%SLANG_B()%依然会溢出%SLANG_MILK()%…
+	ELSE
+		IF ABL:胸围大小 < BUSTSIZE_巨乳
+			PRINTFORML %CALLNAME%遮住%SLANG_B()%调理呼吸…
+		ELSE
+			PRINTFORML %CALLNAME%撑起%SLANG_B()%调整呼吸…
+		ENDIF
+	ENDIF
+ENDIF
+PRINTW
+
+
+

@@ -1,0 +1,41 @@
+﻿
+;ちんぽ汚れメッセージ
+@PENIS_STAIN_MESSAGE
+
+;ペニスに汚れがあると不潔など増加したり
+;射精後
+SIF GETBIT(STAIN:0:阴茎,6)
+	PRINTFORM %SLANG_SEMEN()%的污垢
+
+;尻挿入後
+SIF GETBIT(STAIN:0:阴茎,2)
+	PRINTFORM %SLANG_A()%插入后的
+
+
+
+;恋慕以上で胸に母乳汚れないなら母乳パイズリ
+@MILK_PAIZURI_SELF_MESSAGE
+
+PRINTFORM %CALLNAME%把自己的%SLANG_MILK()%
+IF ABL:胸围大小 >= BUSTSIZE_普乳
+	PRINTFORM 涂在%SAVESTR:标识／乳房%的乳沟上，包住了%CALLNAME:0%的%SLANG_PENIS()%…
+ELSE
+	PRINTFORM 涂在%SAVESTR:标识／乳房%上，开始摩擦%CALLNAME:0%的%SLANG_PENIS()%…
+ENDIF
+PRINTL
+
+
+
+;あなた主導母乳パイズリ
+@MILK_PAIZURI_FORCE_MESSAGE
+
+PRINTFORM %CALLNAME:0%将%CALLNAME%的%SLANG_MILK()%洒在%SLANG_PENIS()%上，作为润滑液用在%SLANG_B()%上面
+IF ABL:胸围大小 >= BUSTSIZE_普乳
+	PRINT 腰部撞击着…
+ELSE
+	PRINTFORM 摩擦着%SLANG_PENIS()%…
+ENDIF
+PRINTL
+
+
+

@@ -1,0 +1,93 @@
+﻿
+; 专用口上示例（真的很空）
+; 用此形式可「沿用泛用口上，仅把想专有的段落写在本文件」
+; 若本侧已写入 MESSAGE_BOX，则跳过泛用口上直接进入显示
+
+; ======================================
+; 欢迎众口上作者投稿，故保留作者栏与许可证说明。
+
+; 专用口上写法示例
+; 对应 识别名_原作：斯蕾_era魔界牧场
+;口上作者：polt
+;本口上内容遵循 CC BY-NC（非商用可自由改造）
+;（creativecommons.org/licenses/by-nc/4.0/deed.ja）
+
+;加笔者：
+;有加笔请在此注明。
+; ======================================
+
+; 例：识别名与原作如上；日后会补无口口上，你可先写
+; 口上文件只写要显示的台词（变量与流程请写在专用事件里）
+
+; ARGS:0 场景；ARGS:1/2 用于更细分
+@EX_KOJO_斯蕾_era魔界牧场(ARGS:0,ARGS:1,ARGS:2,ARGS:3)
+
+SELECTCASE ARGS:0
+CASE "例文"
+	CALL MESSAGE_BOX,@"「[斯蕾_era魔界牧场] 专用口上已启用，%MASTER_CALL()%」\n「基地侧若搭配 [通用无口口上1] 等泛用即可混用。」"
+	
+CASE "调教命令"
+	SELECTCASE ARGS:1
+	CASE "揉胸","育乳按摩","浓厚母乳按摩","乳罐按摩"
+		IF !EXP:(SELECTCOM+1000)
+			CALL MESSAGE_BOX,@"「啊… %MASTER_CALL()%…♥ 抚摸%SELF_CALL()%的胸部，可以吗…？♥」"
+		ELSE
+			IF ABL:胸围大小 >= BUSTSIZE_丰乳
+				CALL MESSAGE_BOX,@"「嘻嘻… 多亏了%MASTER_CALL()%，胸部变得这么大…♥」"
+			ELSE
+				CALL MESSAGE_BOX,@"「%MASTER_CALL()%，难道你不喜欢更大一点的吗…？」\n「嗯，如果%MASTER_CALL()%喜欢%SELF_CALL()%的胸部，那就好…♥」"
+			ENDIF
+		ENDIF
+		
+		; 例：仅在调教命令→揉胸时走本专用分支
+		; 返回上层时根据 MESSAGE 箱是否有内容决定是否再调泛用
+		; 有内容则只从本处候选抽取；泛用原文不会自动合并进来
+	ENDSELECT
+
+CASE "访问"
+	SELECTCASE ARGS:1
+	CASE "入口"
+		CALL MESSAGE_BOX,@"「%MASTER_CALL()%，新的工作吗？」"
+		CALL MESSAGE_BOX,@"「随便说，%MASTER_CALL()%」"
+	
+	ENDSELECT
+
+; 分支名带 EX 便于看出自专用事件
+; 此处最像「专用口上」扩展入口
+CASE "恋慕化EX"
+	; 带 EX 的分支仅由专用事件调用，编号可自定
+	SELECTCASE ARGS:1
+	CASE "1"
+		CALL MESSAGE_BOX,@"「%MASTER_CALL()%…　那个，我能向你说一件事吗…？」"
+	CASE "2"
+		CALL MESSAGE_BOX,@"「一直…没能鼓起勇气… 　有一位成熟、美丽的人来到牧场…」"
+	CASE "3"
+		IF ABL:2:胸围大小 >= BUSTSIZE_巨乳 && ABL:1:胸围大小 < BUSTSIZE_巨乳
+			CALL MESSAGE_BOX,@"「胸部也很大…可能会被这个人…将%MASTER_CALL()%夺走吧，我觉得…　必须鼓起勇气才行」"
+		ELSE
+			CALL MESSAGE_BOX,@"「可能会被这个人…将%MASTER_CALL()%夺走吧，我觉得…　必须鼓起勇气才行」"
+		ENDIF
+	CASE "4"
+		CALL MESSAGE_BOX,@"「%MASTER_CALL()%…　我…%SELF_CALL()%，喜欢%MASTER_CALL()%」"
+	CASE "5"
+		CALL MESSAGE_BOX,@"「来到这个世界后… 当我决定在牧场工作时，真是感到吃惊不小…」"
+	CASE "6"
+		CALL MESSAGE_BOX,@"「对于毫无目的的%SELF_CALL()%，%MASTER_CALL()%帮了我很多，我感激不尽」"
+	CASE "7"
+		CALL MESSAGE_BOX,@"「真的非常感激。谢谢你…%MASTER_CALL()%」"
+	CASE "8"
+		CALL MESSAGE_BOX,@"「%SELF_CALL()%，我喜欢%MASTER_CALL()%。是的，我喜欢作为一个『男人』的你」"
+	CASE "接吻1"
+		CALL MESSAGE_BOX,@"「…谢谢，%MASTER_CALL()%…♥」"
+	CASE "摸头1"
+		CALL MESSAGE_BOX,@"「嗯…　嗯嗯…♥」"
+	CASE "摸头2"
+		CALL MESSAGE_BOX,@"「%MASTER_CALL()%给我抚摸的感觉…喜欢…♥」"
+	CASE "摸头3"
+		CALL MESSAGE_BOX,@"「嗯…虽然并不讨厌…但是…那个…」"
+	CASE "9"
+		CALL MESSAGE_BOX,@"「%SELF_CALL()%…想请你教我很多关于男人和女人之间的事情…♥」"
+	ENDSELECT
+ENDSELECT
+
+

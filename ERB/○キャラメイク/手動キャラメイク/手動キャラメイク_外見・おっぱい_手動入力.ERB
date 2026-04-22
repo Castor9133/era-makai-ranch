@@ -1,0 +1,232 @@
+﻿
+;外見・おっぱいの変更手動入力
+;ARGS→CHANGE_STATE
+@SELF_CHARA_MAKE_APPEARAINCE_INPUT_MANUAL(ARGS)
+
+SELECTCASE ARGS
+CASE "身高"
+	PRINTL 请输入数字高度。（单位：mm）
+	INPUT
+	IF RESULT >= 0
+		CFLAG:身高 = RESULT
+		CALL HEIGHT_CSTR_CALC(1)
+	ENDIF
+	
+CASE "体型"
+	STR_REF = 50
+	STR_MAX = 50
+	
+	;共通化
+	CALL CHANGE_STR_LINEUP("体型")
+	
+	;RESULTSが空欄以外で入力
+	SIF RESULTS != ""
+		CSTR:体型 = %RESULTS%
+	
+CASE "肤色"
+	STR_REF = 100
+	STR_MAX = 50
+	CALL CHANGE_STR_LINEUP("肤色")
+	SIF RESULTS != ""
+		CSTR:肤色 = %RESULTS%
+	CALL CATEGORY_SKIN_COLOR
+	
+CASE "发色"
+	STR_REF = 200
+	STR_MAX = 50
+	CALL CHANGE_STR_LINEUP("发色")
+	SIF RESULTS != ""
+		CSTR:发色 = %RESULTS%
+	
+	;共通でやってしまって大丈夫そう
+	CALL AUTOSET_HAIR_COLOR_CODE
+	CALL CATEGORY_HAIR_COLOR
+
+CASE "颜色编码／发"
+	CALL EDIT_COLOR_CODE(CFLAG:颜色编码／发,1)
+	SIF RESULT
+		CFLAG:颜色编码／发 = RESULT
+
+CASE "头发特征"
+	STR_REF = 300
+	STR_MAX = 50
+	CALL CHANGE_STR_LINEUP("头发特征",1)
+	
+	;空欄有効→キャンセルならそのまま
+	SIF !RESULT
+		CSTR:头发特征 = %RESULTS%
+	CALL CATEGORY_HAIR_FEATURE
+	
+CASE "发型"
+	STR_REF = 500
+	STR_MAX = 100
+	CALL CHANGE_STR_LINEUP("发型")
+	SIF RESULTS != ""
+		CSTR:发型 = %RESULTS%
+	CALL CATEGORY_HAIR_STYLE
+
+CASE "外表年龄"
+	PRINTL 请输入外表年龄。（0以上）
+	INPUT
+	SIF RESULT >= 0
+		CFLAG:外表年龄 = RESULT
+	
+CASE "阴毛"
+	STR_REF = 6850
+	STR_MAX = 10
+	CALL CHANGE_STR_LINEUP("阴毛的密度")
+	SIF RESULTS != ""
+		CSTR:阴毛 = %RESULTS%
+	
+CASE "右瞳色"
+	STR_REF = 150
+	STR_MAX = 50
+	CALL CHANGE_STR_LINEUP("右瞳色")
+	SIF RESULTS != ""
+		CSTR:右瞳色 = %RESULTS%
+	CALL CATEGORY_EYE_COLOR
+	CALL AUTOSET_EYE_COLOR_CODE_RIGHT
+
+CASE "颜色编码／右目"
+	CALL EDIT_COLOR_CODE(CFLAG:颜色编码／右目,1)
+	SIF RESULT
+		CFLAG:颜色编码／右目 = RESULT
+	
+CASE "左瞳色"
+	STR_REF = 150
+	STR_MAX = 50
+	CALL CHANGE_STR_LINEUP("左瞳色",1)
+	SIF !RESULT
+		CSTR:左瞳色 = %RESULTS%
+	CALL CATEGORY_EYE_COLOR
+	CALL AUTOSET_EYE_COLOR_CODE_LEFT
+
+CASE "颜色编码／左目"
+	;左目の色が空欄だとキャンセル
+	SIF CSTR:左瞳色 == ""
+		RETURN
+	CALL EDIT_COLOR_CODE(CFLAG:颜色编码／左目,1)
+	SIF RESULT
+		CFLAG:颜色编码／左目 = RESULT
+
+CASE "瞳孔形状"
+	STR_REF = 800
+	STR_MAX = 50
+	CALL CHANGE_STR_LINEUP("瞳孔形状",1)
+	SIF !RESULT
+		CSTR:瞳孔形状 = %RESULTS%
+
+CASE "眼睛特征"
+	STR_REF = 2000
+	STR_MAX = 50
+	CALL CHANGE_STR_LINEUP("眼睛特征",1)
+	SIF !RESULT
+		CSTR:眼睛特征 = %RESULTS%
+
+
+;2ページ目
+CASE "胸围大小"
+	CALL INPUT_BUST
+	IF RESULT >= 0
+		ABL:胸围大小 = RESULT
+		CALL BUSTSIZE_TALENT_SET
+		SIF ABL:胸围大小 < BUSTSIZE_巨乳
+			TALENT:极上乳压 = 0
+	ENDIF
+
+CASE "乳房弹性"
+	STR_REF = 1350
+	STR_MAX = 50
+	CALL CHANGE_STR_LINEUP,@"%SAVESTR:标识／乳房%的弾力"
+	SIF RESULTS != ""
+		CSTR:乳房弹性 = %RESULTS%
+
+CASE "乳头颜色"
+	;別関数
+	CALL SELECT_NIPPLE_COLOR
+
+CASE "颜色编码／乳头"
+	CALL EDIT_COLOR_CODE(CFLAG:颜色编码／乳头,1)
+	SIF RESULT
+		CFLAG:颜色编码／乳头 = RESULT
+	
+CASE "Ｂ敏感度"
+	PRINTFORML 请输入Ｂ（%SAVESTR:标识／乳房%）的敏感度。（10～{SENSITIVE_MAX}，四舍五入为10个单位）
+	PRINTL 如果Ｎ敏感度小于Ｂ敏感度，则增加到Ｂ敏感度的值。
+	INPUT
+	IF RESULT >= 10 && RESULT < 1000
+		ABL:Ｂ敏感度 = RESULT
+		ABL:Ｂ敏感度 -= (ABL:Ｂ敏感度 %10)
+		CALL NIPPLE_SENSITIVE_FIX
+	ENDIF
+	
+CASE "Ｎ敏感度"
+	PRINTFORML 请输入Ｎ（乳头）的敏感度。（10～{SENSITIVE_MAX}，四舍五入为10个单位）
+	PRINTL 如果Ｎ敏感度小于Ｂ敏感度，则增加到Ｂ敏感度的值。
+	INPUT
+	IF RESULT >= 10 && RESULT < 1000
+		ABL:Ｎ敏感度 = RESULT
+		ABL:Ｎ敏感度 -= (ABL:Ｎ敏感度 %10)
+		CALL NIPPLE_SENSITIVE_FIX
+	ENDIF
+
+CASE "陷没乳头"
+	INVERTBIT TALENT:陷没乳头,0
+
+CASE "母乳体质"
+	INVERTBIT MARK:母乳体质,0
+	IF MARK:母乳体质
+		IF TALENT:处女
+			EXP:出产 = 0
+			TALENT:先天母乳体质 = 1
+		ELSE
+			PRINTL 选择来自[出产经验]还是[先天母乳体质]。
+			PRINTLC [ 0] 有出产经验
+			PRINTLC [ 1] 先天母乳体质
+			INPUT
+			IF !RESULT
+				EXP:出产 = 1
+				TALENT:先天母乳体质 = 0
+			ELSE
+				EXP:出产 = 0
+				TALENT:先天母乳体质 = 1
+			ENDIF
+		ENDIF
+	ELSE
+		EXP:出产 = 0
+		TALENT:先天母乳体质 = 0
+	ENDIF
+
+CASE "母乳容量修正值"
+	PRINTL 请输入母乳容量的修正值。（1～999，默认100%）
+	INPUT
+	SIF RESULT > 0 && RESULT < 1000
+		CFLAG:母乳容量修正值 = RESULT
+
+CASE "母乳价格奖励"
+	PRINTL 请输入母乳出售价格的奖金值。（0～999）
+	INPUT
+	SIF RESULT >= 0 && RESULT < 1000
+		CFLAG:母乳价格奖励 = RESULT
+
+CASE "极上乳压"
+	INVERTBIT TALENT:极上乳压,0
+
+CASE "胸围大小+1"
+	SIF ABL:胸围大小 >= BUSTSIZE_超乳 -1
+		RETURN
+	ABL:胸围大小 ++
+	CALL BUSTSIZE_TALENT_SET
+	SIF ABL:胸围大小 < BUSTSIZE_巨乳
+		TALENT:极上乳压 = 0
+
+CASE "胸围大小-1"
+	SIF !ABL:胸围大小
+		RETURN
+	ABL:胸围大小 --
+	CALL BUSTSIZE_TALENT_SET
+	SIF ABL:胸围大小 < BUSTSIZE_巨乳
+		TALENT:极上乳压 = 0
+ENDSELECT
+
+

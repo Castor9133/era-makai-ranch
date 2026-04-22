@@ -1,0 +1,79 @@
+﻿
+;奴隷候補の種族設定共通部
+;ARG→種族番号
+@PRINT_SLAVE_CONFIG_FOOTER(ARG)
+
+;FLAG:外見反映率／人間→2700
+;FLAG:体質反映率／人間→2730
+;FLAG:性格反映率／人間→2760
+FLAG_REF:0 = 2700
+FLAG_REF:1 = 2730
+FLAG_REF:2 = 2760
+DRAWLINE
+PRINTFORMLC [70] 外表反映率：{FLAG:(FLAG_REF:0 +ARG)}\%
+PRINTFORMLC [71] 体质反映率：{FLAG:(FLAG_REF:1 +ARG)}\%
+PRINTFORMLC [72] 性格反映率：{FLAG:(FLAG_REF:2 +ARG)}\%
+PRINTL
+PRINTFORM [82] 跳过ON／OFF项目的详细信息并反转
+CALL PRINT_ONOFF(FLAG:跳过ON／OFF项目的详细信息并反转,1)
+
+IF !FLAG:可配置的候选奴隶
+	IF ITEM:奴隶候补设定变更票
+		PRINTLC [90] ＜奴隶候补设定变更票＞使用
+	ELSE
+		CALL PRINTLC_WORD_COLOR("　＜奴隶候补设定变更票据＞无","灰")
+	ENDIF
+ELSE
+	PRINTLC [98] 回复默认值
+ENDIF
+PRINTLC 　
+PRINTLC [99] 完成
+PRINTL
+BINPUT
+PRINTL
+INPUT_NUM = RESULT
+
+;90のときだけ設定可能フラグのON判定する
+IF INPUT_NUM == 90
+	SIF FLAG:可配置的候选奴隶 || !ITEM:奴隶候补设定变更票
+		RETURN
+	PRINTL 使用＜奴隶候补设定变更票＞吗？
+	CALL PRINTL_WORD_COLOR("在找到下一个奴隶候选之前，设置将保持可更改状态。","黄")
+	CALL ASK_YN
+	IF !RESULT
+		FLAG:奴隶候补设定变更票使用中 = 1
+		ITEM:奴隶候补设定变更票 --
+		PRINTW 使用了＜奴隶候补设定变更票＞。
+	ENDIF
+ENDIF
+
+;設定不可ならINPUT_NUMを強制的に99に置き換え
+SIF !FLAG:可配置的候选奴隶
+	INPUT_NUM = 99
+SELECTCASE INPUT_NUM
+CASE 70
+	PRINTL 输入在外观上反映种族特征的概率，如体型和发色覆盖。（0到100）
+	INPUT
+	SIF RESULT >= 0 && RESULT <= 100
+		FLAG:(FLAG_REF:0 +ARG) = RESULT
+
+CASE 71
+	PRINTL 请输入一个概率，以反映种族特征的体质，如拥有魔力和【适应魔界】素质。（0到100）
+	INPUT
+	SIF RESULT >= 0 && RESULT <= 100
+		FLAG:(FLAG_REF:1 +ARG) = RESULT
+
+CASE 72
+	PRINTL 输入性格反映种族特征的概率。（0到100）
+	INPUT
+	SIF RESULT >= 0 && RESULT <= 100
+		FLAG:(FLAG_REF:2 +ARG) = RESULT
+
+CASE 82
+	PRINTL 对于配置设置中被切换为ON/OFF的项目，设置[ON]会将其反转，而不给出解释
+	CALL ASK_ONOFF
+	FLAG:跳过ON／OFF项目的详细信息并反转 = RESULT
+ENDSELECT
+
+;他は元関数にINPUT_NUMで判定させる
+

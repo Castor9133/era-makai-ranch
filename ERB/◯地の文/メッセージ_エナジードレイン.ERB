@@ -1,0 +1,127 @@
+﻿
+;エナジードレイン追加地の文
+@TRAIN_ENERGY_DRAIN_MESSAGE
+
+SIF !TFLAG:调教中 && !TFLAG:日程外Ｈ && !TFLAG:循环中消息显示
+	RETURN
+
+;抽出・エナドレしてないならおわり
+SIF !TFLAG:抽出中 && !SOURCE:灵力吸收量
+	RETURN
+CALL TRAIN_ENERGY_DRAIN_ECSTASY_MESSAGE
+CALL KOJO_PRINT("抽出")
+
+
+
+;絶頂回数メッセージ
+@TRAIN_ENERGY_DRAIN_ECSTASY_MESSAGE
+#DIM HEART_NUM
+
+;おっぱいで10回以上絶頂してないとおわり
+SIF NOWEX:Ｂ绝顶 +NOWEX:Ｎ绝顶 < 10
+	RETURN
+SELECTCASE RAND:3
+CASE 0
+	IF ABL:搾乳中毒 >= 10
+		CALL PRINT_WORD_COLOR,@"即使%CALLNAME%知道榨乳会夺走灵力，但已经沉迷于榨乳快感的身体已经无法抗拒了…","桃"
+	ELSE
+		CALL PRINT_WORD_COLOR,@"即使%CALLNAME%知道榨乳会夺走灵力，但已经无法反抗榨乳时袭来的快感…","桃"
+	ENDIF
+CASE 1
+	CALL PRINT_WORD_COLOR,@"作为榨乳快感的代价，灵力从%CALLNAME%的%SLANG_B()%不断的被夺走…","桃"
+CASE 2
+	CALL PRINT_WORD_COLOR,@"灵力通过%CALLNAME%的%SLANG_B()%的绝顶，随着%SLANG_MILK()%被吸走…","桃"
+ENDSELECT
+HEART_NUM = LIMIT(NOWEX:喷乳 /1000,0,4)
+CALL HEARTCB(0xD02830,(1 +HEART_NUM))
+PRINTL
+
+
+
+;レベルドレイン地の文
+;ARG→レベルドレイン適用時改行
+;ARG:1→NOW_LEVEL
+@LEVEL_DRAIN_MESSAGE(ARG,ARG:1)
+
+SIF !LINEISEMPTY()
+	PRINTL
+IF !EXP:等级下降
+	CALL KOJO_PRINT("重复事件","等级下降","初次")
+ELSE
+	CALL KOJO_PRINT("重复事件","等级下降","普通")
+ENDIF
+SETCOLOR 0xEE10EE
+SELECTCASE RAND:5
+CASE 0
+	PRINTFORM %SLANG_MILK()%和灵力一起从%CALLNAME%的%SLANG_B()%中被吸走…
+CASE 1
+	PRINTFORM %SLANG_MILK()%与灵力一起从%CALLNAME%的%SLANG_B()%中被吸收…
+CASE 2
+	PRINTFORM %SLANG_MILK()%和灵力从%CALLNAME%的%SLANG_B()%开始被榨干…
+CASE 3
+	PRINTFORM 每次从%SLANG_B()%射出%SLANG_MILK()%，%CALLNAME%的灵力就会流失…
+CASE 4
+	PRINTFORM 通过%SLANG_B()%射出的%SLANG_MILK()%，%CALLNAME%的灵力被夺走…
+ENDSELECT
+CALL HEARTCB(0xD02830)
+PRINTL
+PRINTFORM 　等级下降　Lv{BASE:等级} → Lv{ARG:1} 
+SIF ARG
+	PRINTL
+
+
+
+;吸い尽くし地の文
+;魔力はまた回復するので調教中以外はメッセージ飛ばすことにした
+@SLAVE_ENERGY_EMPTY_MESSAGE
+
+IF SOURCE:灵力吸收量 && !BASE:灵力 && !EXP:灵力为零
+	SIF !LINEISEMPTY()
+		PRINTL
+	PRINTFORM 榨尽了%CALLNAME%的灵力… 
+ENDIF
+IF SOURCE:魔力吸收量 && !BASE:魔力 && TFLAG:调教中
+	SIF !LINEISEMPTY()
+		PRINTL
+	PRINTFORM 榨尽了%CALLNAME%的魔力… 
+ENDIF
+
+
+
+;吸い尽くしメッセージ
+;ARG→レベルドレイン適用時改行　2ならスケジュールから来た場合
+@SLAVE_ENERGY_ZERO(ARG)
+
+;霊力0でないならおわり
+SIF BASE:灵力
+	RETURN
+
+;スケジュールから来て元々0なら飛ばす
+SIF ARG == 2 && !EP_BEFORE
+	RETURN
+
+;スケジュール結果以外で霊力吸収ないなら飛ばす
+SIF ARG != 2 && !SOURCE:灵力吸收量
+	RETURN
+IF EXP:灵力为零 || CFLAG:非战斗职业
+	PRINT 【EP0】
+	SIF ARG
+		PRINTL
+ELSE
+	SIF !LINEISEMPTY()
+		PRINTL
+	CALL KOJO_PRINT("重复事件","等级下降","灵力0")
+	ALIGNMENT CENTER
+	SETCOLOR 0xEE10EE
+	PRINTFORML %CALLNAME%被吸光了所有的灵力，已经没有力量再战斗了…
+	PRINTFORM 现在那里的只不过是
+	SIF ABL:胸围大小 >= BUSTSIZE_巨乳
+		PRINTFORM 挂着充满丰富%SAVESTR:标识／母乳%的%SLANG_B()%
+	PRINT ，无力雌奴隶…
+	CALL HEARTCB(0xD02830)
+	PRINTL
+	ALIGNMENT LEFT
+ENDIF
+
+
+

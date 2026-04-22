@@ -1,0 +1,138 @@
+﻿
+;Ｖ挿入前の確認
+;ARG→サイズ確認スキップ
+@V_INSERT_CONFIRM(ARG)
+
+EXIST = 0
+IF !ARG
+	CALL SIZE_CONFIRM
+	SIF RESULT
+		EXIST ++
+ENDIF
+CALL LUBRICATION_CONFIRM
+SIF RESULT
+	EXIST ++
+CALL LOST_VARGIN_CONFIRM
+SIF RESULT
+	EXIST ++
+
+;Ｖのみ【異種族孕ませ】確認
+CALL PREGNANT_CONFIRM
+SIF RESULT
+	EXIST ++
+SIF !EXIST
+	RETURN
+PRINTL 要插入吗？
+CALL ASK_YN
+
+;[いいえ]なら1
+SIF RESULT
+	RETURN 1
+
+
+
+;Ｖ処女喪失確認
+@LOST_VARGIN_CONFIRM
+
+;確認しない設定か非処女なら飛ばす
+SIF !GETBIT(＃Ｖ处女确认＃) || !TALENT:处女
+	RETURN
+CALL PRINTL_WORD_COLOR,@"%CALLNAME%是【处女】。","黄"
+RETURN 1
+
+
+;Ｖ潤滑確認
+@LUBRICATION_CONFIRM
+
+;触手分泌液増量あれば無視
+SIF SELECTCOM == 105 && ITEM:触手分泌液增量 && GETBIT(＃有效／触手分泌液增量＃)
+	RETURN
+SIF !GETBIT(＃Ｖ润滑确认＃) || PALAM:Ｖ润滑 >= NEED_LUBRICATION
+	RETURN
+CALL PRINTL_WORD_COLOR,@"%CALLNAME%的%SAVESTR:标识／膣%未充分湿润。","黄"
+RETURN 1
+
+
+;異種族孕ませ確認
+@PREGNANT_CONFIRM
+
+{
+SIF !GETBIT(＃异种族怀孕确认＃) || !ITEM:异种族怀孕 || TEQUIP:0:避孕套 ||
+!GETBIT(＃个人有效／异种族怀孕＃) || !GETBIT(＃有效／异种族怀孕＃)
+}
+	RETURN
+CALL PRINTL_WORD_COLOR,@"由于【异种族怀孕】有效且无＜安全套＞，因此可能会因膣内射精而怀孕。","黄"
+RETURN 1
+
+
+;サイズ差確認
+@SIZE_CONFIRM
+#DIM SIZE_DIFF
+
+SIF !GETBIT(＃Ｖ尺寸确认＃) || !PLAYER_PENIS
+	RETURN
+SIZE_DIFF = ABL:0:阴茎尺寸 - ABL:Ｖ尺寸 - ABL:Ｖ扩张
+SIF !(SIZE_DIFF > 20 || (ABL:0:阴茎尺寸 - ABL:初始值／Ｖ尺寸 * 3 > 0 && SIZE_DIFF > 0))
+	RETURN
+CALL PRINTL_WORD_COLOR,@"%CALLNAME%的%SAVESTR:标识／膣%无法接纳%CALLNAME:0%的%SAVESTR:标识／阴茎%，因此会产生非常强烈的疼痛。","黄"
+RETURN 1
+
+
+
+;Ａ挿入前の確認
+@A_INSERT_CONFIRM(ARG)
+
+EXIST = 0
+IF !ARG
+	CALL A_SIZE_CONFIRM
+	SIF RESULT
+		EXIST ++
+ENDIF
+CALL A_LUBRICATION_CONFIRM
+SIF RESULT
+	EXIST ++
+CALL A_LOST_VARGIN_CONFIRM
+SIF RESULT
+	EXIST ++
+SIF !EXIST
+	RETURN
+PRINTL 要插入吗？
+CALL ASK_YN
+SIF RESULT
+	RETURN 1
+
+
+
+;Ａ処女喪失確認
+@A_LOST_VARGIN_CONFIRM
+
+SIF !GETBIT(＃Ａ处女确认＃) || !TALENT:Ａ处女
+	RETURN
+CALL PRINTL_WORD_COLOR,@"%CALLNAME%是【Ａ处女】。","黄"
+RETURN 1
+
+
+;Ａ潤滑確認
+@A_LUBRICATION_CONFIRM
+
+SIF SELECTCOM == 106 && ITEM:触手分泌液增量 && GETBIT(＃有效／触手分泌液增量＃)
+	RETURN
+SIF !GETBIT(＃Ａ润滑确认＃) || PALAM:Ａ润滑 >= NEED_LUBRICATION
+	RETURN
+CALL PRINTL_WORD_COLOR,@"%CALLNAME%的%SAVESTR:标识／肛门%未充分湿润。","黄"
+RETURN 1
+
+
+;Ａサイズ差確認
+@A_SIZE_CONFIRM
+#DIM SIZE_DIFF
+
+SIF !GETBIT(＃Ａ尺寸确认＃) || !PLAYER_PENIS
+	RETURN
+SIZE_DIFF = ABL:0:阴茎尺寸 - ABL:Ａ尺寸 - ABL:Ａ扩张
+SIF !(SIZE_DIFF > 20 || (ABL:0:阴茎尺寸 - ABL:初始值／Ａ尺寸 * 6 > 0 && SIZE_DIFF > 0))
+	RETURN
+CALL PRINTL_WORD_COLOR,@"%CALLNAME%的%SAVESTR:标识／肛门%无法接纳%CALLNAME:0%的%SAVESTR:标识／阴茎%，因此会产生非常强烈的疼痛。","黄"
+RETURN 1
+
+

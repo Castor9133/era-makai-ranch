@@ -1,0 +1,313 @@
+﻿
+;再シャッフルBIT
+#DEFINE ＃重新调整／胸围大小＃	FLAG:重新调整BIT,0
+#DEFINE ＃重新调整／胸部＃		FLAG:重新调整BIT,1
+#DEFINE ＃重新调整／身体特征＃		FLAG:重新调整BIT,2
+#DEFINE ＃重新调整／发型＃	FLAG:重新调整BIT,3
+#DEFINE ＃重新调整／目特征＃		FLAG:重新调整BIT,4
+#DEFINE ＃重新调整／性格素质＃		FLAG:重新调整BIT,5
+#DEFINE ＃重新调整／性ABL＃			FLAG:重新调整BIT,6
+#DEFINE ＃重新调整／性经验＃		FLAG:重新调整BIT,7
+#DEFINE ＃重新调整／敏感度＃			FLAG:重新调整BIT,8
+#DEFINE ＃重新调整／性体质＃		FLAG:重新调整BIT,9
+#DEFINE ＃重新调整／服装＃			FLAG:重新调整BIT,10
+
+
+;性経験表示BIT
+#DEFINE ＃经验显示／Ｖ性交＃	FLAG:性经验显示BIT,0
+#DEFINE ＃经验显示／Ａ性交＃	FLAG:性经验显示BIT,1
+#DEFINE ＃经验显示／Ｍ性交＃	FLAG:性经验显示BIT,2
+#DEFINE ＃经验显示／接吻＃			FLAG:性经验显示BIT,3
+#DEFINE ＃经验显示／乳交＃		FLAG:性经验显示BIT,4
+#DEFINE ＃经验显示／授乳＃			FLAG:性经验显示BIT,5
+#DEFINE ＃经验显示／出产＃			FLAG:性经验显示BIT,6
+
+
+;パラメータ上限到達後表示BIT
+#DEFINE ＃上限到达后显示／事务经验值＃	FLAG:参数上限到达后显示BIT,0
+#DEFINE ＃上限到达后显示／性经验值＃	FLAG:参数上限到达后显示BIT,1
+#DEFINE ＃上限到达后显示／好感度＃		FLAG:参数上限到达后显示BIT,2
+#DEFINE ＃上限到达后显示／乳牛堕落＃	FLAG:参数上限到达后显示BIT,3
+
+
+;パラメータ影響要素表示BIT
+#DEFINE ＃影响因素显示／事务经验值＃	FLAG:参数影响要素显示BIT,0
+#DEFINE ＃影响因素显示／性经验值＃		FLAG:参数影响要素显示BIT,1
+#DEFINE ＃影响因素显示／回复量＃		FLAG:参数影响要素显示BIT,2
+#DEFINE ＃影响因素显示／亲和度＃		FLAG:参数影响要素显示BIT,3
+
+
+;ランダムキャラステータス隠蔽BIT
+#DEFINE ＃状态隐藏／事务ABL＃			FLAG:随机角色状态隐藏BIT,0
+#DEFINE ＃状态隐藏／性ABL＃			FLAG:随机角色状态隐藏BIT,1
+#DEFINE ＃状态隐藏／素质＃			FLAG:随机角色状态隐藏BIT,2
+#DEFINE ＃状态隐藏／敏感度＃			FLAG:随机角色状态隐藏BIT,3
+#DEFINE ＃状态隐藏／性体质＃			FLAG:随机角色状态隐藏BIT,4
+#DEFINE ＃状态隐藏／乳房细节＃	FLAG:随机角色状态隐藏BIT,5
+#DEFINE ＃状态隐藏／阴毛＃			FLAG:随机角色状态隐藏BIT,6
+
+
+;ランダムキャラ共通弱点部位BIT
+#DEFINE ＃全员Ａ弱点＃			FLAG:随机角色通用弱点部位BIT,0
+#DEFINE ＃全员Ｂ弱点＃			FLAG:随机角色通用弱点部位BIT,1
+#DEFINE ＃全员Ｃ弱点＃			FLAG:随机角色通用弱点部位BIT,2
+#DEFINE ＃全员Ｖ弱点＃			FLAG:随机角色通用弱点部位BIT,3
+#DEFINE ＃全员Ｎ弱点＃			FLAG:随机角色通用弱点部位BIT,4
+
+
+;回数制限撤廃BIT
+#DEFINE ＃限制解除／调教时间＃			FLAG:次数限制解除BIT,0
+#DEFINE ＃限制解除／时间压缩＃			FLAG:次数限制解除BIT,1
+#DEFINE ＃限制解除／家庭浴池＃			FLAG:次数限制解除BIT,2
+#DEFINE ＃限制解除／访问次数＃			FLAG:次数限制解除BIT,3
+#DEFINE ＃限制解除／物品使用＃		FLAG:次数限制解除BIT,4
+#DEFINE ＃限制解除／亲密接触＃		FLAG:次数限制解除BIT,5
+#DEFINE ＃限制解除／肉体改造＃			FLAG:次数限制解除BIT,6
+
+
+;楽々スタートキットBIT
+#DEFINE ＃入门套装／衣服＃			FLAG:轻松启动包BIT,0
+#DEFINE ＃入门套装／消耗品＃			FLAG:轻松启动包BIT,1
+#DEFINE ＃入门套装／药品＃			FLAG:轻松启动包BIT,2
+#DEFINE ＃入门套装／搾乳器＃			FLAG:轻松启动包BIT,3
+#DEFINE ＃入门套装／龙珠＃			FLAG:轻松启动包BIT,4
+
+;消耗品と買い切り品で分けてる
+#DEFINE ＃入门套装／魔力储存器＃		FLAG:轻松启动包BIT,10
+#DEFINE ＃入门套装／不动产＃			FLAG:轻松启动包BIT,11
+#DEFINE ＃入门套装／调教・拘束＃		FLAG:轻松启动包BIT,12
+#DEFINE ＃入门套装／魔法＃			FLAG:轻松启动包BIT,13
+#DEFINE ＃入门套装／能力＃		FLAG:轻松启动包BIT,14
+
+
+
+
+;調教後衣服没収BIT
+#DEFINE ＃衣服没收／抵抗＃			FLAG:调教后衣服没收BIT,0
+#DEFINE ＃内衣没收／抵抗＃			FLAG:调教后衣服没收BIT,1
+#DEFINE ＃饰品没收／抵抗＃		FLAG:调教后衣服没收BIT,2
+#DEFINE ＃衣服没收／无抵抗＃		FLAG:调教后衣服没收BIT,3
+#DEFINE ＃内衣没收／无抵抗＃		FLAG:调教后衣服没收BIT,4
+#DEFINE ＃饰品没收／无抵抗＃		FLAG:调教后衣服没收BIT,5
+
+
+;挿入確認BIT
+#DEFINE ＃Ｖ处女确认＃			FLAG:插入确认BIT,0
+#DEFINE ＃Ａ处女确认＃			FLAG:插入确认BIT,1
+#DEFINE ＃Ｖ润滑确认＃			FLAG:插入确认BIT,2
+#DEFINE ＃Ａ润滑确认＃			FLAG:插入确认BIT,3
+#DEFINE ＃异种族怀孕确认＃	FLAG:插入确认BIT,4
+#DEFINE ＃Ｖ尺寸确认＃		FLAG:插入确认BIT,5
+#DEFINE ＃Ａ尺寸确认＃		FLAG:插入确认BIT,6
+
+
+;アナルフィルタBIT
+#DEFINE ＃各种Ａ插入无效＃		FLAG:肛门过滤BIT,0
+#DEFINE ＃Ａ指插入无效＃		FLAG:肛门过滤BIT,1
+#DEFINE ＃Ａ舔舐无效＃			FLAG:肛门过滤BIT,2
+#DEFINE ＃触手Ａ插入无效＃		FLAG:肛门过滤BIT,3
+
+
+;捕獲時選択肢BIT
+#DEFINE ＃捕获时用药＃			FLAG:捕获时选项BIT,0
+#DEFINE ＃捕获时设定画面＃		FLAG:捕获时选项BIT,1
+#DEFINE ＃搾乳器自动购入＃		FLAG:捕获时选项BIT,2
+
+
+;子供扱い時割合適用項目BIT
+#DEFINE ＃有效／使用儿童胸围大小＃		FLAG:儿童对待时比例适用项目BIT,0
+#DEFINE ＃有效／儿童体型使用＃				FLAG:儿童对待时比例适用项目BIT,1
+#DEFINE ＃有效／儿童性经验使用＃			FLAG:儿童对待时比例适用项目BIT,2
+#DEFINE ＃有效／儿童阴毛使用＃				FLAG:儿童对待时比例适用项目BIT,3
+
+
+;身長でのプレイ制限BIT
+#DEFINE ＃身高差限制／插入吸乳＃		FLAG:身高的游戏限制BIT,0
+#DEFINE ＃身高差限制／插入接吻＃		FLAG:身高的游戏限制BIT,1
+#DEFINE ＃身高差限制／站立乳交＃	FLAG:身高的游戏限制BIT,2
+
+
+;セーブデータ表示情報BIT
+#DEFINE ＃保存数据／备注＃				FLAG:保存数据显示信息BIT,0
+#DEFINE ＃保存数据／牧场名＃			FLAG:保存数据显示信息BIT,1
+#DEFINE ＃保存数据／难易度＃			FLAG:保存数据显示信息BIT,2
+#DEFINE ＃保存数据／等级＃			FLAG:保存数据显示信息BIT,3
+#DEFINE ＃存档数据／奴隶人数＃			FLAG:保存数据显示信息BIT,4
+#DEFINE ＃存档数据／经过天数＃			FLAG:保存数据显示信息BIT,5
+#DEFINE ＃保存数据／日期＃				FLAG:保存数据显示信息BIT,6
+#DEFINE ＃存档数据／游戏时间＃		FLAG:保存数据显示信息BIT,7
+#DEFINE ＃存档数据／版本＃		FLAG:保存数据显示信息BIT,8
+
+
+;魔界住民面識BIT
+#DEFINE ＃面识／尤金＃		FLAG:魔界住民面识BIT,0
+#DEFINE ＃面识／玛诺＃			FLAG:魔界住民面识BIT,1
+#DEFINE ＃面识／福多＃		FLAG:魔界住民面识BIT,2
+#DEFINE ＃面识／肯奇＃		FLAG:魔界住民面识BIT,3
+#DEFINE ＃面识／塔尔特＃		FLAG:魔界住民面识BIT,4
+#DEFINE ＃面识／亚拉希＃		FLAG:魔界住民面识BIT,5
+#DEFINE ＃面识／信美＃		FLAG:魔界住民面识BIT,6
+#DEFINE ＃面识／辉夜＃		FLAG:魔界住民面识BIT,7
+#DEFINE ＃面识／泰拉＃			FLAG:魔界住民面识BIT,8
+#DEFINE ＃面识／戈罗＃		FLAG:魔界住民面识BIT,9
+#DEFINE ＃面识／肖＃		FLAG:魔界住民面识BIT,10
+#DEFINE ＃面识／辛西娅＃		FLAG:魔界住民面识BIT,11
+#DEFINE ＃面识／普尼耶＃		FLAG:魔界住民面识BIT,12
+#DEFINE ＃面识／戈兹＃		FLAG:魔界住民面识BIT,13
+#DEFINE ＃面识／右京＃		FLAG:魔界住民面识BIT,14
+#DEFINE ＃面识／诺诺美＃		FLAG:魔界住民面识BIT,15
+#DEFINE ＃面识／库雷塔＃		FLAG:魔界住民面识BIT,16
+#DEFINE ＃面识／雏＃			FLAG:魔界住民面识BIT,17
+
+
+;アビリティ有効BIT
+#DEFINE ＃有效／搾乳能量吸取＃			FLAG:能力有效BIT,0
+#DEFINE ＃有效／能量吸取效率＃			FLAG:能力有效BIT,1
+#DEFINE ＃有效／魔力吸收效率＃					FLAG:能力有效BIT,2
+#DEFINE ＃有效／浓厚乳汁吸取＃			FLAG:能力有效BIT,3
+#DEFINE ＃有效／异种族怀孕＃					FLAG:能力有效BIT,4
+#DEFINE ＃有效／丰饶＃							FLAG:能力有效BIT,5
+#DEFINE ＃有效／浓厚母乳按摩＃			FLAG:能力有效BIT,6
+#DEFINE ＃有效／乳罐按摩＃		FLAG:能力有效BIT,7
+	;#DEFINE ＃有効／百合手折り＃					FLAG:アビリティ有効BIT,8
+	;#DEFINE ＃有効／獣欲＃							FLAG:アビリティ有効BIT,9
+#DEFINE ＃有效／触手射精＃						FLAG:能力有效BIT,10
+#DEFINE ＃有效／触手受胎＃						FLAG:能力有效BIT,11
+	;#DEFINE ＃有効／危険日感知＃					FLAG:アビリティ有効BIT,12
+#DEFINE ＃有效／绝伦＃							FLAG:能力有效BIT,13
+#DEFINE ＃有效／扶她阴茎＃				FLAG:能力有效BIT,14
+#DEFINE ＃有效／触手分泌液增量＃				FLAG:能力有效BIT,15
+	;#DEFINE ＃有効／簡易催眠＃						FLAG:アビリティ有効BIT,9
+
+;部屋割り自動変更BIT
+#DEFINE ＃自动房间分配／牛舍＃				FLAG:房间分配自动更改BIT,0
+#DEFINE ＃自动房间分配／体内凌辱＃			FLAG:房间分配自动更改BIT,1
+
+
+
+;マイルストーン達成フラグBIT
+#DEFINE ＃里程碑达成／浓厚母乳出货＃		FLAG:里程碑达成BIT,0
+#DEFINE ＃里程碑达成／奴隶捕获＃			FLAG:里程碑达成BIT,1
+#DEFINE ＃里程碑达成／纳税＃				FLAG:里程碑达成BIT,2
+
+
+
+
+;CFLAG
+;アビリティ有効個人BIT
+#DEFINE ＃个人有效／搾乳能量吸收＃		CFLAG:能力有效个人BIT,0
+#DEFINE ＃个人有效／能量吸收效率＃		CFLAG:能力有效个人BIT,1
+#DEFINE ＃个人有效／魔力吸收效率＃				CFLAG:能力有效个人BIT,2
+#DEFINE ＃个人有效／浓厚乳汁吸取＃		CFLAG:能力有效个人BIT,3
+#DEFINE ＃个人有效／异种族怀孕＃				CFLAG:能力有效个人BIT,4
+#DEFINE ＃个人有效／丰饶＃						CFLAG:能力有效个人BIT,5
+#DEFINE ＃个人有效／浓厚母乳按摩＃		CFLAG:能力有效个人BIT,6
+#DEFINE ＃个人有效／乳罐按摩＃	CFLAG:能力有效个人BIT,7
+	;#DEFINE ＃個人有効／百合手折り＃				CFLAG:アビリティ有効個人BIT,8
+	;#DEFINE ＃個人有効／獣欲＃						CFLAG:アビリティ有効個人BIT,9
+
+
+;スケジュール／搾乳優先BIT
+#DEFINE ＃搾乳优先／朝＃		CFLAG:日程／搾乳优先BIT,0
+#DEFINE ＃搾乳优先／昼＃		CFLAG:日程／搾乳优先BIT,1
+#DEFINE ＃搾乳优先／夕＃		CFLAG:日程／搾乳优先BIT,2
+
+
+
+
+;TFLAG
+;拘束状態BIT
+#DEFINE ＃拘束／站立柱＃			TFLAG:拘束BIT,0
+#DEFINE ＃拘束／坐立柱＃			TFLAG:拘束BIT,1
+#DEFINE ＃拘束／打桩机＃			TFLAG:拘束BIT,2
+#DEFINE ＃拘束／搾乳台＃			TFLAG:拘束BIT,3
+#DEFINE ＃拘束／吊挂＃			TFLAG:拘束BIT,4
+#DEFINE ＃拘束／十字架＃			TFLAG:拘束BIT,5
+#DEFINE ＃拘束／Ｘ字＃				TFLAG:拘束BIT,6
+#DEFINE ＃拘束／手铐屈脚＃			TFLAG:拘束BIT,7
+#DEFINE ＃拘束／束缚带＃			TFLAG:拘束BIT,8
+#DEFINE ＃拘束／床上仰卧＃		TFLAG:拘束BIT,9
+#DEFINE ＃拘束／床上俯卧＃	TFLAG:拘束BIT,10
+#DEFINE ＃拘束／麻绳＃				TFLAG:拘束BIT,11
+#DEFINE ＃拘束／龟甲缚＃			TFLAG:拘束BIT,12
+#DEFINE ＃束缚／触手＃				TFLAG:拘束BIT,13
+#DEFINE ＃拘束／下半身填壁乳＃	TFLAG:拘束BIT,14
+#DEFINE ＃拘束／三角木马＃			TFLAG:拘束BIT,15
+
+
+;体位制限BIT
+#DEFINE ＃体位制限／正常位＃		TFLAG:体位限制BIT,0
+#DEFINE ＃体位制限／后背位＃		TFLAG:体位限制BIT,1
+#DEFINE ＃体位制限／对面座位＃		TFLAG:体位限制BIT,2
+#DEFINE ＃体位制限／背面座位＃		TFLAG:体位限制BIT,3
+#DEFINE ＃体位制限／对面立位＃		TFLAG:体位限制BIT,4
+#DEFINE ＃体位制限／背面立位＃		TFLAG:体位限制BIT,5
+#DEFINE ＃体位制限／肛门＃		TFLAG:体位限制BIT,6
+#DEFINE ＃体位制限／接吻＃			TFLAG:体位限制BIT,7
+#DEFINE ＃体位制限／乳交＃		TFLAG:体位限制BIT,8
+#DEFINE ＃体位制限／素股＃			TFLAG:体位限制BIT,9
+#DEFINE ＃体位制限／Ｍ插入＃		TFLAG:体位限制BIT,10
+#DEFINE ＃体位制限／吸奶＃		TFLAG:体位限制BIT,11
+
+
+;有効薬品BIT
+#DEFINE ＃有效药品／母乳分泌促进药＃		TFLAG:有效药品BIT,0
+#DEFINE ＃有效药品／魔力母乳分泌促进药＃	TFLAG:有效药品BIT,1
+#DEFINE ＃有效药品／育乳促进药＃			TFLAG:有效药品BIT,2
+#DEFINE ＃有效药品／浓厚母乳促进药＃		TFLAG:有效药品BIT,3
+#DEFINE ＃有效药品／乳罐促进药＃	TFLAG:有效药品BIT,4
+
+
+;調教中初経験BIT
+#DEFINE ＃调教中初经验／性交＃		TFLAG:调教中初次经验BIT,0
+#DEFINE ＃调教中初经验／Ａ性交＃	TFLAG:调教中初次经验BIT,1
+#DEFINE ＃调教中初经验／Ｍ性交＃	TFLAG:调教中初次经验BIT,2
+#DEFINE ＃调教中初经验／接吻＃			TFLAG:调教中初次经验BIT,3
+#DEFINE ＃调教中初经验／乳交＃		TFLAG:调教中初次经验BIT,4
+#DEFINE ＃调教中初经验／授乳＃			TFLAG:调教中初次经验BIT,5
+
+
+;Ｐ使用BIT
+#DEFINE ＃Ｐ使用／Ｖ插入＃			TFLAG:Ｐ使用BIT,0
+#DEFINE ＃Ｐ使用／Ａ插入＃			TFLAG:Ｐ使用BIT,1
+#DEFINE ＃Ｐ使用／Ｍ插入＃			TFLAG:Ｐ使用BIT,2
+#DEFINE ＃Ｐ使用／乳交＃		TFLAG:Ｐ使用BIT,3
+#DEFINE ＃Ｐ使用／素股＃			TFLAG:Ｐ使用BIT,4
+#DEFINE ＃Ｐ使用／手交＃			TFLAG:Ｐ使用BIT,5
+
+
+;Ｐ解除BIT
+#DEFINE ＃Ｐ解除／Ｖ插入＃			TFLAG:Ｐ解除BIT,0
+#DEFINE ＃Ｐ解除／Ａ插入＃			TFLAG:Ｐ解除BIT,1
+#DEFINE ＃Ｐ解除／Ｍ插入＃			TFLAG:Ｐ解除BIT,2
+#DEFINE ＃Ｐ解除／乳交＃		TFLAG:Ｐ解除BIT,3
+#DEFINE ＃Ｐ解除／素股＃			TFLAG:Ｐ解除BIT,4
+#DEFINE ＃Ｐ解除／手交＃			TFLAG:Ｐ解除BIT,5
+
+
+;半脱ぎBIT
+#DEFINE ＃半脱／衣服上＃			TFLAG:半脱BIT,0
+#DEFINE ＃半脱／衣服下＃			TFLAG:半脱BIT,1
+#DEFINE ＃半脱／内衣上装＃			TFLAG:半脱BIT,2
+#DEFINE ＃半脱／内衣下装＃			TFLAG:半脱BIT,3
+#DEFINE ＃半脱／外衣＃			TFLAG:半脱BIT,4
+
+
+;表示調教コマンドBIT
+#DEFINE ＃表示指令／Ｂ刺激＃			FLAG:显示调教指令BIT,0
+#DEFINE ＃表示指令／Ｎ刺激＃			FLAG:显示调教指令BIT,1
+#DEFINE ＃表示指令／Ｃ刺激＃			FLAG:显示调教指令BIT,2
+#DEFINE ＃表示指令／Ｖ刺激＃			FLAG:显示调教指令BIT,3
+#DEFINE ＃表示指令／Ａ刺激＃			FLAG:显示调教指令BIT,4
+#DEFINE ＃表示指令／Ｍ刺激＃			FLAG:显示调教指令BIT,5
+#DEFINE ＃表示指令／其他＃			FLAG:显示调教指令BIT,6
+#DEFINE ＃表示指令／阴茎＃			FLAG:显示调教指令BIT,7
+#DEFINE ＃表示指令／奉仕＃				FLAG:显示调教指令BIT,8
+#DEFINE ＃表示指令／道具＃				FLAG:显示调教指令BIT,9
+#DEFINE ＃表示指令／触手＃				FLAG:显示调教指令BIT,10
+#DEFINE ＃表示指令／痛苦＃				FLAG:显示调教指令BIT,11
+
+
+
+
+

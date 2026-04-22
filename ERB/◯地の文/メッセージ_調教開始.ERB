@@ -1,0 +1,30 @@
+﻿
+;調教開始の地の文
+@TRAIN_BEGIN_MESSAGE
+
+IF CFLAG:乳牛 || CFLAG:洗脑
+	PRINTFORML %CALLNAME%表现得很老实，但她似乎迫不及待地想接受调教，正在流淌着她的爱液…
+ELSEIF CFLAG:崩坏
+	PRINTFORML 当看到%CALLNAME:0%的模样，%CALLNAME%无光的眼睛里流下了眼泪…
+ELSE
+	SELECTCASE CSTR:陷落状态
+	CASE "隶属"
+		PRINTFORML %CALLNAME%表现得很老实，但她似乎迫不及待地想接受调教，正在流淌着她的爱液…
+	CASE "恋慕"
+		PRINTFORML %CALLNAME%高兴地微笑着说能得到%CALLNAME:0%的调教…
+	CASE "陷落"
+		PRINTFORML 虽然嘴上说希望快点搞定，但%CALLNAME%却对此充满期待…
+	CASEELSE
+		IF TALENT:冷漠 || TALENT:感情缺乏
+			PRINTFORML %CALLNAME%面无表情地盯着这边…
+		ELSEIF ＃陷落状态／屈服以上＃ || TALENT:胆怯 || TALENT:悲观
+			PRINTFORML %CALLNAME%惊恐地颤抖着…
+		ELSEIF !＃陷落状态／拒绝以上＃
+			PRINTFORML %CALLNAME%决不屈服，这是她对自己的坚定宣言…
+		ELSE
+			PRINTFORML %CALLNAME%瞪着%CALLNAME:0%…
+		ENDIF
+	ENDSELECT
+ENDIF
+
+

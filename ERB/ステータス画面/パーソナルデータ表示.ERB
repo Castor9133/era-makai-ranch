@@ -1,0 +1,276 @@
+﻿
+;-------------------------------------------------
+;顔グラ、状態、名前など表示のまとめ
+;ARG→1なら装備も表示、2なら更にVAとあなたのPサイズとかも表示
+@SHOW_SLAVE_STATE(ARG)
+
+CALL PRINT_IMAGE("状态")
+CALL PRINT_PORTRAIT
+CALL PRINT_ALL_STATE
+PRINTFORM %CALLNAME%
+CALL PRINT_AFFILIATION_DATA
+SIF !CFLAG:非战斗职业 || BASE:等级 > 1 && CSTR:状态／主人公的孩子 != "成长中"
+	PRINTFORM Lv{BASE:等级} 
+PRINTL
+SIF ARG
+	CALL SHOW_EQUIP(1)
+IF CSTR:状态／主人公的孩子 != "成长中"
+	CALL PRINT_SOME_DRINK
+	PRINTFORM  HP：{BASE:体力,4}／{MAXBASE:体力,4} 
+	CALL PRINT_COLORBAR(BASE:体力,MAXBASE:体力,8,BARCOLORSET("青绿"),RESULT:1)
+	PRINTFORM  SP：{BASE:气力,4}／{MAXBASE:气力,4} 
+	CALL PRINT_COLORBAR(BASE:气力,MAXBASE:气力,8,BARCOLORSET("青绿"),RESULT:1)
+	PRINTL
+ENDIF
+IF ARG == 2 && CSTR:状态／主人公的孩子 != "成长中"
+	CALL PRINT_VSIZE
+	CALL PRINT_LUBRICATION("Ｖ润滑")
+	CALL PRINT_ASIZE
+	CALL PRINT_LUBRICATION("Ａ润滑")
+	PRINTL
+	IF PLAYER_PENIS
+		CALL HALFLINE
+		PRINTFORM %CALLNAME:0%
+		IF ITEM:绝伦 && GETBIT(＃有效／绝伦＃)
+			CALL PRINT_WORD_COLOR,@"【绝伦】","桃"
+			PRINTFORM 　射精：{BASE:0:射精,4}／{MAXBASE:0:射精,4} 
+			CALL PRINT_COLORBAR(BASE:0:射精,MAXBASE:0:射精,8,BARCOLORSET("白"),RESULT:1)
+		ELSEIF BASE:0:精力
+			PRINTFORM 　　射精：{BASE:0:射精,4}／{MAXBASE:0:射精,4} 
+			CALL PRINT_COLORBAR(BASE:0:射精,MAXBASE:0:射精,8,BARCOLORSET("白"),RESULT:1)
+			PRINTFORM 　精力：{BASE:0:精力,4}／{MAXBASE:0:精力,4} 
+			CALL PRINT_COLORBAR(BASE:0:精力,MAXBASE:0:精力,8,BARCOLORSET("浅蓝色"),RESULT:1)
+		ELSE
+			CALL PRINT_WORD_COLOR,@"【精力枯竭】","黄"
+		ENDIF
+		PRINTFORM 　Ｐ：{ABL:PLAYER:阴茎尺寸,3}mm 
+	ENDIF
+	PRINTL
+ENDIF
+CALL HALFLINE
+
+
+
+;-------------------------------------------------
+;ステータス画面用にフルネームがあればフルネーム+CALLNAME、なければCALLNAMEだけ返す
+@PRINT_NAME_STATUS
+
+IF NAME != "" && NAME != CALLNAME
+	PRINTFORM %NAME%（%CALLNAME%）
+ELSE
+	PRINTFORM %CALLNAME%
+ENDIF
+
+
+
+;-------------------------------------------------
+;ジョブ・身分・所属・種族などを返す
+@PRINT_AFFILIATION_DATA
+
+;元々データ表示
+IF ORIGINAL_STATUS
+	CALL PRINT_ORIGINAL_AFFILIATION_DATA
+	RETURN
+ENDIF
+
+;身分変更している場合
+IF CSTR:身份 != CSTR:初始值／身分
+	SIF !CFLAG:表示OFF／种族表示
+		CALL PRINT_TRIVE
+	PRINTFORM 【%CSTR:身份%】
+	RETURN
+ENDIF
+CALL PRINT_TRIVE
+
+;ここで帰る場合
+SIF CSTR:职业 == "" && CSTR:身份 == "" && CSTR:所属 == ""
+	RETURN
+PRINT 【
+
+;あなたの場合と標的中の場合以外なら「元」
+SIF TARGET != 0 && !CFLAG:追踪对象 && CSTR:状态／主人公的孩子 == ""
+	PRINT 原
+EXIST = 0
+IF CSTR:所属 != ""
+	PRINTFORM %CSTR:所属%
+	EXIST = 1
+ENDIF
+IF CSTR:身份 != ""
+	PRINTFORM %CSTR:身份%
+	EXIST = 1
+ENDIF
+IF CSTR:职业 != ""
+	SIF EXIST
+		PRINT ・
+	PRINTFORM %CSTR:职业%
+ENDIF
+PRINT 】
+
+
+
+;外見年齢表示
+@PRINT_VISUAL_AGE
+
+PRINTFORM 外表年龄：{CFLAG:外表年龄}岁 
+PRINTL
+
+
+
+;-------------------------------------------------
+;種族表示
+@PRINT_TRIVE
+
+PRINTFORM 【%CSTR:种族%】
+IF TALENT:神格
+	PRINT [神格]
+ELSEIF TALENT:天界种族
+	PRINT [天界种族]
+ELSEIF CFLAG:上位种族
+	PRINT [上等种族]
+ENDIF
+
+
+
+;-------------------------------------------------
+;役職を返す:FUNCTIONS
+@PRINT_POST(ARG)
+#FUNCTIONS
+#DIMS POST
+
+;CFLAG:家畜→430
+IF TALENT:业主
+	RETURNF "【主人】"
+ELSE
+	;430～440のフラグで表記できるものはそれ
+	FOR LOCAL,430,440
+		SIF !CFLAG:LOCAL
+			CONTINUE
+		POST = 【%CFLAGNAME:LOCAL%】
+		RETURNF POST
+	NEXT
+	
+	;違う場合はCSTR:陥落状態
+	RETURNF CSTR:陷落状态
+ENDIF
+
+
+
+;役職を返す:CALL型
+@PRINT_POST_C
+
+;捕獲してないときにここ来る場合はそのように
+IF CFLAG:追踪对象
+	SELECTCASE CFLAG:追踪对象
+	CASE 1
+		PRINT 【未捕获】
+	CASE 2
+		PRINT 【虏囚】
+	CASE 3
+		PRINT 【运输中】
+	ENDSELECT
+
+;自室か寮にいる場合は虚脱表示を優先する
+ELSEIF GROUPMATCH(CSTR:住处,"自室","寮") && CFLAG:虚脱
+	CALL PRINT_WORD_COLOR("【虚脱】","深紫")
+
+ELSEIF TALENT:业主
+	PRINT 【主人】
+ELSEIF GROUPMATCH(CSTR:状态／主人公的孩子,"成长中","成长后")
+	PRINT 【爱女】
+
+;CFLAG:家畜→430
+;430から順に　崩壊最優先のが便利
+ELSEIF CFLAG:家畜
+	CALL PRINT_WORD_COLOR("【家畜】","浅红色")
+ELSEIF CFLAG:洗脑
+	CALL PRINT_WORD_COLOR("【洗脑】","绿")
+ELSEIF CFLAG:崩坏
+	CALL PRINT_WORD_COLOR(" [崩坏] ","红")
+
+;隷属は乳牛堕ちより優先したい
+;CSTRへ移動した
+ELSEIF ＃陷落状态／隶属＃
+	CALL PRINT_SERVITUDE_HEART
+ELSEIF CFLAG:乳牛
+	CALL PRINT_WORD_COLOR("《乳牛》","桃")
+ELSE
+	SELECTCASE CSTR:陷落状态
+	CASE "恋慕"
+		CALL PRINT_WORD_COLOR("【恋慕】","桃")
+	CASE "陷落"
+		CALL PRINT_WORD_COLOR("【陷落】","浅蓝色")
+	CASE "屈服"
+		CALL PRINT_WORD_COLOR("【屈服】","黄")
+	CASE "拒绝"
+		PRINT 【拒绝】
+	CASEELSE
+		PRINT  [反抗] 
+	ENDSELECT
+ENDIF
+
+
+
+;状態を全て表示
+@PRINT_ALL_STATE
+
+;捕獲してないときにここ来る場合はそのように
+IF CFLAG:追踪对象
+	SELECTCASE CFLAG:追踪对象
+	CASE 1
+		PRINT 【未捕获】
+	CASE 2
+		PRINT 【虏囚】
+	CASE 3
+		PRINT 【运输中】
+	ENDSELECT
+	RETURN
+ENDIF
+
+SIF CFLAG:家畜
+	CALL PRINT_WORD_COLOR("【家畜】","浅红色")
+SIF CFLAG:洗脑
+	CALL PRINT_WORD_COLOR("【洗脑】","绿")
+SIF CFLAG:崩坏
+	CALL PRINT_WORD_COLOR(" [崩坏] ","红")
+IF TALENT:业主
+	PRINT 【主人】
+ELSEIF GROUPMATCH(CSTR:状态／主人公的孩子,"成长中","成长后")
+	PRINT 【爱女】
+ELSE
+	SELECTCASE CSTR:陷落状态
+	CASE "隶属"
+		CALL PRINT_SERVITUDE_HEART
+	CASE "恋慕"
+		CALL PRINT_WORD_COLOR("【恋慕】","桃")
+	CASE "陷落"
+		CALL PRINT_WORD_COLOR("【陷落】","浅蓝色")
+	CASE "屈服"
+		CALL PRINT_WORD_COLOR("【屈服】","黄")
+	CASE "拒绝"
+		PRINT 【拒绝】
+	CASEELSE
+		PRINT  [反抗] 
+	ENDSELECT
+ENDIF
+SIF CFLAG:乳牛
+	CALL PRINT_WORD_COLOR("《乳牛》","桃")
+SIF CFLAG:虚脱
+	CALL PRINT_WORD_COLOR("【虚脱】","深紫")
+
+
+
+;隷属表示
+@PRINT_SERVITUDE_HEART
+
+;FLAGで揃え表示か絵文字表示か変える
+IF FLAG:隶属时环绕显示形式
+	CALL PRINT_WORD_COLOR("❤隶属❤","桃")
+ELSE
+	CALL HEARTCB(0xD02830)
+	CALL PRINT_WORD_COLOR("隶属","桃")
+	CALL HEARTCB(0xD02830)
+ENDIF
+
+
+
+

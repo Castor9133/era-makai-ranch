@@ -1,0 +1,97 @@
+﻿
+;異世界衣服
+@ITEM_DETAIL_CLOTHE_OTHER_WORLD
+
+SELECTCASE ITEMNAME:SELECT_ITEM
+CASE "运动短裤套装"
+	CALL CLOTHE_DETAIL_COMMON()
+	PRINTL 在异世界的教育机构进行体操课时穿着，由露出腿部的短裤和短袖衬衫组成。
+	PRINTL 然而，据说即使在原世界，这种服装也几乎被废弃了。
+
+CASE "衬衫和牛仔裤"
+	CALL CLOTHE_DETAIL_COMMON()
+	PRINTL 在异世界不分性别都能穿的随便服装。
+
+CASE "衬衫和裙子"
+	CALL CLOTHE_DETAIL_COMMON()
+	PRINTL 异世界女性穿的服装。
+
+CASE "罩衣"
+	CALL JACKET_DETAIL_COMMON()
+	PRINTL 在异世界料理时，穿在其他衣物上类似围裙的衣服。
+
+CASE "囚衣"
+	CALL CLOTHE_DETAIL_COMMON()
+	PRINTL 在异世界犯罪，被送进收容所的人类身上穿的带横纹的衣服。
+	PRINTL 其目的是为了通过艳丽的颜色和花纹，即使越狱也能更容易地发现。
+
+CASE "哥特萝莉装"
+	CALL CLOTHE_DETAIL_COMMON()
+	PRINTL 异世界的少女穿的有华丽装饰和荷叶边的衣服。
+
+CASE "阿尔卑斯少女连衣裙"
+	CALL CLOTHE_DETAIL_COMMON()
+	PRINTL 异世界的「德国」和「奥地利」所穿的衣服。
+	PRINTL 近几年，祭祀时的侍者多穿这件衣服。
+
+CASE "护士服"
+	CALL CLOTHE_DETAIL_COMMON()
+	PRINTL 异世界的医疗工作者中，担任助理的女性穿的衣服。
+	PRINTL 白色的和白大褂差别不大。
+
+CASE "兔女郎装"
+	CALL CLOTHE_DETAIL_COMMON("仅限密封类型")
+	PRINTL 在异世界的赌博场所工作的女性穿的紧身衣型的衣服。
+	PRINTFORML 露出度高，凸显%SAVESTR:标识／乳房%的形状很清楚。
+
+CASE "水手服"
+	CALL CLOTHE_DETAIL_COMMON()
+	PRINTL 来自异世界教育机构的女性制服。
+	PRINTL 原始是男性水手的衣服。
+
+CASE "旗袍"
+	CALL CLOTHE_DETAIL_COMMON()
+	PRINTL 在异世界的「中国」国家穿的上下一体的衣服。
+	PRINTL 虽然正式的称呼是QiPao，但是觉得这么说也很难传达，所以用了这个标识。
+
+CASE "越南长袄"
+	CALL CLOTHE_DETAIL_COMMON()
+	PRINTL 在异世界的「越南」这个国家穿的上下一体的衣服。
+	PRINTL 虽然长度较长，但开衩较大，似乎比外观更容易移动。
+
+CASE "和服"
+	CALL CLOTHE_DETAIL_COMMON()
+	PRINTL 在异世界的「日本」国家穿的上下一体的衣服。
+	PRINTFORML 将腰带包裹在%SAVESTR:标识／乳房%并固定，似乎是正式的穿法，
+	PRINTFORML 特别是这些变体乳牛，因为它们的%SAVESTR:标识／乳房%很大，很多时候是不可能的
+	PRINTL 我觉得这种情况不要太在意，缠在腰上就可以了。
+	PRINTL 虽然上衣和下衣是一体的，但用要带固定，这样乳房膨胀时就不会撕裂。
+
+CASE "西装外套制服"
+	CALL CLOTHE_DETAIL_COMMON()
+	PRINTL 异世界的教育机构主要在冬季穿的制服。
+
+CASE "军服"
+	CALL CLOTHE_DETAIL_COMMON()
+	PRINTL 属于军队的人类穿的结实的制服。
+	PRINTL 装饰似乎根据等级而有所不同。
+
+CASE "骑士服"
+	CALL CLOTHE_DETAIL_COMMON()
+	PRINTL 在异世界乘坐交通工具时穿的上下连体非常耐用的衣物。
+	PRINTL 因紧贴身体且易于活动，似乎会被执行特殊任务的人类穿戴。
+	
+CASE "连帽衫"
+	CALL JACKET_DETAIL_COMMON()
+	PRINTL 在异世界可穿的带帽外衣。
+	PRINTL 主要在冬季作为保暖衣物穿着。
+	
+CASE "开襟毛衣"
+	CALL JACKET_DETAIL_COMMON()
+	PRINTL 在异世界可穿的用按钮扣合前面的外衣。
+	PRINTL 主要在冬季作为保暖衣物穿着。
+ENDSELECT
+
+
+
+

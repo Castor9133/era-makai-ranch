@@ -1,0 +1,61 @@
+﻿;**********************************************************
+;Semen(精液)の淫語
+;**********************************************************
+@SLANG_SEMEN(ARG)
+#FUNCTIONS
+
+;初期化
+EXIST = 0
+SLANGWORD =
+
+SIF GETBIT(FLAG:黑话前缀／精液,3) && RAND:100 < 10
+	SLANGWORD += "滚烫的"
+SIF GETBIT(FLAG:黑话前缀／精液,2) && RAND:100 < 10
+	SLANGWORD += "好热"
+SIF GETBIT(FLAG:黑话前缀／精液,1) && RAND:100 < 10
+	SLANGWORD += "粘糊糊的"
+SIF GETBIT(FLAG:黑话前缀／精液,0) && RAND:100 < 10
+	SLANGWORD += "浓厚"
+
+IF GETBIT(FLAG:黑话替换／精液,9)
+	EXIST ++
+	SIF RAND:100 < 50
+		RETURNF SAVESTR:标识／精液
+ENDIF
+SIF GETBIT(FLAG:黑话替换／精液,0) && EXIST
+	RESTART
+
+IF GETBIT(FLAG:黑话标识／精液,0) && RAND:100 < 50
+	SLANGWORD += "精液"
+	RETURNF SLANGWORD
+ELSEIF GETBIT(FLAG:黑话标识／精液,1) && RAND:100 < 50
+	SLANGWORD += "白浊液"
+	RETURNF SLANGWORD
+ELSEIF GETBIT(FLAG:黑话标识／精液,2) && RAND:100 < 30
+	SLANGWORD += "精汁"
+	RETURNF SLANGWORD
+ELSEIF GETBIT(FLAG:黑话标识／精液,3) && RAND:100 < 30
+	SLANGWORD += "怀孕汁"
+	RETURNF SLANGWORD
+ELSEIF GETBIT(FLAG:黑话标识／精液,4) && RAND:100 < 30
+	SLANGWORD += "Sperm"
+	RETURNF SLANGWORD
+ELSEIF GETBIT(FLAG:黑话标识／精液,5) && RAND:100 < 30
+	SLANGWORD += "欲望汁"
+	RETURNF SLANGWORD
+ELSEIF GETBIT(FLAG:黑话标识／精液,6) && RAND:100 < 30
+	SLANGWORD += "种子"
+	RETURNF SLANGWORD
+ELSEIF GETBIT(FLAG:黑话标识／精液,7) && RAND:100 < 30
+	SLANGWORD += "怀孕牛奶"
+	RETURNF SLANGWORD
+ELSEIF GETBIT(FLAG:黑话标识／精液,8) && RAND:100 < 30
+	SLANGWORD += "大鸡鸡牛奶"
+	RETURNF SLANGWORD
+ELSEIF GETBIT(FLAG:黑话标识／精液,9)
+	SLANGWORD += "雄性牛奶"
+	RETURNF SLANGWORD
+ENDIF
+RESTART
+
+

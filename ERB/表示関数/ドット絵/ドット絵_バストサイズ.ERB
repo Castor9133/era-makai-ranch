@@ -1,0 +1,42 @@
+﻿
+;バストサイズ
+@PRINT_PORTRAIT_BUSTSIZE
+
+IF TALENT:绝壁 || CSTR:状态／主人公的孩子 == "成长中"
+	PRTCHR_2 = 绝壁
+ELSEIF TALENT:贫乳
+	PRTCHR_2 = 贫乳
+	PRT:1 = <nonbutton pos='%PY_2%'><img src='%PRTCHR_1%_贫乳_%CSTR:颜色类别／肤色%' height='%PY_3_2%' ypos = '%PY_1%'></nonbutton>
+ELSEIF TALENT:普乳
+	PRTCHR_2 = 普乳
+	PRT:1 = <nonbutton pos='%PY_2%'><img src='%PRTCHR_1%_普乳_%CSTR:颜色类别／肤色%' height='%PY_3_2%' ypos = '%PY_1%'></nonbutton>
+ELSEIF TALENT:巨乳
+	PRTCHR_2 = 巨乳
+	PRT:1 = <nonbutton pos='%PY_2%'><img src='%PRTCHR_1%_巨乳_%CSTR:颜色类别／肤色%' height='%PY_3_2%' ypos = '%PY_1%'></nonbutton>
+ELSEIF TALENT:丰乳
+	PRTCHR_2 = 丰乳
+	PRT:1 = <nonbutton pos='%PY_2%'><img src='%PRTCHR_1%_丰乳_%CSTR:颜色类别／肤色%' height='%PY_3_2%' ypos = '%PY_1%'></nonbutton>
+ELSEIF TALENT:爆乳
+	PRTCHR_2 = 爆乳
+	PRT:1 = <nonbutton pos='%PY_2%'><img src='%PRTCHR_1%_爆乳_%CSTR:颜色类别／肤色%' height='%PY_3_2%' ypos = '%PY_1%'></nonbutton>
+
+;ドット絵はとりあえず神乳・魔乳を同じにするよ
+ELSEIF TALENT:神乳 || TALENT:魔乳
+	PRTCHR_2 = 神乳
+	PRT:1 = <nonbutton pos='%PY_2%'><img src='%PRTCHR_1%_神乳_%CSTR:颜色类别／肤色%' height='%PY_3_2%' ypos = '%PY_1%'></nonbutton>
+ELSEIF TALENT:超乳
+	PRTCHR_2 = 超乳
+	PRT:1 = <nonbutton pos='%PY_2%'><img src='%PRTCHR_1%_超乳_%CSTR:颜色类别／肤色%' height='%PY_3%' ypos = '%PY_1%'></nonbutton>
+ENDIF
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,103 @@
+﻿
+;射精箇所をコンフィグから参照
+;ARGS:場所
+@EJACULATION_PART_REF(ARGS)
+#DIMS PARTS
+
+;霊力or魔力注ぎ込みの場合常に中に出す
+SIF SOURCE:注入灵力量 || SOURCE:注入魔力量
+	RETURN 1
+
+;先にキャラ個別設定を見る
+PARTS = 个人设置／射精位置／%ARGS%
+
+;-1→毎回選ぶ
+IF CFLAG:PARTS < 0
+	CALL SELECT_EJACULATION_PART(ARGS)
+	
+	;デフォルトセット
+	SIF DEFAULT_SET
+		CFLAG:PARTS = RESULT
+	RETURN RESULT
+
+;+→選ばず返す
+ELSEIF CFLAG:PARTS > 0
+	RETURN CFLAG:PARTS
+ENDIF
+
+;全体コンフィグを見る→+なら選ばず返す
+PARTS = 射精位置／%ARGS%
+SIF FLAG:PARTS
+	RETURN FLAG:PARTS
+
+;ここまで来たら選択
+CALL SELECT_EJACULATION_PART(ARGS)
+PARTS = 个人设置／射精位置／%ARGS%
+SIF DEFAULT_SET
+	CFLAG:PARTS = RESULT
+RETURN RESULT
+
+
+
+;射精箇所選択
+;ARGS:場所
+@SELECT_EJACULATION_PART(ARGS)
+#DIM DYNAMIC SET
+#DIM EJACULATION_PART
+
+DEFAULT_SET = SET
+CALL PRINTL_WORD_COLOR,@"%CALLNAME:0%的射精逐渐接近…","桃"
+SOURCE:射精位置选择 = 1
+SELECTCASE ARGS
+CASE "Ｖ性交"
+	PRINTLC [ 0] 射在腔穴里面
+	PRINTLC [ 1] 拔出阴道射在外边
+	
+CASE "Ａ性交"
+	PRINTLC [ 0] 射在尻穴里面
+	PRINTLC [ 1] 拔出去射在外边
+	
+CASE "乳交"
+	IF ABL:胸围大小 < BUSTSIZE_普乳
+		PRINTLC [ 0] 就这样射在胸部上面
+	ELSE
+		PRINTLC [ 0] 乳内中出
+	ENDIF
+	PRINTLC [ 1] 射在胸部上
+	PRINTLC [ 2] 射在脸上
+	
+CASE "纵乳交"
+	PRINTLC [ 0] 乳内中出
+	PRINTLC [ 1] 射在胸部上
+	PRINTLC [ 2] 射在脸上
+	
+CASE "口交","深喉"
+	PRINTLC [ 0] 口内中出
+	PRINTLC [ 1] 射在脸上
+ENDSELECT
+
+;デフォルト設定の追加
+PRINTL
+PRINT [ 9] 设置此角色的默认值
+CALL PRINT_CHECKBOX(SET,1)
+INPUT
+
+;+1してRETURN候補に入れる
+EJACULATION_PART = RESULT +1
+
+;デフォルト設定
+SIF RESULT == 9
+	INVERTBIT SET,0
+
+;（縦）パイズリ以外は2だとダメ
+IF EJACULATION_PART == 3 && GROUPMATCH(ARGS,"乳交","纵乳交")
+	RETURN EJACULATION_PART
+
+ELSEIF EJACULATION_PART == 1 || EJACULATION_PART == 2
+	RETURN EJACULATION_PART
+ENDIF
+
+;012以外は消して再開
+CLEARLINE 4
+RESTART
+

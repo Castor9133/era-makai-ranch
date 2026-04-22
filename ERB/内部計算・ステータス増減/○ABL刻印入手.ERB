@@ -1,0 +1,542 @@
+﻿
+;ABL見て刻印つける
+@MARK_GET
+
+SIF !LINEISEMPTY()
+	PRINTL 
+SETCOLOR 0xFF70FF
+ALIGNMENT CENTER
+;淫乳
+;Ｂ感覚+Ｎ感覚20以上で100回絶頂
+IF ABL:Ｂ感觉 +ABL:Ｎ感觉 >= 20 && EX:Ｂ绝顶 +EX:Ｎ绝顶 >= 100 && !MARK:淫乳
+	MARK:淫乳 = 1
+	PRINTFORML %CALLNAME%沦为乳房刺激的俘虏…
+	CALL MARK_GET_HEAT("淫乳")
+	CALL MARK_GET_PRIDE_BREAK(5000)
+	RESTART
+ENDIF
+
+;淫核
+;Ｃ感覚10以上で100回絶頂
+IF ABL:Ｃ感觉 >= 10 && EX:Ｃ绝顶 >= 100 && !MARK:淫核
+	MARK:淫核 = 1
+	PRINTFORML %CALLNAME%沦为阴蒂刺激的俘虏…
+	CALL MARK_GET_HEAT("淫核")
+	CALL MARK_GET_PRIDE_BREAK(5000)
+	RESTART
+ENDIF
+
+;淫壺
+;挿入してないのに上がらないよう一応書く
+IF ABL:Ｖ感觉 >= 10 && EX:Ｖ绝顶 >= 100 && !MARK:淫壶 && GETBIT(＃Ｐ使用／Ｖ插入＃)
+	MARK:淫壶 = 1
+	PRINTFORML %CALLNAME%沦为%SAVESTR:标识／膣%刺激的俘虏…
+	CALL MARK_GET_HEAT("淫壶")
+	CALL MARK_GET_PRIDE_BREAK(5000)
+	RESTART
+ENDIF
+
+;淫尻
+IF ABL:Ａ感觉 >= 10 && EX:Ａ绝顶 >= 100 && !MARK:淫尻 && GETBIT(＃Ｐ使用／Ａ插入＃)
+	MARK:淫尻 = 1
+	PRINTFORML %CALLNAME%沦为%SAVESTR:标识／肛门%刺激的俘虏…
+	CALL MARK_GET_HEAT("淫尻")
+	CALL MARK_GET_PRIDE_BREAK(5000)
+	RESTART
+ENDIF
+
+;濃厚母乳
+;単にABL見ればOKじゃないかな
+;下位の刻印消すので一工夫
+IF ABL:母乳浓度 == 1 && !MARK:浓厚母乳
+	VARSET MARK,0,10,15
+	MARK:浓厚母乳 = 1
+	PRINTFORML 从%CALLNAME%那里开始能够榨取充满营养的%SAVESTR:标识／母乳%…
+	CALL MARK_GET_MILK("浓厚母乳")
+	RESTART
+ENDIF
+
+IF ABL:母乳浓度 == 2 && !MARK:上质母乳
+	VARSET MARK,0,10,15
+	MARK:上质母乳 = 1
+	PRINTFORML %CALLNAME%现在能够榨出更美味的%SAVESTR:标识／母乳%了…
+	CALL MARK_GET_MILK("上质母乳")
+	RESTART
+ENDIF
+
+IF ABL:母乳浓度 == 3 && !MARK:丰润母乳
+	VARSET MARK,0,10,15
+	MARK:丰润母乳 = 1
+	PRINTFORML 从%CALLNAME%那里能够挤出更丰富营养的%SAVESTR:标识／母乳%…
+	CALL MARK_GET_MILK("丰润母乳")
+	RESTART
+ENDIF
+
+IF ABL:母乳浓度 == 4 && !MARK:特浓母乳
+	VARSET MARK,0,10,15
+	MARK:特浓母乳 = 1
+	PRINTFORML 从%CALLNAME%那里能够挤出充足营养的%SAVESTR:标识／母乳%…
+	CALL MARK_GET_MILK("特浓母乳")
+	RESTART
+ENDIF
+
+IF ABL:母乳浓度 == 5 && !MARK:极品母乳
+	VARSET MARK,0,10,15
+	MARK:极品母乳 = 1
+	PRINTFORML 从%CALLNAME%那里开始能够榨取味道和营养都最高级的%SAVESTR:标识／母乳%…
+	CALL MARK_GET_MILK("极品母乳")
+	RESTART
+ENDIF
+
+;母乳生産力がしきい値で刻印追加、巨乳以上の必要あり　永久母乳ならサイズに関わらず
+IF ABL:母乳生产力 >= 5 && !MARK:乳罐 && (ABL:胸围大小 >= BUSTSIZE_巨乳 || MARK:绝顶魔力回复淫纹)
+	MARK:乳罐 = 1
+	PRINTFORML 经过多次榨乳，%CALLNAME%的%PRINT_BUST()%被调整为能够充分挤出%SAVESTR:标识／母乳%…
+	CALL MARK_GET_HEAT("乳罐")
+	CALL MARK_GET_PRIDE_BREAK_COW(2000)
+	
+	;計算のほうでWAIT判断するよ
+	CALL MILKTANK_CALC
+	RESTART
+ENDIF
+
+IF ABL:母乳生产力 >= 10 && !MARK:荷斯坦奶牛 && (ABL:胸围大小 >= BUSTSIZE_丰乳 || MARK:绝顶魔力回复淫纹)
+	MARK:荷斯坦奶牛 = 1
+	PRINTFORML 持续接受榨乳刺激的%CALLNAME%，身体逐渐适应成为乳牛，与本人意愿无关…
+	CALL MARK_GET_HEAT("荷斯坦奶牛")
+	CALL MARK_GET_PRIDE_BREAK_COW(2000)
+	CALL MILKTANK_CALC
+	RESTART
+ENDIF
+
+IF ABL:母乳生产力 >= 20 && !MARK:牛奶机 && (ABL:胸围大小 >= BUSTSIZE_爆乳 || MARK:绝顶魔力回复淫纹)
+	MARK:牛奶机 = 1
+	PRINTFORML 接受超越人类极限的榨乳刺激，%CALLNAME%的身体被改造成为能够被挤出%SAVESTR:标识／母乳%的状态…
+	CALL MARK_GET_HEAT("牛奶机")
+	CALL MARK_GET_PRIDE_BREAK_COW(4000)
+	CALL MILKTANK_CALC
+	RESTART
+ENDIF
+
+;搾乳中毒
+IF ABL:搾乳中毒 >= 10 && !MARK:搾乳中毒
+	MARK:搾乳中毒 = 1
+	PRINTFORML %CALLNAME%的身体因为被挤压%SAVESTR:标识／母乳%而获得了快感…
+	CALL MARK_GET_HEAT("搾乳中毒")
+	CALL MARK_GET_PRIDE_BREAK_COW(2000)
+	RESTART
+ENDIF
+
+;搾乳奴隷
+IF ABL:搾乳中毒 >= 15 && !MARK:搾乳奴隶
+	MARK:搾乳奴隶 = 1
+	PRINTFORML %CALLNAME%成了搾乳快感的俘虏…
+	CALL MARK_GET_HEAT("搾乳奴隶")
+	CALL MARK_GET_PRIDE_BREAK_COW(2000)
+	CALL PURPOSE_CHANGE_CALC("搾乳奴隶")
+	RESTART
+ENDIF
+
+;搾乳家畜
+IF ABL:搾乳中毒 >= 20 && !MARK:搾乳家畜
+	MARK:搾乳家畜 = 1
+	PRINTFORML %CALLNAME%沉溺于搾乳的快感，淫荡快感的脸上人的尊严已经烟消云散…
+	CALL MARK_GET_HEAT("搾乳家畜")
+	CALL MARK_GET_PRIDE_BREAK_COW(4000)
+	CALL PURPOSE_CHANGE_CALC("搾乳家畜")
+	RESTART
+ENDIF
+
+;テクニシャン
+IF ABL:技巧 >= 10 && !MARK:擅长做爱
+	MARK:擅长做爱 = 1
+	PRINTFORML %CALLNAME%逐渐适应性行为…
+	CALL MARK_GET_HEAT("擅长做爱")
+	RESTART
+ENDIF
+
+;床上手
+IF ABL:技巧 >= 20 && !MARK:擅长床技
+	MARK:擅长床技 = 1
+	PRINTFORML %CALLNAME%的性技更加娴熟，掌握了引导绝顶的技巧…
+	CALL MARK_GET_HEAT("擅长床技")
+	RESTART
+ENDIF
+
+;匠の技
+IF ABL:技巧 >= 30 && !MARK:性爱达人
+	MARK:性爱达人 = 1
+	PRINTFORML %CALLNAME%的性技精湛，达到了让淫魔都羡慕的境界…
+	CALL MARK_GET_HEAT("性爱达人")
+	RESTART
+ENDIF
+
+;母性的
+IF ABL:母性 >= 10 && !MARK:母性
+	MARK:母性 = 1
+	PRINTFORML 被吸吮了很多%SAVESTR:标识／乳房%，%CALLNAME%的母性被刺激了…
+	CALL MARK_GET_HEAT("母性")
+	CALL MARK_GET_PRIDE_BREAK_COW(1000)
+	RESTART
+ENDIF
+
+;母性本能開花
+IF ABL:母性 >= 20 && !MARK:母性本能觉醒
+	MARK:母性本能觉醒 = 1
+	PRINTFORML 被吸吮了很多%SAVESTR:标识／乳房%的%CALLNAME%仿佛母性本能开花结果了…
+	CALL MARK_GET_HEAT("母性本能觉醒")
+	CALL MARK_GET_PRIDE_BREAK_COW(1000)
+	RESTART
+ENDIF
+
+;みんなのママ
+IF ABL:母性 >= 30 && !MARK:大家的麻麻
+	MARK:大家的麻麻 = 1
+	PRINTFORML %CALLNAME%因为过于强大的母性而常常寻找需要宠爱的伴侣…
+	CALL MARK_GET_HEAT("大家的麻麻")
+	CALL MARK_GET_PRIDE_BREAK_COW(1000)
+	RESTART
+ENDIF
+
+;奉仕中毒
+IF ABL:奉仕精神 >= 10 && !MARK:奉仕中毒
+	MARK:奉仕中毒 = 1
+	PRINTFORML %CALLNAME%开始为奉仕感到高兴…
+	CALL MARK_GET_HEAT("奉仕中毒")
+	CALL MARK_GET_PRIDE_BREAK(1500)
+	RESTART
+ENDIF
+
+;ご奉仕上手
+IF ABL:奉仕精神 >= 20 && !MARK:擅长侍奉
+	MARK:擅长侍奉 = 1
+	PRINTFORML %CALLNAME%开始对奉仕感到强烈的喜悦…
+	CALL MARK_GET_HEAT("擅长侍奉")
+	CALL MARK_GET_PRIDE_BREAK(1500)
+	RESTART
+ENDIF
+
+;ご奉仕雌奴隷
+IF ABL:奉仕精神 >= 30 && !MARK:侍奉的雌奴隶
+	MARK:侍奉的雌奴隶 = 1
+	PRINTFORML %CALLNAME%开始认为对主人的奉仕才是自己存在的意义，经常只想着要竭尽全力…
+	CALL MARK_GET_HEAT("侍奉的雌奴隶")
+	CALL MARK_GET_PRIDE_BREAK(5000)
+	RESTART
+ENDIF
+
+;膣内射精中毒
+IF ABL:膣内射精中毒 >= 5 && !MARK:膣内射精中毒
+	MARK:膣内射精中毒 = 1
+	PRINTFORML %CALLNAME%的%SAVESTR:标识／膣%腔内记住了射精的快感…
+	CALL MARK_GET_HEAT("膣内射精中毒")
+	CALL MARK_GET_PRIDE_BREAK(2000)
+	RESTART
+ENDIF
+
+;搾精おまんこ
+IF ABL:膣内射精中毒 >= 10 && !MARK:榨精淫穴
+	MARK:榨精淫穴 = 1
+	PRINTFORML %CALLNAME%沦为腔内射精的俘虏…
+	CALL MARK_GET_HEAT("榨精淫穴")
+	CALL MARK_GET_PRIDE_BREAK(2000)
+	RESTART
+ENDIF
+
+;精液便女
+IF ABL:膣内射精中毒 >= 20 && !MARK:精液便女
+	MARK:精液便女 = 1
+	PRINTFORML %CALLNAME%堕入腔内射精快感，淫荡快感的脸上人的尊严已经烟消云散…
+	CALL MARK_GET_HEAT("精液便女")
+	CALL MARK_GET_PRIDE_BREAK(5000)
+	RESTART
+ENDIF
+
+;尻穴射精中毒
+IF ABL:尻穴射精中毒 >= 5 && !MARK:尻穴射精中毒
+	MARK:尻穴射精中毒 = 1
+	PRINTFORML %CALLNAME%的%SAVESTR:标识／肛门%记住了尻穴射精的快感…
+	CALL MARK_GET_HEAT("尻穴射精中毒")
+	CALL MARK_GET_PRIDE_BREAK(2000)
+	RESTART
+ENDIF
+
+;おしりまんこ
+IF ABL:尻穴射精中毒 >= 10 && !MARK:榨精尻穴
+	MARK:榨精尻穴 = 1
+	PRINTFORML %CALLNAME%沦为尻穴射精的俘虏…（俗称榨精屁穴）
+	CALL MARK_GET_HEAT("榨精尻穴")
+	CALL MARK_GET_PRIDE_BREAK(2000)
+	RESTART
+ENDIF
+
+;尻穴便器
+IF ABL:尻穴射精中毒 >= 20 && !MARK:尻穴便器
+	MARK:尻穴便器 = 1
+	PRINTFORML %CALLNAME%堕入尻穴射精快感，淫荡快感的脸上人的尊严已经烟消云散…
+	CALL MARK_GET_HEAT("尻穴便器")
+	CALL MARK_GET_PRIDE_BREAK(5000)
+	RESTART
+ENDIF
+
+;乳内射精中毒
+IF ABL:乳内射精中毒 >= 5 && !MARK:乳内射精中毒
+	MARK:乳内射精中毒 = 1
+	PRINTFORML %CALLNAME%的%SAVESTR:标识／乳房%地记住了乳内射精的快感…
+	CALL MARK_GET_HEAT("乳内射精中毒")
+	CALL MARK_GET_PRIDE_BREAK(2000)
+	RESTART
+ENDIF
+
+;おっぱいまんこ
+IF ABL:乳内射精中毒 >= 10 && !MARK:乳穴
+	MARK:乳穴 = 1
+	PRINTFORML %CALLNAME%沦为乳内射精的俘虏…
+	CALL MARK_GET_HEAT("乳穴")
+	CALL MARK_GET_PRIDE_BREAK(2000)
+	RESTART
+ENDIF
+
+;パイズリオナホ
+IF ABL:乳内射精中毒 >= 20 && !MARK:乳交飞机杯
+	MARK:乳交飞机杯 = 1
+	PRINTFORML %CALLNAME%堕入乳内射精快感，淫荡快感的脸上人的尊严已经烟消云散…
+	CALL MARK_GET_HEAT("乳交飞机杯")
+	CALL MARK_GET_PRIDE_BREAK(5000)
+	RESTART
+ENDIF
+
+
+
+
+;触手中毒
+IF ABL:触手中毒 >= 5 && !MARK:触手中毒
+	MARK:触手中毒 = 1
+	PRINTFORML 触手刺激的快感深深镌刻在%CALLNAME%的身上…
+	CALL MARK_GET_HEAT("触手中毒")
+	CALL MARK_GET_PRIDE_BREAK(2000)
+	RESTART
+ENDIF
+
+;触手の虜
+IF ABL:触手中毒 >= 10 && !MARK:触手的俘虏
+	MARK:触手的俘虏 = 1
+	PRINTFORML %CALLNAME%沦为触手刺激的俘虏…
+	CALL MARK_GET_HEAT("触手的俘虏")
+	CALL MARK_GET_PRIDE_BREAK(2000)
+	RESTART
+ENDIF
+
+;触手の苗床
+IF ABL:触手中毒 >= 20 && !MARK:触手的苗床
+	MARK:触手的苗床 = 1
+	PRINTFORML %CALLNAME%变成了没有触手就无法生存的身体…
+	CALL MARK_GET_HEAT("触手的苗床")
+	CALL MARK_GET_PRIDE_BREAK(5000)
+	RESTART
+ENDIF
+
+;精液中毒
+IF ABL:精液中毒 >= 5 && !MARK:精液中毒
+	MARK:精液中毒 = 1
+	PRINTFORML %CALLNAME%的身体因为%SAVESTR:标识／精液%的气味而变得兴奋…
+	CALL MARK_GET_HEAT("精液中毒")
+	CALL MARK_GET_PRIDE_BREAK(2000)
+	RESTART
+ENDIF
+
+;精液依存
+IF ABL:精液中毒 >= 10 && !MARK:精液依赖
+	MARK:精液依赖 = 1
+	PRINTFORML %CALLNAME%的身体在没有%SAVESTR:标识／精液%的气味时变得不安宁…
+	CALL MARK_GET_HEAT("精液依赖")
+	CALL MARK_GET_PRIDE_BREAK(2000)
+	RESTART
+ENDIF
+
+;精液崇拝
+IF ABL:精液中毒 >= 20 && !MARK:精液崇拜
+	MARK:精液崇拜 = 1
+	PRINTFORML 因为太喜欢%SAVESTR:标识／精液%，%CALLNAME%沦落到向那些赐予%SAVESTR:标识／精液%的雄性谄媚奉承的地步…
+	CALL MARK_GET_HEAT("精液崇拜")
+	CALL MARK_GET_PRIDE_BREAK(5000)
+	RESTART
+ENDIF
+
+;精飲中毒
+IF ABL:精饮中毒 >= 5 && !MARK:精饮中毒
+	MARK:精饮中毒 = 1
+	PRINTFORML %CALLNAME%已经不觉得%SAVESTR:标识／精液%喝下去有苦味了…
+	CALL MARK_GET_HEAT("精饮中毒")
+	CALL MARK_GET_PRIDE_BREAK(2000)
+	RESTART
+ENDIF
+
+;精飲味覚
+IF ABL:精饮中毒 >= 10 && !MARK:精饮味觉
+	MARK:精饮味觉 = 1
+	PRINTFORML %CALLNAME%开始觉得%SAVESTR:标识／精液%非常美味…
+	CALL MARK_GET_HEAT("精饮味觉")
+	CALL MARK_GET_PRIDE_BREAK(2000)
+	RESTART
+ENDIF
+
+;精飲渇望
+IF ABL:精饮中毒 >= 20 && !MARK:精饮渇望
+	MARK:精饮渇望 = 1
+	PRINTFORML %CALLNAME%已经堕落到恳求让她喝%SAVESTR:标识／精液%的地步了…
+	CALL MARK_GET_HEAT("精饮渇望")
+	CALL MARK_GET_PRIDE_BREAK(5000)
+	RESTART
+ENDIF
+
+;吞精兽（精饮＋精液中毒双方高）
+IF ABL:精饮中毒 >= 12 && ABL:精液中毒 >= 12 && !MARK:吞精兽
+	MARK:吞精兽 = 1
+	PRINTFORML %CALLNAME%对%SAVESTR:标识／精液%的渴求已经刻进骨髓，像野兽般追逐每一滴浊液…
+	CALL MARK_GET_HEAT("吞精兽")
+	CALL MARK_GET_PRIDE_BREAK(4000)
+	RESTART
+ENDIF
+
+;口便器（重度精饮＋经验）
+IF ABL:精饮中毒 >= 22 && EX:精饮经验 >= 80 && MARK:精饮渇望 && !MARK:口便器
+	MARK:口便器 = 1
+	PRINTFORML %CALLNAME%的嘴已只为承接精液而存在，沦为彻底的口便器…
+	CALL MARK_GET_HEAT("口便器")
+	CALL MARK_GET_PRIDE_BREAK(5000)
+	RESTART
+ENDIF
+
+;輪姦中毒
+IF ABL:轮奸中毒 >= 5 && !MARK:轮奸中毒
+	MARK:轮奸中毒 = 1
+	PRINTFORML %CALLNAME%因为被轮奸而更有感觉了…
+	CALL MARK_GET_HEAT("轮奸中毒")
+	CALL MARK_GET_PRIDE_BREAK(2000)
+	RESTART
+ENDIF
+
+;肉便器
+IF ABL:轮奸中毒 >= 10 && !MARK:肉便器
+	MARK:肉便器 = 1
+	PRINTFORML %CALLNAME%成了轮奸的俘虏…
+	CALL MARK_GET_HEAT("肉便器")
+	CALL MARK_GET_PRIDE_BREAK(2000)
+	RESTART
+ENDIF
+
+
+
+;被虐中毒
+IF ABL:受虐癖 >= 5 && !MARK:被虐中毒
+	MARK:被虐中毒 = 1
+	PRINTFORML %CALLNAME%通过疼痛获得了快感…
+	CALL MARK_GET_HEAT("被虐中毒")
+	CALL MARK_GET_PRIDE_BREAK(2000)
+	RESTART
+ENDIF
+
+;ドＭ
+IF ABL:受虐癖 >= 10 && !MARK:抖Ｍ
+	MARK:抖Ｍ = 1
+	PRINTFORML %CALLNAME%成了被虐快感的俘虏…
+	CALL MARK_GET_HEAT("抖Ｍ")
+	CALL MARK_GET_PRIDE_BREAK(2000)
+	RESTART
+ENDIF
+
+;雌豚
+IF ABL:受虐癖 >= 20 && !MARK:母猪
+	MARK:母猪 = 1
+	PRINTFORML %CALLNAME%堕落于被虐快感之中，淫荡快感的脸上人的尊严已经烟消云散…
+	CALL MARK_GET_HEAT("母猪")
+	CALL MARK_GET_PRIDE_BREAK(5000)
+	RESTART
+ENDIF
+
+;レズ中毒
+IF ABL:百合癖 >= 5 && !MARK:百合中毒
+	MARK:百合中毒 = 1
+	PRINTFORML %CALLNAME%从同性的刺激中获得了更强的快感，又以身懂得了向同性刺激的方法…
+	CALL MARK_GET_HEAT("百合中毒")
+	CALL MARK_GET_PRIDE_BREAK(1500)
+	RESTART
+ENDIF
+
+;レズ依存
+IF ABL:百合癖 >= 10 && !MARK:百合依赖
+	MARK:百合依赖 = 1
+	PRINTFORML %CALLNAME%完全迷上了百合调教…
+	CALL MARK_GET_HEAT("百合依赖")
+	CALL MARK_GET_PRIDE_BREAK(1500)
+	RESTART
+ENDIF
+
+;百合姫
+IF ABL:百合癖 >= 20 && !MARK:百合姫
+	MARK:百合姫 = 1
+	PRINTFORML %CALLNAME%对女性身体的舒服之处了如指掌，轻而易举地将女性引导向绝顶…
+	PRINTFORML 另外自己也觉得接受百合调教是至高无上的喜悦…
+	CALL MARK_GET_HEAT("百合姫")
+	CALL MARK_GET_PRIDE_BREAK(5000)
+	RESTART
+ENDIF
+RESETCOLOR
+ALIGNMENT LEFT
+
+
+
+;特定刻印入手時の抵抗心崩壊
+@MARK_GET_PRIDE_BREAK(ARG)
+
+;キャラメイク直後に来てる場合はスキップ
+SIF FLAG:正在化妆角色
+	RETURN
+DAMAGE = ARG
+CALL MIND_BASE_DIRECT_MINUS("抵抗心",DAMAGE)
+CALL MIND_BASE_DIRECT_MINUS("尊严",DAMAGE)
+CALL MIND_BASE_DIRECT_MINUS("理性",DAMAGE)
+CALL MIND_PALAM_AFTER_PRINT(1)
+
+
+
+;乳牛化
+@MARK_GET_PRIDE_BREAK_COW(ARG)
+
+SIF FLAG:正在化妆角色
+	RETURN
+DAMAGE = ARG
+LOVE = ARG /2
+CALL MIND_BASE_DIRECT_MINUS("抵抗心",DAMAGE)
+CALL MIND_BASE_DIRECT_MINUS("尊严",DAMAGE)
+CALL MIND_BASE_DIRECT_MINUS("理性",DAMAGE)
+CALL MIND_BASE_DIRECT_PLUS("乳牛堕落",LOVE)
+CALL MIND_PALAM_AFTER_PRINT(1)
+
+
+
+;刻印のハート囲み　ARGS:刻印名
+@MARK_GET_HEAT(ARGS)
+
+CALL HEARTCB(0xD02830)
+PRINTFORM %CALLNAME%变成了【%ARGS%】
+CALL HEARTCB(0xD02830)
+PRINTL
+ALIGNMENT LEFT
+
+;刻印入手フラグでWAIT挟むか決める
+TFLAG:刻印入手 = 1
+
+
+
+;刻印のハート囲み母乳濃度版　ARGS:刻印名
+@MARK_GET_MILK(ARGS)
+
+CALL HEARTCB(0xD02830)
+PRINTFORM 从%CALLNAME%中挤出的%SAVESTR:标识／母乳%变成了【%ARGS%】
+CALL HEARTCB(0xD02830)
+PRINTL
+ALIGNMENT LEFT
+TFLAG:刻印入手 = 1
+

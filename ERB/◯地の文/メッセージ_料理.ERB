@@ -1,0 +1,169 @@
+﻿
+;作る様子地の文
+@DINNER_COOKING_BEFORE_MESSAGE
+
+;あなた
+IF !TARGET
+	PRINTFORML %CALLNAME%决定为自己和奴隶们做晚餐。
+	RETURN
+ENDIF
+
+;初回か違うか
+IF !EXP:执行次数／料理
+	PRINTFORML 命令%CALLNAME%，为%CALLNAME:0%和奴隶们做晚餐。
+ELSE
+	PRINTFORML %CALLNAME%站在厨房为%CALLNAME:0%和奴隶们做晚饭。
+ENDIF
+PRINTL
+
+
+
+;搾乳前地の文
+@DINNER_LACTATION_BEFORE_MESSAGE
+
+PRINTFORML 命令%CALLNAME%使用自己的%SAVESTR:标识／母乳%制作料理…
+IF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／隶属＃
+	;ピンクは発情色
+	SETCOLOR 0xFF70FF
+	
+	;回数による
+	IF EXP:母乳料理 >= 10
+		PRINTFORM 或许是察觉到了%CALLNAME:0%的要求，%CALLNAME%自然而然地
+	ELSEIF EXP:母乳料理
+		PRINTFORM %CALLNAME%露出了发情的表情
+	ELSE
+		PRINTFORM %CALLNAME%则露出了一些惊讶的表情，但很快就变成了发情的表情。
+	ENDIF
+	
+ELSEIF ＃陷落状态／恋慕以上＃
+	IF EXP:母乳料理 >= 10
+		PRINTFORM 或许是察觉到了%CALLNAME:0%的要求，%CALLNAME%自然而然地
+	ELSEIF EXP:母乳料理
+		PRINTFORM %CALLNAME%脸上浮现出微笑
+	ELSE
+		PRINTFORM %CALLNAME%似乎很惊讶，但也很困惑
+	ENDIF
+
+ELSEIF ＃陷落状态／陷落以上＃
+	IF EXP:母乳料理 >= 10
+		PRINTFORM %CALLNAME%虽然目瞪口呆，但动作娴熟
+	ELSEIF EXP:母乳料理
+		PRINTFORM %CALLNAME%叹了口气，然后表情不悦地
+	ELSE
+		PRINTFORML …%CALLNAME%花了一些时间理解%CALLNAME:0%在说什么，
+		PRINT 然后尽管感到困惑，但
+	ENDIF
+
+;最低限屈服のはず
+ELSE
+	IF EXP:母乳料理 >= 10
+		PRINTFORM %CALLNAME%虽然目瞪口呆，但动作娴熟
+	ELSEIF EXP:母乳料理
+		PRINTFORM %CALLNAME%眼神蔑视地看着%CALLNAME:0%，同时
+	ELSE
+		PRINTFORML …%CALLNAME%花了一些时间理解%CALLNAME:0%在说什么，
+		PRINT 带着屈辱的表情
+	ENDIF
+ENDIF
+PRINTFORM 把%SLANG_B()%露出在碗里了…
+CALL HEARTCB(0xD02830)
+PRINTL
+RESETCOLOR
+
+
+
+;搾乳開始地の文
+@DINNER_LACTATION_BEGIN_MESSAGE
+
+IF LACTATION_ASSIST
+	PRINTFORML 为了让%CALLNAME%的%SLANG_MILK()%更好地流出，一边揉着%SLANG_B()%
+	PRINTFORML 同时用手捏着%SLANG_N()%，往碗里挤出%SAVESTR:标识／母乳%…
+ELSE
+	PRINTFORML %CALLNAME%揉捏自己的%SLANG_B()%，玩弄自己的%SLANG_N()%，
+	PRINTFORML 把%SLANG_MILK()%挤到碗里去了…
+ENDIF
+PRINTL
+
+
+
+;搾乳後地の文
+@DINNER_LACTATION_AFTER_MESSAGE
+
+;絶頂回数を持ってこれるはず
+IF EX:总绝顶 >= 30
+	PRINTFORML 进行了数十次搾乳绝顶，%CALLNAME%变得软弱无力…站起身来花费了一些时间。
+
+;あなたに搾乳された
+ELSEIF !PLAYER
+	PRINTFORM 被%CALLNAME:0%压榨%SAVESTR:标识／母乳%，%CALLNAME%
+	IF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／恋慕以上＃ || MARK:搾乳奴隶
+		PRINTL 带着恍惚的表情…
+	ELSEIF TALENT:胆怯 || TALENT:悲观
+		PRINTL 由于羞耻差点哭了出来…
+	ELSE
+		PRINTL 面露屈辱的表情…
+	ENDIF
+ELSE
+	PRINTFORM %SAVESTR:标识／母乳%已榨完的%CALLNAME%
+	IF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／恋慕以上＃ || MARK:搾乳奴隶
+		PRINTFORML 抑制想要触摸%SAVESTR:标识／乳房%的欲望，开始料理…
+	ELSEIF TALENT:胆怯 || TALENT:悲观
+		PRINTL 带着羞耻的泪水，开始了料理…
+	ELSE
+		PRINTL 虽然脸上露出屈辱的表情，但还是开始了料理…
+	ENDIF
+ENDIF
+PRINTW
+
+
+
+;料理の様子地の文
+@DINNER_COOKING_ACTION_MESSAGE
+
+;あなたは表示しない
+SIF !TARGET
+	RETURN
+
+;初回かどうか、母乳料理か、愛情度
+PRINTL
+IF MILK_DINNER
+	;愛情度
+	IF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／恋慕以上＃
+		PRINTFORML %CALLNAME%想让%CALLNAME:0%吃使用了自己的%SAVESTR:标识／母乳%的料理，
+		
+		;上手さ
+		IF ABL:料理 >= 8
+			PRINTL 比平时花更多的时间，用更多的爱心去做料理…
+		ELSEIF ABL:料理 >= 4
+			PRINTFORML 为了得到%CALLNAME:0%的喜悦，竭尽全力地投入爱情去做料理…
+		ELSE
+			PRINTL 勉强继续进行烹饪，但…看起来相当危险…
+		ENDIF
+	ELSE
+		PRINTFORML %CALLNAME%直面穿着自己的%SAVESTR:标识／母乳%为%CALLNAME:0%烹饪的食物，
+		IF ABL:料理 >= 8
+			PRINTL 虽然并不上心，但料理的技术确实不错，弥漫着浓郁的香气。
+		ELSEIF ABL:料理 >= 4
+			PRINTL 用不上心的表情进行料理。
+		ELSE
+			PRINTL 不情愿地进行着料理…看着很危险…
+		ENDIF
+	ENDIF
+ELSEIF !EXP:执行次数／料理
+	IF ABL:料理 >= 8
+		PRINTL 似乎有过在地面料理的经验，并滔滔不绝地动起了手脚。
+	ELSEIF ABL:料理 >= 4
+		PRINTL 多少有点料理经验。
+	ELSE
+		PRINTL …看起来进展不是很顺利。
+	ENDIF
+ELSE
+	IF ABL:料理 >= 8
+		PRINTL 迅速地动着手，一眨眼间料理就做好了。
+	ELSEIF ABL:料理 >= 4
+		PRINTL 好像已经习惯了。
+	ELSE
+		PRINTL …看着很危险…
+	ENDIF
+ENDIF
+

@@ -1,0 +1,90 @@
+﻿
+; 专用事件示例（真的很空）
+; 对 CFLAG:专用设置／事件 grep 可知在何处触发（仍很空）
+; 若要在多种场景挂专用事件，可 ↑ 搜索参考后自行追加
+
+; ======================================
+; 也可与口上同文件，但可读性较差故拆分到此。
+
+; 欢迎众口上作者投稿，故保留作者栏与许可证说明。
+
+; 专用事件写法示例
+; 对应 识别名_原作：斯蕾_era魔界牧场
+;口上作者：polt
+;本口上内容遵循 CC BY-NC（非商用可自由改造）
+;（creativecommons.org/licenses/by-nc/4.0/deed.ja）
+
+;加笔者：
+;有加笔请在此注明。
+; ======================================
+
+; 供专用事件开关检测是否存在（函数体宜空）
+@EX_EVENT_EXIST_斯蕾_era魔界牧场
+
+
+
+; 例：调教开始时的特殊处理
+@EX_TRAIN_BEFORE_斯蕾_era魔界牧场
+
+; 在此编写处理逻辑
+; 本例：仅对斯蕾在调教开始时触发并设为恋慕（演示用）
+; 虽是专用，仍建议用 KOJO_PRINT 串口上以便用口上色与转义
+
+; 已恋慕须 RETURN，否则会反复触发
+SIF ＃陷落状态／恋慕以上＃
+	RETURN
+
+; 口上逻辑需先写入状态
+CSTR:陷落状态 = 恋慕
+CFLAG:无抵抗 = 1
+CALL DROP_OUT_MIND
+MAXBASE:好感度 = BASE_FALLINLOVE_FAV -1
+BASE:好感度 ++
+
+; 口上总开关或角色口上关闭时须兜底；无专用口上时同理
+IF !FLAG:口上显示 || !CFLAG:口上显示 || !CFLAG:专用设置／事件
+	PRINTFORMW 呼唤%CALLNAME%，%CALLNAME%踌躇着张开嘴巴…
+	PRINTFORML 来到魔界一筹莫展之际被%CALLNAME:0%捡起表达感谢…
+	PRINTFORML %CALLNAME:0%表达了对%CALLNAME%作为『男性』的喜爱。
+ELSE
+	CALL KOJO_PRINT("恋慕化EX","1")
+	PRINTFORMW 呼唤%CALLNAME%，%CALLNAME%踌躇着张开嘴巴…
+	CALL KOJO_PRINT("恋慕化EX","2")
+	CALL KOJO_PRINT("恋慕化EX","3")
+	PRINTW
+	CALL KOJO_PRINT("恋慕化EX","4")
+	CALL KOJO_PRINT("恋慕化EX","5")
+	CALL KOJO_PRINT("恋慕化EX","6")
+	PRINTW
+	CALL KOJO_PRINT("恋慕化EX","7")
+	CALL KOJO_PRINT("恋慕化EX","8")
+	PRINTL
+	PRINTLC [0] 摸摸脑袋
+	PRINTLC [1] 接吻
+	INPUT
+	IF RESULT
+		KISS_PLAYER = %CALLNAME:0%
+		SOURCE:接吻 = 1
+		CALL LOST_VARGIN
+		CALL LOST_VARGIN_PLAYER
+		CALL KOJO_PRINT("恋慕化EX","接吻1")
+		CALL LOST_VARGIN_MIND_DAMAGE
+		SIF !EXP:经验次数／主人公／接吻
+			FLAG:主人公经验人数／接吻 ++
+		EXP:经验次数／主人公／接吻 ++
+		SOURCE:接吻 = 0
+	ELSE
+		CALL KOJO_PRINT("恋慕化EX","摸头1")
+		CALL KOJO_PRINT("恋慕化EX","摸头2")
+		CALL KOJO_PRINT("恋慕化EX","摸头3")
+	ENDIF
+	CALL KOJO_PRINT("恋慕化EX","9")
+ENDIF
+CALL PRINTL_WORD_COLOR,@"%CALLNAME%变成了【恋慕】。","桃"
+PRINTW
+; 最后置标志，供后续判定本演示事件已走过
+FLAG:特殊事件发生 = 1
+
+
+
+

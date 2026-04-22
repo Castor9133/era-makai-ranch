@@ -1,0 +1,154 @@
+﻿
+;手動入力
+;ARGS→CHANGE_STATE
+@PLAYER_DATA_CONFIG_INPUT_MANUAL(ARGS)
+
+;奴隷の手動キャラメイクを流用できる部分はそのまま使っちゃう
+SELECTCASE ARGS
+CASE "胸围大小","体型","肤色","第一人称"
+	CALL SELF_CHARA_MAKE_PROFILE_INPUT_MANUAL(ARGS)
+
+{
+CASE "发色","头发特征","发型","颜色编码／发","阴毛","右瞳色","左瞳色","颜色编码／右目","颜色编码／左目",
+"瞳孔形状","眼睛特征","乳房弹性","乳头颜色","颜色编码／乳头"
+}
+	CALL SELF_CHARA_MAKE_APPEARAINCE_INPUT_MANUAL(ARGS)
+
+CASE "初经验／Ｖ","初经验／Ａ","初经验／Ｍ性交","初经验／乳交","初经验／接吻"
+	CALL SELF_CHARA_MAKE_SENSITIVE_INPUT_MANUAL(ARGS)
+
+
+;名前はあなたの場合別個必要
+CASE "名称"
+	PRINTL 请输入名称。
+	INPUTS
+	IF RESULTS != ""
+		CALLNAME = %RESULTS%
+		IF NAME != ""
+			PRINTL 重置全名？
+			CALL ASK_YN
+			SIF !RESULT
+				NAME =
+		ENDIF
+	ENDIF
+
+CASE "全名"
+	PRINTL 请输入全名。
+	INPUTS
+	NAME = %RESULTS%
+
+CASE "语气"
+	PRINTL 请选择要使用的随意语气程度。
+	PRINTL
+	PRINTLC [ 0] 始终使用礼貌语气
+	PRINTLC [ 1] 区分语气（对成人居民使用礼貌语气）
+	PRINTL [ 2] 始终使用随意语气
+	BINPUT
+	SELECTCASE RESULT
+	CASE 0
+		SAVESTR:主人公语气 = 始终礼貌
+	CASE 1
+		SAVESTR:主人公语气 = 区分使用
+	CASE 2
+		SAVESTR:主人公语气 = 常时粉碎
+	ENDSELECT
+
+CASE "种族"
+	PRINTL 请输入种族名。（仅更改显示内容）
+	INPUTS
+	CSTR:种族 = %RESULTS%
+
+CASE "颜色编码／口上"
+	CALL EDIT_COLOR_CODE(CFLAG:颜色编码／口上,1)
+	SIF RESULT
+		CFLAG:颜色编码／口上 = RESULT
+
+CASE "身高"
+	;EXモードが有効かどうかで見ることにした
+	PRINTL 请输入数字高度。（单位：mm）
+	IF !FLAG:EX模式
+		;自動的にオトコ
+		PRINTFORML （{MALE_HEIGHT_MAX_娇小 +1}～{MALE_HEIGHT_MAX_高大}：请在标准～高大之间输入）
+		INPUT
+		IF RESULT > MALE_HEIGHT_MAX_娇小 && RESULT <= MALE_HEIGHT_MAX_高大
+			CFLAG:身高 = RESULT
+			CALL HEIGHT_CSTR_CALC
+		ENDIF
+	ELSE
+		; 下限を幼児体系まで拡張。これによってロリショタ判定が利かなくなるので統一しました。
+		;下限10に、しきい値表示を追加
+		PRINTFORML （请在10～{MALE_HEIGHT_MAX_高大}之间输入）
+		PRINTFORML ＜幼儿体型：{HEIGHT_MAX_妖精体型 +1}～　成年男性标准：{MALE_HEIGHT_MAX_娇小 +1}～）
+		INPUT
+		IF RESULT >= 10 && RESULT <= MALE_HEIGHT_MAX_高大
+			CFLAG:身高 = RESULT
+			CALL HEIGHT_CSTR_CALC(1)
+		ENDIF
+	ENDIF
+
+CASE "两角"
+	INVERTBIT TALENT:两角,0
+CASE "眼镜"
+	INVERTBIT EQUIP:眼镜,0
+	IF EQUIP:眼镜
+		EQUIP:装备中ID／眼 = GETNUM(EQUIP,"眼镜")
+	ELSE
+		EQUIP:装备中ID／眼 = 0
+	ENDIF
+
+CASE "外表年龄"
+	;ここもEXモード
+	PRINTL 请输入外表年龄的数值。
+	IF !FLAG:EX模式
+		PRINTFORML （{VISUAL_AGE_CHILD_MAX +1}～{VISUAL_AGE_ADULT_MAX}之间输入）
+		INPUT
+		SIF RESULT > VISUAL_AGE_CHILD_MAX && RESULT <= VISUAL_AGE_ADULT_MAX
+			CFLAG:外表年龄 = RESULT
+	ELSE
+		; 下限拡張。これによってロリショタ判定が利かなくなるので統一しました。
+		PRINTFORML （{VISUAL_AGE_MIN}～{VISUAL_AGE_ADULT_MAX +10}之间输入）
+		PRINTFORML ＜成年下限：{VISUAL_AGE_CHILD_MAX +1}＞
+		INPUT
+		SIF RESULT >= VISUAL_AGE_MIN && RESULT <= VISUAL_AGE_ADULT_MAX +10
+			CFLAG:外表年龄 = RESULT
+	ENDIF
+
+;性経験
+CASE "童贞","Ａ童贞","Ｍ童贞","无乳交经验","无接吻经验"
+	INVERTBIT TALENT:ARGS,0
+	CALL SELECT_VIRGIN_RESET_PLAYER
+
+CASE "主人公经验人数／Ｖ"
+	PRINTL 请输入V性交的经验人数。（大于或等于1）
+	INPUT
+	SIF RESULT >= 1
+		FLAG:主人公经验人数／Ｖ = RESULT
+	
+CASE "主人公经验人数／Ａ"
+	PRINTL 请输入A性交的经验人数。（大于或等于1）
+	INPUT
+	SIF RESULT >= 1
+		FLAG:主人公经验人数／Ａ = RESULT
+	
+CASE "主人公经验人数／Ｍ"
+	PRINTL 请输入M性交的经验人数。（大于或等于1）
+	INPUT
+	SIF RESULT >= 1
+		FLAG:主人公经验人数／Ｍ = RESULT
+	
+CASE "主人公经验人数／乳交"
+	PRINTL 请输入乳交经验的人数。（大于或等于1）
+	INPUT
+	SIF RESULT >= 1
+		FLAG:主人公经验人数／乳交 = RESULT
+	
+CASE "主人公经验人数／接吻"
+	PRINTL 请输入接吻经验的人数。（大于或等于1）
+	INPUT
+	SIF RESULT >= 1
+		FLAG:主人公经验人数／接吻 = RESULT
+ENDSELECT
+
+
+
+

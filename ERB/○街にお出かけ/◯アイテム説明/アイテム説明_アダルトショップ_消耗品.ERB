@@ -1,0 +1,43 @@
+﻿
+;アダルトショップPAGE1
+@ITEM_SHOP_ADULT_DETAIL_DISPOSABLE
+
+;アイテム名・価格・所持数
+PRINTFORML 　《 %ITEMNAME:SELECT_ITEM% 》%VALUE_DIGIT(ITEMPRICE:SELECT_ITEM)%G 持有数量{ITEM:SELECT_ITEM,2}个 
+SELECTCASE ITEMNAME:SELECT_ITEM
+CASE "润滑液"
+	PRINTL ＜消耗品＞
+	PRINTL 调教中：道具指令【润滑液】
+	PRINTL 
+	PRINTFORML 主要涂抹在%SAVESTR:标识／膣%或%SAVESTR:标识／肛门%使之更加润滑，缓解插入的疼痛。
+	PRINTFORML 如果将其滴在%SAVESTR:标识／乳房%上并进行粘糊糊的乳交，它还具有使其更加愉悦的效果。
+	IF FLAG:玩笑表示
+		PRINTL
+		PRINTFORML 当您想要搓揉%SAVESTR:标识／乳房%时，也可以使用它，因为因润滑液而滑溜。
+	ENDIF
+	
+CASE "媚药"
+	PRINTL ＜消耗品＞
+	PRINTL 调教中：肉体改造→指令【媚药】
+	PRINTL 
+	PRINTL 有发情效果的春药。调教过程中，全身敏感度加成50%。
+	PRINTL 但是，因为是强迫性的感觉，所以反感也增加了2倍。
+	PRINTFORML 另外，为了防止异物混入，媚药使用中不能挤出货用的%SAVESTR:标识／母乳%。
+	IF FLAG:玩笑表示
+		PRINTL
+		PRINTL 在调教开始时选择是否使用春药的方式可能会成为一种可能性。
+	ENDIF
+CASE "避孕套"
+	PRINTL ＜消耗品＞
+	PRINTL 调教中：道具指令【避孕套】
+	PRINTL 
+	PRINTFORML 一盒五片装的高性能＆超薄避孕套。适用于%SAVESTR:标识／阴茎%的使用。
+	IF FLAG:玩笑表示
+		PRINTL
+		PRINTL 其高性能程度使得佩戴时与不佩戴时的感觉保持一致，同时具有出色的耐用性。
+		PRINTFORML 不过，%CALLNAME:0%要能够使地上的人类受胎本身就相当困难，
+		PRINTL 从这个意义上来说并没有问题。
+	ENDIF
+ENDSELECT
+
+

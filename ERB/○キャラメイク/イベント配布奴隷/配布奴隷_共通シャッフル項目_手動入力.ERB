@@ -1,0 +1,28 @@
+﻿
+;配布奴隷の手動入力
+;ARGS→CHANGE_STATE
+@FIXED_SLAVE_CHANGE_INPUT_MANUAL(ARGS)
+
+SELECTCASE ARGS
+CASE "名称"
+	CALL CHARA_MAKE_SLAVE_SHUFFLE_NAME(1)
+
+{
+CASE "发色","头发特征","发型","发型一键调整","颜色编码／发","阴毛","右瞳色","左瞳色",
+"颜色编码／右目","颜色编码／左目","乳房弹性","乳头颜色","颜色编码／乳头"
+}
+	CALL SELF_CHARA_MAKE_APPEARAINCE_INPUT_MANUAL(ARGS)
+
+
+CASE "陷落后的主人公的称呼"
+	CALL CHANGE_PERSONAL_CALL("陷落后的主人公的称呼")
+	CSTR:主人公的称呼／陷落前 = %CSTR:主人公的称呼／陷落后%
+	CSTR:主人公的称呼／陷落前／沉沦 = %CSTR:主人公的称呼／陷落后／沉沦%
+
+CASE "台词"
+	CALL KOJO_SETTING
+ENDSELECT
+
+
+
+

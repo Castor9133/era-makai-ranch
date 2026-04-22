@@ -1,0 +1,26 @@
+﻿
+;奴隷候補変更可能フラグ
+;ARG→変更可能条件メッセージ飛ばす
+@CONFIG_CHANGE_FLAG_CHECK(ARG)
+
+SIF !ARG
+	CALL PRINTL_WORD_COLOR("这个项目是　・游戏开始前　・开发者模式　・<奴隶候补设定变更票>只能在使用中更改。","黄")
+
+;一旦OFF
+FLAG:可配置的候选奴隶 = 0
+IF !DAY
+	CALL PRINTL_WORD_COLOR("游戏开始前可以变更","桃")
+	FLAG:可配置的候选奴隶 = 1
+ELSEIF FLAG:开发者模式
+	CALL PRINTL_WORD_COLOR("由于是[开发者模式]，可以无限更改","桃")
+	FLAG:可配置的候选奴隶 = 1
+ELSEIF FLAG:奴隶候补设定变更票使用中
+	CALL PRINTL_WORD_COLOR("正在使用＜奴隶候补设定变更票＞","桃")
+	FLAG:可配置的候选奴隶 = 1
+ELSEIF ITEM:奴隶候补设定变更票
+	PRINTFORML 可以使用＜奴隶候补设定变更票＞（持有数量：{ITEM:奴隶候补设定变更票}）
+ELSE
+	CALL PRINTL_WORD_COLOR("＜奴隶候补设定变更票据＞无","灰")
+ENDIF
+
+

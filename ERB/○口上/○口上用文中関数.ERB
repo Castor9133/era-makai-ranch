@@ -1,0 +1,78 @@
+﻿
+; 奴隶自称（随沉沦口上化绝顶次数切换）
+@SELF_CALL
+#FUNCTIONS
+
+; 调教或日程中：总绝顶达 FLAG:沉沦口上化绝顶次数 则改用沉沦用第一人称
+IF EX:总绝顶 >= FLAG:沉沦口上化绝顶次数
+	RETURNF CSTR:第一人称／沉沦
+ELSE
+	RETURNF CSTR:第一人称
+ENDIF
+
+
+; 对主角的二人称
+@MASTER_CALL
+#FUNCTIONS
+
+; 沉沦分支 + 陷落／乳牛／洗脑
+IF EX:总绝顶 >= FLAG:沉沦口上化绝顶次数
+	IF ＃陷落状态／陷落以上＃ || CFLAG:乳牛 || CFLAG:洗脑 
+		RETURNF CSTR:主人公的称呼／陷落后／沉沦
+	ELSE
+		RETURNF CSTR:主人公的称呼／陷落前／沉沦
+	ENDIF
+ELSE
+	IF ＃陷落状态／陷落以上＃ || CFLAG:乳牛 || CFLAG:洗脑
+		RETURNF CSTR:主人公的称呼／陷落后
+	ELSE
+		RETURNF CSTR:主人公的称呼／陷落前
+	ENDIF
+ENDIF
+
+
+; 撒娇语气下对主角的二人称
+@SWEET_MASTER_CALL
+#FUNCTIONS
+
+; 未恋慕以上时退回普通称呼
+IF ＃陷落状态／恋慕以上＃ || CFLAG:乳牛
+	RETURNF CSTR:主人公的称呼／依恋
+ELSE
+	RETURNF CSTR:主人公的称呼／陷落前
+ENDIF
+
+
+; 阴茎称呼
+@PENIS_CALL
+#FUNCTIONS
+
+IF EX:总绝顶 >= FLAG:沉沦口上化绝顶次数
+	RETURNF CSTR:性器称呼／阴茎／沉沦
+ELSE
+	RETURNF CSTR:性器称呼／阴茎
+ENDIF
+
+
+; 阴道称呼
+@VAGINA_CALL
+#FUNCTIONS
+
+IF EX:总绝顶 >= FLAG:沉沦口上化绝顶次数
+	RETURNF CSTR:性器称呼／膣／沉沦
+ELSE
+	RETURNF CSTR:性器称呼／膣
+ENDIF
+
+
+; 肛门称呼
+@ANAL_CALL
+#FUNCTIONS
+
+IF EX:总绝顶 >= FLAG:沉沦口上化绝顶次数
+	RETURNF CSTR:性器称呼／肛门／沉沦
+ELSE
+	RETURNF CSTR:性器称呼／肛门
+ENDIF
+
+

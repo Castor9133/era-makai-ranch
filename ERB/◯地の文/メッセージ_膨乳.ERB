@@ -1,0 +1,76 @@
+﻿
+;膨乳時の地の文
+;ARGS→バストサイズor基本増加
+@BUSTUP_MESSAGE(ARGS)
+
+SETCOLOR 0xFF70FF
+SELECTCASE ARGS
+CASE "基本增加"
+	{
+	PRINTFORML 　　%CALLNAME%%SAVESTR:标识／乳房%大了一圈！ 
+	胸围大小：%PRINT_BUSTSIZE(ABL:胸围大小 -1)% → %PRINT_BUSTSIZE(ABL:胸围大小)% 
+	}
+	CALL KOJO_PRINT("肉体改造","膨乳")
+	
+	;下の共通部分を楽にするためここでおわり
+	RESETCOLOR
+	RETURN
+
+CASE "贫乳"
+	;キャラクリからオープニング終了までは表示しない、というのが不要になった
+	CALL HEARTCB(0xD02830,2)
+	PRINTFORM 原本平坦的%CALLNAME%%SAVESTR:标识／乳房%稍微隆起
+
+CASE "普乳"
+	CALL HEARTCB(0xD02830,2)
+	PRINTFORM %CALLNAME%%SAVESTR:标识／乳房%稍微膨胀，变成了【普乳】大小
+
+CASE "巨乳"
+	CALL HEARTCB(0xD02830,2)
+	PRINTFORM %CALLNAME%%SAVESTR:标识／乳房%变成了引人注目的【巨乳】
+
+CASE "丰乳"
+	CALL HEARTCB(0xD02830,2)
+	PRINTFORM %CALLNAME%的%SAVESTR:标识／乳房%变成了几乎溢出的【丰乳】
+
+CASE "爆乳"
+	CALL HEARTCB(0xD02830,2)
+	PRINTFORM %CALLNAME%%SAVESTR:标识／乳房%变成了无法承受的【爆乳】
+
+CASE "神乳"
+	CALL HEARTCB(0xD02830,2)
+	PRINTFORM %CALLNAME%的%SAVESTR:标识／乳房%变得几乎可以说是过于巨大，成为了【神乳】。
+
+CASE "魔乳"
+	CALL HEARTCB(0xD02830,2)
+	PRINTFORM %CALLNAME%的%SAVESTR:标识／乳房%变成了拥有巨大质量的【魔乳】，几乎连站立都变得困难。
+
+CASE "超乳"
+	PRINTFORML %CALLNAME%的%SAVESTR:标识／乳房%变得更大了，已经无法触及，甚至无法正常移动…
+	CALL KOJO_PRINT("事件","超乳化")
+	
+	;口上表示通すので改めてメッセージ色
+	SETCOLOR 0xFF70FF
+	IF CFLAG:乳牛
+		PRINTFORML 当%CALLNAME%看到自己巨大的%SAVESTR:标识／乳房%时，
+		PRINTFORML 考虑到比以往更多更多地被榨出%SAVESTR:标识／母乳%，%CALLNAME%脸上浮现出恍惚的表情…
+	ELSE
+		PRINTFORML 看着自己巨大到难以置信的%SAVESTR:标识／乳房%，%CALLNAME%浮现出绝望的表情…
+	ENDIF
+	PRINTL
+	CALL HEARTCB(0xD02830,2)
+	PRINTFORM %CALLNAME%的%SAVESTR:标识／乳房%变成了【超乳】。现在%CALLNAME%只能作为【家畜】生存…
+
+CASEELSE
+	RETURN
+ENDSELECT
+
+;共通部分
+CALL HEARTCB(0xD02830,2)
+PRINTL
+PRINTW
+RESETCOLOR
+
+
+
+

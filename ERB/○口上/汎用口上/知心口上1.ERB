@@ -1,0 +1,175 @@
+; ======================================
+; 泛用口上（性格：知心）
+;
+;口上識別名：知心1
+;口上作者：（汉化扩展）
+;许可证：CC BY-NC
+; ======================================
+
+@KOJO_GENERAL_INDEX_知心1(ARGS:0,ARGS:1,ARGS:2,ARGS:3)
+
+IF TFLAG:Ｍ装备
+	CALL KOJO_GENERAL_MOUTH_SHACKLE_1(ARGS:0,ARGS:1,ARGS:2,ARGS:3)
+	RETURN
+ELSEIF CFLAG:崩坏 && !CFLAG:洗脑
+	IF GROUPMATCH(ARGS:0,"例文")
+	ELSEIF GROUPMATCH(ARGS:1,"洗脑触手","崩坏")
+	ELSE
+		IF NOWEX:总绝顶
+			CALL MESSAGE_BOX,@"「……别怕……♥ 我会继续引导你……更舒服……♥」"
+			CALL MESSAGE_BOX,@"「……看你的眼神……我就知道你还想要……♥」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……嗯……我懂。你现在需要休息一下。」"
+		ENDIF
+		RETURN
+	ENDIF
+ENDIF
+
+SELECTCASE ARGS:0
+CASE "例文"
+	CALL MESSAGE_BOX,@"「【知心1】已设置。\n温柔善解人意、助手属性明显；陷落后会主动引导你怎样更舒服，一个眼神就能懂你想要什么。」"
+
+CASE "调教命令"
+	CALL KOJO_GENERAL_知心1_TRAIN(ARGS:0,ARGS:1,ARGS:2,ARGS:3)
+
+CASE "绝顶"
+	IF ＃陷落状态／恋慕以上＃
+		CALL MESSAGE_BOX,@"「……要到了，对吗……♥ 呼吸跟着我……别憋着……♥」"
+		CALL MESSAGE_BOX,@"「我知道你现在最想要什么……交给我……♥」"
+	ELSEIF ＃陷落状态／屈服以上＃
+		CALL MESSAGE_BOX,@"「……别紧张……我会慢一点……♥」"
+	ELSE
+		CALL MESSAGE_BOX,@"「……不行……别、别这样……」"
+	ENDIF
+	SIF NOWEX:Ａ绝顶
+		IF TALENT:Ａ名器 || TALENT:肛门嗜好 || ABL:Ａ感觉 >= 3
+			CALL MESSAGE_BOX,@"「……%ANAL_CALL()%……！？　痛……可是……深处……像被牵着走……♥」"
+			CALL MESSAGE_BOX,@"「……别慌……呼吸……对……把奇怪的感觉……说出来……♥」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……%ANAL_CALL()%……好痛……先停……我需要……缓一下……」"
+			CALL MESSAGE_BOX,@"「……只有那里……太勉强了……」"
+		ENDIF
+	SIF NOWEX:Ｕ绝顶
+		IF TALENT:尿道敏感 || EX:尿道调教经验 >= 15
+			CALL MESSAGE_BOX,@"「……没事……把刺痛和酥麻分开说……我听着……♥」"
+			CALL MESSAGE_BOX,@"「……尿道也……有反应……别藏……♥」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……先停……那里只有疼……我缓一缓……」"
+			CALL MESSAGE_BOX,@"「……好胀……好刺……」"
+		ENDIF
+
+CASE "射精"
+	IF SOURCE:膣内射精经验
+		IF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……没关系，我会帮你稳住……先别动……♥」"
+			CALL MESSAGE_BOX,@"「里面很热……嗯……我会好好接住……♥」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……别射在里面……」"
+		ENDIF
+	ELSEIF SOURCE:尻穴射精经验
+		IF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……后面也满了……♥ 别急，我会帮你缓下来……」"
+			CALL MESSAGE_BOX,@"「……先别动。对……呼吸跟着我……」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……慢一点……先确认你不会疼……」"
+		ENDIF
+	ELSEIF SOURCE:精饮经验
+		IF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……咽下去了……♥ 你刚才发抖了，我知道你很舒服……」"
+			CALL MESSAGE_BOX,@"「……别勉强。你想继续的话，眨一下眼就好……♥」"
+		ELSE
+			CALL MESSAGE_BOX,@"「咳……咳……没事，慢慢来……」"
+		ENDIF
+	ELSEIF TEQUIP:手淫
+		IF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……弄在我手上了……♥ 没关系，我会擦干净……」"
+			CALL MESSAGE_BOX,@"「……我知道你还想要。我会按你舒服的方式继续……♥」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……我会清理干净。你先缓一缓。」"
+		ENDIF
+	ELSEIF SOURCE:股间射精
+		CALL MESSAGE_BOX,@"「……弄在身上了。没事，我来帮你擦干净。」"
+		CALL MESSAGE_BOX,@"「……你现在想要的是拥抱，对吗？我懂。」"
+	ELSEIF SOURCE:乳房射精
+		CALL MESSAGE_BOX,@"「……在胸口了。别慌，我会慢慢擦干净，你先稳住呼吸。」"
+		CALL MESSAGE_BOX,@"「……眼神别躲。嗯……我知道你很满足。」"
+	ELSEIF SOURCE:颜面射精
+		CALL MESSAGE_BOX,@"「……脸上了。闭眼，别揉。我会帮你擦干净。」"
+		CALL MESSAGE_BOX,@"「……好了。先缓一缓，呼吸跟着我。」"
+	ENDIF
+
+CASE "搾乳"
+	IF SOURCE:母乳漏出
+		CALL MESSAGE_BOX,@"「……自己漏出来了……没关系，我会帮你擦干净。」"
+		RETURN
+	ENDIF
+	IF ＃陷落状态／恋慕以上＃
+		CALL MESSAGE_BOX,@"「嗯……♥ 这样会更舒服，对吗？我会帮你找到最合适的力度……♥」"
+		CALL MESSAGE_BOX,@"「你肩膀放松了……我知道这样刚好……♥」"
+	ELSE
+		CALL MESSAGE_BOX,@"「……我会慢一点。哪里不舒服就摇头。」"
+	ENDIF
+
+CASE "抽出"
+	CALL MESSAGE_BOX,@"「……腿软了。来，靠着我……先把呼吸放慢。」"
+	CALL MESSAGE_BOX,@"「……别硬撑。我会扶着你，等你舒服了再动。」"
+
+CASE "阴茎称呼变更"
+	CALL MESSAGE_BOX,@"「……好。我记住你的喜好。之后我会用你想听的称呼。」"
+
+CASE "膣称呼变更"
+	CALL MESSAGE_BOX,@"「……嗯。我懂。你喜欢更直白的叫法，对吗？我会照做。」"
+
+CASE "肛门称呼变更"
+	CALL MESSAGE_BOX,@"「……我知道了。你一个眼神，我就会用你想听的称呼。」"
+
+CASE "吸欧派"
+	SELECTCASE ARGS:1
+	CASE "开始"
+		CALL MESSAGE_BOX,@"「……慢慢来。你现在更想放松，对吗？我会抱住你。」"
+	CASE "结束"
+		CALL MESSAGE_BOX,@"「……好了。胸口还在发热……先休息一下。」"
+	ENDSELECT
+
+CASE "访问"
+	SELECTCASE ARGS:1
+	CASE "入口"
+		CALL MESSAGE_BOX,@"「我进来了。你现在需要我，我看得出来。」"
+	CASEELSE
+	ENDSELECT
+
+CASE "事件"
+	CALL MESSAGE_BOX,@"「……发生什么了？先看着我。嗯……我会带你一步步处理。」"
+
+CASE "肉体改造"
+	CALL MESSAGE_BOX,@"「……身体要改变了。别怕，我会陪你适应新的感觉与节奏。」"
+
+CASE "战斗"
+	SELECTCASE ARGS:1
+	CASE "攻击"
+		CALL MESSAGE_BOX,@"「我上了。你呼吸别乱，我会护住你。」"
+	CASE "被击中"
+		CALL MESSAGE_BOX,@"「……没事。先稳住。你现在需要的是冷静。」"
+	CASEELSE
+	ENDSELECT
+
+CASE "日程"
+	SELECTCASE ARGS:1
+	CASE "调教"
+		SELECTCASE ARGS:2
+		CASE "开始调教"
+			CALL MESSAGE_BOX,@"「……先看着我。嗯……你现在有点紧张，我会带着你放松。」"
+		CASE "调教结束"
+			CALL MESSAGE_BOX,@"「辛苦了。先慢慢呼吸……我会照顾你到舒服为止。」"
+		ENDSELECT
+	CASEELSE
+	ENDSELECT
+
+CASEELSE
+ENDSELECT
+RETURN
+
+@KOJO_GENERAL_知心1_TRAIN(ARGS:0,ARGS:1,ARGS:2,ARGS:3)
+CALL KOJO_GENERAL_知心口上1_TRAIN(ARGS:0,ARGS:1,ARGS:2,ARGS:3)
+RETURN
+

@@ -1,0 +1,28 @@
+﻿
+;回数制限撤廃チェック
+@CHECK_LIMIT_BREAK_CONFIG
+
+IF GETBIT(＃限制解除／物品使用＃)
+	CFLAG:时刻限制／花草茶 = 0
+	CFLAG:当日制限／营养饮料 = 0
+	CFLAG:当天限用／花草茶 = 0
+ENDIF
+
+IF GETBIT(＃限制解除／亲密接触＃)
+	CFLAG:时刻限制／摸头 = 0
+	CFLAG:时刻限制／接吻 = 0
+	CFLAG:时刻限制／授乳 = 0
+	CFLAG:时刻限制／Ｈ = 0
+	CFLAG:时刻限制／灵力注入 = 0
+ENDIF
+
+IF GETBIT(＃限制解除／肉体改造＃)
+	CFLAG:时刻限制／用药 = 0
+	CFLAG:当日制限／肉体改造药 = 0
+	CFLAG:当日限制／肉体改造精华 = 0
+ENDIF
+
+
+
+
+

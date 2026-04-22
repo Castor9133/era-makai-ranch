@@ -1,0 +1,258 @@
+﻿
+;脱衣メッセージ
+;衣服上
+@STRIP_MESSAGE_CLOTHE_BUST
+
+;脱衣メッセージ表示フラグではない場合帰る
+SIF !SOURCE:脱衣消息显示
+	RETURN
+
+;ここに来るのはフラグ問わないのでもう脱衣状態とかだとここで帰る
+SIF !EQUIP:装备中ID／衣服 || TFLAG:临时脱衣／衣服
+	RETURN
+SIF ＃穿着衣服／胸部撕裂＃ || ＃穿着衣服／乳房露出＃ || GETBIT(＃半脱／衣服上＃)
+	RETURN
+
+IF ＃穿着衣服／乳暖簾＃
+	PRINTFORML 掀开遮住乳头%＃穿着衣服／名称＃%的的布…
+	RETURN
+ELSEIF ＃穿着衣服／乳沟露出＃
+	PRINTFORML 将%＃穿着衣服／名称＃%拉到下面…
+	RETURN
+ELSEIF ＃穿着衣服／侧乳露出＃ && ABL:胸围大小 >= BUSTSIZE_巨乳
+	PRINTFORML %＃穿着衣服／名称＃%的%SAVESTR:标识／乳房%挤出乳沟…
+	RETURN
+ENDIF
+
+SELECTCASE ＃穿着衣服／名称＃
+CASE "女巫服","法衣","战斗用女巫服"
+	PRINTFORML %＃穿着衣服／名称＃%被撕掉了…
+CASE "和服","罩衣"
+	PRINTFORML 解开了%＃穿着衣服／名称＃%的带子…
+CASE "比基尼盔甲"
+	PRINTFORML 解开了固定%＃穿着衣服／名称＃%的皮带…
+CASE "礼服","战斗礼服","兔女郎装"
+	PRINTFORML %＃穿着衣服／名称＃%向下翻…
+CASE "运动短裤套装","忍装束","衬衫和牛仔裤","囚衣","学校游泳衣","水手服","西装外套制服"
+	PRINTFORML %＃穿着衣服／名称＃%向上翻…
+CASE "舞女的服装","淫乱巫女服","淫乱修女服","淫乱女仆装","淫乱旗袍","淫乱礼服"
+	PRINTFORML 将%＃穿着衣服／名称＃%的腰带向左右拉扯…
+CASEELSE
+	PRINTFORML %＃穿着衣服／名称＃%的纽扣解开了…
+ENDSELECT
+
+
+
+;下半脱ぎ
+@STRIP_MESSAGE_CLOTHE_VAGINA
+
+SIF !SOURCE:脱衣消息显示
+	RETURN
+SIF !EQUIP:装备中ID／衣服 || TFLAG:临时脱衣／衣服
+	RETURN
+SIF ＃穿着衣服／私处撕裂＃ || ＃穿着衣服／私处露出＃ || GETBIT(＃半脱／衣服下＃)
+	RETURN
+
+IF ＃穿着衣服／围裙＃
+	PRINTFORML 掀开%＃穿着衣服／名称＃%遮住私处的布…
+	RETURN
+ENDIF
+
+SELECTCASE ＃穿着衣服／名称＃
+CASE "工作服","连体背带裤","白衣","布衣","军服","衬衫和牛仔裤","囚衣"
+	PRINTFORML %＃穿着衣服／名称＃%的裤子向下移动了…
+CASE "运动短裤套装"
+	PRINTL 把运动短裤往下挪了挪…
+CASE "女巫服","战斗用女巫服"
+	PRINTFORML 将%＃穿着衣服／名称＃%的私处下移…
+CASE "和服","法衣"
+	PRINTFORML 拨开%＃穿着衣服／名称＃%的私处部分…
+CASE "围裙装","罩衣","长袍","修道服","战斗修女服","旗袍","越南长袄"
+	PRINTFORML 完全翻开了%＃穿着衣服／名称＃%…
+CASE "比基尼盔甲"
+	PRINTFORML 解开了固定%＃穿着衣服／名称＃%的皮带…
+{
+CASE "兔女郎装","忍装束","学校游泳衣","舞女的服装","淫乱巫女服",
+"淫乱修女服","淫乱女仆装","淫乱旗袍","淫乱礼服"
+}
+	PRINTFORML 牵拉著%＃穿着衣服／名称＃%的私处部分，向旁边移动了…
+CASEELSE
+	PRINTFORML 翻开%＃穿着衣服／名称＃%穿的衣服…
+ENDSELECT
+
+
+
+;上破き
+@BREAK_MESSAGE_CLOTHE_BUST
+
+SIF !SOURCE:脱衣消息显示
+	RETURN
+SIF !EQUIP:装备中ID／衣服 || TFLAG:临时脱衣／衣服
+	RETURN
+SIF ＃穿着衣服／胸部撕裂＃ || ＃穿着衣服／乳房露出＃ || GETBIT(＃半脱／衣服上＃)
+	RETURN
+
+SELECTCASE ＃穿着衣服／名称＃
+CASE "比基尼盔甲"
+	PRINTFORML 把固定%＃穿着衣服／名称＃%的皮带弄断了！
+CASE "舞女的服装","淫乱巫女服","淫乱修女服","淫乱女仆装","淫乱旗袍","淫乱礼服"
+	PRINTFORML %＃穿着衣服／名称＃%撕掉遮住乳头的布！
+CASEELSE
+	PRINTFORML %＃穿着衣服／名称＃%的上面撕破了！
+ENDSELECT
+
+
+
+;下破き
+@BREAK_MESSAGE_CLOTHE_VAGINA
+
+SIF !SOURCE:脱衣消息显示
+	RETURN
+SIF !EQUIP:装备中ID／衣服 || TFLAG:临时脱衣／衣服
+	RETURN
+SIF ＃穿着衣服／私处撕裂＃ || ＃穿着衣服／私处露出＃ || GETBIT(＃半脱／衣服下＃)
+	RETURN
+
+SELECTCASE ＃穿着衣服／名称＃
+CASE "比基尼盔甲"
+	PRINTFORML 把固定%＃穿着衣服／名称＃%的皮带弄断了！
+CASEELSE
+	PRINTFORML %＃穿着衣服／名称＃%的下面撕破了！
+ENDSELECT
+
+
+
+;衣服完全脱衣
+@STRIP_MESSAGE_CLOTHE_ALL
+
+;完全脱衣なので1パターンでいい気がする
+SIF !SOURCE:脱衣消息显示
+	RETURN
+SIF EQUIP:装备中ID／衣服 && !TFLAG:临时脱衣／衣服
+	PRINTFORML %＃穿着衣服／名称＃%脱掉…
+
+
+
+;下着上脱衣
+@STRIP_MESSAGE_LINGERIE_BUST
+
+SIF !SOURCE:脱衣消息显示
+	RETURN
+SIF TFLAG:临时脱衣／内衣上装 || !EQUIP:装备中ID／内衣上装; || GETBIT(＃半脱ぎ／下着上＃)
+	RETURN
+
+CALL LINGERIE_STRING_CHECK(＃穿着内衣上装／名称＃)
+IF RESULT
+	PRINTFORML 解开了%＃穿着内衣上装／名称＃%的带子上…
+	RETURN
+ENDIF
+
+SELECTCASE ＃穿着内衣上装／名称＃
+CASE "乳贴"
+	PRINTFORML %＃穿着内衣上装／名称＃%剥下来…
+CASE "裹胸布"
+	PRINTFORML %＃穿着内衣上装／名称＃%解开了…
+CASE "连体紧身衣","学校游泳衣","触手服装"
+	PRINTFORML 名称%＃穿着内衣上装／名称＃%的上面脱掉了…
+CASEELSE
+	PRINTFORML %＃穿着内衣上装／名称＃%脱下…
+ENDSELECT
+
+
+
+;下着上半脱ぎ
+@STRIP_MESSAGE_LINGERIE_BUST_HALF
+
+SIF !SOURCE:脱衣消息显示
+	RETURN
+SIF TFLAG:临时脱衣／内衣上装 || !EQUIP:装备中ID／内衣上装 || GETBIT(＃半脱／内衣上装＃)
+	RETURN
+
+SELECTCASE ＃穿着内衣上装／名称＃
+CASE "前钩胸罩"
+	PRINTFORML 取下了%＃穿着内衣上装／名称＃%的挂钩…
+CASE "连体紧身衣","学校游泳衣","触手服装"
+	PRINTFORML %＃穿着内衣上装／名称＃%的胸部部分挤出乳沟…
+CASE "微型比基尼","比基尼","乳牛比基尼","乳牛微型比基尼"
+	PRINTFORML %＃穿着内衣上装／名称＃%上面错开了…
+CASE "紧身胸衣"
+	PRINTFORML %＃穿着内衣上装／名称＃%向下翻…
+CASE "绳","弹弓比基尼","牛纹弹弓比基尼"
+	PRINTFORML %＃穿着内衣上装／名称＃%左右展开…
+CASEELSE
+	PRINTFORML %＃穿着内衣上装／名称＃%向上翻……
+ENDSELECT
+
+
+
+;下着下脱衣
+@STRIP_MESSAGE_LINGERIE_VAGINA
+
+SIF !SOURCE:脱衣消息显示
+	RETURN
+SIF TFLAG:临时脱衣／内衣下装 || !EQUIP:装备中ID／内衣下装; || GETBIT(＃半脱ぎ／下着下＃)
+	RETURN
+
+CALL LINGERIE_STRING_CHECK(＃穿着内衣下装／名称＃)
+IF RESULT
+	PRINTFORML %＃穿着内衣下装／名称＃%的带子解开…
+	RETURN
+ENDIF
+
+SELECTCASE ＃穿着内衣下装／名称＃
+CASE "私处贴纸"
+	PRINTFORML %＃穿着内衣下装／名称＃%剥下来…
+CASEELSE
+	PRINTFORML %＃穿着内衣下装／名称＃%脱掉…
+ENDSELECT
+
+
+
+;下着下半脱ぎ
+@STRIP_MESSAGE_LINGERIE_VAGINA_HALF
+
+SIF !SOURCE:脱衣消息显示
+	RETURN
+SIF TFLAG:临时脱衣／内衣下装 || !EQUIP:装备中ID／内衣下装 || GETBIT(＃半脱／内衣下装＃)
+	RETURN
+
+SELECTCASE ＃穿着内衣下装／名称＃
+CASE "连体紧身衣","绳","弹弓比基尼","学校游泳衣","触手服装","牛纹弹弓比基尼"
+	PRINTFORML %＃穿着内衣下装／名称＃%拉住私处部分，向旁边移动了…
+CASE "微型比基尼","比基尼","乳牛比基尼","乳牛微型比基尼"
+	PRINTFORML %＃穿着内衣下装／名称＃%下面错开了…
+CASEELSE
+	PRINTFORML %＃穿着内衣下装／名称＃%向下移动了…
+ENDSELECT
+
+
+
+;下着上下脱衣
+@STRIP_MESSAGE_LINGERIE_ALL
+
+CALL STRIP_MESSAGE_LINGERIE_BUST
+
+;上下同じなら書かない
+SIF ＃穿着内衣上装／名称＃ != ＃穿着内衣下装／名称＃
+	CALL STRIP_MESSAGE_LINGERIE_VAGINA
+
+
+
+;一部上着半脱ぎ
+@STRIP_MESSAGE_CLOTHE_JACKET
+
+SIF !SOURCE:脱衣消息显示
+	RETURN
+SIF !EQUIP:装备中ID／外衣 || TFLAG:临时脱衣／外衣
+	RETURN
+
+;別に脱がせる必要のない上着ならメッセージなし
+SELECTCASE ＃穿着外衣／名称＃
+CASE "连体背带裤"
+	PRINTFORML %＃穿着外衣／名称＃%的吊带被取下了…
+CASE "围裙装"
+	PRINTFORML %＃穿着外衣／名称＃%的绳带被解开了…
+ENDSELECT
+
+
+

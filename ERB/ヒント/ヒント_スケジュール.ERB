@@ -1,0 +1,230 @@
+﻿
+;スケジュール目次
+@HINT_SCHEDULE
+
+CLEARLINE LINECOUNT
+PRINTL 请选择要查看其说明的项目。
+DRAWLINE
+BR = 0
+STR_REF = 9030
+CALL HINT_BUTTON_LIST
+DRAWLINE
+CALL HINT_DETAIL_SCHEDULE
+CALL PRINTL_ALIGN(5)
+DRAWLINE
+PRINTL [99] 返回
+INPUT
+PRINTL
+SELECTCASE RESULT
+CASE 0 TO 29
+	SELECT_TIPS = RESULT
+CASE 99
+	RETURN
+ENDSELECT
+RESTART
+
+
+
+;メインメニュー選択肢の解説
+@HINT_DETAIL_SCHEDULE
+
+STR_NUM = STR_REF +SELECT_TIPS
+
+;対応IDでないなら汎用出して帰る
+IF SELECT_TIPS < 0 || SELECT_TIPS >= 30 || STR:STR_NUM == ""
+	CALL NOT_SELECT_HINT_COMMON
+	RETURN
+ENDIF
+
+;項目名
+PRINTFORML 　《 %STR:STR_NUM% 》
+SELECTCASE STR:STR_NUM
+CASE "空闲时间／待机"
+	PRINTL 让身体休息，回复体力・精神力。
+	PRINTL 根据角色的状态分为在自室休息的【自由】和在家畜小屋休息的【待机】。
+	PRINTL 自由时间的休息：体力回复25%左右，精神力回复1%左右
+	PRINTL 待机：体力回复20%左右，精神力回复1%左右
+	
+CASE "奶农／家畜的照料"
+	PRINTL 照顾【魔界奶牛】。早晚搾乳，白天放牧。
+	PRINTL 同时，如果有【搾乳】有日程奴隶，以及在【牛舍】中等待挤奶的奴隶的情况
+	PRINTL 将继续挤奶这些奴隶。
+	PRINTL 如果不是能委托工作的状态，则无法设置日程。
+	PRINTL
+	PRINTL 基本上一定要有牧场的人来执行。照顾牲畜没有假期。
+	PRINTL 与其他日程不同，如果没有人执行牧场照顾日程，
+	CALL PRINT_WORD_COLOR("【乳牛健康度】将大幅下降至30～40","黄")
+	PRINTL 所以请注意。
+	PRINTL
+	PRINTL 《 执行时效果 》
+	PRINTL 【乳牛健康度】：执行日程者的【奶农】Lv相对应的增加
+	PRINTL 消耗体力（根据奶牛健康度变化）　【奶农】经验值增加
+	PRINTL 朝・夕搾乳时，魔界奶牛奶出售计划金额增加（根据奶牛健康度变化）
+	PRINTL
+	PRINTL 根据执行日程的角色中具有的最高【奶农】Lv进行调整，
+	PRINTL 使未达到该等级的角色获取的经验值增加。
+	PRINTL （修正的最大值和能够接受修正的极限都是Lv10）
+	
+CASE "调教／百合调教"
+	PRINTL 如果由主人公选择，将与主菜单中的【调教对象选择】同样的动作。
+	PRINTL 如果是已屈服的奴隶选择，她将选择「对其他奴隶进行百合调教」。
+	PRINTL 这里将介绍百合调教的情况。
+	PRINTL 与主人公调教一样，以下类型的奴隶是无法选择的：
+	PRINTL ・尚未捕获的人类　・牛舍内的奴隶　・受到体内凌辱的奴隶
+	PRINTL ・其他角色已经安排了调教计划的奴隶　・自己
+	PRINTL
+	PRINTL 奴隶之间的调教是自动进行的，为了能成为优秀的【乳牛】
+	PRINTFORML 主要是进行搓揉%SAVESTR:标识／乳房%，吸吮%SAVESTR:标识／母乳%。
+	PRINTL 被调教奴隶的【母性】​将获得大量经验值，
+	PRINTL 如果调教者为【矮小】或以下并且身高比调教目标低5cm以上，或者调教者为【幼稚】
+	PRINTL [母性]经验值的增加将翻倍。
+	PRINTL
+	PRINTL 调教者稍微获得一些，而被调教对象则大量获得【百合癖】经验值。
+	PRINTL 根据调教者・调教目标的总百合氛围经验值将增加快感值。
+	
+CASE "百合调教补充"
+	PRINTL 在满足条件的情况下，还会使用道具对下半身进行刺激。
+	PRINTL Ｃ刺激：调教者已经经历过10次以上的Ｃ绝顶+＜阴蒂振动器预备＞所持
+	PRINTL Ｖ刺激：调教者已经经历过10次以上的Ｖ绝顶+＜振动器预备＞所持+调教对象为【非处女】
+	PRINTL Ａ刺激：＜肛门振动器预备＞所持+调教对象为【Ａ非处女】+①／②的任意一个
+	PRINTL ①：调教者已经经历过10次以上的Ａ绝顶+调教者为【施虐者】
+	PRINTL ②：调教者有过50次以上Ａ绝顶的经验
+	PRINTL
+	PRINTFORML 调教对象是【母乳体质】的情况下，调教者通过喝%SAVESTR:标识／母乳%可以实现以下效果：
+	PRINTL ・调教者体力回复
+	PRINTL ・如果调教目标是【魔力母乳体质】并且具有魔力，调教者的魔力也将得到回复
+	PRINTL 尽管有体力回复效果，但如果初始体力为0，则无法执行【调教】日程请注意。
+	PRINTFORML 可以喝的量大概是身高数值（cm）×10%MILK_COUNTING()%，
+	PRINTFORML 无法饮用的%SAVESTR:标识／母乳%将被自动榨取并保存供出售。
+	
+CASE "事务"
+	PRINTL 进行办公工作，降低每天结算时增加的【事务工作量】。
+	PRINTL 如果不是能委托工作的状态，则无法设置日程。
+	PRINTL
+	PRINTL 【事务工作量】低于20时，基本上没有什么不利之处，所以即使放置不理也没问题，但是
+	PRINTL 当超过20时，主人公的（基本上是中午的）日程强制为【事务】。
+	PRINTL
+	PRINTL 《 执行时效果 》
+	PRINTL 【事务工作量】：日程执行者的​【事务】Lv的减少
+	PRINTL 体力-100　【事务】经验值增加
+	PRINTL 如果还未【乳牛堕落】的情况下，则乳牛堕落程度微减
+	PRINTL
+	PRINTL 配合实行日程的角色中最高的【事务】Lv，
+	PRINTL 使未达到该等级的角色获取的经验值增加。
+	PRINTL （修正的最大值和能够接受修正的极限都是Lv10）
+	
+CASE "调剂／药物的调合"
+	PRINTL 调合牧场内的实验室可以制作的各种药品。
+	PRINTL 如果不是能委托工作的状态，则无法设置日程。
+	PRINTL 在调合的时候，一定要有1人以上的【调合知识】素质。
+	PRINTL
+	PRINTL 执行日程时，初次及调合药品重置后，首先选择调合哪种药品。
+	PRINTL 效果越好的药品需要的【调合进度】越多。
+	PRINTL 日程执行后，只要调合进度满足需要量即可获得中选药品。
+	PRINTL
+	PRINTL 《 执行时效果 》
+	PRINTL 【调合进行度】：日程执行者的【药学】等级×200+500（+随机数）增加
+	PRINTL 体力-100　【药学】经验值增加
+
+CASE "调剂补充"
+	PRINTL 药品完成时，【调合进度】是需要量的2倍以上的可以一并获得。
+	PRINTL 拿到药品后，可以选择直接继续调合或重置同一药品。
+	PRINTL 继续的情况剩余的【调和进行度】被保留。
+	PRINTL
+	PRINTL 配合实行日程的角色中最高的【药学】Lv，
+	PRINTL 使未达到该等级的角色获取的经验值增加。
+	PRINTL （修正的最大值和能够接受修正的极限都是Lv10）
+	PRINTL
+	PRINTL 调合途中想变更所调合药品的，
+	PRINTL 主菜单→【牧场信息】→【取消药品调合】可随时重置。
+	
+CASE "训练"
+	PRINTL 在花园里进行战斗训练。
+	PRINTL 现在的版本只有主人公可以日程。
+	PRINTL
+	PRINTL 在捕获人类时，如果学习了＜传送＞魔法，主人公可以直接前往捕获。
+	PRINTL 由于主人公原本与战斗毫无关系，即使灵力和魔力很强，如果没有进行战斗训练也无法具备【战斗适性】。
+	PRINTL 我们不能用它的力量来战斗。
+	PRINTL 作为次要效果，由于＜灵力注入＞等消耗了的灵力的回复效果也是有的。
+	PRINTL 由于【训练】的执行次数，效率不断增加。（最高30%）
+	PRINTL
+	PRINTL 《 执行时效果 》【训练】训练的执行次数→[次数]
+	PRINTL 体力消费：300-[次数]×5（最小100）・【战斗适性】+[次数]・灵力+[次数]%
+	
+CASE "调教这个奴隶"
+	PRINTL 在这段时间内，选择当前的奴隶作为调教对象。
+	PRINTL 进行与从主菜单的【调教对象选择】中选择的情况相同的动作。
+	
+CASE "搾乳（日程）"
+	;重複呼び出しへ
+	CALL PART_HINT_SCHEDULE_LACTATION
+	
+CASE "抽出（日程）"
+	CALL PART_HINT_SCHEDULE_EP_DRAIN
+	
+CASE "搾乳・抽出补充"
+	CALL PART_HINT_SCHEDULE_LACTATION_OR_DRAIN
+	
+CASE "体内凌辱"
+	PRINTL 将奴隶困在由魔法制造的您体内的空间中，用无数触手持续进行侮辱。
+	PRINTL 如果未学会＜体内凌辱＞魔法，则无法制定该日程。
+	PRINTL
+	PRINTL 选择后，日程将变为【体内凌辱准备】，日程实行时
+	PRINTL 被关在主人公体内的【体内凌辱】变化。
+	PRINTL 在这个时候，如果有衣物，请选择「吐出」或「融化」。
+	PRINTL 在体内凌辱准备状态检查后，将开始对日程【体内凌辱】的奴隶进行凌辱。
+	PRINTL
+	PRINTFORML 在体内凌辱期间，被榨取的%SAVESTR:标识／母乳%和包含的灵力・魔力都将被主人公吞噬。
+	PRINTL 夜晚时分将进行特殊的就寝，不会执行凌辱。
+	PRINTL
+	PRINTL 选择体内凌辱中的奴隶，选择【从体内解放】，日程会变成【解放准备】。
+	PRINTL 在执行日程时，您可以将奴隶释放出体外。
+	PRINTL （在释放准备时，可以通过选择【不释放】取消）
+	
+CASE "体内凌辱补充"
+	PRINTL 【体内凌辱】实行日程后HP为0的话就会变成【虚脱】状态。
+	PRINTL 在这种状态下释放之后，事务和奉仕也将变得不可能。
+	PRINTL 持续休息，当体力回复满时将从【虚脱】状态中回复。
+	PRINTL
+	PRINTL 不仅在执行日程时，即使您的魔力在任何时候降为0，都将无法维持体内凌辱，
+	PRINTL 此时体内凌辱中的所有奴隶都将被释放。
+	PRINTL
+	PRINTL 《 体内凌辱中的奴隶的限制 》
+	PRINTL ・不可执行其他日程　【去见面】不可　・白天的【调教】不可
+	
+CASE "牛棚内的情况"
+	PRINTL 如果在＜牛舍＞中的奴隶，将在不需要单独安排日程的情况下执行【搾乳】。
+	PRINTL （在牛舍和牲畜小屋中消息可能会有所不同，但提供的快感等都是相同的）
+	PRINTL
+	PRINTL 牛舍中的奴隶可以选择作为【搾乳牲畜】在早晚进行搾乳，
+	PRINTL 或者选择作为【牛奶制造机】在早、午、晚不停地进行挤奶。
+	PRINTL
+	PRINTL 《 牛舍内的奴隶限制 》
+	PRINTL ・不可执行其他日程　・白天的【调教】不可
+	
+CASE "大浴场清洁"
+	PRINTL 大浴场的清洁将被执行。
+	PRINTL 如果不是能委托工作的状态，则无法设置日程。
+	PRINTL
+	PRINTL 根据配置，如果事务所的清洁还未完成，清洁等级最高的角色将优先清洁主人公的浴室，
+	PRINTL 然后所有的日程执行者都将为大浴场进行清扫。
+	PRINTL 大浴场一旦可以使用，当天夜间行动前将允许奴隶们不限人数地进行【入浴】。
+	PRINTL
+	PRINTL 《 执行时效果 》
+	PRINTL 主人公浴室清洁：体力消耗400-清洁等级×20（下限100）
+	PRINTL 大浴场清洁：体力消耗200-清洁等级×10（下限20），体力为0时执行10次，直到【大浴场清洁完成度】达到100为止。
+	PRINTL 如果还未【乳牛堕落】的情况下，则乳牛堕落程度微减
+	PRINTL
+	PRINTL 在执行日程的角色中，按【扫除】Lv最高的进行，
+	PRINTL 使未达到该等级的角色获取的经验值增加。
+	PRINTL （修正的最大值和能够接受修正的极限都是Lv10）
+	
+CASE "触手刺激搾乳"
+	PRINTL 在家畜小屋中，对奴隶使用搾乳器进行搾乳，同时以无数触手进行凌辱。
+	PRINTFORML 和普通的搾乳一样，搾取的%SAVESTR:标识／母乳%将会被送至魔界农业协会，成为牧场的资金来源。
+	PRINTL 如果奴隶不是【母乳体质】，或没有触手由奴隶生产，则无法安排日程。
+	PRINTL
+	PRINTL 若学习了刷子触手技能，且奴隶是处女或Ａ处女，则该部位将受到刷子触手的刺激。
+ENDSELECT
+
+

@@ -1,0 +1,230 @@
+
+; ======================================
+; 泛用口上・单一文件范本（性格：懦弱）
+; 复制本文件后：全局替换「懦弱1」→你的套装名，并改写台词即可。
+;
+;口上識別名：懦弱1
+;口上作者：（魔改模板／可改署你名）
+;许可证：CC BY-NC（与仓库其他泛用口上同）
+; 陷落后：顺从、示弱、不知所措为主；道歉减少，避免句句「对不起」。
+; ======================================
+
+@KOJO_GENERAL_INDEX_懦弱1(ARGS:0,ARGS:1,ARGS:2,ARGS:3)
+
+IF TFLAG:Ｍ装备
+	CALL KOJO_GENERAL_MOUTH_SHACKLE_1(ARGS:0,ARGS:1,ARGS:2,ARGS:3)
+	RETURN
+ELSEIF CFLAG:崩坏 && !CFLAG:洗脑
+	IF GROUPMATCH(ARGS:0,"例文")
+	ELSEIF GROUPMATCH(ARGS:1,"洗脑触手","崩坏")
+	ELSE
+		IF NOWEX:总绝顶
+			CALL MESSAGE_BOX,@"「啊、啊啊……♥ 脑袋……空空的……不知道……该怎么办……♥」"
+			CALL MESSAGE_BOX,@"「呜……已经……分不清了……%SELF_CALL()%……只会听话了……♥」"
+			CALL MESSAGE_BOX,@"「……对不起……♥ ……别丢下%SELF_CALL()%……♥」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……%SELF_CALL()%……好奇怪……该……怎么做……」"
+			CALL MESSAGE_BOX,@"「……对不起……脑子……转不动……」"
+		ENDIF
+		RETURN
+	ENDIF
+ENDIF
+
+SELECTCASE ARGS:0
+CASE "例文"
+	CALL MESSAGE_BOX,@"「【懦弱1】已设置。\n第一人称：%CSTR:第一人称%　对主人公：%CSTR:主人公的称呼／陷落前%\n未陷落：恳求、退缩、偶尔道歉；陷落：顺从、示弱、不知所措，多句近义随机。」"
+
+CASE "调教命令"
+	CALL KOJO_GENERAL_懦弱1_TRAIN(ARGS:0,ARGS:1,ARGS:2,ARGS:3)
+
+CASE "绝顶"
+	IF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／隶属＃
+		CALL MESSAGE_BOX,@"「不行了……♥ %SELF_CALL()%……什么都想不了……只听%MASTER_CALL()%的……♥」"
+		CALL MESSAGE_BOX,@"「……要去了……♥ 身体……自己动……%SELF_CALL()%……好乖……♥♥」"
+		CALL MESSAGE_BOX,@"「呜……♥ 脑袋一片空白……要、要坏掉了……♥」"
+	ELSEIF ＃陷落状态／恋慕以上＃
+		CALL MESSAGE_BOX,@"「%MASTER_CALL()%……♥ 不要看……%SELF_CALL()%这么丢脸的样子……♥」"
+		CALL MESSAGE_BOX,@"「……忍不住……♥ 抓着%MASTER_CALL()%……可以吗……♥」"
+		CALL MESSAGE_BOX,@"「……好可怕……又好舒服……♥ %SELF_CALL()%……不知道怎么办……♥」"
+	ELSEIF ＃陷落状态／屈服以上＃
+		CALL MESSAGE_BOX,@"「饶了%SELF_CALL()%吧……♥ 真的……不行了……呜……♥」"
+		CALL MESSAGE_BOX,@"「……随、随便怎样……♥ %SELF_CALL()%……都受着……♥」"
+		CALL MESSAGE_BOX,@"「……已经……没有力气反抗了……♥」"
+	ELSE
+		CALL MESSAGE_BOX,@"「不要……♥ 好可怕……%SELF_CALL()%……要去了……」"
+		CALL MESSAGE_BOX,@"「……对不起……声音……停不下来……」"
+	ENDIF
+	IF EX:总绝顶 >= 200
+		CALL MESSAGE_BOX,@"「会死的……♥ 真的会死的……%SELF_CALL()%……什么都不知道了……♥♥♥」"
+		CALL MESSAGE_BOX,@"「……救……♥ ……不……还要……♥♥」"
+	ELSEIF EX:总绝顶 >= 50
+		CALL MESSAGE_BOX,@"「不要了……♥ 好可怕……身体自己在抖……」"
+		CALL MESSAGE_BOX,@"「……对不起……♥ ……停不下来……」"
+	ELSEIF EX:总绝顶 >= 20
+		CALL MESSAGE_BOX,@"「呜……♥ 顶不住了……%SELF_CALL()%好没用……」"
+		CALL MESSAGE_BOX,@"「……脑袋……嗡嗡的……♥」"
+	ELSE
+		CALL MESSAGE_BOX,@"「……♥ 对不起……声音……忍不住……」"
+		CALL MESSAGE_BOX,@"「……嗯……♥ ……别、别停……」"
+	ENDIF
+	SIF NOWEX:Ａ绝顶
+		IF TALENT:Ａ名器 || TALENT:肛门嗜好 || ABL:Ａ感觉 >= 3
+			CALL MESSAGE_BOX,@"「……呜……！？　%ANAL_CALL()%……好痛……可是……里面……好怪……♥」"
+			CALL MESSAGE_BOX,@"「……%SELF_CALL()%……是不是……坏掉了……♥」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……痛……！？　屁股……不要……%SELF_CALL()%……受不了……」"
+			CALL MESSAGE_BOX,@"「……对不起……只有痛……」"
+		ENDIF
+	SIF NOWEX:Ｕ绝顶
+		IF TALENT:尿道敏感 || EX:尿道调教经验 >= 15
+			CALL MESSAGE_BOX,@"「……呜……！？　又痛又……下面……好怪……♥」"
+			CALL MESSAGE_BOX,@"「……%SELF_CALL()%……是不是……尿尿的地方也坏掉了……♥」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……好痛……尿道……像针扎……对不起……」"
+			CALL MESSAGE_BOX,@"「……只有疼……憋得……好难受……」"
+		ENDIF
+
+CASE "射精"
+	IF SOURCE:膣内射精经验
+		IF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／隶属＃
+			CALL MESSAGE_BOX,@"「肚子里……好烫……♥ 都是%MASTER_CALL()%的……%SELF_CALL()%……会好好含着……♥」"
+			CALL MESSAGE_BOX,@"「……灌进来了……♥ %SELF_CALL()%……会顺从地……全部接住……♥」"
+		ELSEIF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「射在……里面了……♥ %SELF_CALL()%会好好……含住的……」"
+			CALL MESSAGE_BOX,@"「……好满……♥ ……%MASTER_CALL()%……%SELF_CALL()%该怎么办……♥」"
+			CALL MESSAGE_BOX,@"「……里面……一跳一跳的……♥ ……%SELF_CALL()%……腿软了……♥」"
+		ELSEIF ＃陷落状态／屈服以上＃
+			CALL MESSAGE_BOX,@"「又……在里面……♥ ……%SELF_CALL()%……不敢动……」"
+			CALL MESSAGE_BOX,@"「……会怀孕吗……♥ ……不知道……该怎么办……」"
+		ELSE
+			CALL MESSAGE_BOX,@"「不要……在里面……求你了……呜……已经……」"
+			CALL MESSAGE_BOX,@"「……对不起……别、别射在里面……」"
+		ENDIF
+	ELSEIF SOURCE:尻穴射精经验
+		IF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「后面……被灌满了……♥ 好丢脸……%MASTER_CALL()%别看……」"
+			CALL MESSAGE_BOX,@"「……屁股……好奇怪……♥ ……%SELF_CALL()%……只会缩紧……♥」"
+		ELSEIF ＃陷落状态／屈服以上＃
+			CALL MESSAGE_BOX,@"「屁股……好奇怪……♥ ……%SELF_CALL()%……会忍住的……」"
+			CALL MESSAGE_BOX,@"「……后面……满满的……♥ ……不知道……该说什么……」"
+		ELSE
+			CALL MESSAGE_BOX,@"「那里……不行……好脏……别射在后面……」"
+			CALL MESSAGE_BOX,@"「……对不起……别在后面……」"
+		ENDIF
+	ELSEIF SOURCE:精饮经验
+		IF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……咽下去了……♥ 味道……记得很清楚……」"
+			CALL MESSAGE_BOX,@"「……喉咙……好烫……♥ ……还要……听%MASTER_CALL()%的……♥」"
+		ELSEIF ＃陷落状态／屈服以上＃
+			CALL MESSAGE_BOX,@"「呜……全部……喝掉了……♥ 喉咙……好烫……」"
+			CALL MESSAGE_BOX,@"「……顺从地……咽下去了……♥」"
+		ELSE
+			CALL MESSAGE_BOX,@"「咳咳……好呛……别、别再往里顶了……」"
+			CALL MESSAGE_BOX,@"「……对不起……好难受……」"
+		ENDIF
+	ELSEIF TEQUIP:手淫
+		IF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「手上……黏糊糊的……♥ %MASTER_CALL()%……」"
+			CALL MESSAGE_BOX,@"「……%SELF_CALL()%……帮你擦干净……♥」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……弄脏了……%SELF_CALL()%会擦掉的……」"
+			CALL MESSAGE_BOX,@"「……对不起……手……好黏……」"
+		ENDIF
+	ENDIF
+
+CASE "搾乳"
+	IF SOURCE:母乳漏出
+		CALL MESSAGE_BOX,@"「啊……漏出来了……停不下来……」"
+		CALL MESSAGE_BOX,@"「……对不起……胸……自己……」"
+		RETURN
+	ENDIF
+	IF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／隶属＃
+		CALL MESSAGE_BOX,@"「奶水……被挤出来了……♥ ……像母牛一样……%SELF_CALL()%……会乖……♥」"
+		CALL MESSAGE_BOX,@"「……请、请随便挤……♥ ……%SELF_CALL()%……不敢躲……♥」"
+	ELSEIF ＃陷落状态／恋慕以上＃
+		CALL MESSAGE_BOX,@"「轻一点……♥ 胸部……好酸……」"
+		CALL MESSAGE_BOX,@"「……%MASTER_CALL()%……摸就好……♥ ……%SELF_CALL()%……忍着……♥」"
+	ELSE
+		CALL MESSAGE_BOX,@"「不要……别榨那里……求你了……」"
+		CALL MESSAGE_BOX,@"「……对不起……别碰……」"
+	ENDIF
+
+CASE "抽出"
+	CALL MESSAGE_BOX,@"「力量……被抽走了……%SELF_CALL()%站不稳了……」"
+	CALL MESSAGE_BOX,@"「……腿……好软…………扶一下……好吗……」"
+
+CASE "日程"
+	SELECTCASE ARGS:1
+	CASE "调教"
+		SELECTCASE ARGS:2
+		CASE "开始调教"
+			CALL MESSAGE_BOX,@"「……今天、也要……请、请手下留情……」"
+			CALL MESSAGE_BOX,@"「……%SELF_CALL()%……会听话的……」"
+		CASE "调教结束"
+			CALL MESSAGE_BOX,@"「结束了……吗……%SELF_CALL()%……有没有添麻烦……」"
+			CALL MESSAGE_BOX,@"「……好累…………可以……休息吗……」"
+		ENDSELECT
+	CASEELSE
+	ENDSELECT
+
+CASE "阴茎称呼变更"
+	CALL MESSAGE_BOX,@"「……那个称呼……%SELF_CALL()%会、会努力的……」"
+	CALL MESSAGE_BOX,@"「……记住了……%MASTER_CALL()%怎么说……%SELF_CALL()%就怎么说……」"
+
+CASE "膣称呼变更"
+	CALL MESSAGE_BOX,@"「……连那里……都要用那种叫法吗……%SELF_CALL()%记住了……」"
+	CALL MESSAGE_BOX,@"「……好羞耻…………但会照做的……」"
+
+CASE "肛门称呼变更"
+	CALL MESSAGE_BOX,@"「后面……也要……%SELF_CALL()%会听话的……」"
+	CALL MESSAGE_BOX,@"「……那种叫法……%SELF_CALL()%……会小声说的……」"
+
+CASE "吸欧派"
+	SELECTCASE ARGS:1
+	CASE "开始"
+		CALL MESSAGE_BOX,@"「吸的话……轻一点……%SELF_CALL()%会乖乖不动……」"
+		CALL MESSAGE_BOX,@"「……胸……给%MASTER_CALL()%……」"
+	CASE "结束"
+		CALL MESSAGE_BOX,@"「……结束了……吗……胸口……麻麻的……」"
+		CALL MESSAGE_BOX,@"「……%SELF_CALL()%……还在抖……」"
+	ENDSELECT
+
+CASE "访问"
+	SELECTCASE ARGS:1
+	CASE "入口"
+		CALL MESSAGE_BOX,@"「啊……%MASTER_CALL()%……%SELF_CALL()%来了……是不是打扰了……」"
+		CALL MESSAGE_BOX,@"「……那个……%SELF_CALL()%……可以进来吗……」"
+	CASEELSE
+	ENDSELECT
+
+CASE "事件"
+	CALL MESSAGE_BOX,@"「……发生什么事了吗……%SELF_CALL()%……能帮上忙吗……」"
+	CALL MESSAGE_BOX,@"「……需要%SELF_CALL()%……做什么……」"
+
+CASE "肉体改造"
+	CALL MESSAGE_BOX,@"「身体……被改了……%SELF_CALL()%会……会努力去适应……」"
+	CALL MESSAGE_BOX,@"「……有点怕……但……听%MASTER_CALL()%的……」"
+
+CASE "战斗"
+	SELECTCASE ARGS:1
+	CASE "攻击"
+		CALL MESSAGE_BOX,@"「……要上了……！」"
+		CALL MESSAGE_BOX,@"「对不起……%SELF_CALL()%……会努力的……！」"
+	CASE "被击中"
+		CALL MESSAGE_BOX,@"「好痛……%SELF_CALL()%又拖后腿了……」"
+		CALL MESSAGE_BOX,@"「……呜……还、还能站……」"
+	CASEELSE
+	ENDSELECT
+
+CASEELSE
+ENDSELECT
+RETURN
+
+
+
+;----------------------------------------------------------------------
+; 调教命令（从本文件中分离，便于与其他泛用口上结构一致）
+;----------------------------------------------------------------------
+@KOJO_GENERAL_懦弱1_TRAIN(ARGS:0,ARGS:1,ARGS:2,ARGS:3)
+CALL KOJO_GENERAL_懦弱口上1_TRAIN(ARGS:0,ARGS:1,ARGS:2,ARGS:3)
+RETURN

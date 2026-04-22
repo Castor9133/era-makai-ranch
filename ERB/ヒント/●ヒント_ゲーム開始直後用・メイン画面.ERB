@@ -1,0 +1,23 @@
+﻿
+;チュートリアル用
+@TUTORIAL_TIPS_SHOP
+
+;まだ【母乳体質】がいないなら調教すればいいやで誘導
+IF !CMATCH(MARK:母乳体质,1)
+	CALL PRINTL_WORD_COLOR("「调教对象选择」中选择带来的巫女/修女，然后选择「日程执行」即可进行调教。","浅蓝色")
+	CALL PRINTL_WORD_COLOR("基本上需要有人进行「奶农」工作，所以交给斯雷（默认情况下）处理吧。","浅蓝色")
+	RETURN
+
+;まだ出荷してないなら昼まで待てばいいやで
+ELSEIF !FLAG:母乳出货总量
+	CALL PRINTL_WORD_COLOR,@"从【母乳体质】的奴隶那里搾取的%SAVESTR:标识／母乳%会在早晨行动结束后的「结算」中出货。","浅蓝色"
+	CALL PRINTL_WORD_COLOR("进行调教或奶农工作，然后等到中午。","浅蓝色")
+	RETURN
+ENDIF
+
+
+
+
+
+
+

@@ -1,0 +1,115 @@
+﻿
+;目次
+@LIST_CONFIG_INDEX
+
+PRINTL --- 《 目录 》 ---
+ALIGNMENT LEFT
+DRAWLINE
+PRINTL [ 1] 显示相关
+PRINTL [ 2] 选项
+PRINTL [ 3] 系统
+PRINTL [ 4] 世界种族
+PRINTL [ 5] 奴隶候选
+PRINTL [ 6] 难度
+
+
+
+;飛ばして反転フラグに対応する番号は共通関数
+;FLAG_NUMを指定済み
+@CHANGE_CONFIG_INVERTBIT
+
+;飛ばすフラグがONならINVERT
+SIF !FLAG:跳过ON／OFF项目的详细信息并反转
+	RETURN
+{
+IF GROUPMATCH(FLAG_NUM,
+2000,2002,2003,2060,2062,2064,2065,2071,2072,2075,2076,
+2302,2303,2502,2503,2504,2505,2506,2507,3000,
+3600,3601,3602,3603,3604,
+3700,3720,3721,3722,3723,3724,3725,3726)
+}
+	INVERTBIT FLAG:FLAG_NUM,0
+	RETURN 1
+ENDIF
+
+
+
+;システムデータのセーブロード・デフォルト
+;ARG→PAGE
+@CONFIG_DEFAULT_SYSTEM_SAVE(ARG)
+
+CALL MANYL(5)
+PRINTL 是否进行系统数据设定和默认设定？
+PRINTL
+PRINTL [ 0] 将当前配置保存到系统数据中（全部页面）
+PRINTL
+
+;バージョンで見ることに変更
+LOADGLOBAL
+IF GLOBAL:系统数据版本
+	;ゲーム開始前は一括可能
+	IF !DAY
+		PRINTL 《 当前页面项目 》
+		PRINTLC [10] 从系统数据加载
+		PRINTL [11] 加载默认值
+		PRINTL
+		PRINTL 《 所有配置 》
+		PRINTLC [20] 从系统数据加载
+		PRINTL [21] 加载默认值
+	ELSE
+		CALL CONFIG_DEFAULT_SYSTEM_SAVE_PAGE(ARG)
+	ENDIF
+ELSE
+	;多分来ない気がする
+	CALL PRINTL_WORD_COLOR("　需要先保存一次系统数据","灰")
+ENDIF
+PRINTL
+PRINTL [99] 取消
+BINPUT
+SELECTCASE RESULT
+CASE 0
+	CALL SAVE_GLOBAL_CONFIG
+CASE 10
+	CALL LOAD_GLOBAL_CONFIG(ARG)
+CASE 11
+	CALL SET_DEFAULT_CONFIG(ARG)
+CASE 20
+	CALL LOAD_GLOBAL_CONFIG(0)
+CASE 21
+	CALL SET_DEFAULT_CONFIG(0)
+ENDSELECT
+
+
+
+@CONFIG_DEFAULT_SYSTEM_SAVE_PAGE(ARG)
+
+SELECTCASE ARG
+CASE 1,2,3
+	PRINTL 《 当前页面项目 》
+	PRINTLC [10] 从系统数据加载
+	PRINTL [11] 加载默认值
+CASE 4
+	IF FLAG:可配置的候选奴隶
+		PRINTL 《 当前页面项目 》
+		PRINTLC [10] 从系统数据加载
+		PRINTL [11] 加载默认值
+	ELSE
+		CALL PRINTL_WORD_COLOR("　游戏开始后更改需要使用＜奴隶候补设定变更票＞","灰")
+	ENDIF
+CASE 5
+	PRINTL 《 当前页面项目 》
+	PRINTLC [10] 从系统数据加载
+	PRINTL [11] 加载默认值
+	SIF !FLAG:可配置的候选奴隶
+		CALL PRINTL_WORD_COLOR("　由于未使用＜奴隶候补设定变更票＞，因此＜身体特征比例＞之后的内容不会更改","黄")
+CASE 6
+	IF FLAG:开发者模式
+		CALL PRINTL_WORD_COLOR("　游戏开始后无法批量更改难度设定","灰")
+	ELSE
+		CALL PRINTL_WORD_COLOR("　游戏开始后的难度设定更改仅在＜开发者模式＞中可行","灰")
+	ENDIF
+ENDSELECT
+CALL PRINTL_WORD_COLOR("　所有页面的项目在游戏开始后不能批量加载","灰")
+
+
+

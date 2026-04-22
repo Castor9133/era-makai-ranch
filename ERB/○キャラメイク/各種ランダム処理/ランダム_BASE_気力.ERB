@@ -1,0 +1,56 @@
+﻿
+;気力計算
+@SLAVE_SP_CALC
+
+;HPと似た計算、種族補正は上位種族以外しない
+CALL SLAVE_SP_CALC_TALENT_FIX
+
+;1000基準に+-
+STATUS = 1000 +50 *CFLAG:气力修正
+CALL RANDOM_FIX(STATUS,5,"気力量")
+STATUS += FIX
+STATUS -= (STATUS %50)
+STATUS = LIMIT(STATUS,1000,5000)
+MAXBASE:气力 = STATUS
+BASE:气力 = MAXBASE:气力
+
+
+
+;SPの素質補正
+@SLAVE_SP_CALC_TALENT_FIX
+
+;1につき50
+CFLAG:气力修正 = CFLAG:级别
+SIF TALENT:魔界种族
+	CFLAG:气力修正 += 6
+SIF TALENT:天界种族
+	CFLAG:气力修正 += 6
+SIF TALENT:神格
+	CFLAG:气力修正 += 3
+SIF TALENT:不怕痛
+	CFLAG:气力修正 += 4
+SIF TALENT:自尊心高
+	CFLAG:气力修正 += 2
+SIF TALENT:高傲
+	CFLAG:气力修正 += 3
+SIF TALENT:勇敢
+	CFLAG:气力修正 += 1
+SIF TALENT:抗拒
+	CFLAG:气力修正 += 1
+SIF TALENT:坚强
+	CFLAG:气力修正 += 2
+SIF TALENT:高雅
+	CFLAG:气力修正 += 2
+
+SIF TALENT:怕痛
+	CFLAG:气力修正 -= 4
+SIF TALENT:自尊心低
+	CFLAG:气力修正 -= 2
+SIF TALENT:卑屈
+	CFLAG:气力修正 -= 3
+SIF TALENT:胆怯
+	CFLAG:气力修正 -= 2
+SIF TALENT:弱势
+	CFLAG:气力修正 -= 2
+
+

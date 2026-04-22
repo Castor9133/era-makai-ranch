@@ -1,0 +1,92 @@
+﻿
+;着替え時などに衣服・アクセサリーの種類を確認するための関数
+;ARGS→選択アイテム
+@CLOTHE_CATEGORY_CHECK(ARGS)
+
+;一旦消去
+RESULTS =
+SELECTCASE ARGS
+CASE "连体紧身衣","绳","比基尼","乳牛比基尼","弹弓比基尼","学校游泳衣","牛柄洞口比基尼","触手服装","牛纹弹弓比基尼"
+	RESULTS = 内衣上下装
+CASE "微型比基尼","乳牛微型比基尼"
+	RESULTS = 内衣上下装／极小
+
+{
+CASE "胸罩","裹胸布","授乳开口胸罩","紧身胸衣","乳头露出胸罩","运动胸罩",
+"猫娘胸罩","细带胸罩","前钩胸罩","眼罩胸罩"
+}
+	RESULTS = 内衣上装
+CASE "眼罩胸罩"
+	RESULTS = 内衣上装／极小
+CASE "乳贴","乳头牌"
+	RESULTS = 内衣上装／贴纸
+
+CASE "内裤","局部露出内裤","条纹内裤","内裤","细带内裤","男式内裤"
+	RESULTS = 内衣下装
+CASE "丁字裤"
+	RESULTS = 内衣下装／极小
+CASE "私处贴纸","Ｃ字裤","胯部牌"
+	RESULTS = 内衣下装／贴纸
+
+CASE "眼镜","伊达眼镜","眼罩"
+	RESULTS = 眼
+
+{
+CASE "发箍","修女面纱","乳牛耳饰","丝带","皇冠","女仆发箍",
+"奶牛女仆发箍","魔法师帽","草帽","月桂冠","兔耳饰品","猫耳发箍"
+}
+	RESULTS = 头
+
+CASE "手套","长手套","乳牛长手套"
+	RESULTS = 腕
+
+CASE "袜子","高筒袜","及膝高筒袜","过膝高筒袜","吊袜带","乳牛高筒袜","渔网裤袜"
+	RESULTS = 腿
+
+CASE "项圈","牛铃"
+	RESULTS = 颈
+
+CASE "斗篷","披肩","外套","围裙装","连体背带裤","男仆围裙","连帽衫","开襟毛衣"
+	RESULTS = 外衣
+ENDSELECT
+SIF RESULTS != ""
+	RETURN
+
+;後にループさせたほうが処理が重くなくてよさそう+そもそも例外処理を外せる
+;該当なしの場合FORループして名前一致したら鎧とか衣服とか
+;ITEM:作業着セット→1000
+FOR LOCAL,1000,1050
+	SIF ARGS != ITEMNAME:LOCAL
+		CONTINUE
+	RESULTS = 衣服一套
+	RETURN
+NEXT
+
+;ITEM:革の鎧→1050
+FOR LOCAL,1050,1100
+	SIF ARGS != ITEMNAME:LOCAL
+		CONTINUE
+	RESULTS = 铠
+	RETURN
+NEXT
+
+;その他
+FOR LOCAL,1000,2000
+	SIF ARGS != ITEMNAME:LOCAL
+		CONTINUE
+	RESULTS = 衣服
+NEXT
+
+
+
+;着用下着が紐ほどきタイプか
+;ARGS→選択アイテム
+@LINGERIE_STRING_CHECK(ARGS)
+
+SELECTCASE ARGS
+CASE "微型比基尼","比基尼","乳牛比基尼","乳牛微型比基尼","牛柄洞口比基尼","眼罩胸罩","细带胸罩","细带内裤"
+	RETURN 1
+ENDSELECT
+
+
+

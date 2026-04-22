@@ -1,0 +1,20 @@
+﻿
+;マノさんの着けてる下着ください
+@SELECT_WISH_GIVE_LINGERIE
+
+CALL DRAGON_LINGERIE_MESSAGE
+CALL ASK_YN
+SIF RESULT
+	RETURN
+PRINTL 龙的身体闪耀着光芒，从天空中飘落下来…
+CALL PRINTL_WORD_COLOR("获得了＜马诺小姐的内衣＞！","黄")
+PRINTL 这是一套黑色蕾丝的上下内衣。还有一丝温暖…
+PRINTL 以罩杯尺寸来说大概有【G】吧…
+PRINTW
+ITEM:玛诺的内衣 ++
+SAVESTR:获得内衣的角色 = 玛诺
+ITEM:龙之珠 = 0
+
+
+
+

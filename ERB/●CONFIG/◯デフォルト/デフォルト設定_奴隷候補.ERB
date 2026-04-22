@@ -1,0 +1,221 @@
+﻿
+;奴隷候補デフォルト
+@DEFAULT_CONFIG_SLAVE_BODY
+
+VARSET FLAG,0,3000,3500
+CALL DEFAULT_CONFIG_SLAVE_BODY_MINI
+FLAG:儿童对待时比例适用项目BIT = 0b1111
+CALL DEFAULT_TENDENCY_CONFIG_ALL
+CALL DEFAULT_VIRGIN_REROLL
+
+
+
+;簡易部分のみ
+@DEFAULT_CONFIG_SLAVE_BODY_MINI
+
+VARSET FLAG,0,3000,3050
+FLAG:日本式职业的日本名率 = 80
+FLAG:日本式职业的黑色头发率 = 50
+FLAG:儿童待遇身高范围 = 2
+FLAG:眼镜率 = 10
+
+
+
+;非処女時再抽選回数デフォルト
+@DEFAULT_VIRGIN_REROLL
+
+FLAG:非处女时再抽选次数／高身份 = 3
+FLAG:非处女时再抽选次数／上位种族 = 1
+FLAG:非处女时再抽选次数／天界种族 = 3
+
+
+
+;割合設定デフォルト全部
+@DEFAULT_TENDENCY_CONFIG_ALL
+
+CALL DEFAULT_TENDENCY_CONFIG_HEIGHT
+CALL DEFAULT_TENDENCY_CONFIG_NIPPLE_COLOR
+CALL DEFAULT_TENDENCY_CONFIG_NIPPLE_COLOR_DARKSKIN
+CALL DEFAULT_TENDENCY_CONFIG_SKIN_COLOR
+
+;大人用
+CALL DEFAULT_TENDENCY_CONFIG_BUST
+CALL DEFAULT_TENDENCY_CONFIG_SHAPE
+CALL DEFAULT_TENDENCY_CONFIG_VARGIN
+CALL DEFAULT_TENDENCY_CONFIG_UNDERHAIR
+
+;子供用
+CALL DEFAULT_TENDENCY_CONFIG_CHILD_BUST
+CALL DEFAULT_TENDENCY_CONFIG_CHILD_SHAPE
+CALL DEFAULT_TENDENCY_CONFIG_CHILD_VARGIN
+CALL DEFAULT_TENDENCY_CONFIG_CHILD_UNDERHAIR
+
+
+
+;身長割合デフォルト
+@DEFAULT_TENDENCY_CONFIG_HEIGHT
+
+FLAG:候选比例／身高／幼儿体型 = 0
+FLAG:候选比例／身高／儿童体型 = 5
+FLAG:候选比例／身高／矮小 = 10
+FLAG:候选比例／身高／娇小 = 20
+FLAG:候选比例／身高／标准 = 100
+FLAG:候选比例／身高／高挑 = 20
+FLAG:候选比例／身高／高大 = 0
+FLAG_REF = 3100
+FLAG:(FLAG_REF +9) = SUMARRAY(FLAG,FLAG_REF,FLAG_REF +9)
+
+;乳首の色割合デフォルト
+@DEFAULT_TENDENCY_CONFIG_NIPPLE_COLOR
+
+FLAG:候选比例／乳头颜色／粉红色 = 30
+FLAG:候选比例／乳头颜色／深粉色 = 20
+FLAG:候选比例／乳头颜色／亮粉色 = 20
+FLAG:候选比例／乳头颜色／樱桃粉 = 5
+FLAG:候选比例／乳头颜色／浅粉色 = 20
+FLAG:候选比例／乳头颜色／宝石红 = 5
+FLAG_REF = 3150
+FLAG:(FLAG_REF +9) = SUMARRAY(FLAG,FLAG_REF,FLAG_REF +9)
+
+;褐色系用乳首の色
+@DEFAULT_TENDENCY_CONFIG_NIPPLE_COLOR_DARKSKIN
+
+FLAG:候选比例／乳头颜色／褐色肌／粉红色 = 30
+FLAG:候选比例／乳头颜色／褐色肌／深粉色 = 20
+FLAG:候选比例／乳头颜色／褐色肌／亮粉色 = 20
+FLAG:候选比例／乳头颜色／褐色肌／樱桃粉 = 5
+FLAG:候选比例／乳头颜色／褐色肌／浅粉色 = 20
+FLAG:候选比例／乳头颜色／褐色肌／宝石红 = 5
+FLAG_REF = 3170
+FLAG:(FLAG_REF +9) = SUMARRAY(FLAG,FLAG_REF,FLAG_REF +9)
+
+;肌の色割合デフォルト
+@DEFAULT_TENDENCY_CONFIG_SKIN_COLOR
+
+FLAG:候选比例／肤色／白化 = 5
+FLAG:候选比例／肤色／美白 = 5
+FLAG:候选比例／肤色／白皙 = 10
+FLAG:候选比例／肤色／标准 = 100
+FLAG:候选比例／肤色／褐色 = 10
+FLAG:候选比例／肤色／小麦色 = 5
+FLAG_REF = 3160
+FLAG:(FLAG_REF +9) = SUMARRAY(FLAG,FLAG_REF,FLAG_REF +9)
+
+
+;大人扱い時
+;バストサイズ割合デフォルト
+@DEFAULT_TENDENCY_CONFIG_BUST
+
+FLAG:候选比例／胸围大小／绝壁 = 3
+FLAG:候选比例／胸围大小／贫乳 = 10
+FLAG:候选比例／胸围大小／普乳 = 20
+FLAG:候选比例／胸围大小／巨乳 = 50
+FLAG:候选比例／胸围大小／丰乳 = 10
+FLAG:候选比例／胸围大小／爆乳 = 10
+
+;リセットにも使うので0を入れる
+FLAG:候选比例／胸围大小／神乳 = 0
+FLAG:候选比例／胸围大小／魔乳 = 0
+FLAG_REF = 3110
+FLAG:(FLAG_REF +9) = SUMARRAY(FLAG,FLAG_REF,FLAG_REF +9)
+
+;体型割合デフォルト
+@DEFAULT_TENDENCY_CONFIG_SHAPE
+
+FLAG:候选比例／体型／苗条 = 5
+FLAG:候选比例／体型／瘦弱 = 10
+FLAG:候选比例／体型／标准体型 = 50
+FLAG:候选比例／体型／性感 = 5
+FLAG:候选比例／体型／丰满 = 2
+FLAG:候选比例／身材／丰腴 = 0
+FLAG:候选比例／体型／丰满 = 0
+FLAG:候选比例／体型／肌肉质 = 0
+FLAG_REF = 3120
+FLAG:(FLAG_REF +9) = SUMARRAY(FLAG,FLAG_REF,FLAG_REF +9)
+
+;性経験割合デフォルト
+@DEFAULT_TENDENCY_CONFIG_VARGIN
+
+FLAG:候选比例／性经验／纯洁 = 1
+FLAG:候选比例／性经验／生娘 = 100
+FLAG:候选比例／性经验／处女 = 30
+FLAG:候选比例／性经验／大概是处女 = 10
+FLAG:候选比例／性经验／非处女 = 20
+FLAG:候选比例／性经验／变态 = 5
+FLAG:候选比例／性经验／碧池 = 2
+FLAG:候选比例／性经验／肉便器 = 1
+FLAG_REF = 3130
+FLAG:(FLAG_REF +9) = SUMARRAY(FLAG,FLAG_REF,FLAG_REF +9)
+
+;陰毛割合デフォルト
+@DEFAULT_TENDENCY_CONFIG_UNDERHAIR
+
+FLAG:候选比例／阴毛／白虎 = 10
+FLAG:候选比例／阴毛／产毛 = 10
+FLAG:候选比例／阴毛／薄薄 = 20
+FLAG:候选比例／阴毛／标准 = 40
+FLAG:候选比例／阴毛／浓密 = 5
+FLAG:候选比例／阴毛／刚毛 = 0
+FLAG:候选比例／阴毛／密林 = 0
+FLAG_REF = 3140
+FLAG:(FLAG_REF +9) = SUMARRAY(FLAG,FLAG_REF,FLAG_REF +9)
+
+
+
+;ここから子供扱い時に使うほう
+;バストサイズ割合デフォルト
+@DEFAULT_TENDENCY_CONFIG_CHILD_BUST
+
+FLAG:儿童候选比例／胸围大小／绝壁 = 10
+FLAG:儿童候选比例／胸围大小／贫乳 = 30
+FLAG:儿童候选比例／胸围大小／普乳 = 20
+FLAG:儿童候选比例／胸围大小／巨乳 = 10
+FLAG:儿童候选比例／胸围大小／丰乳 = 5
+FLAG:儿童候选比例／胸围大小／爆乳 = 2
+FLAG:儿童候选比例／胸围大小／神乳 = 0
+FLAG:儿童候选比例／胸围大小／魔乳 = 0
+FLAG_REF = 3200
+FLAG:(FLAG_REF +9) = SUMARRAY(FLAG,FLAG_REF,FLAG_REF +9)
+
+;体型割合デフォルト
+@DEFAULT_TENDENCY_CONFIG_CHILD_SHAPE
+
+FLAG:儿童候选比例／体型／纤细 = 10
+FLAG:儿童候选比例／体型／瘦弱 = 10
+FLAG:儿童候选比例／体型／标准体型 = 30
+FLAG:儿童候选比例／体型／性感 = 2
+FLAG:儿童候选比例／体型／丰满 = 0
+FLAG:儿童候选比例／体型／丰腴 = 0
+FLAG:儿童候选比例／体型／丰满 = 0
+FLAG:儿童候选比例／体型／肌肉质 = 0
+FLAG_REF = 3210
+FLAG:(FLAG_REF +9) = SUMARRAY(FLAG,FLAG_REF,FLAG_REF +9)
+
+;性経験割合デフォルト
+@DEFAULT_TENDENCY_CONFIG_CHILD_VARGIN
+
+FLAG:儿童候选比例／性经验／纯洁 = 5
+FLAG:儿童候选比例／性经验／生娘 = 100
+FLAG:儿童候选比例／性经验／处女 = 20
+FLAG:儿童候选比例／性经验／大概是处女 = 5
+FLAG:儿童候选比例／性经验／非处女 = 5
+FLAG:儿童候选比例／性经验／变态 = 0
+FLAG:儿童候选比例／性经验／碧池 = 0
+FLAG:儿童候选比例／性经验／肉便器 = 1
+FLAG_REF = 3220
+FLAG:(FLAG_REF +9) = SUMARRAY(FLAG,FLAG_REF,FLAG_REF +9)
+
+;陰毛割合デフォルト
+@DEFAULT_TENDENCY_CONFIG_CHILD_UNDERHAIR
+
+FLAG:儿童候选比例／阴毛／白虎 = 30
+FLAG:儿童候选比例／阴毛／产毛 = 30
+FLAG:儿童候选比例／阴毛／薄薄 = 20
+FLAG:儿童候选比例／阴毛／标准 = 5
+FLAG:儿童候选比例／阴毛／浓密 = 5
+FLAG:儿童候选比例／阴毛／刚毛 = 0
+FLAG:儿童候选比例／阴毛／密林 = 0
+FLAG_REF = 3230
+FLAG:(FLAG_REF +9) = SUMARRAY(FLAG,FLAG_REF,FLAG_REF +9)
+
+

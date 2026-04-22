@@ -1,0 +1,17 @@
+﻿
+;自動スケジュール調整
+@AUTO_SCHEDULE_REST_FIX
+
+;単に自由時間と待機がバグ起こさないように自動のほう管理するだけだよ
+IF EQUIP:自室
+	SIF CSTR:日程 == "等待"
+		CSTR:日程 = 自由
+	SIF CSTR:日程／予定 == "等待"
+		CSTR:日程／予定 = 自由
+ELSE
+	SIF CSTR:日程 == "自由"
+		CSTR:日程 = 等待
+	SIF CSTR:日程／予定 == "自由"
+		CSTR:日程／予定 = 等待
+ENDIF
+

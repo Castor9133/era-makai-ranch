@@ -1,0 +1,111 @@
+﻿
+;日付が切り替わる時の天気変更
+@RANDOM_WEATHER
+
+;現状特に意味はないよ
+;日付が変わった時の天気＝明日の天気
+SAVESTR:天气／今天 = %SAVESTR:天气／明天%
+
+;季節によって変えておこうかな
+;日付+1してからここに来る、最終日ならどんよりにしておく
+SELECTCASE DAY:季节
+CASE 0
+	CALL TOMORROW_WEATHER_SPRING
+CASE 1
+	CALL TOMORROW_WEATHER_SUMMER
+CASE 2
+	CALL TOMORROW_WEATHER_AUTUMN
+CASE 3
+	CALL TOMORROW_WEATHER_WINTER
+ENDSELECT
+SIF DAY:日期 == 28
+	SAVESTR:天气／明天 = 灰蒙蒙
+
+
+
+;春の天気
+@TOMORROW_WEATHER_SPRING
+
+;どんより、小雨多め
+SELECTCASE RAND:100
+CASE 0 TO 59
+	SAVESTR:天气／明天 = 灰蒙蒙
+CASE 60 TO 74
+	SAVESTR:天气／明天 = 小雨
+CASE 75 TO 79
+	SAVESTR:天气／明天 = 雨
+CASE 80 TO 82
+	SAVESTR:天气／明天 = 大雨
+CASE 83 TO 85
+	SAVESTR:天气／明天 = 强风
+CASEELSE
+	SAVESTR:天气／明天 = 晴朗
+ENDSELECT
+
+
+
+;夏
+;比較的快晴、大雨多め
+@TOMORROW_WEATHER_SUMMER
+
+SELECTCASE RAND:100
+CASE 0 TO 39
+	SAVESTR:天气／明天 = 灰蒙蒙
+CASE 40 TO 44
+	SAVESTR:天气／明天 = 小雨
+CASE 45 TO 54
+	SAVESTR:天气／明天 = 雨
+CASE 54 TO 74
+	SAVESTR:天气／明天 = 大雨
+CASE 75 TO 77
+	SAVESTR:天气／明天 = 强风
+CASE 78 TO 80
+	SAVESTR:天气／明天 = 暴雨
+CASEELSE
+	SAVESTR:天气／明天 = 晴朗
+ENDSELECT
+
+
+
+;秋
+;どんより、雨多め
+@TOMORROW_WEATHER_AUTUMN
+
+SELECTCASE RAND:100
+CASE 0 TO 69
+	SAVESTR:天气／明天 = 灰蒙蒙
+CASE 70 TO 72
+	SAVESTR:天气／明天 = 小雨
+CASE 73 TO 84
+	SAVESTR:天气／明天 = 雨
+CASE 85 TO 87
+	SAVESTR:天气／明天 = 大雨
+CASE 88 TO 89
+	SAVESTR:天气／明天 = 强风
+CASE 90 TO 91
+	SAVESTR:天气／明天 = 暴雨
+CASEELSE
+	SAVESTR:天气／明天 = 晴朗
+ENDSELECT
+
+
+
+;冬
+;雨の代わりに雪
+@TOMORROW_WEATHER_WINTER
+
+SELECTCASE RAND:100
+CASE 0 TO 49
+	SAVESTR:天气／明天 = 灰蒙蒙
+CASE 50 TO 69
+	SAVESTR:天气／明天 = 雪
+CASE 70 TO 79
+	SAVESTR:天气／明天 = 大雪
+CASE 80 TO 84
+	SAVESTR:天气／明天 = 暴风雪
+CASEELSE
+	SAVESTR:天气／明天 = 晴朗
+ENDSELECT
+
+
+

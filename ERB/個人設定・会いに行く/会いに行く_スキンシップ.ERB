@@ -1,0 +1,73 @@
+﻿
+;頭撫で（複雑になってもいいよう関数分け）
+@VISIT_STROKING_HEAD
+
+CALL VISIT_STROKING_HEAD_MESSAGE
+IF GROUPMATCH(CSTR:状态／主人公的孩子,"成长中","成长后")
+	CALL MIND_BASE_DIRECT_PLUS("好感度",100)
+ELSEIF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／恋慕以上＃
+	CALL MIND_BASE_DIRECT_PLUS("好感度",50)
+ELSEIF ＃陷落状态／屈服以上＃
+	CALL MIND_BASE_DIRECT_PLUS("好感度",30)
+ENDIF
+
+;好感度増減したあとに止め
+PRINTW
+CFLAG:时刻限制／摸头 = 1
+TFLAG:亲密互动次数 ++
+
+;娘恋慕化判定
+CALL CHILD_LOVE
+
+
+;キス
+@VISIT_KISS
+
+;反発なしの娘だと頬にキス
+IF GROUPMATCH(CSTR:状态／主人公的孩子,"成长中","成长后")
+	PRINTFORML 亲吻了%CALLNAME%的脸颊…
+	PRINTFORMW %CALLNAME%看起来很开心…
+	CALL MIND_BASE_DIRECT_PLUS("好感度",100)
+	TFLAG:亲密互动次数 ++
+	CFLAG:时刻限制／接吻 = 1
+	;娘恋慕化判定
+	CALL CHILD_LOVE
+	RETURN
+ENDIF
+KISS_PLAYER = %CALLNAME:0%
+SOURCE:接吻 = 1
+CALL VISIT_KISS_MESSAGE
+CALL LOST_VARGIN
+CALL LOST_VARGIN_PLAYER
+
+;初キス判定するので分け
+CALL VISIT_KISS_AFTER_MESSAGE
+IF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／恋慕以上＃
+	CALL MIND_BASE_DIRECT_PLUS("好感度",100)
+ELSEIF ＃陷落状态／陷落以上＃
+	CALL MIND_BASE_DIRECT_PLUS("好感度",30)
+ENDIF
+PRINTW
+SIF !EXP:经验次数／主人公／接吻
+	FLAG:主人公经验人数／接吻 ++
+EXP:经验次数／主人公／接吻 ++
+CFLAG:时刻限制／接吻 = 1
+CFLAG:时刻限制／Ｈ = 1
+SOURCE:接吻 = 0
+
+;ファーストキス処理があるのでこれ必要
+CALL LOST_VARGIN_MIND_DAMAGE
+TFLAG:亲密互动次数 ++
+
+
+;遊ぶ
+@VISIT_PLAY_WITH_CHILD
+
+PRINTFORML 和%CALLNAME%玩了一会儿…
+PRINTFORML %CALLNAME%看起来很开心…
+CALL MIND_BASE_DIRECT_PLUS("好感度",100)
+PRINTW
+CFLAG:时刻限制／和孩子一起玩 = 1
+
+
+

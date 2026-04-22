@@ -1,0 +1,29 @@
+﻿
+;事務作業夜
+@WORK_FINANCE_NIGHT
+
+;とりあえずあなただけ
+TARGET = 0
+SIF CSTR:日程 != "事务"
+	RETURN
+
+PRINTFORML %CALLNAME%决定做完事务性工作再睡觉…
+;体力が足りないとダメ
+IF BASE:体力 <= 100
+	PRINTFORM …坐在办公桌前还好，%CALLNAME%累得就这样睡着了… 
+ELSE
+	FLAG:事务工作量 = LIMIT(FLAG:事务工作量 -(ABL:事务 /2),0,20)
+	PRINTFORM %CALLNAME_DIGIT()% 事务工作-{ABL:事务 /2} 
+ENDIF
+CALL EXP_UP("事务")
+CALL ABL_UP
+EXP:执行次数／事务 ++
+EXP:区间执行次数／事务 ++
+PRINTL
+HEAL_PRINT_DONE = 0
+CALL WORK_SLEEP_HEAL
+PRINTW
+DRAWLINE
+
+
+

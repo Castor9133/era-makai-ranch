@@ -1,0 +1,113 @@
+﻿
+;あなただけ風呂地の文　一応
+@MAIN_BATHING_PLAYER_SOLO_MESSAGE
+
+IF ITEM:天然温泉
+	PRINTFORML %CALLNAME%沐浴在天然温泉中，感到宁静愉悦…
+ELSE
+	PRINTFORML %CALLNAME%舒舒服服地洗澡…
+ENDIF
+
+
+
+;奴隷と2人風呂の前
+@MAIN_BATHING_PLAYER_DUO_BEFORE_MESSAGE
+
+PRINTFORML %CALLNAME:0%呼唤了%CALLNAME%，决定一起入浴。
+
+	;口上作ったらここ
+IF CFLAG:乳牛 || CFLAG:洗脑
+	PRINTFORML %CALLNAME%起身点头，与%CALLNAME:0%一起进入更衣室。
+	SIF TALENT:喜欢泡澡 < 0
+		PRINTFORML 尽管不太喜欢泡澡，但似乎在%CALLNAME:0%的陪伴下一切都变得不再在意。
+ELSEIF CFLAG:崩坏
+	PRINTFORML 由于%CALLNAME%已经虚脱无力，%CALLNAME:0%背着他一同前往更衣室。
+ELSE
+	;子供の場合
+	IF CSTR:状态／主人公的孩子 == "成长中"
+		IF TALENT:喜欢泡澡 > 0
+			PRINTFORML %CALLNAME%满脸笑容地朝更衣室走去，催促着%CALLNAME:0%。
+		ELSEIF TALENT:喜欢泡澡 < 0
+			PRINTFORML %CALLNAME%面露不情愿的表情，与%CALLNAME:0%一起进入了更衣室。
+		ELSE
+			PRINTFORML %CALLNAME%心情愉快地与%CALLNAME:0%一起进入了更衣室。
+		ENDIF
+		RETURN
+	ENDIF
+	
+	SELECTCASE CSTR:陷落状态
+	CASE "隶属"
+		PRINTFORML %CALLNAME%起身点头，与%CALLNAME:0%一起进入更衣室。
+		SIF TALENT:喜欢泡澡 < 0
+			PRINTFORML 尽管不太喜欢泡澡，但似乎在%CALLNAME:0%的陪伴下一切都变得不再在意。
+	CASE "恋慕"
+		PRINTFORML %CALLNAME%兴高采烈地与%CALLNAME:0%一起进入更衣室。
+		SIF TALENT:喜欢泡澡 < 0
+			PRINTFORML 尽管不太喜欢泡澡，但似乎与%CALLNAME:0%一起度过的喜悦更胜一筹。
+	CASE "陷落"
+		PRINTFORML %CALLNAME%虽然略带不满地表示自己并不是一个人，但还是乖乖与%CALLNAME:0%一同进入更衣室。
+		SIF TALENT:喜欢泡澡 > 0
+			PRINTFORML 由于只有与%CALLNAME:0%一同才能进入家庭浴室，也算是无可奈何吧。
+	CASE "屈服"
+		PRINTFORML 当得知不是一个人进入时，%CALLNAME%露出害怕的表情，随即老老实实地跟着%CALLNAME:0%进入更衣室。
+		SIF TALENT:喜欢泡澡 > 0
+			PRINTL 抱怨想一个人进去……
+	CASEELSE
+		IF TALENT:胆怯 || TALENT:悲观
+			PRINTFORML 当得知不是一个人进入时，%CALLNAME%露出害怕的表情，随即老老实实地跟着%CALLNAME:0%进入更衣室。
+			SIF TALENT:喜欢泡澡 > 0
+				PRINTL 抱怨想一个人进去……
+		ELSE
+			IF TALENT:喜欢泡澡 > 0
+				PRINTFORML 尽管%CALLNAME%对与%CALLNAME:0%一起进入颇为不满的样子，但考虑到拒绝的话可能连浴室都没法进，
+				PRINTL 最终还是老老实实地与%CALLNAME:0%一同进入更衣室。
+			ELSEIF TALENT:喜欢泡澡 < 0
+				PRINTFORML %CALLNAME%不知是不是因为各种意义上的嫌弃，在角落里躲了起来……
+				PRINTL 没办法只好硬拉着他到达更衣室。
+			ELSE
+				PRINTFORML 尽管%CALLNAME%对与%CALLNAME:0%一同进入颇为不满的样子，但最终还是无奈地与%CALLNAME:0%一同进入更衣室。
+			ENDIF
+		ENDIF
+	ENDSELECT
+ENDIF
+
+
+
+;奴隷と2人
+@MAIN_BATHING_PLAYER_DUO_MESSAGE
+
+IF ITEM:天然温泉
+	PRINTFORML %CALLNAME:0%和%CALLNAME%一起洗温泉澡……
+ELSE
+	PRINTFORML %CALLNAME:0%和%CALLNAME%一起洗澡……
+ENDIF
+
+;ここも口上作りたさある
+
+
+
+;奴隷のシャワー
+@MAIN_BATHING_SLAVE_SHOWER_MESSAGE
+
+PRINTFORM %CALLNAME%
+SIF EXIST >= 2
+	PRINT 们
+PRINTL 用淋浴洗去了汗水…
+
+
+
+;大浴場
+@MAIN_BATHING_SLAVE_LARGE_BATH_MESSAGE
+
+PRINTFORM %CALLNAME%
+SIF EXIST > 1
+	PRINT 们
+IF ITEM:天然温泉
+	PRINTL 在温泉大浴场舒舒服服…
+ELSE
+	PRINTL 在大浴场舒舒服服的…
+ENDIF
+
+
+
+

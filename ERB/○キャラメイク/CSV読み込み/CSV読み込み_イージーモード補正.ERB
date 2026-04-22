@@ -1,0 +1,47 @@
+﻿
+;配布奴隷のイージーモード合わせ
+@CSV_CHARA_ADD_EASYMODE_FIX
+
+CALL CSV_CHARA_ADD_EASYMODE_FIX_WEEK
+CALL CSV_CHARA_ADD_EASYMODE_FIX_MILK
+
+
+
+;感度増加
+@CSV_CHARA_ADD_EASYMODE_FIX_WEEK
+
+SIF !FLAG:随机角色通用弱点部位BIT
+	RETURN
+PRINTFORML 轻松模式的【敏感度增加设置】有效。增加%CALLNAME%的敏感度？
+CALL ASK_YN
+SIF RESULT
+	RETURN
+SIF GETBIT(＃全员Ｂ弱点＃)
+	ABL:Ｂ敏感度 = 200
+SIF GETBIT(＃全员Ｎ弱点＃)
+	ABL:Ｎ敏感度 = 200
+SIF GETBIT(＃全员Ｖ弱点＃)
+	ABL:Ｖ敏感度 = 200
+SIF GETBIT(＃全员Ｃ弱点＃)
+	ABL:Ｃ敏感度 = 200
+SIF GETBIT(＃全员Ａ弱点＃)
+	ABL:Ａ敏感度 = 200
+CALL NIPPLE_SENSITIVE_FIX
+
+
+
+;母乳体質化
+@CSV_CHARA_ADD_EASYMODE_FIX_MILK
+
+SIF !FLAG:奴隶候补全员先天母乳体质
+	RETURN
+PRINTFORML 轻松模式的【全员先天母乳体质化设定】有效。让%CALLNAME%变成【先天母乳体质】？
+CALL ASK_YN
+SIF RESULT
+	RETURN
+TALENT:先天母乳体质 = 1
+EXP:出产 = 0
+MARK:母乳体质 = 1
+
+
+

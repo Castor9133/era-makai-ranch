@@ -1,0 +1,36 @@
+﻿
+;戦闘訓練
+@WORK_TRAINING
+
+;今のとこあなたしか来ない場所
+SIF CSTR:0:日程 != "训练"
+	RETURN
+TARGET = 0
+PRINTL 　　　《 训练 》
+
+;体力が足りないとダメ
+IF !BASE:体力
+	PRINTFORM %CALLNAME%本想进行训练，但由于疲劳，身体似乎无法动弹，于是决定休息… 
+	HEAL_PRINT_DONE = 0
+	CALL FALL_ASLEEP
+ELSE
+	;実行回数で効率が上がっていくようにする
+	PRINTFORML %CALLNAME%对兼职雇佣兵的人们所听到的训练进行了一目了然的模仿。
+	HEAL = LIMIT(EXP:执行次数／战斗训练 +1,1,30)
+	COST = LIMIT(300 -EXP:执行次数／战斗训练 *5,100,300)
+	CALL HP_COST(COST,1)
+	BASE:战斗适性 = LIMIT(BASE:战斗适性 +HEAL,1,100)
+	
+	;最大値を入れる
+	SIF MAXBASE:战斗适性 < BASE:战斗适性
+		MAXBASE:战斗适性 = BASE:战斗适性
+	PRINTFORM %CALLNAME_DIGIT()% HP-{COST} 战斗适性+{HEAL} → {BASE:战斗适性}\% 
+	CALL EP_HEAL(HEAL)
+ENDIF
+PRINTL
+EXP:执行次数／战斗训练 ++
+EXP:区间执行次数／战斗演练 ++
+PRINTW
+DRAWLINE
+
+

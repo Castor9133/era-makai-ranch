@@ -1,0 +1,111 @@
+﻿
+;アクセサリー
+@ITEM_DETAIL_CLOTHE_ACCESSORY
+
+SELECTCASE ITEMNAME:SELECT_ITEM
+CASE "眼镜"
+	CALL ACCESSORY_DETAIL_COMMON("眼")
+	PRINTL 虽然是饰品分类，但却是矫正视力的工具。
+	PRINTL 如果原本不戴眼镜的话，无法装备。在这种情况下，请使用伊达眼镜。
+	IF FLAG:玩笑表示
+		PRINTL 原本戴着眼镜的话，不戴眼镜的话工作能力会下降，这也是考虑过的
+		PRINTL 我真的不想制定一个只有缺点的流程，所以大概不会做。
+	ENDIF
+
+CASE "伊达眼镜"
+	CALL ACCESSORY_DETAIL_COMMON("眼")
+	PRINTL 看起来像矫正视力工具的配件。
+	PRINTL 如果原本戴着眼镜，无法装备。请使用度数的眼镜。
+	
+CASE "发箍"
+	CALL ACCESSORY_DETAIL_COMMON("头")
+	PRINTL 一种「Ｃ」形发带。
+	PRINTL 在英语圈被称为「AliceBand」。
+
+CASE "丝带"
+	CALL ACCESSORY_DETAIL_COMMON("头")
+	PRINTL 常用于固定头发的配件。
+
+CASE "项圈"
+	CALL ACCESSORY_DETAIL_COMMON("颈")
+	PRINTL 可以戴在脖子上的饰品。
+	PRINTL 这是「项链」的一种，短的显然是「Choker」。
+
+CASE "眼罩"
+	CALL ACCESSORY_DETAIL_COMMON("眼")
+	PRINTL 一种在受伤时保护眼睛的医疗工具…但是，
+	PRINTL 有的冒险者因为「看起来很帅」，即使他们没有受伤并且视野恶化也戴着它。
+
+CASE "手套"
+	CALL ACCESSORY_DETAIL_COMMON("腕")
+	PRINTL 覆盖到手腕周围的手套。
+
+CASE "袜子"
+	CALL ACCESSORY_DETAIL_COMMON("腿")
+	PRINTL 袜子长度刚好到脚踝上方。
+
+
+;ここから拡張
+CASE "斗篷"
+	CALL JACKET_DETAIL_COMMON("全露出")
+	PRINTL 颈部扣合，前面开口的外衣。
+	PRINTL 有一种为了迎风飘动，使衣服看起来豪华的效果，或许有或许没有。
+
+CASE "披肩"
+	CALL JACKET_DETAIL_COMMON("全露出")
+	PRINTL 用颈原固定，覆盖从肩膀到稍微下面的程度的大衣。
+	PRINTL 原本应该是更长的东西，而「Capelet」是更短的东西。
+
+CASE "修女面纱"
+	CALL ACCESSORY_DETAIL_COMMON("头")
+	PRINTL 垂在背后的黑色长头饰，通常由神职人员佩戴。
+
+CASE "皇冠"
+	CALL ACCESSORY_DETAIL_COMMON("头")
+	PRINTL 戴在头上的装饰华丽的饰物。
+	PRINTL 它通常由地位较高的女性佩戴。
+
+CASE "女仆发箍"
+	CALL ACCESSORY_DETAIL_COMMON("头")
+	PRINTL 主要是女仆穿的带荷叶边的发箍。
+	PRINTL 一般较多的是白色褶边，这种情况下被称为「白褶边」。
+
+CASE "高筒袜"
+	CALL ACCESSORY_DETAIL_COMMON("腿")
+	PRINTL 长度刚好到膝盖以下的袜子。
+
+CASE "及膝高筒袜"
+	CALL ACCESSORY_DETAIL_COMMON("腿")
+	PRINTL 刚好到达膝盖上方的袜子。
+
+CASE "过膝高筒袜"
+	CALL ACCESSORY_DETAIL_COMMON("腿")
+	PRINTL 足够长以遮盖大腿的袜子。
+
+CASE "渔网裤袜"
+	CALL ACCESSORY_DETAIL_COMMON("腿")
+	PRINTL 网眼紧身衣。很适合兔子服。
+
+CASE "长手套"
+	CALL ACCESSORY_DETAIL_COMMON("腕")
+	PRINTL 遮住肘部周围的手套。
+
+CASE "魔法师帽"
+	CALL ACCESSORY_DETAIL_COMMON("头")
+	PRINTL 尖顶稍微弯曲的大号圆锥形帽子。
+	PRINTL 因为在人间被称为魔法始祖的人类曾戴过，所以被视为魔法师的象征。
+	
+CASE "草帽"
+	CALL ACCESSORY_DETAIL_COMMON("头")
+	PRINTL 用稻草编织的帽子。
+	PRINTL 通风良好且清凉，正好能防止夏日阳光。
+	
+CASE "月桂冠"
+	CALL ACCESSORY_DETAIL_COMMON("头")
+	PRINTL 用月桂树的枝叶编成的冠。
+	PRINTL 在地面上，月桂树被视为神圣之物，作为天使和神的供品，
+	PRINTL 天界种族喜欢佩戴，以展现他们来自天界的感觉。
+	
+ENDSELECT
+
+

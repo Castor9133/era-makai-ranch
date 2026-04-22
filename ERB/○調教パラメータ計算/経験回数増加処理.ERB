@@ -1,0 +1,130 @@
+﻿
+;経験回数増加処理
+@TIMES_SEX_GAIN
+
+;体内凌辱で増加させないフラグ+体内凌辱中なら帰る
+SIF !FLAG:体内凌辱增加经验次数 && TFLAG:体内凌辱中
+	RETURN
+
+IF GETBIT(＃Ｐ使用／Ｖ插入＃)
+	SIF !EXP:经验次数／主人公／Ｖ性交
+		FLAG:主人公经验人数／Ｖ ++
+	EXP:经验次数／主人公／Ｖ性交 ++
+ELSEIF GETBIT(＃Ｐ使用／Ａ插入＃)
+	SIF !EXP:经验次数／主人公／Ａ性交
+		FLAG:主人公经验人数／Ａ ++
+	EXP:经验次数／主人公／Ａ性交 ++
+ELSEIF GETBIT(＃Ｐ使用／Ｍ插入＃)
+	SIF !EXP:经验次数／主人公／Ｍ性交
+		FLAG:主人公经验人数／Ｍ ++
+	EXP:经验次数／主人公／Ｍ性交 ++
+ELSEIF GETBIT(＃Ｐ使用／乳交＃)
+	SIF !EXP:经验次数／主人公／乳交
+		FLAG:主人公经验人数／乳交 ++
+	EXP:经验次数／主人公／乳交 ++
+ENDIF
+
+;深喉嗜好：Ｍ性交経験を追加（既にＭ挿入カウント済みのターンのみ＋１）
+IF TFLAG:调教中 && TALENT:深喉嗜好 && GETBIT(＃Ｐ使用／Ｍ插入＃)
+	IF GROUPMATCH(SELECTCOM, 52, 109) || TEQUIP:深喉 || TEQUIP:触手深喉
+		EXP:经验次数／主人公／Ｍ性交 += 1
+	ENDIF
+ENDIF
+
+;バグ防止の調教中判定
+IF TRAINNAME:SELECTCOM == "接吻" && TFLAG:调教中
+	SIF !EXP:经验次数／主人公／接吻
+		FLAG:主人公经验人数／接吻 ++
+	EXP:经验次数／主人公／接吻 ++
+ENDIF
+IF !PLAYER && TFLAG:吸奶 && NOWEX:喷乳
+	SIF !EXP:经验次数／主人公／授乳
+		FLAG:主人公经验人数／授乳 ++
+	EXP:经验次数／主人公／授乳 ++
+ELSEIF TFLAG:哥布林轮奸 && NOWEX:喷乳
+	EXP:经验次数／魔族／授乳 ++
+ENDIF
+
+;触手はあなた扱いかどうかで変える
+IF FLAG:主人公的触手也是主人公 && !PLAYER
+	IF TEQUIP:触手Ｖ插入
+		SIF !EXP:经验次数／主人公／Ｖ性交
+			FLAG:主人公经验人数／Ｖ ++
+		EXP:经验次数／主人公／Ｖ性交 ++
+	ENDIF
+	IF TEQUIP:触手Ａ插入
+		SIF !EXP:经验次数／主人公／Ａ性交
+			FLAG:主人公经验人数／Ａ ++
+		EXP:经验次数／主人公／Ａ性交 ++
+	ENDIF
+	IF TEQUIP:触手口交 || TEQUIP:触手深喉
+		SIF !EXP:经验次数／主人公／Ｍ性交
+			FLAG:主人公经验人数／Ｍ ++
+		EXP:经验次数／主人公／Ｍ性交 ++
+	ENDIF
+	IF TEQUIP:触手强制乳交
+		SIF !EXP:经验次数／主人公／乳交
+			FLAG:主人公经验人数／乳交 ++
+		EXP:经验次数／主人公／乳交 ++
+	ENDIF
+	IF TFLAG:搾乳触手 && NOWEX:喷乳
+		SIF !EXP:经验次数／主人公／授乳
+			FLAG:主人公经验人数／授乳 ++
+		EXP:经验次数／主人公／授乳 ++
+	ENDIF
+ELSE
+	SIF TEQUIP:触手Ｖ插入
+		EXP:经验次数／异形／Ｖ性交 ++
+	SIF TEQUIP:触手Ａ插入
+		EXP:经验次数／异形／Ａ性交 ++
+	SIF TEQUIP:触手口交 || TEQUIP:触手深喉
+		EXP:经验次数／异形／Ｍ性交 ++
+	SIF TEQUIP:触手强制乳交
+		EXP:经验次数／异形／乳交 ++
+	SIF TFLAG:搾乳触手 && NOWEX:喷乳
+		EXP:经验次数／异形／授乳 ++
+ENDIF
+
+;体内凌辱で増加状態なら大幅増加させる
+SIF !TFLAG:体内凌辱中
+	RETURN
+IF FLAG:主人公的触手也是主人公 && !PLAYER
+	IF TEQUIP:触手Ｖ插入
+		SIF !EXP:经验次数／主人公／Ｖ性交
+			FLAG:主人公经验人数／Ｖ ++
+		EXP:经验次数／主人公／Ｖ性交 += (1 +RAND:3)
+	ENDIF
+	IF TEQUIP:触手Ａ插入
+		SIF !EXP:经验次数／主人公／Ａ性交
+			FLAG:主人公经验人数／Ａ ++
+		EXP:经验次数／主人公／Ａ性交 += (1 +RAND:3)
+	ENDIF
+	IF TEQUIP:触手口交 || TEQUIP:触手深喉
+		SIF !EXP:经验次数／主人公／Ｍ性交
+			FLAG:主人公经验人数／Ｍ ++
+		EXP:经验次数／主人公／Ｍ性交 += (1 +RAND:3)
+	ENDIF
+	IF TEQUIP:触手强制乳交
+		SIF !EXP:经验次数／主人公／乳交
+			FLAG:主人公经验人数／乳交 ++
+		EXP:经验次数／主人公／乳交 += (1 +RAND:3)
+	ENDIF
+	IF TFLAG:搾乳触手 && NOWEX:喷乳
+		SIF !EXP:经验次数／主人公／授乳
+			FLAG:主人公经验人数／授乳 ++
+		EXP:经验次数／主人公／授乳 += (1 +RAND:3)
+	ENDIF
+ELSE
+	SIF TEQUIP:触手Ｖ插入
+		EXP:经验次数／异形／Ｖ性交 += (1 +RAND:3)
+	SIF TEQUIP:触手Ａ插入
+		EXP:经验次数／异形／Ａ性交 += (1 +RAND:3)
+	SIF TEQUIP:触手口交 || TEQUIP:触手深喉
+		EXP:经验次数／异形／Ｍ性交 += (1 +RAND:3)
+	SIF TEQUIP:触手强制乳交
+		EXP:经验次数／异形／乳交 += (1 +RAND:3)
+	SIF TFLAG:搾乳触手 && NOWEX:喷乳
+		EXP:经验次数／异形／授乳 += (1 +RAND:3)
+ENDIF
+
+

@@ -1,0 +1,38 @@
+﻿
+;体内凌辱から調教に移ったとき
+@VORE_SEX_DIRECT_TRAIN
+
+PALAM:Ｖ润滑 += 50000
+PALAM:Ａ润滑 += 50000
+
+;全身に粘液
+FOR LOCAL,0,12
+	SETBIT STAIN:LOCAL,5
+NEXT
+IF BASE:母乳生产力
+	SETBIT STAIN:乳房,0
+	SETBIT STAIN:乳头,0
+ENDIF
+
+PRINTFORML %CALLNAME:0%从体内将沾满粘液的%CALLNAME%吐了出来…
+CALL KOJO_PRINT("日程","调教","从体内的凌辱中取出")
+IF CFLAG:崩坏
+	PRINTFORML %CALLNAME%的身体对此没有任何反应，眼睛也失去了光芒，除了那露着淫乱表情的脸颊…
+ELSEIF ＃陷落状态／隶属＃
+	PRINTFORML %CALLNAME%是因为看到『%CSTR:主人公的称呼／陷落后%』的姿态，似乎更加发情了…
+ELSEIF CFLAG:乳牛
+	PRINTFORML 极品搾乳快感的戛然而止似乎让%CALLNAME%感到困惑，
+	PRINTFORML 但当知道%CALLNAME:0%会亲自榨乳时，又渗出了爱液…
+ELSEIF ＃陷落状态／恋慕以上＃ || CFLAG:洗脑
+	PRINTFORML 看到了%CALLNAME:0%的身影，似乎放心了…
+ELSEIF ＃陷落状态／拒绝以上＃
+	PRINTFORML 拼命向%CALLNAME:0%哭诉不愿意再回到那里…
+ELSE
+	PRINTFORML 了解到回到或被允许回到那个快感的地狱取决于%CALLNAME:0%，%CALLNAME%的心灵正处在崩溃的边缘…
+ENDIF
+CALL KOJO_PRINT("日程","调教","从体内凌辱开始调教")
+PRINTW
+
+
+
+

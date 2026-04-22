@@ -1,0 +1,71 @@
+﻿
+;母乳濃度文中表記
+;ARG　0:ランダム 1:ミルク表記 2:母乳表記
+
+@PRINT_MILKWORD(ARG)
+#FUNCTIONS
+#DIMS MILKWORD
+
+MILKWORD =
+SIF ABL:母乳浓度 == 5
+	MILKWORD += "极品"
+SIF ABL:母乳浓度 == 4
+	MILKWORD += "特浓"
+SIF ABL:母乳浓度 == 3
+	MILKWORD += "丰润"
+SIF ABL:母乳浓度 == 2
+	MILKWORD += "上质"
+SIF ABL:母乳浓度 == 1
+	MILKWORD += "浓厚"
+
+;フレーバーミルク追加
+IF CSTR:风味牛奶 != ""
+	MILKWORD += CSTR:风味牛奶
+ELSEIF ARG == 1
+	MILKWORD += "母乳"
+ELSEIF ARG == 2
+	MILKWORD += "母乳"
+ELSE
+	SELECTCASE RAND:2
+	CASE 0
+		MILKWORD += "母乳"
+	CASEELSE
+		MILKWORD += "母乳"
+	ENDSELECT
+ENDIF
+RETURNF MILKWORD
+
+
+
+;CALL型
+;ARG　0:通常色　1:ピンク色
+;ARG:1　0:【】なし　1:【】あり
+@PRINT_MILKWORD_C(ARG,ARG:1)
+#DIMS MILKWORD
+
+;母乳体質でないなら帰る
+SIF !MARK:母乳体质
+	RETURN
+MILKWORD =
+SIF ARG:1 == 1
+	MILKWORD += "【"
+SIF ABL:母乳浓度 == 5
+	MILKWORD += "极品"
+SIF ABL:母乳浓度 == 4
+	MILKWORD += "特浓"
+SIF ABL:母乳浓度 == 3
+	MILKWORD += "丰润"
+SIF ABL:母乳浓度 == 2
+	MILKWORD += "上质"
+SIF ABL:母乳浓度 == 1
+	MILKWORD += "浓厚"
+MILKWORD += "母乳"
+SIF ARG:1 == 1
+	MILKWORD += "】"
+SIF ARG == 1
+	SETCOLOR 0xFF70FF
+PRINTFORM %MILKWORD%
+RESETCOLOR
+
+
+

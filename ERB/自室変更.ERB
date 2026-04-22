@@ -1,0 +1,164 @@
+﻿
+;自室変更
+@VISIT_ALLOCATION_ROOM
+
+PRINTFORML 你想改变%CALLNAME%的房间分配吗？
+PRINTL 分配房间会增加休息的体力回复量，但会增加一些生活费用。
+PRINT 当前：
+CALL PRINT_ROOM_NUM
+PRINTL
+IF EQUIP:单间
+	CALL PRINTL_WORD_COLOR("正在分配单间","浅蓝色")
+ELSEIF FLAG:单间数／空房
+	PRINTFORML [ 0] 给予单间（空房：{FLAG:单间数／空房}间）
+ELSE
+	CALL PRINTL_WORD_COLOR("没有空房间","灰")
+ENDIF
+PRINTL
+CALL ABAILABLE_DORMITORY
+PRINTL
+IF EQUIP:自室
+	PRINTL [90] 取消分配
+	PRINTL
+ENDIF
+PRINTL [99] 取消
+BINPUT
+PRINTL
+IF CSTR:状态／主人公的孩子 == "成长后" && RESULT != 99
+	CHILD_COM = RESULT
+	CALL CHILD_REBELLION
+	SIF RESULT
+		RESTART
+	RESULT = CHILD_COM
+ENDIF
+SELECTCASE RESULT
+CASE 0
+	CALL GIVE_SLAVE_PRIVATE_ROOM
+CASE 10 TO 30
+	CALL GIVE_SLAVE_DORMITORY(RESULT)
+CASE 90
+	IF EQUIP:自室
+		CALL REMOVE_SLAVE_ROOM
+		PRINTW 取消了房间的分配。
+	ENDIF
+CASE 99
+	RETURN
+ENDSELECT
+
+;変更したらフラグ
+FLAG:时刻限制／房间分配变更 = 1
+
+;割り当て変更の最後にもう1度居場所判定しておく
+;本人だけにしないとTARGETがずれる
+CALL CHARA_WHEREABOUTS_TARGET
+
+
+
+;寮判定まとめて
+@ABAILABLE_DORMITORY
+#DIM ROOMMATE
+
+;寮がなければ終わり
+IF !ITEM:奴隶寮
+	CALL PRINTL_WORD_COLOR("没有＜奴隶寮＞","灰")
+	RETURN
+ENDIF
+PRINTL 　《 奴隶寮 》
+
+;寮があれば+2、増築回数*1
+FOR LOCAL,0,ITEM:奴隶寮扩建 +2
+	;同じ部屋に何人いるか出す
+	ROOMMATE = CMATCH(CFLAG:宿舍号,LOCAL +1)
+	
+	;満員だったりそもそも自分がいる場合ボタン非表示
+	IF ROOMMATE >= 4
+		CALL PRINT_WORD_COLOR,@"<{LOCAL +10}> {LOCAL +101}号室（{ROOMMATE}／4）","灰"
+		CALL PRINT_WORD_COLOR("满员","黄")
+	ELSEIF CFLAG:宿舍号 == LOCAL +1
+		CALL PRINT_WORD_COLOR,@"<{LOCAL +10}> {LOCAL +101}号室（{ROOMMATE}／4）正在分配中","浅蓝色"
+	ELSE
+		PRINTFORM [{LOCAL +10}] {LOCAL +101}号室（{ROOMMATE}／4）
+	ENDIF
+	PRINTL
+NEXT
+
+
+
+;個室の割り当て
+@GIVE_SLAVE_PRIVATE_ROOM
+
+SIF EQUIP:单间 || !FLAG:单间数／空房
+	RETURN
+
+;解除可能にしたし選択肢出さなくていいかな
+;一旦自室解除を呼ぶ
+CALL REMOVE_SLAVE_ROOM
+EQUIP:单间 = 1
+EQUIP:自室 = 1
+FLAG:单间数／空房 --
+PRINTFORML 已经给%CALLNAME%分配了个人房间。
+
+;解除可能なので何回か言うかもしれない
+CALL KOJO_PRINT("访问","自室分配")
+PRINTW
+
+
+
+;寮の割り当て
+;ARG→INPUT
+@GIVE_SLAVE_DORMITORY(ARG)
+#DIM DORMITORY_NUM
+
+;寮番号→ARG-9（1に入れるならARG=10で来る）
+DORMITORY_NUM = ARG -9
+CALL REMOVE_SLAVE_ROOM
+CFLAG:宿舍号 = DORMITORY_NUM
+EQUIP:自室 = 1
+PRINTFORML 奴隶%CALLNAME%的宿舍{DORMITORY_NUM +100}分配给房间
+
+;ルームメイトの表示
+CALL PRINT_SLAVE_DORMITORY_ROOMMATE
+PRINTW
+
+
+
+;自室を解除
+@REMOVE_SLAVE_ROOM
+
+;個室持ちの場合空き部屋数再計算する必要あり
+SIF EQUIP:单间
+	FLAG:单间数／空房 ++
+EQUIP:单间 = 0
+EQUIP:自室 = 0
+CFLAG:宿舍号 = 0
+
+
+
+;自室強制解除
+;ARGS→理由
+@RESET_SLAVE_ROOM(ARGS)
+
+;自室なし状態ならおわり
+SIF !EQUIP:自室
+	RETURN
+SELECTCASE ARGS
+CASE "牛舍"
+	;自動解除フラグを見る
+	SIF !GETBIT(＃自动房间分配／牛舍＃)
+		RETURN
+	PRINTFORMW ＜为了放进牛棚，解除了%CALLNAME%的房间分配＞
+	CALL REMOVE_SLAVE_ROOM
+	
+CASE "体内凌辱"
+	SIF !GETBIT(＃自动房间分配／体内凌辱＃)
+		RETURN
+	PRINTFORML ＜为了开始体内凌辱，将解除%CALLNAME%的房间分配＞
+	CALL REMOVE_SLAVE_ROOM
+CASE "超乳化"
+	CALL PRINTW_WORD_COLOR,@"＜由于身体变得无法工作，解除%CALLNAME%的房间分配＞","桃"
+	CALL REMOVE_SLAVE_ROOM
+ENDSELECT
+
+
+
+

@@ -1,0 +1,120 @@
+﻿
+;精算
+@SETTLEMENT
+#DIM GET_PT
+
+;精算用変数のリセット
+VARSET MONEY_COST
+VARSET MONEY_SELL
+VARSET SAVE_BATTERY_COST
+VARSET WORK_MEMBER
+VARSET SLAVE_MEMBER
+VARSET MILK_SUM
+VARSET COWSHED_TOTAL_MILK_CC
+VARSET COWSHED_TOTAL_MILK_PRICE
+VARSET MONEY_PLUS
+VARSET SETTLEMENT_EFFECT_DRAGON_BALL
+
+;従業員／家畜の分類
+FOR TARGET_COUNT,0,CHARANUM
+	TARGET = TARGET_COUNT
+	
+	;体内にいる場合一時的に家畜とみなす
+	SIF EQUIP:自室 && CSTR:住处 != "体内"
+		WORK_MEMBER ++
+	
+	;当日金額を一度リセット
+	CFLAG:母乳出荷金额／当日 = 0
+NEXT
+
+;捕らえていない奴隷候補も入れないように
+SLAVE_MEMBER = FLAG:奴隶人数 -WORK_MEMBER +1
+
+
+;魔界乳牛も含むのでここは変更なし
+PRINTL 　　　《 结算 》
+PRINTL 我把母乳出货给了魔界农协
+PRINTL
+
+;一旦居場所整理
+CALL CALC_PEOPLE_FLAG
+
+;計算→変数に入れて一旦保存→合計表示・詳細ボタンで詳しく表示に変更
+;収入計算
+CALL INCOME_CALC
+
+;支出計算
+CALL PAYMENT_CALC
+
+;純利益計算・最大値なら更新
+MONEY_PLUS = 0
+MONEY_TOTAL = MONEY_SELL -MONEY_COST
+PRINTFORM ＜销售额：%VALUE_DIGIT(MONEY_TOTAL)%G ＞
+IF FLAG:最大日销售额 < MONEY_TOTAL
+	FLAG:最大日销售额 = MONEY_TOTAL
+	CALL PRINT_WORD_COLOR("最多每日销售更新 ","黄")
+ENDIF
+PRINTL
+
+;収支が+のとき経費の精算
+CALL SETTLEMENT_BUDGET_COST
+
+;MONEY_TOTALが残ってるとき納税額算出
+CALL SETTLEMENT_TAX
+
+;納税額一定でLvUP
+CALL MAKAI_LVUP
+
+;経費・納税後に牧場資金へ　マイナスの場合引く
+IF MONEY_PLUS
+	MONEY += MONEY_PLUS
+	CALL PRINTL_WORD_COLOR,@"资金+%VALUE_DIGIT(MONEY_PLUS)%G ","浅蓝色"
+ELSEIF MONEY_TOTAL < 0
+	MONEY += MONEY_TOTAL
+	CALL PRINTL_WORD_COLOR,@"资金-%VALUE_DIGIT(ABS(MONEY_TOTAL))%G ","红"
+ENDIF
+
+;母乳出荷量に応じて貢献pt
+IF MONEY_SELL:2 >= 10000
+	GET_PT = SQRT(MONEY_SELL:2)
+	MONEY:贡献PT += GET_PT
+	PRINTFORM 　贡献pt+{GET_PT} 
+ENDIF
+
+;出荷したら龍のタマボーナス日数-1
+IF FLAG:结算金额加倍剩余天数
+	SETTLEMENT_EFFECT_DRAGON_BALL ++
+	FLAG:结算金额加倍剩余天数 = LIMIT(FLAG:结算金额加倍剩余天数 -1,0,10)
+	PRINTFORML 【龙之珠奖励天数-1 → 还剩{FLAG:结算金额加倍剩余天数}日】
+ENDIF
+
+;このタイミングで事務作業量増加　3～4ランダム
+COST = 3 +RAND:2
+FLAG:事务工作量 += COST
+PRINTFORML ＜事务作业量+{COST}＞
+DRAWLINE
+PRINTLC [ 0] OK
+PRINTL [ 1] 查看详细信息
+INPUT
+SIF RESULT
+	CALL SETTLEMENT_DETAIL
+
+
+
+;精算終了したものをリセット
+MONEY:电池追加消耗金额 = 0
+FLAG:简易餐食人数 = 0
+FLAG:用餐人数 = 0
+FOR TARGET_COUNT,1,CHARANUM
+	TARGET = TARGET_COUNT
+	CFLAG:出货母乳／一日最大量 = MAX(CFLAG:出货母乳／一日最大量,CFLAG:预计出货母乳量)
+	CFLAG:出货母乳／一日最大额 = MAX(CFLAG:出货母乳／一日最大额,CFLAG:母乳出荷金额／当日)
+	CFLAG:预计出货母乳量 = 0
+	CFLAG:母乳出荷金额／当日 = 0
+NEXT
+
+
+
+
+
+

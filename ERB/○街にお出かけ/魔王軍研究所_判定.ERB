@@ -1,0 +1,78 @@
+﻿
+;霊力系開発判定
+;ARG→選択項目
+@EP_DEVELOP_JUDGE(ARG)
+
+;非対応IDならそのまま帰る
+IF ARG < 10 || ARG > 10 +INSTITUTE_LIST_NUM
+	PRINTL
+	RETURN
+ENDIF
+
+SELECTCASE ARG
+CASE 10
+	IF MONEY:储存灵力 < EP_CONTRIBUTION_PT
+		CALL PRINTL_WORD_COLOR("　灵力不足","灰")
+	ELSE
+		PRINTL [ 0] 交换
+	ENDIF
+
+CASE 11
+	IF MONEY:储存灵力 < ITEMPRICE:奴隶候补设定变更票
+		CALL PRINTL_WORD_COLOR("　灵力不足","灰")
+	ELSE
+		PRINTL [ 0] 交换
+	ENDIF
+
+CASE 12
+	IF MONEY:储存灵力 < ITEMPRICE:灵力抽出装置 /2
+		CALL PRINTL_WORD_COLOR("　灵力不足","灰")
+	ELSEIF MONEY < ITEMPRICE:灵力抽出装置
+		CALL PRINTL_WORD_COLOR("　资金不足","灰")
+	ELSE
+		PRINTL [ 0] 制造
+	ENDIF
+	
+CASE 13
+	IF MONEY:储存魔力 < ITEMPRICE:魔力枷锁 /2
+		CALL PRINTL_WORD_COLOR("　魔力不足","灰")
+	ELSEIF MONEY < ITEMPRICE:魔力枷锁
+		CALL PRINTL_WORD_COLOR("　资金不足","灰")
+	ELSE
+		PRINTL [ 0] 制造
+	ENDIF
+
+CASE 14
+	IF ITEM:魔力补给装置
+		CALL PRINTL_WORD_COLOR("　制造完成","灰")
+	ELSEIF MONEY:储存灵力 < ITEMPRICE:魔力补给装置
+		CALL PRINTL_WORD_COLOR("　灵力不足","灰")
+	ELSEIF MONEY < ITEMPRICE:魔力补给装置
+		CALL PRINTL_WORD_COLOR("　资金不足","灰")
+	ELSE
+		PRINTL [ 0] 制造
+	ENDIF
+
+CASE 15
+	IF ITEM:魔改造魔力储存器
+		CALL PRINTL_WORD_COLOR("　改造完成","灰")
+	ELSEIF !ITEM:大容量魔力储存器
+		CALL PRINTL_WORD_COLOR("　需要＜大容量魔力储存器＞","灰")
+	ELSEIF MONEY:储存魔力 < MAGIC_TANK_LARGE_CAPACITY
+		CALL PRINTL_WORD_COLOR("　魔力不足","灰")
+	ELSE
+		PRINTL [ 0] 改造
+	ENDIF
+
+CASE 16
+	IF ITEM:小型灵力抽出装置
+		CALL PRINTL_WORD_COLOR("　制造完成","灰")
+	ELSEIF MONEY < ITEMPRICE:小型灵力抽出装置
+		CALL PRINTL_WORD_COLOR("　资金不足","灰")
+	ELSE
+		PRINTL [ 0] 制造
+	ENDIF
+ENDSELECT
+
+
+

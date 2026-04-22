@@ -1,0 +1,69 @@
+﻿
+;ペットと散歩：地の文
+;TARGET,ANIMAL,PET_NAME指定済み
+;TARGETの体力消費量も入れておく
+;地の文部分に入っちゃうのでどうにかしたいけどここに入れないと地の文との齟齬がね…
+@PET_COMMU_MESSAGE_WALKING
+
+;【動物に好かれる／嫌われる】となつき度で変化
+FLAG_NAME = 亲和度／%ANIMAL%
+IF TALENT:受动物喜欢 || BASE:FLAG_NAME >= 8000
+	CALL PET_COMMU_MESSAGE_WALKING_LOVE
+	DAMAGE = 50
+ELSEIF !TALENT:被动物讨厌 || BASE:FLAG_NAME >= 5000
+	CALL PET_COMMU_MESSAGE_WALKING_LOW
+	DAMAGE = 100
+ELSE
+	CALL PET_COMMU_MESSAGE_WALKING_HATE
+	DAMAGE = 200
+ENDIF
+
+
+
+;【動物に好かれる】orなつき時
+@PET_COMMU_MESSAGE_WALKING_LOVE
+
+;尻尾とかなつき度とかで変えたい
+PRINTFORML %CALLNAME%试图带着%PET_NAME%在牧场周围散步。
+SELECTCASE ANIMAL
+CASE "堕落天马"
+	PRINTFORML %PET_NAME%降低身体，鼓励%CALLNAME%骑在它的背上。
+	PRINTFORML 当%CALLNAME%上来时，%PET_NAME%展翅轻快地跳跃着。
+
+CASEELSE
+	PRINTFORML %PET_NAME%走在%CALLNAME%前面，有时跑到前面然后又回来，
+	PRINTFORML 围着%CALLNAME%转圈，仿佛很开心。
+ENDSELECT
+PRINTL ………
+PRINTFORML 在周围跑了一阵后，%PET_NAME%似乎很满足。
+
+
+
+;【動物に嫌われる】ではないor嫌われるけどなつき程々
+@PET_COMMU_MESSAGE_WALKING_LOW
+
+PRINTFORML %CALLNAME%试图带着%PET_NAME%在牧场周围散步。
+PRINTFORML 最初，%PET_NAME%以%CALLNAME%的速度匹配，但突然间飞走了，似乎对某些事物感兴趣…
+PRINTFORML %CALLNAME%追了上去，虽然他们一起走了一会儿，%PET_NAME%总是跑到前面，然后再回来…
+PRINTL ………
+PRINTFORML 在周围跑了一阵后，%PET_NAME%似乎很满足。
+
+
+
+;【動物に嫌われる】
+@PET_COMMU_MESSAGE_WALKING_HATE
+
+PRINTFORML %CALLNAME%试着和%PET_NAME%在牧场周围散步…
+SELECTCASE RAND:2
+CASE 0
+	PRINTFORML %CALLNAME%一次次被抛在后面，拼命追赶%PET_NAME%，
+	PRINTL 它逃到无法触及的地方，最终变成了无意中的锻炼…
+CASEELSE
+	PRINTL 虽然%PET_NAME%似乎想散步，而且在出门前一切都还好，
+	PRINTFORML 但它拒绝了任何调整步伐的尝试，%CALLNAME%被无奈地拖着…
+ENDSELECT
+
+
+
+
+

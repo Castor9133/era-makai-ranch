@@ -1,0 +1,219 @@
+﻿
+;アイテム説明と購入数
+;ARG→SELECT_ITEM
+@ITEM_DETAIL_ABILITY(ARG)
+
+;非対応IDか名称なしならそのまま帰る
+IF ARG < ITEM_ID_MIN || ARG >= ITEM_ID_MAX || ITEMNAME:ARG == ""
+	PRINTL  　《 将显示所选能力的说明。 》
+	RETURN
+
+;とりあえずアイテム名、価格を出す
+;ここでは基礎値出す
+ELSEIF ABILITY_LEVEL_MAX:ARG
+	PRINTFORML 　《 %ITEMNAME:ARG% 》%VALUE_DIGIT(ITEMPRICE:ARG)%AP（基础值）：Lv{ITEM:ARG}／{ABILITY_LEVEL_MAX:ARG}
+ELSE
+	PRINTFORML 　《 %ITEMNAME:ARG% 》%VALUE_DIGIT(ITEMPRICE:ARG)%AP（基础值）：当前Lv{ITEM:ARG}
+ENDIF
+
+;1限チェック
+CALL ABILITY_GET_ONCE_CHECK(ARG)
+SELECTCASE ITEMNAME:ARG
+CASE "污臭无视"
+	PRINTL ＜被动技能＞
+	PRINTL 调教中：＜Lv1＞【Ａ指插入】[触手粘液][精液][阴茎污垢]附着时可执行口使用指令
+	PRINTL 　　　　＜Lv2＞【Ａ舔】　・[肛门污垢]附着时可执行口使用指令
+	PRINTL （Ａ性交在Lv0时也可以）
+	PRINTL
+	PRINTL 普通人可能会稍微犹豫的玩法变得可行。
+	SIF FLAG:玩笑表示
+		PRINTL 快点变得◯涂满吧。
+
+CASE "拘束技术"
+	PRINTL ＜解锁＞
+	PRINTL 调教中：【打桩机拘束】【束缚带拘束】【龟甲缚】使用可能
+	PRINTL
+	PRINTL 增加用绳索拘束奴隶的技能，即使是抵抗的奴隶也能用熟练的技巧让其陷入羞耻的姿态。
+	PRINTL 在不知所措的情况下突然发现自己被拘束在羞耻的姿态中，这有点像恐怖片。
+
+CASE "调教时间増加"
+	PRINTL ＜被动技能＞
+	PRINTL 调教开始时：增加可调教的回合数根据Lv。
+	PRINTL
+	PRINTL 增加初始10回合的调教时间。
+	SIF FLAG:玩笑表示
+		PRINTL 虽然在准备迅速的情况下还好，但到了20或30就变得相当神秘了。
+
+CASE "擅长依赖"
+	PRINTL ＜被动技能＞
+	PRINTL 调教时：增加调教对象的【母性】EXP倍率。
+	PRINTL
+	PRINTL 以刺激奴隶母性本能的方式进行调教。这是怎么回事呢？
+	PRINTL ※因β版而无效。
+
+CASE "危险日感知"
+	PRINTL ＜解锁＞＜可ON／OFF＞
+	PRINTL 状态画面：显示奴隶的危险日。
+	PRINTL
+	PRINTL 逐渐能知道奴隶的排卵日何时到来。
+	PRINTL ※因β版而无效。
+
+CASE "异种族怀孕"
+	PRINTL ＜解锁＞＜可ON／OFF＞
+	PRINTFORML 调教时：可以让奴隶怀上%CALLNAME:0%的孩子。
+	PRINTL
+	PRINTL 能够让来自地上和魔界、不同世界的不同种族怀上孩子的神秘极致。
+	PRINTL 将来能够与魔界居民进行深入交流时，当然会怀孕，即使没有这个也会怀孕。
+
+;おっぱい責め
+CASE "乳房刺激技巧"
+	PRINTL ＜被动技能＞
+	PRINTFORML 调教时：%CALLNAME:0%直接触碰时对B·N的快感值增加。
+	PRINTL
+	PRINTFORML 限于%SAVESTR:标识／乳房%，但进一步增加对奴隶的快感。
+	PRINTL ※因β版而无效。
+
+CASE "丰饶"
+	PRINTL ＜被动解锁＞。
+	PRINTL 调教中乳揉捏指令时：附加育乳效果。
+	PRINTL 调教命令：＜育乳按摩＞
+	PRINTL
+	PRINTFORML %SAVESTR:标识／乳房%的育成适合的按摩，促进成长的同时带来快感。
+	PRINTL 每次使用揉乳指令时，能力等级相应地增加＜丰饶值＞，
+	PRINTL 睡觉时积累到一定值则胸围会+减少1。
+
+CASE "浓厚母乳按摩"
+	PRINTL ＜被动解锁＞。
+	PRINTL 调教中乳揉捏指令时：附加母乳浓稠化效果。
+	PRINTL 调教命令：＜浓厚母乳按摩＞
+	PRINTL
+	PRINTFORML 进行适合喷射美味的%SAVESTR:标识／母乳%的按摩，促进成长的同时带来快感。
+	PRINTL 每次乳揉捏指令根据能力等级增加＜母乳浓度＞。
+
+CASE "乳罐按摩"
+	PRINTL ＜被动解锁＞。
+	PRINTL 调教中乳揉捏指令时：附加母乳生产力增加效果。
+	PRINTL 调教命令：＜牛奶罐按摩＞
+	PRINTL
+	PRINTFORML 进行适合大量喷射%SAVESTR:标识／母乳%的按摩，促进成长的同时带来快感。
+	PRINTL 每次乳揉捏指令根据能力等级增加＜母乳生产力＞。
+	PRINTL 似乎会用在使其达到玩家最喜欢的胸围大小后的成长上。
+
+CASE "阴茎尺寸增加"
+	PRINTL ＜解锁＞
+	PRINTFORML %CALLNAME:0%的%SAVESTR:标识／阴茎%尺寸可变。
+	PRINTL Lv1→【巨根】Lv2→【极粗】Lv3→【马根】
+	PRINTL
+	PRINTFORML %SAVESTR:标识／阴茎%的大小可以向大方向成长。
+	PRINTL 大的话带来的快感也会增加，但痛苦也会增加，所以适度为好。
+	PRINTL 特别是小的孩子，如果没有特别好的【名器】基本上是无法进入的。
+	PRINTL ※因β版而无效。
+
+CASE "阴茎尺寸减少"
+	PRINTL ＜解锁＞
+	PRINTFORML %CALLNAME:0%的%SAVESTR:标识／阴茎%尺寸可变。
+	PRINTL Lv1→【短小】Lv2→【孩子】
+	PRINTL
+	PRINTFORML %SAVESTR:标识／阴茎%的大小可以改变为小的方向。为什么？？？
+	PRINTL 带来的快感也会减少，但苦痛也减少，所以并不是没有用处。
+	PRINTL 小的孩子可能会变成刚好的尺寸，能感受到爱。
+	PRINTL ※因β版而无效。
+
+CASE "阴茎硬度増加"
+	PRINTL ＜解锁＞
+	PRINTFORML %CALLNAME:0%的%SAVESTR:标识／阴茎%的硬度可以改变
+	PRINTL Lv1→【强硬】Lv2→【堅牢】
+	PRINTL
+	PRINTFORML %SAVESTR:标识／阴茎%可以变得更硬。
+	PRINTL 如果是强硬的，可以是【猫舌】；如果是堅牢的，可以是【锯齿】也可以进行口交・插入交。
+	PRINTL 增加的快感效果也只是附带的。
+	PRINTL ※因β版而无效。
+
+CASE "精力增加"
+	PRINTL ＜被动技能＞
+	PRINTFORML %CALLNAME:0%的精力上限・回复量增加
+	PRINTL
+	PRINTL 增加精力，使得可射精次数增加。
+	PRINTL ※因β版而无效。
+
+CASE "闪耀的阳具"
+	PRINTL ＜解锁＞＜可ON／OFF＞
+	PRINTFORML %CALLNAME:0%的%SAVESTR:标识／阴茎%的发光可以改变。
+	PRINTL
+	PRINTFORML %SAVESTR:标识／阴茎%发光。不是神秘的光过滤器，而是%SAVESTR:标识／阴茎%发光。为什么？
+	PRINTL 有一种神秘的效果，可以减轻困惑和恐惧。
+	PRINTL ※因β版而无效。
+
+CASE "发光阴茎"
+	PRINTL ＜解锁＞＜可ON／OFF＞
+	PRINTFORML %CALLNAME:0%的%SAVESTR:标识／阴茎%的发光可以改变。
+	PRINTL
+	PRINTFORML %SAVESTR:标识／阴茎%发出彩虹色的光。为什么？？？
+	PRINTL 有一种神秘的效果，可以减轻困惑和恐惧。
+	PRINTL ※因β版而无效。
+
+CASE "浓厚精液"
+	PRINTL ＜被动技能＞
+	PRINTFORML %CALLNAME:0%射精的%SAVESTR:标识／精液%的浓度可以改变。
+	PRINTL
+	PRINTFORML %SAVESTR:标识／精液%的浓度变得更浓。
+	PRINTL 对【精液中毒】有奖励加成，并且对射精部位有微量快感值增加效果。
+	PRINTL ＜异种族怀孕＞有效时也会有增加受胎概率的效果。
+	PRINTL ※因β版而无效。
+	
+CASE "早泄"
+	PRINTL ＜解锁＞
+	PRINTFORML %CALLNAME:0%的射精槽最大值可以减少。
+	PRINTL
+	PRINTFORML %CALLNAME:0%射精前的间隔可以缩短。
+	PRINTL 一次射精量可能会减少，因此不能一概而论有利。
+	PRINTL ※因β版而无效。
+	
+CASE "迟泄"
+	PRINTL ＜解锁＞
+	PRINTFORML %CALLNAME:0%的射精槽最大值可以增加。
+	PRINTL
+	PRINTFORML %CALLNAME:0%射精前的间隔可以延长。
+	PRINTL 因为积蓄后一次性释放，所以一次射精量会变多。
+	PRINTL ※因β版而无效。
+	
+CASE "绝伦"
+	PRINTL ＜被动＞＜可ON／OFF＞
+	PRINTFORML %CALLNAME:0%的精力无限・射精时消耗体力减半。
+	PRINTL
+	PRINTFORML %CALLNAME:0%的精力变得无限，能够无限次射精。
+	PRINTL 作为副作用，射精时的消耗体力也会减半。
+	
+CASE "百合手折"
+	PRINTL ＜被动技能＞
+	CALL PRINTL_WORD_COLOR,@"「主人公」是男性时专用。","黄"
+	PRINTFORML %CALLNAME:0%使用%SAVESTR:标识／阴茎%时，减少调教对象的【百合癖】。
+	PRINTL
+	PRINTFORML %SAVESTR:标识／阴茎%的调教时，赋予调教对象减少百合癖的效果。
+	PRINTL 【百合癖抑制】Lv提升后，自身的百合癖不会达到一定以上的效果。
+	PRINTL 也就是所谓的百合的阴茎劣势。
+	PRINTL
+	PRINTL 这样虽然看起来有趣，但我能做好吗？
+	PRINTL ※因β版而无效。
+	
+CASE "兽欲"
+	PRINTL ＜被动技能＞
+	PRINTFORML %CALLNAME:0%使用%SAVESTR:标识／阴茎%时，减少调教对象的【施虐癖】并增加【受虐癖】。
+	PRINTL
+	PRINTFORML %SAVESTR:标识／阴茎%的调教时，赋予调教对象减少施虐癖和增加受虐癖的效果。
+	PRINTL 【施虐癖抑制】Lv提升后，自身的施虐癖不会达到一定以上的效果。
+	PRINTFORML 让自以为是上位的雌性明白的框架，使用%SAVESTR:标识／阴茎%。
+	PRINTL
+	PRINTL 这样虽然看起来有趣，但我能做好吗？
+	PRINTL ※因β版而无效。
+	
+CASE "扶她阴茎"
+	PRINTL ＜被动＞＜可ON／OFF＞
+	CALL PRINT_WORD_COLOR,@"「主人公」是女性时专用。","黄"
+	PRINTFORML ：%CALLNAME:0%会长出%SAVESTR:标识／阴茎%。
+	PRINTL
+	PRINTFORML 字面意思就是，%CALLNAME:0%会长出%SAVESTR:标识／阴茎%。
+	PRINTFORML 当然，如果不获取这个，其他%SAVESTR:标识／阴茎%系能力将毫无意义，请注意。
+ENDSELECT
+
+

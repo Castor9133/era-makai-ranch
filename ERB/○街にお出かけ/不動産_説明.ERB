@@ -1,0 +1,106 @@
+﻿
+;アイテム説明と購入数
+;ARG→選択項目
+@ITEM_SHOP_ESTATE_DETAIL(ARG)
+
+;対応IDでないなら汎用出して帰る
+;ここでは選択項目による
+IF ARG < 10 || ARG > 10 +ESTATE_LIST_NUM
+	PRINTL  　《 显示所选项目的描述 》
+	RETURN
+ENDIF
+
+SELECTCASE ARG
+CASE 10
+	PRINTFORM 新牛舍建造　建筑数：{ITEM:牛舍}棟
+	CALL ITEM_SHOP_ESTATE_PRICE(ITEMPRICE:牛舍)
+	PRINTL
+	PRINTL 放入​【母乳体质】的奴隶，建造一个能够集中管理的牛舍。
+	PRINTL 初始状态下的牛舍容纳能力为10头，最多可以建造10座牛舍。
+
+CASE 11
+	PRINTFORM 牛舍的扩建　建筑数：{ITEM:牛舍}棟
+	CALL ITEM_SHOP_ESTATE_PRICE(ESTATE_COWSHED_EXTENSION)
+	PRINTL
+	PRINTL 选择一座已建好的牛舍，进行扩建，增加可以容纳的奴隶数量。
+	PRINTL 扩建一次可以增加10匹奴隶，最多可容纳100匹。
+
+CASE 12
+	PRINTFORM 事务所的扩建　现在的扩建次数：{ITEM:事务所扩建}回
+	CALL ITEM_SHOP_ESTATE_PRICE(ITEMPRICE:事务所扩建)
+	PRINTL
+	PRINTL 牧场的办公室将扩大，分配给奴隶的房间数量将增加4间。
+	PRINTL 分配房间的奴隶将被视为员工，这会增加一点生活成本
+	PRINTL 休息・就寝时的体力回复比例增加。
+
+CASE 13
+	PRINTFORM 改建成家庭浴室
+	CALL ITEM_SHOP_ESTATE_PRICE(ITEMPRICE:家庭浴池)
+	PRINTL 【事务所扩建】需要1次以上
+	PRINTL
+	PRINTFORML 将牧场内浴室的浴缸更换为大型浴缸，%CALLNAME:0%和奴隶将能够一起使用。
+	PRINTL 一起洗澡的奴隶体力会回复。
+	PRINTL 你可以边洗澡边进行亲密互动。
+	PRINTL
+	PRINTL 大概是为了和孩子一起进去的，本来不是为了在浴室里做Ｈ的。
+
+CASE 14
+	PRINTFORM 大浴场建造
+	CALL ITEM_SHOP_ESTATE_PRICE(ITEMPRICE:大浴场)
+	PRINTL 需要＜家庭浴池＞
+	PRINTL
+	PRINTL 建造奴隶们可以一起进入的大浴场。
+	PRINTL 日程【大浴场清洁】的行动中添加了大浴场的清洁，且不再限制1人。
+	PRINTL 【大浴场清洁完成度】达到100%的话当天就可以进入大浴场了。
+	PRINTL
+	PRINTL （因为是相当重的体力劳动，需要体力和打扫Lv高的奴隶吧）
+
+CASE 15
+	PRINTFORM 宠物小屋的添加　现在的小屋数：{ITEM:宠物小屋}棟
+	CALL ITEM_SHOP_ESTATE_PRICE(ITEMPRICE:宠物小屋)
+	PRINTL 【事务所扩建】需要1次以上
+	PRINTL
+	PRINTL 扩建饲养大型宠物所需的小屋。
+	PRINTL 为新养的[堕落天马]・[双头犬]・[魔界仓鼠]变得必要。
+
+CASE 16
+	PRINTFORM 奴隶寮的建造
+	CALL ITEM_SHOP_ESTATE_PRICE(ITEMPRICE:奴隶寮)
+	PRINTL 【事务所扩建】需要1次以上
+	PRINTL
+	PRINTL 建造能让奴隶入住并作为员工工作的「奴隶寮」。
+	PRINTL 在建造时提供了两个房间，一个房间容纳四名奴隶。
+
+CASE 17
+	PRINTFORM 奴隶寮的扩建　现在的扩建次数：{ITEM:奴隶寮扩建}回
+	CALL ITEM_SHOP_ESTATE_PRICE(ITEMPRICE:奴隶寮扩建)
+	PRINTL ＜奴隶寮＞需要
+	PRINTL
+	PRINTL ＜奴隶寮＞增建，增加一个房间。
+
+CASE 18
+	PRINTFORM 系统化厨房改造
+	CALL ITEM_SHOP_ESTATE_PRICE(ITEMPRICE:系统化厨房)
+	PRINTL 【事务所扩建】需要1次以上
+	PRINTL
+	PRINTFORML %CALLNAME:0%和奴隶可以一起做全体员工的晚餐。
+	PRINTL 虽然与各吃各的相比要花费一些伙食费，但有回复体力的效果。
+	PRINTL 制作角色的【料理】Lv越高回复效果越高，候选菜单增加。
+	PRINTL
+	PRINTFORML 制作料理的角色是「母乳体质」的话，要求用%SAVESTR:标识／母乳%做菜肴
+	PRINTFORML %CALLNAME:0%可以帮助榨乳。
+
+ENDSELECT
+
+
+
+;費用表示：前の名残でとりあえず関数化
+;ARG→費用
+@ITEM_SHOP_ESTATE_PRICE(ARG)
+
+PRINTFORML 　费用：%VALUE_DIGIT(ARG)%G
+
+
+
+
+

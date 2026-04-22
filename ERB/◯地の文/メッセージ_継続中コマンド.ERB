@@ -1,0 +1,300 @@
+﻿
+;調教の継続用メッセージ
+;ARGS→継続中コマンド
+@SEX_MESSAGE(ARGS)
+
+IF GETBIT(＃Ｐ使用／Ｖ插入＃)
+	CALL V_SEX_MESSAGE(ARGS)
+ELSEIF GETBIT(＃Ｐ使用／Ａ插入＃)
+	CALL A_SEX_MESSAGE(ARGS)
+ELSEIF GETBIT(＃Ｐ使用／乳交＃)
+	CALL B_SEX_MESSAGE(ARGS)
+ELSEIF GETBIT(＃Ｐ使用／Ｍ插入＃) || TEQUIP:触手口交 || TEQUIP:触手深喉
+	CALL M_SEX_MESSAGE(ARGS)
+ELSE
+	CALL NOT_SEX_MESSAGE(ARGS)
+ENDIF
+
+
+
+;Ｖセックス
+;ARGS→継続中コマンド
+@V_SEX_MESSAGE(ARGS)
+
+SELECTCASE ARGS
+CASE "正常位"
+	SELECTCASE RAND:4
+	CASE 0
+		PRINTFORML 就这样压在%CALLNAME%身上，同时用%SLANG_PENIS()%抽插着她的%SLANG_V()%…
+	CASE 1
+		PRINTFORML 一直和%CALLNAME%连在一起不停地打着腰…
+	CASE 2
+		PRINTFORML %SLANG_PENIS()%在%CALLNAME%的%SLANG_V()%不停地进进出出…
+	CASE 3
+		PRINTFORML 以%CALLNAME%的子宫为目标，连续突入%SLANG_PENIS()%…
+	ENDSELECT
+CASE "后背位"
+	SELECTCASE RAND:4
+	CASE 0
+		PRINTFORML 把%CALLNAME%摆成四肢爬地的姿势，就这样激烈地抽插着…
+	CASE 1
+		PRINTFORML 边插入边猛烈的撞击%CALLNAME%的%SLANG_H()%…
+	CASE 2
+		PRINTFORML 每次%CALLNAME:0%撞击%CALLNAME%的%SLANG_H()%都会发啪啪啪的淫靡声音…
+	CASE 3
+		PRINTFORML %CALLNAME:0%从后面享受着%CALLNAME%的%SLANG_V()%…
+	ENDSELECT
+CASE "对面坐位"
+	SELECTCASE RAND:4
+	CASE 0
+		PRINTFORML %CALLNAME%一边紧紧抱住%CALLNAME:0%，一边扭动着腰…
+	CASE 1
+		PRINTFORML 抓住%CALLNAME%的%SLANG_H()%，用力将%SLANG_PENIS()%刺入深处……
+	CASE 2
+		;体力0か崩壊なら再抽選
+		SIF !BASE:体力 || CFLAG:崩坏
+			RESTART
+		PRINTFORML %CALLNAME%近距离凝视着%CALLNAME:0%的脸，腰前后摆动着…
+	CASE 3
+		PRINTFORML %CALLNAME:0%一边拥抱着%CALLNAME%的身体，感受着她的%SLANG_V()%…
+	ENDSELECT
+CASE "背面坐位"
+	SELECTCASE RAND:4
+	CASE 0
+		SIF !BASE:体力 || CFLAG:崩坏
+			RESTART
+		PRINTFORML %CALLNAME%背靠着%CALLNAME:0%，摆动着腰部…
+	CASE 1
+		PRINTFORML 一边品尝着%CALLNAME%的%SLANG_H()%的触感，一边将%SLANG_PENIS()%咕嘟咕嘟地插入里面…
+	CASE 2
+		SIF !BASE:体力 || CFLAG:崩坏
+			RESTART
+		PRINTFORML %CALLNAME%张开的双腿盘在%CALLNAME:0%的腰上，扭动着腰部…
+	CASE 3
+		PRINTFORML %CALLNAME:0%从后面紧抱%CALLNAME%的身体，尽情享受那%SLANG_V()%的感觉…
+	ENDSELECT
+CASE "骑乘位"
+	SELECTCASE RAND:4
+	CASE 0
+		PRINTFORML %CALLNAME%就这样跨坐在%CALLNAME:0%身上，腰前后摆动着…
+	CASE 1
+		PRINTFORML %CALLNAME%的%SLANG_H()%在%CALLNAME:0%的腰上愉悦地弹动…
+	CASE 2
+		PRINTFORML %CALLNAME%%SLANG_V()%索取着%SLANG_PENIS()%，腰上下摆动着…
+	CASE 3
+		PRINTFORML %CALLNAME%%CALLNAME:0%和下体紧贴着，苦恼地扭动着腰…
+	ENDSELECT
+CASE "背面骑乘位"
+	SELECTCASE RAND:4
+	CASE 0
+		PRINTFORML %CALLNAME%背对%CALLNAME:0%跨坐着，扭动腰肢让%SLANG_PENIS()%在%SLANG_V()%里进出…
+	CASE 1
+		PRINTFORML 从背后能看见%CALLNAME%摆动的%SLANG_H()%，%SLANG_V()%紧紧含着%SLANG_PENIS()%…
+	CASE 2
+		PRINTFORML %CALLNAME%扶着膝盖上下动着腰，背脊随着快感轻轻颤抖…
+	CASE 3
+		PRINTFORML %CALLNAME:0%托住%CALLNAME%的腰，配合着%CALLNAME%自发的律动抽送…
+	ENDSELECT
+CASE "对面立位"
+	SELECTCASE RAND:4
+	CASE 0
+		PRINTFORML %CALLNAME%一只脚抬起的样子，被随意接受抽插……
+	CASE 1
+		PRINTFORML 一直和%CALLNAME%连在一起不停地打着腰…
+	CASE 2
+		PRINTFORML %SLANG_PENIS()%在%CALLNAME%的%SLANG_V()%不停地进进出出…
+	CASE 3
+		PRINTFORML 以%CALLNAME%的子宫为目标，连续突入%SLANG_PENIS()%…
+	ENDSELECT
+CASE "背面立位"
+	SELECTCASE RAND:4
+	CASE 0
+		PRINTFORML %CALLNAME%是突出%SLANG_H()%的样子，接受%CALLNAME:0%的抽插…
+	CASE 1
+		PRINTFORML 边插入边猛烈的撞击%CALLNAME%的%SLANG_H()%…
+	CASE 2
+		PRINTFORML 每次%CALLNAME:0%撞击%CALLNAME%的%SLANG_H()%都会发啪啪啪的淫靡声音…
+	CASE 3
+		PRINTFORML %CALLNAME:0%从后面享受着%CALLNAME%的%SLANG_V()%…
+	ENDSELECT
+CASE "强制骑乘位"
+	SELECTCASE RAND:4
+	CASE 0
+		PRINTFORML 让拘束的%CALLNAME%在触手上下波动，强行打腰……
+	CASE 1
+		PRINTFORML 用触手操纵%CALLNAME%，让其仿佛自己在屈辱地摆动腰部…
+	CASE 2
+		PRINTFORML %CALLNAME%被触手拘束得逃不脱，只能眼睁睁地看着自己的%SLANG_V()%衔来%SLANG_PENIS()%的情景…
+	CASE 3
+		PRINTFORML 尽管被触手强行移动，%CALLNAME%仍陷入%SLANG_V()%主动寻求%SLANG_PENIS()%的错觉…
+	ENDSELECT
+CASEELSE
+	SELECTCASE RAND:4
+	CASE 0
+		PRINTFORML %CALLNAME:0%%SLANG_PENIS()%继续侵犯%CALLNAME%的%SLANG_V()%…
+	CASE 1
+		PRINTFORML 一直和%CALLNAME%连在一起不停地打着腰…
+	CASE 2
+		PRINTFORML %SLANG_PENIS()%在%CALLNAME%的%SLANG_V()%不停地进进出出…
+	CASE 3
+		PRINTFORML 以%CALLNAME%的子宫为目标，连续突入%SLANG_PENIS()%…
+	ENDSELECT
+ENDSELECT
+CALL ONOMATOPOEIA("活塞运动","Ｖ")
+
+
+
+;Ａセックス
+;ARGS→継続中コマンド
+@A_SEX_MESSAGE(ARGS)
+
+SELECTCASE RAND:4
+CASE 0
+	PRINTFORML %CALLNAME:0%%SLANG_PENIS()%继续侵犯%CALLNAME%的%SLANG_A()%…
+CASE 1
+	PRINTFORML %CALLNAME%一直向%SLANG_H()%的方向用力撞击腰部…
+CASE 2
+	PRINTFORML %SLANG_PENIS()%在%CALLNAME%的%SLANG_A()%不停地进进出出…
+CASE 3
+	PRINTFORML 不断地将%SLANG_PENIS()%插入%CALLNAME%的%SLANG_A()%中…
+ENDSELECT
+CALL ONOMATOPOEIA("活塞运动","Ａ")
+
+
+
+;パイズリ
+;ARGS→継続中コマンド
+@B_SEX_MESSAGE(ARGS)
+
+SELECTCASE ARGS
+CASE "乳交"
+	PRINTFORML %CALLNAME%用%SLANG_B()%刺激着%CALLNAME:0%的%SLANG_PENIS()%
+CASE "强制乳交"
+	IF ABL:胸围大小 < BUSTSIZE_普乳
+		PRINTFORML %CALLNAME%的%SLANG_B()%摩擦着%SLANG_PENIS()%…
+	ELSE
+		PRINTFORML 抓住%CALLNAME%的%SLANG_B()%，打%SLANG_PENIS()%…
+	ENDIF
+	CALL ONOMATOPOEIA("活塞运动","乳交")
+CASEELSE
+	PRINTFORML %CALLNAME%用%SLANG_B()%刺激着%CALLNAME:0%的%SLANG_PENIS()%
+ENDSELECT
+
+
+
+;Ｍセックス
+;ARGS→継続中コマンド
+@M_SEX_MESSAGE(ARGS)
+
+SELECTCASE ARGS
+CASE "口交"
+	PRINTFORML %CALLNAME%在吮吸%CALLNAME:0%的%SLANG_PENIS()%…
+CASE "触手口交"
+	SELECTCASE RAND:6
+	CASE 0
+		PRINTFORML %CALLNAME%的唇舌被滑腻的触手裹住，吸盘一张一合地嘬着口腔上颚，涎水混着粘液从嘴角淌下…
+	CASE 1
+		PRINTFORML 分叉的触手尖端在%CALLNAME%齿列间穿梭，另一股缠着舌根往深处拖，喉间挤出含糊的呜咽…
+	CASE 2
+		PRINTFORML %CALLNAME%腮帮被触手撑得鼓起，黏液顺着下巴拉丝，鼻腔里全是腥甜触手的气味…
+	CASE 3
+		PRINTFORML 触手在口腔里蠕动翻搅，每一次收缩都像要把舌面刮干净，%CALLNAME%眼角渗出生理性的泪…
+	CASE 4
+		PRINTFORML 细须般的触手钻进颊沟与舌系带，粗壮的茎干却堵在喉口前寸许，进退间带出淫靡的水声…
+	CASEELSE
+		PRINTFORML %CALLNAME%被迫张大嘴承接触手，舌尖徒劳地推着那黏滑的侵入物…
+	ENDSELECT
+CASE "深喉"
+	PRINTFORML 把%SLANG_PENIS()%砸在%CALLNAME%的嘴上…
+	CALL ONOMATOPOEIA("活塞运动","Ｍ")
+	IF TALENT:处女 && TALENT:深喉嗜好
+		PRINTFORML 反复的顶弄中，%CALLNAME%脑子里满是用喉咙总好过用下面，至少不会怀孕，而且甚至自己还有了一点点快感。然后把屈辱与快感一并吞进胃里。
+	ENDIF
+CASE "触手深喉"
+	SELECTCASE RAND:7
+	CASE 0
+		PRINTFORML 粗壮的触手茎干捅穿%CALLNAME%的喉口，环状吸盘碾过咽壁，每一次回抽都带出黏腻的拉丝…
+	CASE 1
+		PRINTFORML %CALLNAME%颈侧青筋浮起，触手在食道口反复胀缩，窒息感与异物感把眼泪都逼了出来…
+	CASE 2
+		PRINTFORML 数根细触手缠住舌根往外扯，主茎却更深地楔进喉管，%CALLNAME%干呕着却吐不出那团滑腻…
+	CASE 3
+		PRINTFORML 触手表面的颗粒刮过软腭，顶端在痉挛的咽壁处脉动般搏动，涎水顺着触手滴落…
+	CASE 4
+		PRINTFORML %CALLNAME%被顶得仰起下颌，触手从唇缝一直捅到喉底，鼻腔里溢出混着粘液的泡沫…
+	CASE 5
+		PRINTFORML 触手根须勒住脸颊两侧往里挤，喉肉被迫一圈圈箍紧那不断向里钻的异形…
+	CASEELSE
+		PRINTFORML 黏滑的触手在%CALLNAME%深喉里搅动，每一次深入都像要把胃袋也一并填满…
+	ENDSELECT
+	CALL ONOMATOPOEIA("活塞运动","Ｍ")
+	IF TALENT:处女 && TALENT:深喉嗜好
+		PRINTFORML 异物塞进喉咙的屈辱里，%CALLNAME%竟荒谬地觉得——至少不是下面被破开——喉结滚动着把触手黏液一并咽下。
+	ENDIF
+ENDSELECT
+
+
+
+;非挿入
+;ARGS→継続中コマンド
+@NOT_SEX_MESSAGE(ARGS)
+
+SELECTCASE ARGS
+CASE "素股"
+	IF TFLAG:拘束BIT || !TFLAG:奉仕可能 || SELECTCOM == 900
+		SIF TFLAG:拘束BIT
+			PRINT 被束缚了
+		PRINTFORML %CALLNAME%的%SLANG_V()%被%SLANG_PENIS()%摩擦…
+	ELSE
+		PRINTFORML 用%SLANG_PENIS()%摩擦着%CALLNAME%的%SLANG_V()%…
+	ENDIF
+CASE "手淫"
+	PRINTFORML %CALLNAME%用手上下撸着%CALLNAME:0%的%SLANG_PENIS()%…
+CASE "授乳手交"
+	PRINTFORML %CALLNAME:0%一边嘴里吸吮着%CALLNAME%的%SLANG_N()%，一边享受%CALLNAME%的手淫侍奉…
+CASE "足交"
+	SELECTCASE RAND:8
+	CASE 0
+		PRINTFORML %CALLNAME%双足一上一下绞着%CALLNAME:0%的%SLANG_PENIS()%，足弓与趾缝轮流施力，套弄的节奏越来越快…
+	CASE 1
+		PRINTFORML %CALLNAME%用脚掌内侧贴着柱身上下摩擦，足跟不时顶弄根部，趾腹却专攻铃口周围那一小圈…
+	CASE 2
+		PRINTFORML %CALLNAME%把一只脚横压在肉棒上碾磨，另一只脚的脚尖沿着冠状沟刮过，黏腻的水声不绝于耳…
+	CASE 3
+		PRINTFORML %CALLNAME%并紧双膝用足心夹成肉穴，套弄时故意让脚趾刮蹭系带，看着它一跳一跳地胀大…
+	CASE 4
+		PRINTFORML %CALLNAME%足尖绕着铃口画圈，另一只脚从下方托起肉柱上下推动，羞辱与刺激叠在一起…
+	CASE 5
+		PRINTFORML %CALLNAME%用足跟压住根部固定，前脚掌裹着柱身来回撸动，每一次收紧趾缝都让%CALLNAME:0%闷哼一声…
+	CASE 6
+		PRINTFORML %CALLNAME%冷着脸继续用脚伺候%SLANG_PENIS()%，足背与脚心交替，仿佛在用脚底丈量对方的忍耐极限…
+	CASEELSE
+		PRINTFORML %CALLNAME%双足夹着%SLANG_PENIS()%越夹越紧，趾缝间挤出淫靡的摩擦声，白浊的前液把脚也弄得滑溜溜的…
+	ENDSELECT
+ENDSELECT
+
+
+
+;搾乳触手バリエーション(FUNCTION型)
+;%SLANG_MILK()%の後につけるよ
+@LACTATION_VAL(ARG)
+#FUNCTIONS
+
+SELECTCASE RAND:10
+CASE 0
+	RETURNF "吸吮着…"
+CASE 1
+	RETURNF "吸取着…"
+CASE 2
+	RETURNF "正在榨乳"
+CASE 3
+	RETURNF "正在吸吮"
+CASE 4
+	RETURNF "一口喝干"
+CASEELSE
+	RETURNF "榨取着…"
+ENDSELECT
+
+
+
+

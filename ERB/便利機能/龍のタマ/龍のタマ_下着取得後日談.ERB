@@ -1,0 +1,26 @@
+﻿
+;下着取得後の精算時漫談
+@WISH_GIVE_LINGERIE_AFTER
+
+SELECTCASE SAVESTR:获得内衣的角色
+CASE "玛诺"
+	CALL MANYL(5)
+	PRINTL 收集完牛奶的玛诺先生，不同寻常地有些话语吞吞吐吐…
+	PRINTL
+	PRINTL 玛诺「那个～，牧场主…虽然有点奇怪，我还是想问一下…」
+	PRINTL 「最近，有没有用过『消失内衣的魔术』之类的东西呢…？」
+	PRINTL
+	PRINTLC [ 0] 说说龙的事情
+	INPUT
+	PRINTL 「哎呀～居然有这种事情…　居然发生了那种事情还用来做这种事情！？！？」
+	PRINTL 「…嗯，我想你已经明白了我的反应，我觉得那是我穿的内衣…突然就消失了…」
+	PRINTL 「不，就算还给我也会困扰，我就送给你吧…」
+	PRINTL 「下次请实现更加合理的愿望吧」
+	PRINTW
+ENDSELECT
+SAVESTR:获得内衣的角色 =
+
+
+
+
+

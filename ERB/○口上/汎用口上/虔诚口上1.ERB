@@ -1,0 +1,164 @@
+; ======================================
+; 泛用口上（性格：虔诚）
+;
+;口上識別名：虔诚1
+;口上作者：（汉化扩展）
+;许可证：CC BY-NC
+; ======================================
+
+@KOJO_GENERAL_INDEX_虔诚1(ARGS:0,ARGS:1,ARGS:2,ARGS:3)
+
+IF TFLAG:Ｍ装备
+	CALL KOJO_GENERAL_MOUTH_SHACKLE_1(ARGS:0,ARGS:1,ARGS:2,ARGS:3)
+	RETURN
+ELSEIF CFLAG:崩坏 && !CFLAG:洗脑
+	IF GROUPMATCH(ARGS:0,"例文")
+	ELSEIF GROUPMATCH(ARGS:1,"洗脑触手","崩坏")
+	ELSE
+		IF NOWEX:总绝顶
+			CALL MESSAGE_BOX,@"「……请宽恕……♥ ……我又……堕落了……♥」"
+			CALL MESSAGE_BOX,@"「……惩罚……更重一点……♥」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……我刚才……又软弱了吗……」"
+		ENDIF
+		RETURN
+	ENDIF
+ENDIF
+
+SELECTCASE ARGS:0
+CASE "例文"
+	CALL MESSAGE_BOX,@"「【虔诚1】已设置。\n罪与罚、祈祷与忏悔；越陷落越把快感神圣化。」"
+
+CASE "调教命令"
+	CALL KOJO_GENERAL_虔诚1_TRAIN(ARGS:0,ARGS:1,ARGS:2,ARGS:3)
+
+CASE "绝顶"
+	IF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／隶属＃
+		CALL MESSAGE_BOX,@"「啊……♥ 我愿献上……一切……♥」"
+		CALL MESSAGE_BOX,@"「请引导我……让我更堕落……♥♥」"
+	ELSEIF ＃陷落状态／恋慕以上＃
+		CALL MESSAGE_BOX,@"「……请原谅……♥ 我、我快要……♥」"
+	ELSEIF ＃陷落状态／屈服以上＃
+		CALL MESSAGE_BOX,@"「……不行……这是试炼……♥」"
+	ELSE
+		CALL MESSAGE_BOX,@"「住手……这是不洁……！」"
+	ENDIF
+	SIF NOWEX:Ａ绝顶
+		IF TALENT:Ａ名器 || TALENT:肛门嗜好 || ABL:Ａ感觉 >= 3
+			CALL MESSAGE_BOX,@"「……！？　%ANAL_CALL()%……痛……！？　……可是……深处……像被神罚搔过……♥」"
+			CALL MESSAGE_BOX,@"「……这也是……试炼吗……♥」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……痛……！？　%ANAL_CALL()%……不洁……！」"
+			CALL MESSAGE_BOX,@"「……只有痛楚……才是真实……」"
+		ENDIF
+	SIF NOWEX:Ｕ绝顶
+		IF TALENT:尿道敏感 || EX:尿道调教经验 >= 15
+			CALL MESSAGE_BOX,@"「……这也是……试炼吗……刺痛里……竟有麻痒……♥」"
+			CALL MESSAGE_BOX,@"「……洁净被撕碎……可身体却……♥」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……不洁……只有刺与急……！」"
+			CALL MESSAGE_BOX,@"「……神啊……只有痛……」"
+		ENDIF
+
+CASE "射精"
+	IF SOURCE:膣内射精经验
+		IF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……在里面……♥ ……这是惩罚……也是恩赐……♥」"
+		ELSE
+			CALL MESSAGE_BOX,@"「不、不要在里面……！」"
+		ENDIF
+	ELSEIF SOURCE:尻穴射精经验
+		IF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……后面……也被玷污了……♥ ……请、请继续惩罚我……♥」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……不可以……那里……」"
+		ENDIF
+	ELSEIF SOURCE:精饮经验
+		IF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……咽下去了……♥ ……愿以此赎罪……♥」"
+		ELSE
+			CALL MESSAGE_BOX,@"「咳……咳……我、我不该……」"
+		ENDIF
+	ELSEIF TEQUIP:手淫
+		IF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……手上……沾满了……♥ ……我会洗净……」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……太下流了……」"
+		ENDIF
+	ENDIF
+
+CASE "搾乳"
+	IF SOURCE:母乳漏出
+		CALL MESSAGE_BOX,@"「……不行……奶水……自己……♥」"
+		RETURN
+	ENDIF
+	IF ＃陷落状态／恋慕以上＃
+		CALL MESSAGE_BOX,@"「……这是试炼……♥ 我会承受……♥」"
+		CALL MESSAGE_BOX,@"「……请别停……让我学会顺从……♥」"
+	ELSE
+		CALL MESSAGE_BOX,@"「住手……别把我拖向堕落……」"
+	ENDIF
+
+CASE "抽出"
+	CALL MESSAGE_BOX,@"「……我有些……站不稳……请允许我稍作歇息……」"
+	CALL MESSAGE_BOX,@"「……惩罚太重……我会……继续承受……」"
+
+CASE "日程"
+	SELECTCASE ARGS:1
+	CASE "调教"
+		SELECTCASE ARGS:2
+		CASE "开始调教"
+			CALL MESSAGE_BOX,@"「……若这是试炼……我愿接受。请引导我……」"
+		CASE "调教结束"
+			CALL MESSAGE_BOX,@"「……结束了吗……我会祈祷……让这份堕落……不再动摇我……」"
+		ENDSELECT
+	CASEELSE
+	ENDSELECT
+
+CASE "阴茎称呼变更"
+	CALL MESSAGE_BOX,@"「……称呼也要变更……我明白了……」"
+
+CASE "膣称呼变更"
+	CALL MESSAGE_BOX,@"「……连那里也要……是……我会记住……」"
+
+CASE "肛门称呼变更"
+	CALL MESSAGE_BOX,@"「……后面也要……我会服从……」"
+
+CASE "吸欧派"
+	SELECTCASE ARGS:1
+	CASE "开始"
+		CALL MESSAGE_BOX,@"「……请。若这能减轻您的烦恼……」"
+	CASE "结束"
+		CALL MESSAGE_BOX,@"「……胸口仍在发烫……这是……罪吗……♥」"
+	ENDSELECT
+
+CASE "访问"
+	SELECTCASE ARGS:1
+	CASE "入口"
+		CALL MESSAGE_BOX,@"「……我来了。若我能赎罪般地为您效劳……请吩咐。」"
+	CASEELSE
+	ENDSELECT
+
+CASE "事件"
+	CALL MESSAGE_BOX,@"「……发生了什么……？请告诉我，我会祈求指引……」"
+
+CASE "肉体改造"
+	CALL MESSAGE_BOX,@"「……身子要变样……我会接受。愿这也是试炼的一环。」"
+
+CASE "战斗"
+	SELECTCASE ARGS:1
+	CASE "攻击"
+		CALL MESSAGE_BOX,@"「……请见谅。我上了。」"
+	CASE "被击中"
+		CALL MESSAGE_BOX,@"「……唔……我还能……继续……」"
+	CASEELSE
+	ENDSELECT
+
+CASEELSE
+ENDSELECT
+RETURN
+
+@KOJO_GENERAL_虔诚1_TRAIN(ARGS:0,ARGS:1,ARGS:2,ARGS:3)
+CALL KOJO_GENERAL_虔诚口上1_TRAIN(ARGS:0,ARGS:1,ARGS:2,ARGS:3)
+RETURN
+

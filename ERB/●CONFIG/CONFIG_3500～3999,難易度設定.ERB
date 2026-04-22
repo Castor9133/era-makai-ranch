@@ -1,0 +1,72 @@
+﻿
+;難易度設定一覧
+@LIST_CONFIG_DIFFICULTY
+
+PRINTL --- 《 难易度设定 》 ---
+CALL PRINTL_WORD_COLOR("・各种难易度设定／倍率自定义仅能在游戏开始前或开发者模式中修改。","黄")
+CALL PRINT_DIFFICULTY
+ALIGNMENT LEFT
+DRAWLINE
+FLAG_REF = 3500
+
+;難易度設定は直接部分ない
+IF FLAG:开发者模式 && DAY
+	CALL PRINTL_WORD_COLOR("游戏开始后无法通过＜开发者模式＞进行修改。","黄")
+ELSE
+	PRINT [ 0] ＜开发者模式＞　
+	CALL PRINT_ONOFF(FLAG:开发者模式,1)
+ENDIF
+PRINTL [ 1] ＜简单模式＞设定
+PRINTL [ 2] ＜困难模式＞　设定
+PRINTL [ 3] 倍率自定义
+
+
+
+;ARG→INPUT
+@CHANGE_CONFIG_DIFFICULTY(ARG)
+
+SELECTCASE ARG
+CASE 0	;開発者モードへの変更
+	CALL CONFIG_DIFFICULTY_FREE_MODE_CHECK
+CASE 1	;イージーモード設定
+	CALL EASYMODE_CONFIG
+CASE 2	;ハードモード設定
+	CALL HARDMODE_CONFIG
+CASE 3	;倍率カスタマイズ
+	CALL CUSTOM_MODE_CONFIG
+ENDSELECT
+
+
+
+;開発者モード確認
+@CONFIG_DIFFICULTY_FREE_MODE_CHECK
+
+IF FLAG:开发者模式
+	IF !DAY
+		PRINTL 您要取消＜开发者模式＞吗？
+		CALL ASK_YN
+		SIF !RESULT
+			FLAG:开发者模式 = 0
+	ENDIF
+	RETURN
+ENDIF
+PRINTL 　　　关于＜开发者模式＞
+PRINTL 解禁功能：
+PRINTL ・在主菜单→[选项]→[调试]中启用调试命令作弊命令
+PRINTL （根据调试命令，可以在以后更改牧场名・宠物名称等，可以立即捕获奴隶）
+PRINTL ・即使在游戏中《 种族・阈值设置 》的一部分·《 奴隶候选设置 》・《 系统・难度设置 》可以无限制地更改范围
+PRINTL ・调教中[状态]→[计数器复位]可以使用
+PRINTL ・在候选奴隶显示屏幕上[重新调整]可以使用
+PRINTL
+PRINTL 缺点：
+CALL PRINTL_WORD_COLOR("・难度显示为[DEVELOP]，开始游戏后将无法恢复，仅此而已。","黄")
+PRINTL 要更改为＜开发者模式＞吗？
+CALL ASK_YN
+SIF !RESULT
+	FLAG:开发者模式 = 1
+
+;難易度表示再計算
+CALL PRINT_DIFFICULTY_CALC
+
+
+

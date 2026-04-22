@@ -1,0 +1,131 @@
+﻿
+;母乳に商品名をつける
+@MILK_PRODUCT_NAME_CHANGE
+#DIMS MILKWORD
+#DIMS SAMPLE1 = "特制"
+;#DIMS SAMPLE2 = "＜ミルク＞"
+
+CLEARLINE LINECOUNT
+CALL SHOW_SLAVE_STATE
+PRINTFORML 从%CALLNAME%搾乳的%SAVESTR:标识／母乳%加上商品名称。（出货价格保持不变）
+PRINTL
+IF CSTR:母乳商品名浓度自动 != ""
+	MILKWORD =
+	PRINTFORM %CALLNAME_DIGIT()%特制
+	SELECTCASE ABL:母乳浓度
+	CASE 1
+		MILKWORD += "浓厚"
+	CASE 2
+		MILKWORD += "上质"
+	CASE 3
+		MILKWORD += "丰润"
+	CASE 4
+		MILKWORD += "特浓"
+	CASE 5
+		MILKWORD += "极品"
+	ENDSELECT
+	MILKWORD += CSTR:母乳商品名浓度自动
+	SETCOLOR 0xFF70FF
+	PRINTFORM %MILKWORD,24,LEFT%
+	RESETCOLOR
+ELSEIF CSTR:母乳商品名自由记述 != ""
+	SETCOLOR 0xFF70FF
+	PRINTFORM %CSTR:母乳商品名自由记述,(FLAG:角色名称栏宽度 +28)%
+	RESETCOLOR
+ELSE
+	CALL PRINT_SELL_MILK_SAMPLE
+ENDIF
+PRINTL  +出货量显示
+CALL PRINTL_WORD_COLOR("　↑当前的设置↑　　↓比较默认↓","灰")
+;PRINTL 　↑現在の設定↑　　↓比較用デフォルト設定↓
+PRINTFORML %SAMPLE1,20%%SAVESTR:标识／母乳,24,LEFT% +出货量显示
+PRINTL
+PRINTL [ 0] 默认值（自动） 
+PRINTL [ 1] <名字>+<特制>+<母乳浓度>+<自由描述> 
+PRINTL [ 2] 完全自由记述
+PRINTL [ 3] 将自由记述向左移动一个字符
+CALL PRINTL_ALIGN
+DRAWLINE
+PRINTL [99] 完成
+INPUT
+SELECTCASE RESULT
+CASE 0
+	CSTR:母乳商品名浓度自动 =
+	CSTR:母乳商品名自由记述 =
+CASE 1
+	PRINTL <名字>+<特制>+<母乳浓度>+<自由描述> 的自由记述部分。
+	PRINTL （如果设置为全角10个字符，出货画面中将与其他奴隶一起显示）
+	INPUTS
+	IF RESULTS != ""
+		CSTR:母乳商品名浓度自动 = %RESULTS%
+		CSTR:母乳商品名自由记述 =
+	ENDIF
+CASE 2
+	PRINTL 请输入商品名称的自由描述。
+	PRINTL （如果设置为全角22个字符，出货画面中将与其他奴隶一起显示）
+	INPUTS
+	IF RESULTS != ""
+		CSTR:母乳商品名浓度自动 =
+		CSTR:母乳商品名自由记述 = %RESULTS%
+	ENDIF
+CASE 3
+	SIF CSTR:母乳商品名自由记述 != ""
+		CSTR:母乳商品名自由记述 += "　"
+CASE 99
+	RETURN
+ENDSELECT
+RESTART
+
+
+
+@PRINT_SELL_MILK_SAMPLE
+#DIMS MILKWORD
+
+PRINTFORM %CALLNAME_DIGIT()%特制
+MILKWORD =
+
+SELECTCASE ABL:母乳浓度
+CASE 1
+	MILKWORD += "浓厚"
+CASE 2
+	MILKWORD += "上质"
+CASE 3
+	MILKWORD += "丰润"
+CASE 4
+	MILKWORD += "特浓"
+CASE 5
+	MILKWORD += "极品"
+ENDSELECT
+SIF !EXP:肉体改造
+	MILKWORD += "天然"
+SIF TALENT:处女
+	MILKWORD += "处女"
+SIF GROUPMATCH(CSTR:身高,"矮小","儿童体型") && TALENT:巨乳
+	MILKWORD += "萝莉巨乳"
+SIF GROUPMATCH(CSTR:身高,"幼儿体型","儿童体型") && ABL:胸围大小 < BUSTSIZE_普乳
+	MILKWORD += "ょぅι゛ょ"
+SIF CFLAG:上位种族 || TALENT:天界种族
+	MILKWORD += CSTR:种族
+SIF CSTR:初始值／身分 == "王族"
+	MILKWORD += "皇家"
+SIF CSTR:初始值／身分 == "贵族"
+	MILKWORD += "贵族"
+	
+;CSV取り込みキャラ用の素質
+SIF TALENT:ＪＳ
+	MILKWORD += "ＪＳ"
+SIF TALENT:ＪＣ
+	MILKWORD += "ＪＣ"
+SIF TALENT:ＪＫ
+	MILKWORD += "ＪＫ"
+
+IF MARK:魔力母乳体质
+	MILKWORD += SAVESTR:标识／魔力母乳
+ELSE
+	MILKWORD += SAVESTR:标识／母乳
+ENDIF
+
+SETCOLOR 0xFF70FF
+PRINTFORM %MILKWORD,24,LEFT%
+RESETCOLOR
+

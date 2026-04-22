@@ -1,0 +1,60 @@
+﻿
+;手動キャラメイクの身分からの母乳価格ボーナス
+@SELF_CHARA_MAKE_MILK_PRICE
+
+SIF TALENT:神格
+	CFLAG:母乳价格奖励 = 50
+SIF CSTR:身份 == "王族"
+	CFLAG:母乳价格奖励 = 100
+
+
+
+;処女リセットまとめ
+@SELECT_VIRGIN_RESET
+
+SIF TALENT:处女结界
+	TALENT:处女 = 1
+
+;未経験のとき空欄・0を入れる
+IF TALENT:处女
+	CSTR:初经验／Ｖ =
+	EXP:地上经验人数／人类／Ｖ性交 = 0
+
+;経験ありで来てて0なら1にする
+ELSEIF !EXP:地上经验人数／人类／Ｖ性交
+	EXP:地上经验人数／人类／Ｖ性交 = 1
+ENDIF
+IF TALENT:Ａ处女
+	CSTR:初经验／Ａ =
+	EXP:地上经验人数／人类／Ａ性交 = 0
+ELSEIF !EXP:地上经验人数／人类／Ａ性交
+	EXP:地上经验人数／人类／Ａ性交 = 1
+ENDIF
+IF TALENT:Ｍ处女
+	CSTR:初经验／Ｍ性交 =
+	EXP:地上经验人数／人类／Ｍ性交 = 0
+ELSEIF !EXP:地上经验人数／人类／Ｍ性交
+	EXP:地上经验人数／人类／Ｍ性交 = 1
+ENDIF
+IF TALENT:无乳交经验
+	CSTR:初经验／乳交 =
+	EXP:地上经验人数／人类／乳交 = 0
+ELSEIF !EXP:地上经验人数／人类／乳交
+	EXP:地上经验人数／人类／乳交 = 1
+ENDIF
+IF TALENT:无接吻经验
+	CSTR:初经验／接吻 =
+	EXP:地上经验人数／人类／接吻 = 0
+ELSEIF !EXP:地上经验人数／人类／接吻
+	EXP:地上经验人数／人类／接吻 = 1
+ENDIF
+IF TALENT:无授乳经验
+	CSTR:初经验／授乳 =
+	EXP:地上经验人数／人类／授乳 = 0
+ELSEIF !EXP:地上经验人数／人类／授乳
+	EXP:地上经验人数／人类／授乳 = 1
+ENDIF
+
+
+
+

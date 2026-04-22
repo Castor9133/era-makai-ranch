@@ -1,0 +1,81 @@
+﻿
+;ホームセンターPAGE2
+@ITEM_SHOP_WORK_DETAIL_DEVICE
+
+;アイテム名・価格
+PRINTFORML 　《 %ITEMNAME:SELECT_ITEM% 》%VALUE_DIGIT(ITEMPRICE:SELECT_ITEM)%G 
+SELECTCASE ITEMNAME:SELECT_ITEM
+CASE "商用魔力储存器"
+	PRINTL ＜升级＞
+	PRINTFORML 魔力储存量的上限增加到%VALUE_DIGIT(MAGIC_TANK_BUSINESSUSE)%MP。
+	PRINTL
+	PRINTL 储存魔力、可当电池使用的商用机器。
+	PRINTL 魔界的「机器」是使用魔力来运作的，而没有魔力的人
+	PRINTL 有很多人一天都无法回复足够的魔力来操作机器，所以
+	PRINTL 使用机器的电池非常重要。
+	PRINTL
+	PRINTL 话虽如此，只要正常使用，相当于我们世界的「电池」已经充满了足够的魔力，所以
+	PRINTL 它不常被用作魔力储存装置。
+	
+CASE "大容量魔力储存器"
+	PRINTL ＜解锁＞
+	PRINTFORML 魔力储存量的上限增加到%VALUE_DIGIT(MAGIC_TANK_LARGE_CAPACITY)%MP。
+	PRINTL
+	PRINTL 储存魔力，可以作为电池使用的机械强化版。
+	IF FLAG:玩笑表示
+		PRINTL 这是一款性价比不高的变态高端机型，即使作为商用，储存量也太大。
+		PRINTL 包括魔王大人在内，魔王军的精锐数人花费数天时间才会充满的量。
+	ENDIF
+	
+CASE "发型工具套装"
+	PRINTL ＜解锁＞
+	PRINTL 去见面→改变发型
+	PRINTL
+	PRINTL 一套完整的发型整理工具。
+	PRINTL 对于男性来说，有剪刀就足够了，但女孩的头发比较细腻，因此需要各种工具。
+	PRINTL 附带一本即使对于初次接触恶魔的人也很容易理解的教科书。
+	IF FLAG:玩笑表示
+		PRINTL
+		PRINTL 先不说剪头发，这套神秘的组合能让你瞬间从短发变成长发。
+		PRINTL 也许这种魔力已经融入其中。
+	ENDIF
+	
+CASE "工具套装"
+	PRINTL ＜解锁＞
+	PRINTL 开发・学习→新型挤乳器的开发。
+	PRINTL
+	PRINTL 制作或改造简易机械所需的全套工具。
+	PRINTL 不过，无法制造巨大机械，所以用来开发挤乳器。
+	PRINTL 附带一本即使对于初次接触恶魔的人也很容易理解的教科书。
+	
+CASE "裁缝工具套装"
+	PRINTL ＜解锁＞
+	PRINTL 去见面→修补破衣服
+	PRINTL
+	PRINTL 一套完整的修理破衣服所需的具。
+	PRINTL 附带一本即使对于初次接触恶魔的人也很容易理解的教科书。
+	
+
+;外れたんだけど一応ここに残しておく
+CASE "死灵之书"
+	PRINTL ＜解锁＞
+	PRINTL 开发・学习→魔法的学习。
+	PRINTL
+	PRINTL 记载着各种魔法的参考书。
+	PRINTL 在《阿尔·阿齐夫》这本记载了魔界所有魔法的魔法书中，
+	PRINTL 那些原理没有被正确理解的东西，那些太先进而几乎不可能获得的东西，
+	PRINTL 为了减少体积，排除了过于专业化的魔法等内容。
+	IF FLAG:玩笑表示
+		PRINTL
+		PRINTL 从地上的人类角度来看，为了争夺这个物品，甚至发生了激烈的冲突，这真是一个不可思议的异界物品，
+		PRINTL 在魔界，只要去参考书区域，价格可能各异，但任何人都可以购买。
+	ENDIF
+	
+CASE "魔法剪刀"
+	PRINTL ＜解锁＞
+	PRINTL 衣服变更→增加露出度的改造
+	PRINTL
+	PRINTL 当交出相应的服装时，你将可以对其进行修改以增加暴露程度。
+ENDSELECT
+
+

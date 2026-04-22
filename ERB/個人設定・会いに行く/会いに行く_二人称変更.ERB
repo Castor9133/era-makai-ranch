@@ -1,0 +1,11 @@
+﻿
+;二人称の変更
+@VISIT_CHANGE_MASTER_CALL
+
+CALL CHANGE_PERSONAL_CALL("陷落后的主人公的称呼")
+
+;RETURN99でキャンセル
+SIF RESULT == 99
+	RETURN
+CALL KOJO_PRINT("访问","对主角的称呼变更")
+PRINTW

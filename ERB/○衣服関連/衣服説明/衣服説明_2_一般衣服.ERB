@@ -1,0 +1,64 @@
+﻿
+;仕事着
+@ITEM_DETAIL_CLOTHE_WORK
+
+SELECTCASE ITEMNAME:SELECT_ITEM
+CASE "工作服"
+	;PRINTL ＜仕事効果＞
+	;PRINTL 【酪農】【事務】【調剤】【掃除】【接客】可能　【酪農】時効率＋1
+	;PRINTL ＜脱衣処理＞
+	;PRINTL 胸元露出型・前開き脱衣・着衣挿入☓
+	;PRINTL
+	CALL CLOTHE_DETAIL_COMMON()
+	PRINTL 耐用、易于存放、防污且防水，使其成为现场工作人员的必备物品。
+	PRINTL 如果你给她们这个，你可以委托她们各种各样的任务，所以建议大量购买。
+
+CASE "布衣"
+	CALL CLOTHE_DETAIL_COMMON()
+	PRINTL 并不特定于某个职业的，通用的布制衣物。
+	PRINTL 魔界人和地上人的审美似乎没有太大差别，受欢迎的设计在两个世界中都很相似。
+
+CASE "连体背带裤"
+	CALL JACKET_DETAIL_COMMON("侧乳露出")
+	PRINTL 连体工作服，俗称吊带，穿在其他衣物上面。
+	PRINTFORML 与工作服的区别是手可以从侧面插到乳房%SAVESTR:标识／乳房%揉捏
+	IF FLAG:玩笑表示
+		PRINTL 这是一个非常重要的区别。
+	ENDIF
+
+CASE "白衣"
+	CALL CLOTHE_DETAIL_COMMON()
+	PRINTL 从事医疗等卫生重要工作的人的制服。
+	PRINTL 为了与护士服区别，女式制服也是裤型的。
+
+CASE "围裙装"
+	CALL JACKET_DETAIL_COMMON("侧乳露出")
+	PRINTL 烹饪时所穿的围裙，烹饪时所需。
+
+CASE "连衣裙"
+	CALL CLOTHE_DETAIL_COMMON()
+	PRINTL 上下连体的，宽松裙形的衣服。
+	IF FLAG:玩笑表示
+		PRINTL 并不是要收集所有的梦想。
+	ENDIF
+
+CASE "睡裙"
+	CALL CLOTHE_DETAIL_COMMON()
+	PRINTL 睡觉时穿的上下连体衣物。
+
+
+;ここから拡張
+CASE "女仆装"
+	CALL CLOTHE_DETAIL_COMMON()
+	PRINTL 做管家工作的人的制服。一般的都是以黑色为主色调，加上白色点缀。
+	PRINTL 由于裙子长度较长，穿衣插入的行为可能会有点麻烦，但这是可能的。
+	
+CASE "男仆围裙"
+	CALL JACKET_DETAIL_COMMON("全露出")
+	PRINTL 烹饪时所穿的围裙，烹饪时所需。
+	PRINTL 因为是只覆盖腰部的类型，所以通常应该在穿上其他合适的衣服后再佩戴。
+
+ENDSELECT
+
+
+

@@ -1,0 +1,18 @@
+﻿
+;お金が欲しい
+@SELECT_WISH_GIVE_MONEY
+
+CALL DRAGON_MONEY_MESSAGE
+PRINTL
+PRINTL 是否要将牛奶销售额在接下来的7天内翻倍？
+CALL ASK_YN
+SIF RESULT
+	RETURN
+FLAG:结算金额加倍剩余天数 = 7
+CALL PRINTL_WORD_COLOR("接下来的7天内结账时的销售金额翻倍了！","黄")
+PRINTW
+ITEM:龙之珠 = 0
+
+
+
+

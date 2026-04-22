@@ -1,0 +1,101 @@
+﻿
+;霊力*150%+魔力で戦闘力かな　仲間もここで計算
+;霊力+魔力にしておく
+;ARG→仲間の計算スキップ
+@SLAVE_BATTLE_POWER_CALC(ARG)
+
+;膨大魔力ONの場合魔力の1/10のみ戦闘力に加える
+IF CFLAG:庞大的魔力
+	STATUS = MAXBASE:灵力 +MAXBASE:魔力 /10
+ELSE
+	STATUS = MAXBASE:灵力 +MAXBASE:魔力
+ENDIF
+
+;非戦闘職なら10
+SIF CFLAG:非战斗职业
+	STATUS = 10
+MAXBASE:战斗力 = STATUS
+BASE:战斗力 = MAXBASE:战斗力
+SIF !ARG
+	CALL GROUP_BATTLE_POWER_CALC
+
+
+
+;仲間ランクから仲間戦闘力を計算　霊力に対応する値のみ
+@GROUP_BATTLE_POWER_CALC
+#DIM LEVEL_GUIDE
+
+IF !CFLAG:同伴规模
+	CFLAG:同伴级别 = 0
+	MAXBASE:同伴战斗力1 = 0
+	BASE:同伴战斗力1 = MAXBASE:同伴战斗力1
+	RETURN
+ENDIF
+LEVEL_GUIDE = CFLAG:同伴级别*10 +RAND:5
+STATUS = 10000
+FOR LOCAL,0,LEVEL_GUIDE 
+	STATUS += (LOCAL *500)
+NEXT
+CALL RANDOM_FIX(STATUS,5,"同伴战斗力")
+STATUS += FIX
+STATUS -= (STATUS %100)
+MAXBASE:同伴战斗力1 = STATUS
+BASE:同伴战斗力1 = MAXBASE:同伴战斗力1
+
+
+
+;特殊行動を使える回数
+;そのうち整理されて消える
+@SLAVE_BATTLE_SPECIAL_CALC
+
+BASE:回复次数 = 1
+BASE:大技次数 = 1
+
+;性格補正
+SELECTCASE CSTR:性格
+CASE "强势"
+	BASE:回复次数 -= 1
+	BASE:大技次数 += 1
+CASE "弱势","温厚","老实"
+	BASE:回复次数 += 1
+	BASE:大技次数 -= 1
+ENDSELECT
+
+;ジョブ補正
+SELECTCASE CSTR:职业
+CASE "盗贼","勇者（自称）"
+	BASE:大技次数 -= 3
+CASE "旅客","主教"
+	BASE:回复次数 += 1
+CASE "药师","牧师","白魔法师"
+	BASE:回复次数 += 1
+	BASE:大技次数 -= 3
+CASE "黑魔法师","死灵术士","战士","角斗士","女巫"
+	BASE:回复次数 -= 3
+	BASE:大技次数 += 1
+CASE "魔法少女","贤者","圣骑士","女武神","骑士团长","圣骑士"
+	BASE:回复次数 += 1
+	BASE:大技次数 += 1
+CASE "暗黑骑士","武将","大魔导师"
+	BASE:大技次数 += 2
+CASE "勇者"
+	BASE:回复次数 += 2
+	BASE:大技次数 += 2
+CASE "枢机主教"
+	BASE:回复次数 += 2
+ENDSELECT
+
+IF CFLAG:上位种族
+	BASE:回复次数 += 2
+	BASE:大技次数 += 2
+ENDIF
+IF CFLAG:非战斗职业
+	BASE:回复次数 = 0
+	BASE:大技次数 = 0
+ENDIF
+BASE:回复次数 = LIMIT(BASE:回复次数,0,5)
+BASE:大技次数 = LIMIT(BASE:大技次数,0,5)
+
+
+
+

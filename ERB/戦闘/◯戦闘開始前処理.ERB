@@ -1,0 +1,34 @@
+﻿
+;戦闘開始前の口上・地の文と降参処理
+@BATTLE_BEFORE_ACTION
+
+;規模が軍隊・仲間ありの場合に仲間捕獲可能フラグを立てる
+IF CFLAG:同伴规模 == 3 && BASE:同伴战斗力1 && FLAG:畜牧业Lv5＋魔术＜个人用传送门＞
+	FLAG:可捕获同伴 = 1
+ELSE
+	FLAG:可捕获同伴 = 0
+ENDIF
+
+;戦える場合
+IF !CFLAG:非战斗职业
+	CALL KOJO_PRINT("战斗","战斗开始")
+	RETURN
+ENDIF
+
+;非戦闘職の場合
+;プライド高いと無茶する　もちろん意味はない
+IF TALENT:自尊心高 || TALENT:高傲
+	CALL BATTLE_BEFORE_MESSAGE("自尊心高")
+
+;仲間がいればお任せ
+ELSEIF BASE:同伴战斗力1
+	CALL BATTLE_BEFORE_MESSAGE("委托他人")
+
+;仲間がいないなら即座に降参する
+ELSE
+	TFLAG:投降 = 1
+	CALL BATTLE_BEFORE_MESSAGE("投降")
+ENDIF
+
+
+

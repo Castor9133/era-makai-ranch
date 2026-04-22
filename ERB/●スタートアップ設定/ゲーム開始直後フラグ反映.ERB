@@ -1,0 +1,69 @@
+﻿
+;ゲーム開始直後のセッティング
+@NEWGAME_FLAG_SET
+
+;開始時の時刻取得
+TIME:2 = GETMILLISECOND() /1000
+
+;実質定数のセット
+CALL LOAD_CONST_SET
+
+;バージョンをフラグに入れておく
+FLAG:保存数据的版本 = GAMEBASE_VERSION
+
+;ゲーム開始前はいろいろいじってもPRINTされないようにするフラグ
+FLAG:正在化妆角色 = 1
+
+;グローバルセーブから設定を読み込む
+;システム変更でもう読み込んでる
+CALL LOAD_GLOBAL_CONFIG
+
+;牧場名
+SAVESTR:牧场名 = 魔界牧场
+
+;あなた設定のフラグ合わせ
+CALL NEWGAME_PLAYER_FLAG_SET
+
+;初期所持の奴隷ちゃん=スレイちゃん設定
+ADDCHARA 1
+TARGET = 1
+CALL CSV_CHARA_ADD_FIX
+
+;ユジンが連れて来る奴隷→デフォルトは巫女にするね
+ADDCHARA 3
+TARGET = 2
+CALL CSV_CHARA_ADD_FIX
+
+;ペットのデフォルト
+CALL NEWGAME_DEFAULT_PET
+
+
+
+;あなた設定のフラグ合わせ
+@NEWGAME_PLAYER_FLAG_SET
+
+TARGET = 0
+CALL CSV_CHARA_HEIGHT_FIX
+CALL CHARA_EQUIP_REGISTER
+SIF !CFLAG:颜色编码／发
+	CALL AUTOSET_HAIR_COLOR_CODE
+SIF !CFLAG:颜色编码／右目
+	CALL AUTOSET_EYE_COLOR_CODE
+SIF !CFLAG:颜色编码／乳头
+	CALL AUTOSET_NIPPLE_COLOR_CODE
+CALL AUTOSET_EYE_COLOR_CODE
+SAVESTR:主人公语气 = 区分使用
+
+
+
+;ペットのデフォルト→牧場だし馬と思ったけど魔界だしオルトロスのポチにしよう
+@NEWGAME_DEFAULT_PET
+
+ITEM:双头犬 = 1
+ITEM:宠物小屋 = 1
+SAVESTR:名称／双头犬 = 波奇
+SAVESTR:毛发／双头犬 = 棕色
+FLAG:性别／双头犬 = 1
+FLAG:体型／双头犬 = 5000
+
+

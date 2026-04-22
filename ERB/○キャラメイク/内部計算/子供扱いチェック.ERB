@@ -1,0 +1,29 @@
+﻿
+;子供扱いする身長かチェックの式中関数
+;ARGS→CSTR:身長orそこに入れる変数
+@CHILD_HEIGHT_CHECK(ARGS)
+#FUNCTION
+#DIM HEIGHT_VALUE
+
+;子供扱いの場合はそちらの関数へ
+;適用範囲：0→使用しない,1→低身長,2→小柄,3→子供体型
+;幼児体型も3にしておく
+;数値にするのがちと難しいので分岐が多い
+
+SELECTCASE ARGS
+CASE "娇小"
+	HEIGHT_VALUE = 1
+CASE "矮小"
+	HEIGHT_VALUE = 2
+CASE "儿童体型","幼儿体型"
+	HEIGHT_VALUE = 3
+CASEELSE
+	HEIGHT_VALUE = 0
+ENDSELECT
+
+;子供扱いの場合RETURN1
+SIF FLAG:儿童待遇身高范围 && FLAG:儿童待遇身高范围 <= HEIGHT_VALUE
+	RETURNF 1
+RETURNF 0
+
+

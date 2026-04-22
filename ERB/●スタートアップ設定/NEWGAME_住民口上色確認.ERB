@@ -1,0 +1,51 @@
+﻿
+;住民口上色確認
+@NEWGAME_CONFIRM_MAKAI_MESSAGE
+
+CALL MANYL(5)
+CALL RESIDENT_KOJO,@"尤金","魔王军研究所的尤金。虽然你一副『不用特别说』的表情，但还是要形式上说一声。"
+CALL RESIDENT_KOJO,@"尤金","这里是魔界居民台词显示颜色的确认画面，我的台词是这种颜色。"
+
+;まだ
+IF 1
+	CALL RESIDENT_KOJO,@"尤金","不过这是测试版，没做太多，所以我和马诺也就能确认一下。"
+	CALL RESIDENT_KOJO,@"玛诺","确实如此～　啊，虽然现在说也没什么意义，但我是魔界农协的马诺～"
+ELSE
+
+
+PRINTL
+CALL RESIDENT_KOJO,@"玛诺","我是魔界农协的马诺～。不过现在说也没什么意义。"
+CALL RESIDENT_KOJO,@"福多","我是福多，负责管理冈城街的房地产。"
+CALL RESIDENT_KOJO,@"肯奇","你好…我是麦凯道建设东支部的肯奇。"
+CALL RESIDENT_KOJO,@"塔尔特","我是经营成人商店的塔尔特～"
+CALL RESIDENT_KOJO,@"亚拉希","我是家居中心的店长亚拉希！！！！！！！感谢你的支持！！！！！"
+CALL RESIDENT_KOJO,@"信美","我叫辛美，经营服饰店。"
+CALL RESIDENT_KOJO,@"辉夜","我是家具店的辉夜，祝你愉快。"
+CALL RESIDENT_KOJO,@"诺诺美","啊，您好…我是诺诺美…　呃，嗯…我在找工作…"
+CALL RESIDENT_KOJO,@"右京","魔界农协冈城街支店的乳制品科科长，右京。请多关照。"
+CALL RESIDENT_KOJO,@"松平","我是产婆松平。这附近的孩子大多是我助产的，呵呵。"
+PRINTL
+CALL RESIDENT_KOJO,@"泰拉","那我就从这儿开始，和在役场的伙伴们一起打个招呼吧。"
+CALL RESIDENT_KOJO,@"泰拉","我是魔族佣兵泰拉。嗯，确实准确来说是『佣兵兼职』……"
+CALL RESIDENT_KOJO,@"戈罗","你好，我是负责管理哥布林们的戈罗。"
+CALL RESIDENT_KOJO,@"肖","我是佣兵兼职的肖！虽然还在起步，但总有一天我会成为最强的！"
+CALL RESIDENT_KOJO,@"辛西娅","我是上面的傻瓜的妹妹，辛西亚。啊，种族？因为哈比没有男性，所以就这样了。"
+CALL RESIDENT_KOJO,@"普尼耶","我是魔族兼职佣兵的普尼耶。如果能把事情交给我，我会很开心的！"
+CALL RESIDENT_KOJO,@"戈兹","哈哈哈！我是兼职的戈兹！我可能是冈城街最强的！！！"
+PRINTL
+CALL RESIDENT_KOJO,@"雏","我叫雏。现在不住在冈城街，所以可能要等一段时间才能见到你。"
+CALL RESIDENT_KOJO,@"库雷塔","我是图书馆的图书管理员库雷塔。如果有机会去图书馆，或许能见面。"
+
+
+ENDIF
+PRINTL
+PRINTL 修改定数文件的内容可改变显示颜色。若需更改，
+PRINTL 请在「ERB」文件夹→「●ERH」文件夹中用文本编辑器打开「住民台词颜色定数.ERH」文件，
+PRINTL 直接修改数值。
+PRINTL ・此定数即使在游戏进行中修改也不会有太大问题。
+WAIT
+
+
+
+
+

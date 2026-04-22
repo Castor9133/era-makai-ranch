@@ -1,0 +1,137 @@
+﻿
+;処女喪失時の地の文
+@V_LOST_VARGIN_MIND_DAMAGE_MESSAGE
+
+IF TALENT:性知识贫乏
+	IF (＃陷落状态／恋慕以上＃ || CFLAG:乳牛) && V_PENIS == CALLNAME:0
+		{
+		CALL PRINTL_WORD_COLOR,@"%CALLNAME%对这一行为的意义并不十分明白，但
+		%SAVESTR:标识／膣%处传来%CALLNAME:0%通过触感感受到非常幸福的感觉…","桃"
+		}
+	ELSEIF SOURCE:Ｖ疼痛 < 5000
+		CALL PRINTL_WORD_COLOR,@"%CALLNAME%虽然不太理解这一行为的意义，但母性本能理解这是让人愉悦的事…","桃"
+	ELSE
+		CALL PRINTL_WORD_COLOR,@"%CALLNAME%虽然不太理解这一行为的意义，但似乎觉得很痛苦而讨厌…","桃"
+		RETURN
+	ENDIF
+	
+ELSEIF (＃陷落状态／恋慕以上＃ || CFLAG:乳牛) && V_PENIS == CALLNAME:0
+	CALL PRINTL_WORD_COLOR,@"%CALLNAME%因可以为%CALLNAME:0%献上处女而高兴…","桃"
+	
+ELSEIF (＃陷落状态／陷落以上＃ || TALENT:单纯) && !TALENT:贞操观念 && V_PENIS == CALLNAME:0
+	CALL PRINTL_WORD_COLOR,@"%CALLNAME%并不在意把她的处女之身献给%CALLNAME:0%…","桃"
+ELSE
+	IF TALENT:贞操观念
+		CALL PRINTL_WORD_COLOR,@"%CALLNAME%一直守护的纯洁因被%V_PENIS%夺走，流下了绝望的眼泪…","红"
+	ELSE
+		CALL PRINTL_WORD_COLOR,@"%CALLNAME%一直守护的纯洁因被%V_PENIS%夺走而流下了眼泪…","红"
+	ENDIF
+	RETURN
+ENDIF
+
+;RETURNしなかったらここ
+SIF TALENT:名器 || ABL:Ｖ敏感度 >= 200
+	CALL PRINTL_WORD_COLOR,@"就在%V_PENIS%进入的瞬间，自己%CSTR:性器称呼／膣%本能地意识到这是其存在的意义…","桃"
+SIF SOURCE:Ｖ疼痛 >= 5000
+	CALL PRINTL_WORD_COLOR,@"不过，面部因痛苦而扭曲…","桃"
+
+
+
+;初キス時
+@FIRST_KISS_MIND_DAMAGE_MESSAGE
+
+IF (＃陷落状态／恋慕以上＃ || CFLAG:乳牛) && KISS_PLAYER == CALLNAME:0
+	CALL PRINTL_WORD_COLOR,@"%CALLNAME%因可以为%CALLNAME:0%献上初吻，而感到非常高兴…","桃"
+	
+ELSEIF (＃陷落状态／陷落以上＃ || TALENT:单纯) && !TALENT:贞操观念 && KISS_PLAYER == CALLNAME:0
+	CALL PRINTL_WORD_COLOR,@"貌似%CALLNAME%对于为%CALLNAME:0%献上初吻没有反感…","桃"
+ELSE
+	IF TALENT:少女心
+		CALL PRINTL_WORD_COLOR,@"%CALLNAME%的初吻被%KISS_PLAYER%夺走，流着绝望的眼泪…","桃"
+	ELSE
+		CALL PRINTL_WORD_COLOR,@"%CALLNAME%的初吻被%KISS_PLAYER%被夺走，流着悔恨的眼泪…","桃"
+	ENDIF
+ENDIF
+
+
+
+;母乳体質化
+@LACTATION_MIND_DAMAGE_MESSAGE
+
+SETCOLOR 0xFF70FF
+IF TALENT:性知识贫乏
+	PRINTFORML %CALLNAME%看着自己乳头里流出的%SAVESTR:标识／母乳%，觉得自己应该没有宝宝，露出了困惑的表情…
+ELSEIF ＃陷落状态／恋慕以上＃
+	PRINTFORML %CALLNAME%看到自己乳头流出的%SAVESTR:标识／母乳%时，露出了困惑的表情，
+	PRINTFORML 如果是%CALLNAME:0%所希望的，就感到高兴…
+ELSEIF TALENT:少女心
+	PRINTFORML %CALLNAME%看着自己乳头里流出的%SAVESTR:标识／母乳%，非常困惑…
+	PRINTFORML 发生在自己身上的事情，思绪似乎无法跟上…
+ELSE
+	PRINTFORML %CALLNAME%看着自己乳头里流出的%SAVESTR:标识／母乳%，非常困惑…
+	PRINTFORML 似乎自己的身体被随意摆弄，尊严受到了伤害…
+ENDIF
+RESETCOLOR
+
+
+
+;膨乳
+@BUSTUP_MIND_DAMAGE_MESSAGE
+
+SETCOLOR 0xFF70FF
+IF ABL:胸围大小 > 26
+	PRINTFORM %CALLNAME%看到自己超乎人类极限的巨大%SAVESTR:标识／乳房%，
+ELSEIF ABL:胸围大小 >= BUSTSIZE_爆乳
+	PRINTFORM %CALLNAME%看到自己巨大到不自然的程度的%SAVESTR:标识／乳房%，
+ELSEIF ABL:胸围大小 >= BUSTSIZE_巨乳
+	PRINTFORM %CALLNAME%看到了自己沉甸甸的%SAVESTR:标识／乳房%，
+ELSE
+	PRINTFORM %CALLNAME%看着自己变大的%SAVESTR:标识／乳房%，
+ENDIF
+IF CFLAG:乳牛
+	PRINTL
+	PRINTFORM 这样就可以让更多的%CALLNAME:0%榨出%SAVESTR:标识／母乳%…于是就高兴地发情了…
+	CALL HEARTCB(0xD02830)
+	PRINTL
+ELSEIF ＃陷落状态／隶属＃
+	PRINTFORM 想要得到%CALLNAME:0%更多的爱…而喜悦发情…
+	CALL HEARTCB(0xD02830)
+	PRINTL
+ELSEIF MARK:搾乳中毒
+	PRINTFORM 想象着被进一步的挤乳的快感身体逐渐疼痛起来…
+	CALL HEARTCB(0xD02830)
+	PRINTL
+ELSEIF ＃陷落状态／恋慕以上＃
+	IF ABL:胸围大小 > 26
+		PRINTFORML 告诉自己，%CALLNAME:0%正是想要这种我如此丑陋的模样…
+	ELSE
+		PRINTFORM 因为满足了%CALLNAME:0%的喜好的自己而感到高兴…
+		CALL HEARTCB(0xD02830)
+		PRINTL
+	ENDIF
+ELSE
+	IF ABL:胸围大小 > 26
+		PRINTL 看着自己失去了人类尊严的绝望身姿…
+	ELSEIF ABL:胸围大小 < BUSTSIZE_爆乳 && TALENT:乳房自卑
+		PRINTL
+		PRINTFORML 自卑的自己%SAVESTR:标识／乳房%变大，虽然是这样的状况，但似乎很开心…
+	ELSE
+		PRINTFORML 害怕自己的%SAVESTR:标识／乳房%被强迫成长的事…
+	ENDIF
+ENDIF
+RESETCOLOR
+
+
+
+;処女結界破壊
+@BREAK_VIRGIN_BARRIER_MIND_DAMAGE_MESSAGE
+
+PRINTFORML %CALLNAME%的【处女结界】消失了，已经不可能再次使用这股神圣的力量了…
+IF CFLAG:乳牛 || ＃陷落状态／恋慕以上＃
+	PRINTFORML 但是，现在的%CALLNAME%已经成为%CALLNAME:0%的财产，所以似乎并不在意这一点。
+ELSEIF CFLAG:无抵抗
+	PRINTFORML 或许是因为知道自己早晚会变成这样，%CALLNAME%接受了这件事…
+ELSE
+	PRINTFORML 明白自己成了无助的女性，%CALLNAME%绝望了…
+ENDIF
+

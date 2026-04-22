@@ -1,0 +1,23 @@
+﻿
+;CSVから読み込んだ奴隷候補の性経験の補正
+@CSV_CHARA_VARGIN_FIX
+#DIM SAVE_TALENT,5
+
+;手動入力済みフラグONならここ飛ばす
+SIF CFLAG:性经验手动输入已完成
+	RETURN
+
+;処女結界と性知識を保存
+SAVE_TALENT:0 = TALENT:处女结界
+SAVE_TALENT:1 = TALENT:性知识贫乏
+SAVE_TALENT:2 = TALENT:性知识丰富
+
+;ランダム使いまわし
+CALL SLAVE_VARGIN_RESETTING
+
+;上書きし直し
+TALENT:处女结界 = SAVE_TALENT:0
+TALENT:性知识贫乏 = SAVE_TALENT:1
+TALENT:性知识丰富 = SAVE_TALENT:2
+
+

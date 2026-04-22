@@ -1,0 +1,49 @@
+﻿
+;夜の行動
+@NIGHT_PHASE
+
+;ここでも可不可計算と居場所確認する必要ある
+CALL CHARA_WHEREABOUTS_ALL
+CALL SCHEDULE_POSSIBLE
+CALL MANYL(5)
+
+;日付など出してちょいわかりやすく
+CALL SHOW_DATE
+PRINTL
+DRAWLINE
+PRINTL 牧场业务也结束到了晚上。我们做点什么吧…？
+PRINTLC [ 0] 调教奴隶
+PRINTLC [ 1] 今天要睡觉了
+IF FLAG:事务工作量
+	PRINTFORMLC [ 2] 做事务工作睡觉：{FLAG:事务工作量}/20 
+ELSE
+	CALL PRINTLC_WORD_COLOR("　所有的文书工作都处理好了","灰")
+ENDIF
+INPUT
+SELECTCASE RESULT
+CASE 0
+	SAVE_TARGET = 0
+	CALL TRAIN_SLAVE_SELECT_ALL
+	SIF CSTR:0:日程 != "调教"
+		RESTART
+	
+CASE 2
+	SIF !FLAG:事务工作量
+		RESTART
+	CSTR:0:日程 = 事务
+ENDSELECT
+
+;スケジュールごとにそれぞれ実行
+DRAWLINE
+CALL SLEEP_ROOM
+CALL SLEEP_CAGE
+CALL WORK_FINANCE_NIGHT
+
+;BEGIN TRAINをしている場合ターンエンド処理を調教終了のほうで行う　飛ぶのでSIFでおＫ
+SIF CSTR:0:日程 == "调教"
+	BEGIN TRAIN
+
+;ターンエンド処理に1日終了処理もあるのでこれでOK
+CALL MAIN_TURNEND
+;SHOPへ戻る
+

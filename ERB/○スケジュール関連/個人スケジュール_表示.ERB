@@ -1,0 +1,186 @@
+﻿
+;状態で変更するスケジュール選択肢表示
+@PRINT_SCHEDULE_PLAN_STATE
+
+IF EQUIP:自室
+	PRINTL [  0] 空闲时间
+ELSEIF CFLAG:可以调教
+	PRINTL [100] 等待
+ENDIF
+
+;体内のときこっちに合わせる
+IF CSTR:日程 == "体内凌辱"
+	PRINTL [105] 从体内解放出来
+ELSEIF CSTR:日程 == "释放准备"
+	PRINTL [106] 不释放
+ENDIF
+
+
+
+;業務スケジュール選択肢表示
+;ここ以降を改行合わせれば合う
+@PRINT_SCHEDULE_PLAN_WORK
+
+IF CFLAG:可以工作
+	PRINTFORMLC [  1] 家畜的照料 <Lv{ABL:奶农,2}> 
+	
+	;レズ調教の対応
+	IF !TARGET
+		PRINTFORML [  2] 调教奴隶 <Lv{ABL:技巧,2}> 
+	ELSE
+		PRINTFORML [  2] 进行调教 <Lv{ABL:技巧,2}／百合Lv{ABL:百合癖,2}> 
+	ENDIF
+	
+	;事務は恋慕以上にした
+	IF (＃陷落状态／恋慕以上＃ || CSTR:状态／主人公的孩子 == "成长后" || TALENT:业主) && FLAG:事务工作量
+		PRINTFORMLC [  3] 事务工作　 <Lv{ABL:事务,2}> 
+	
+	;前半がNGの場合の表示
+	ELSEIF FLAG:事务工作量
+		CALL PRINTLC_WORD_COLOR("　事务作业：【恋慕】以上","灰")
+	ELSE
+		CALL PRINTLC_WORD_COLOR("　事务工作","灰")
+	ENDIF
+	
+	CALL MILESTONE_UNLOCK_CHECK("调合","LC")
+	SIF RESULT
+		PRINTFORMLC [  4] 药品的调合 <Lv{ABL:药学,2}> 
+	CALL MILESTONE_UNLOCK_CHECK("大浴场清洁","LC")
+	IF RESULT
+		IF FLAG:大浴场清洁完成度 < 100
+			PRINTFORMLC [  5] 大浴场清洁 <Lv{ABL:清洁,2}> 
+		ELSE
+			CALL PRINTLC_WORD_COLOR("　大浴场清洁","灰")
+		ENDIF
+	ENDIF
+	
+	;あなたのみ
+	IF !TARGET
+		PRINTL
+		CALL MILESTONE_UNLOCK_CHECK("自己战斗","LC")
+		IF RESULT
+			LOCAL = LIMIT(EXP:执行次数／战斗训练 +1,1,30)
+			PRINTFORMLC [  6] 战斗训练 <适性{BASE:战斗适性,3}\% 效率{LOCAL,2}\%> 
+		ENDIF
+		CALL MILESTONE_UNLOCK_CHECK("禁忌魔法","LC")
+		IF RESULT
+			;図書館が開いてるのは昼から
+			IF !TIME
+				CALL PRINTLC_WORD_COLOR("　图书馆：开馆前","灰")
+			ELSE
+				PRINTLC [  7] 图书馆
+			ENDIF
+		ENDIF
+	ENDIF
+
+;業務不可の場合の説明
+ELSE
+	IF CSTR:住处 == "体内"
+		CALL PRINTL_WORD_COLOR,@"【体内凌辱】因为中不能工作调教","灰"
+	ELSEIF CFLAG:家畜
+		CALL PRINTL_WORD_COLOR,@"【家畜】不能工作","浅红色"
+	ELSEIF !TALENT:业主 && !CFLAG:洗脑 && !＃陷落状态／屈服以上＃ && !CFLAG:乳牛
+		CALL PRINTL_WORD_COLOR,@"　不合作，无法工作","灰"
+	ELSEIF CFLAG:崩坏
+		CALL PRINTL_WORD_COLOR,@"因【崩溃】无法工作","灰"
+	ELSEIF CFLAG:虚脱
+		CALL PRINTL_WORD_COLOR,@"因【虚脱】无法工作","灰"
+	ELSEIF !BASE:体力
+		CALL PRINTL_WORD_COLOR,@"　体力为0无法工作","灰"
+	
+	;部屋なしの場合も表示するように
+	ELSEIF !EQUIP:自室
+		PRINTL 将工作委托出去需要【分配自己的房间】。
+	ELSE
+		CALL PRINTL_WORD_COLOR,@"　无法工作　为什么呢（可能是bug）","灰"
+	ENDIF
+ENDIF
+CALL MANYL(2)
+
+
+
+;調教スケジュール選択肢表示
+@PRINT_SCHEDULE_PLAN_TRAIN
+
+SIF !CFLAG:可以调教
+	RETURN
+IF CSTR:日程 == "调教对象"
+	CALL PRINTLC_WORD_COLOR,@"调教预定","黄"
+ELSEIF CSTR:0:日程 != "行动完毕"
+	PRINTLC [101] 调教这个奴隶
+ELSE
+	CALL PRINTL_WORD_COLOR,@"%CALLNAME:0%已行动","灰"
+ENDIF
+IF MARK:母乳体质
+	PRINTLC [102] 搾乳
+	
+	IF !ITEM:灵力抽出装置
+		CALL PRINTL_WORD_COLOR("　抽出","灰")
+	ELSEIF !BASE:灵力 && !BASE:魔力
+		CALL PRINTL_WORD_COLOR,@"　灵力・魔力0","灰"
+	ELSE
+		PRINTL [103] 灵力抽出
+	ENDIF
+ELSE
+	CALL PRINTL_WORD_COLOR,@"非【母乳体质】","灰"
+ENDIF
+SIF ITEM:体内凌辱
+	PRINTLC [104] 体内凌辱
+IF MARK:母乳体质 && FLAG:触手出产合计 >= 10
+	PRINTLC [107] 触手刺激搾乳
+ELSEIF MARK:母乳体质
+	CALL PRINTL_WORD_COLOR,@"出产触手数不足","灰"
+ELSE
+	CALL PRINTL_WORD_COLOR,@"非【母乳体质】","灰"
+ENDIF
+SIF !LINEISEMPTY()
+	PRINTL
+
+
+
+;管理表示
+@PRINT_SCHEDULE_PLAN_MANAGEMENT
+
+PRINTL 　《 管理 》
+IF CFLAG:可以调教
+	IF CSTR:0:日程 == "行动完毕"
+		CALL PRINTLC_WORD_COLOR,@"　%CALLNAME:0%已行动","灰"
+	
+	;使い切っても会いに行けるように変更
+		;ELSEIF FLAG:現時刻訪問回数 >= 3
+		;	CALL PRINTLC_WORD_COLOR,@"　訪問回数を使い切りました","灰"
+	ELSE
+		PRINTLC [200] 去见奴隶
+	ENDIF
+	IF MARK:母乳体质
+		IF ITEM:牛舍
+			IF !CFLAG:牛舍号码
+				PRINTLC [201] 送入牛舍
+			ELSE
+				PRINTLC [202] 送出牛舍
+			ENDIF
+		ELSE
+			CALL PRINTLC_WORD_COLOR,@"＜牛舍＞建成后可用","灰"
+		ENDIF
+	ELSE
+		CALL PRINTLC_WORD_COLOR,@"非【母乳体质】","灰"
+	ENDIF
+ELSEIF !TARGET
+	;アイテム使用欄を作る
+	IF CSTR:0:日程 == "行动完毕"
+		CALL PRINTLC_WORD_COLOR,@"　%CALLNAME:0%已行动","灰"
+	ELSE
+		PRINTLC [208] 物品使用
+		PRINTFORMLC [209] 饮用保管中的%SAVESTR:标识／母乳%
+	ENDIF
+	
+ELSEIF CSTR:住处 == "体内"
+	CALL PRINTLC_WORD_COLOR,@"【体内凌辱】中","灰"
+ELSEIF CFLAG:追踪对象
+	CALL PRINTLC_WORD_COLOR,@"　未捕获","灰"
+ELSE
+	CALL PRINTLC_WORD_COLOR,@"　不可选　为什么呢（可能是bug）","灰"
+ENDIF
+PRINTL
+
+

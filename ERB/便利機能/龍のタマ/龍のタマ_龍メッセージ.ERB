@@ -1,0 +1,129 @@
+﻿
+;呼び出し時メッセージ
+@SUMMON_DRAGON_MESSAGE
+
+PRINTL
+SELECTCASE FLAG:龙召唤状态
+CASE 0
+	;0→初対面
+	PRINTL 「嗯～～～～…多少千年没有被召唤了呢…　是你召唤了我吗，竟然成功收集到了龙珠。」
+	PRINTL 「我会在那些收集了龙珠的人面前出现，并成为实现愿望的存在…可以说是这个世界的愿望器。」
+	PRINTL 「好了，试着说出一个愿望吧。只要是我能实现的愿望，我就会满足你。」
+
+CASE 1
+	;1→前も呼んだ
+	;CT中か違うかで変化
+	IF FLAG:龙之珠发现率修正 < 0
+		PRINTL 「…嗯，这速度是不是有点快啊…？一旦被发现就应该相当散开才对，但你们似乎已经努力了很久了…」
+		PRINTL 「看来你们还有很多想实现的愿望啊？好吧，试着说出来吧。」
+	ELSE
+		PRINTL 「哦，又是你啊。看来你身边的事物命运还有待发现。」
+		PRINTL 「没有特定的规定，每个人每次都可以。每次收集到龙珠我都会实现一个愿望。」
+		PRINTL 「来吧，试着说出这次的愿望吧」
+	ENDIF
+
+CASE 2
+	;2→1回呼んでキャンセルした
+	PRINTL 「哦，是你啊。愿望已经确定了吗？」
+ENDSELECT
+PRINTW
+
+
+
+;「願い事の数を増やして」はダメ？
+@DRAGON_WISH_ADD_MESSAGE
+
+PRINTL 「嗯，遗憾的是那是不可能的」
+PRINTL 「有一个叫做『愿望器协定』的东西，规定不允许增加愿望的数量」
+PRINTL 「如果有多个愿望想要实现，那就重新集齐龙珠，然后再次召唤我吧。没有一人一次的规定」
+PRINTW
+
+
+
+;ところでこのタマってキンタマ？
+@DRAGON_KINTAMA_MESSAGE
+
+PRINTL 「不对！？」
+PRINTL 「这叫做龙玉…永远不会破碎，蕴藏着强大力量的宝物」
+PRINTL 「不管是龙还是龙珠，都没有那么强大的力量，别误会了…」
+PRINTW
+
+
+
+;もう少し考える
+@DRAGON_CANCEL_MESSAGE
+
+PRINTL 「嗯，是吗？啊，没关系，那就行，我不会吝啬愿望的使用」
+PRINTL 「如果你还在犹豫的话，我就再次变回龙珠了，你怎么做？」
+PRINTL
+PRINTLC [ 0] 那么我们就待到以后吧
+PRINTLC [ 1] 好像快要决定了
+INPUT
+SIF RESULT
+	RETURN 1
+PRINTL
+PRINTL 「是吗，那么等到决定愿望的时候再召唤我吧」
+PRINTL
+PRINTL …就在这样的一番话后，龙消失了，变回了7颗龙珠…
+PRINTW
+
+
+
+;おわり
+@WISH_AFTER_MESSAGE
+
+PRINTL 「愿望已经实现了。那么，再见了…」
+IF !FLAG:龙召唤次数
+	PRINTL 「如果你想的话，可以再次集齐龙珠。我会再次出现的」
+ELSE
+	PRINTL 「也许还会再次与你相会」
+ENDIF
+PRINTL …这样一说，龙消失了，7颗龙珠四散而去。
+PRINTL
+PRINTL …看起来，如果大致找到了麦凯道，它们就会再次聚集在一起。
+PRINTW
+
+
+
+
+;フレーバーミルク化
+@SELECT_WISH_MILK_FLAVOR_MESSAGE
+
+IF RESULTS == ""
+	PRINTL 「想要回到原来的状态吧，嗯，这样也是可以理解的，因为情况有点复杂嘛…」
+ELSE
+	PRINTL 「那是什么愿望！？你怎么会想到那样的事情！？」
+	PRINTL 「嗯～～～，嗯，虽然可以做到，但你真的要这么做吗？」
+ENDIF
+
+
+
+;マノさんの着けてる下着ください
+@DRAGON_LINGERIE_MESSAGE
+
+PRINTL 「这种事情还需要我来做吗！？」
+PRINTL 「唔…嗯…嗯，虽然不太适合让本人来做，但是，也可以啦…？」
+PRINTL 「还有更有意义的愿望可以实现哦…？你确定那个愿望没问题吗？」
+
+
+
+;お金が欲しい
+@DRAGON_MONEY_MESSAGE
+
+PRINTL 「金钱，虽然不能直接给予，但是…嗯，如果是你的努力工作导致了销售增加，那么就等同于资金了」
+PRINTL 「如果是在这个世界中暂时提高你商品的需求，那是可以实现的」
+
+
+
+;うちの近くに温泉湧かない？
+@DRAGON_SPA_MESSAGE
+
+PRINTL 「原来如此，看来附近没有温泉涌出的地方啊」
+PRINTL 「这是个不错的愿望…实际上，如果不是我的力量，是无法实现的」
+PRINTL 「那么，就这个愿望没问题吗？」
+PRINTL
+PRINTL …心情有些高兴的龙看起来也很开心…
+
+
+
+

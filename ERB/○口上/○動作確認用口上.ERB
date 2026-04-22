@@ -1,0 +1,425 @@
+﻿
+;动作确认用口上（调试专用）
+;真的是调试专用，几乎没有色情内容。
+;只有这套口上会走「把候选全部显示出来」的处理。
+;不必把所有分支都填满；标几个容易空窗的关键点即可。
+;没有也不会坏的分支也很多，看个人兴趣。
+
+; ======================================
+
+;动作确认用口上
+;口上识别名：操作确认口上（见 Str.csv）
+;写好口上后请在 Str.csv 6100 段附近登记识别名
+;口上作者：polt
+;本口上内容遵循 CC BY-NC（非商用可自由改造）
+;（creativecommons.org/licenses/by-nc/4.0/deed.ja）
+
+;加笔者：
+;（暂无）
+; ======================================
+
+;ARGS:0 场景；ARGS:1/2 用于更细分
+@KOJO_GENERAL_INDEX_操作确认口上(ARGS:0,ARGS:1,ARGS:2,ARGS:3)
+
+;最外层分支（调教中也会从这里进）
+;在此之前先处理：口被堵住 / 崩坏
+
+;口被堵住时本应调用口塞泛用口上；目前都走 SHACKLE_1，需要可再写 2 号以后。
+;崩坏中且戴口枷的处理写在「口枷分支」一侧。
+IF TFLAG:Ｍ装备
+	
+	;例文不要被口塞口上替换
+	;事件→口枷中事件、肉体改造→口枷中肉体改造同理
+	IF GROUPMATCH(ARGS:0,"例文","事件","Ｍ装备中事件","肉体改造","Ｍ装备中肉体改造")
+		;这里故意留空：只为跳过下面的 CALL/RETURN
+	
+	;等级吸取类命令的例外
+	;若某分支没有「口枷中～」子分支，却又不写 TFLAG:Ｍ装备判断，可能会意外开口，请注意
+	ELSEIF GROUPMATCH(ARGS:1,"等级下降")
+	
+	;口交、深喉（含触手）的例外
+	ELSEIF GROUPMATCH(ARGS:1,"口交","触手口交","深喉","触手深喉")
+	
+	;射在嘴里的例外
+	ELSEIF GROUPMATCH(ARGS:0,"射精") && SOURCE:精饮经验
+	
+	;未命中上述例外
+	ELSE
+		CALL MESSAGE_BOX,@"「test_口被堵住时会显示本句。」"
+		
+		;调试时太啰嗦可保持注释
+		;CALL MESSAGE_BOX,@"「test_实际使用请取消下面几行注释，并改为调用口塞泛用口上文件。」"
+		;CALL MESSAGE_BOX,@"「test_口枷状态下口交等命令应走例外，不要进入这里。」"
+		;CALL KOJO_GENERAL_MOUTH_SHACKLE_1(ARGS:0,ARGS:1,ARGS:2,ARGS:3)
+		RETURN
+	ENDIF
+ELSEIF CFLAG:崩坏 && !CFLAG:洗脑
+	;日后可在此接崩坏专用泛用口上
+	
+	;例文不要被崩坏口上替换
+	IF GROUPMATCH(ARGS:0,"例文")
+	
+	;刚崩坏后的台词、洗脑触手使用时也走这里
+	ELSEIF GROUPMATCH(ARGS:1,"洗脑触手","崩坏")
+	
+	;未命中上述例外
+	ELSE
+		CALL MESSAGE_BOX,@"「test_【崩坏】且未【洗脑】时会显示本句。」"
+		CALL MESSAGE_BOX,@"「test_【崩坏】状态下使用＜洗脑触手＞命令时也会显示本句。」"
+		CALL MESSAGE_BOX,@"「test_异常分支写法请看本文件顶部的 IF 条件说明。」"
+		CALL MESSAGE_BOX,@"「test_在分支末尾加 RETURN，可避免该条件下其它口上也被塞进候选池。」"
+		RETURN
+	ENDIF
+ENDIF
+
+SELECTCASE ARGS:0
+CASE "例文"
+	;口上设置界面展示用
+	;建议固定一条、不要随机
+	CALL MESSAGE_BOX,@"「test_这是『动作确认用口上』。\n用于『想写口上 / 想确认触发 / 想核对分支条件』。」"
+	CALL MESSAGE_BOX,@"「test_因此几乎没有色情要素，甚至不像正常口上。」"
+	CALL MESSAGE_BOX,@"「test_本套口上默认配合：打开 ERB 对照分支来调试。」"
+	CALL MESSAGE_BOX,@"「test_下面说明转义序列。」"
+	{
+	CALL MESSAGE_BOX,@"「test_加上 ♥ 就会显示成 ♥♥♥ 这样的心形标记\n输入 \n 可以换行
+	\d用这对标记包住内容时，♥文字颜色会回到默认→\d适合地文等场景」\n
+	「test_\n 不是什么神秘咒语，\n
+	只是方便你『基于本文件复制后，用全文搜索还能找到这些说明行』。」\n
+	「注意：只有使用『动作确认用口上』时才会『把所有候选都显示出来』。」\n
+	「正常游戏通常是『随机挑一句』；所以请用 \n 把长句拆行。」\n
+	「另外，用 { … } 包住可以让『源码里换行仍算一条命令』。」\n
+	「例文等超长台词建议适当换行，便于阅读。」"
+	}
+	
+CASE "调教命令"
+	;按指令名细分太长，因此拆到独立函数
+	CALL KOJO_GENERAL_操作确认口上_TRAIN(ARGS:0,ARGS:1,ARGS:2,ARGS:3)
+
+CASE "日程"
+	;日程触发时随机抽一名角色的台词；变多后拆到独立函数
+	CALL KOJO_GENERAL_操作确认口上_SCHEDULE(ARGS:0,ARGS:1,ARGS:2,ARGS:3)
+
+CASE "进入魔界的","事件","Ｍ装备中事件"
+	;基本每名角色只触发一次的部分集中在这里
+	CALL KOJO_GENERAL_操作确认口上_EVENT(ARGS:0,ARGS:1,ARGS:2,ARGS:3)
+	
+CASE "绝顶"
+	CALL MESSAGE_BOX,@"「test_未射精、也未喷奶时高潮的台词。」"
+	SIF NOWEX:Ｂ绝顶
+		CALL MESSAGE_BOX,@"「test_本次责罚中达到 B 高潮时也会进入候选。」"
+	SIF NOWEX:总绝顶 >= 20
+		CALL MESSAGE_BOX,@"「test_本次责罚中累计高潮 20 次以上时的候选。」"
+	SIF EX:总绝顶 >= 100
+		CALL MESSAGE_BOX,@"「test_整场调教累计高潮 100 次以上时的候选。」"
+	SIF NOWEX:Ｕ绝顶
+		CALL MESSAGE_BOX,@"「test_尿道责罚语境下与阴蒂绝顶同步记录的尿道高潮（NOWEX:Ｕ绝顶）台词。」"
+	
+CASE "射精"
+	;膣内射精优先；其余按兴趣补
+	IF SOURCE:膣内射精经验
+		CALL MESSAGE_BOX,@"「test_被射在阴道内时的台词。」"
+		SIF ABL:膣内射精中毒 >= 10
+			CALL MESSAGE_BOX,@"「test_【膣内射精中毒】Lv10 以上时进入候选。」"
+		SIF NOWEX:Ｖ绝顶
+			CALL MESSAGE_BOX,@"「test_同时发生 V 高潮时进入候选。」"
+	
+	ELSEIF SOURCE:尻穴射精经验
+		CALL MESSAGE_BOX,@"「test_被射在肛门内时的台词。」"
+		SIF ABL:尻穴射精中毒 >= 10
+			CALL MESSAGE_BOX,@"「test_【肛门内射精中毒】Lv10 以上时进入候选。」"
+		SIF NOWEX:Ａ绝顶
+			CALL MESSAGE_BOX,@"「test_同时发生 A 高潮时进入候选。」"
+	
+	ELSEIF SOURCE:乳内射精经验
+		CALL MESSAGE_BOX,@"「test_乳交后射在乳沟／胸内时的台词。」"
+		SIF ABL:乳内射精中毒 >= 10
+			CALL MESSAGE_BOX,@"「test_【乳内射精中毒】Lv10 以上时进入候选。」"
+		SIF NOWEX:Ｂ绝顶
+			CALL MESSAGE_BOX,@"「test_同时发生 B 高潮时进入候选。」"
+	
+	ELSEIF SOURCE:精饮经验
+		CALL MESSAGE_BOX,@"「test_口交／深喉（含触手）射在嘴里时的台词。」"
+		CALL MESSAGE_BOX,@"「test_口枷例外分支下，即使嘴被堵住仍可能显示本句。」"
+		SIF ABL:精饮中毒 >= 10
+			CALL MESSAGE_BOX,@"「test_【精饮中毒】Lv10 以上时进入候选。」"
+	
+	ELSEIF SOURCE:股间射精
+		CALL MESSAGE_BOX,@"「test_V／A 性交拔出后射在大腿／胯间时的台词。」"
+	
+	ELSEIF SOURCE:乳房射精
+		CALL MESSAGE_BOX,@"「test_乳交拔出后射在胸口时的台词。」"
+		SIF ABL:精液中毒 >= 10
+			CALL MESSAGE_BOX,@"「test_【精液中毒】Lv10 以上时进入候选。」"
+	
+	ELSEIF SOURCE:颜面射精
+		CALL MESSAGE_BOX,@"「test_乳交／口交／深喉拔出后射在脸上时的台词。」"
+		SIF ABL:精液中毒 >= 10
+			CALL MESSAGE_BOX,@"「test_【精液中毒】Lv10 以上时进入候选。」"
+	
+	ELSEIF TEQUIP:手淫
+		CALL MESSAGE_BOX,@"「test_手交／授乳手交射出时的台词。」"
+		SIF ABL:母性 >= 10
+			CALL MESSAGE_BOX,@"「test_【母性】Lv10 以上时进入候选。」"
+	ENDIF
+
+;被榨乳／喷奶
+CASE "搾乳"
+	;很重要：这里太冷清会显得很空
+	;自发喷奶只走这一段
+	IF SOURCE:母乳漏出
+		CALL MESSAGE_BOX,@"「test_没有榨乳器、榨乳触手、吸奶等，却自行喷奶时的台词。」"
+		CALL MESSAGE_BOX,@"「test_下面有 RETURN，因此不会进入更后面的候选。」"
+		RETURN
+	ENDIF
+	IF CFLAG:乳牛
+		CALL MESSAGE_BOX,@"「test_被榨乳且为【乳牛】时的候选。」"
+		SIF NOWEX:Ｎ绝顶
+			CALL MESSAGE_BOX,@"「test_被榨乳且为【乳牛】，并在本次榨责中 N 高潮时的候选。」"
+	ELSEIF ＃陷落状态／隶属＃ || CFLAG:洗脑
+		CALL MESSAGE_BOX,@"「test_被榨乳且为【隶属】或【洗脑】时的候选。」"
+	ELSEIF ＃陷落状态／恋慕以上＃
+		CALL MESSAGE_BOX,@"「test_被榨乳且为【恋慕】时的候选。」"
+	ELSEIF ＃陷落状态／屈服以上＃
+		CALL MESSAGE_BOX,@"「test_被榨乳且为【陷落】或【屈服】时的候选。」"
+	ELSE
+		CALL MESSAGE_BOX,@"「test_被榨乳且既非【陷落】也非【屈服】→【反抗】或【拒绝】时的候选。」"
+	ENDIF
+	SIF TFLAG:搾乳器
+		CALL MESSAGE_BOX,@"「test_使用榨乳器榨乳时，任意心境都会进入候选。」"
+	SIF TFLAG:搾乳触手
+		CALL MESSAGE_BOX,@"「test_使用榨乳触手榨乳时，任意心境都会进入候选。」"
+	SIF TEQUIP:包乳花瓣搾乳触手
+		CALL MESSAGE_BOX,@"「test_使用＜包乳花瓣榨乳触手＞榨乳时，任意心境都会进入候选。」"
+	SIF TEQUIP:透明杯状搾乳触手 && !TFLAG:眼罩
+		CALL MESSAGE_BOX,@"「test_未戴眼罩时使用＜透明杯状榨乳触手＞榨乳时，任意心境都会进入候选。」"
+	SIF TEQUIP:榨乳蠕虫触手
+		CALL MESSAGE_BOX,@"「test_使用＜榨乳蠕虫触手＞榨乳时，任意心境都会进入候选。」"
+	SIF GETBIT(＃Ｐ使用／Ｖ插入＃) && NOWEX:Ｖ绝顶 && NOWEX:Ｎ绝顶
+		CALL MESSAGE_BOX,@"「test_V 插入同时被榨乳，且 V 与 N 同时高潮时，任意心境都会进入候选。」"
+	SIF SOURCE:魔力吸收量
+		CALL MESSAGE_BOX,@"「test_【魔力母乳体质】榨乳并被抽走魔力时，任意心境都会进入候选。」"
+	SIF SOURCE:玩家增加魔力量
+		CALL MESSAGE_BOX,@"「test_【魔力母乳体质】榨乳且魔力被 %CALLNAME:0% 吸走时，任意心境都会进入候选。」"
+	SIF MARK:绝顶魔力回复淫纹
+		CALL MESSAGE_BOX,@"「test_【绝顶魔力回复淫纹】榨乳时，任意心境都会进入候选。」"
+	SIF ABL:搾乳中毒 >= 10
+		CALL MESSAGE_BOX,@"「test_【榨乳中毒】≥10 时，任意心境都会进入候选。」"
+	IF TFLAG:吸奶
+		CALL MESSAGE_BOX,@"「test_被直接吸吮母乳时，任意心境都会进入候选。」"
+		SIF NOWEX:Ｎ绝顶
+			CALL MESSAGE_BOX,@"「test_被直接吸吮母乳并 N 高潮时，任意心境都会进入候选。」"
+		IF !PLAYER
+			CALL MESSAGE_BOX,@"「test_被 %CALLNAME:0% 直接吸吮母乳时，任意心境都会进入候选。」"
+			CALL MESSAGE_BOX,@"「test_称呼 %CALLNAME:0% 可用 %MASTER_CALL()%（占位符示例）。」"
+		ENDIF
+	ENDIF
+
+;灵力抽出（与榨乳同谱系）
+CASE "抽出"
+	CALL MESSAGE_BOX,@"「test_榨乳同时被抽出灵力时的台词。」"
+	SIF NOWEX:Ｎ绝顶
+		CALL MESSAGE_BOX,@"「test_被抽灵力并 N 高潮时的台词。」"
+	SIF SOURCE:玩家增加灵力量
+		CALL MESSAGE_BOX,@"「test_被 %CALLNAME:0% 吸吮并夺走灵力时的台词。」"
+	SIF TALENT:乳房刺激厌恶感
+		CALL MESSAGE_BOX,@"「test_素质【乳房刺激厌恶】下被抽灵力时的台词。」"
+	SIF MARK:消除乳房刺激厌恶感
+		CALL MESSAGE_BOX,@"「test_刻印【乳房刺激厌恶解除】下被抽灵力时的台词。」"
+
+;字面意义的「吸欧派」；分支变多后从日常事件挪到这里
+CASE "吸欧派"
+	SELECTCASE ARGS:1
+	CASE "开始"
+		IF BASE:母乳容量
+			CALL MESSAGE_BOX,@"「test_去探望奴隶并请求吸奶，且仍有奶量时的「开始前」台词。」"
+		ELSE
+			CALL MESSAGE_BOX,@"「test_去探望奴隶并请求吸奶，但奶已空时的「开始前」台词。」"
+		ENDIF
+	CASE "结束"
+		IF EX:喷乳 >= 1000
+			CALL MESSAGE_BOX,@"「test_探望吸奶且喝下 ≥1000cc 时的「结束后」台词。」"
+		ELSEIF !EX:喷乳
+			CALL MESSAGE_BOX,@"「test_探望吸奶但几乎没挤出奶时的「结束后」台词。」"
+		ELSE
+			CALL MESSAGE_BOX,@"「test_探望吸奶且喝下 <1000cc 时的「结束后」台词。」"
+		ENDIF
+	ENDSELECT
+
+CASE "阴茎称呼变更"
+	CALL MESSAGE_BOX,@"「test_插入过程中调教阴茎称呼时的台词。」"
+	CALL MESSAGE_BOX,@"「test_%CSTR:性器称呼／阴茎% ← 不受高潮次数影响，可读出当前调教后的称呼。」"
+	
+CASE "膣称呼变更"
+	CALL MESSAGE_BOX,@"「test_V 插入过程中调教阴道称呼时的台词。」"
+	CALL MESSAGE_BOX,@"「test_%CSTR:性器称呼／膣% ← 不受高潮次数影响，可读出当前调教后的称呼。」"
+	
+CASE "肛门称呼变更"
+	CALL MESSAGE_BOX,@"「test_A 插入过程中调教肛门称呼时的台词。」"
+	CALL MESSAGE_BOX,@"「test_%CSTR:性器称呼／肛门% ← 不受高潮次数影响，可读出当前调教后的称呼。」"
+
+;更像日常互动，因此单独分出来
+CASE "访问"
+	SELECTCASE ARGS:1
+	CASE "入口"
+		IF CFLAG:时刻限制／Ｈ
+			CALL MESSAGE_BOX,@"「test_【探望奴隶】入口：刚吸过奶或做过爱之后的台词。」"
+		ELSEIF CFLAG:时刻限制／摸头
+			CALL MESSAGE_BOX,@"「test_【探望奴隶】入口：还没吸奶／做爱，但摸过头之后的台词。」"
+		ELSE
+			CALL MESSAGE_BOX,@"「test_【探望奴隶】入口：既没吸奶也没做爱时的台词。」"
+		ENDIF
+		
+	CASE "更改头衔"
+		SELECTCASE ARGS:2
+		CASE "普通"
+			CALL MESSAGE_BOX,@"「test_探望时单方面更改身份头衔时的台词。」"
+		CASE "屈辱的"
+			CALL MESSAGE_BOX,@"「test_探望时单方面更改身份，且头衔含羞辱词时的台词。」"
+		ENDSELECT
+	
+	;只能来自「探望」流程
+	CASE "对主角的称呼变更"
+		CALL MESSAGE_BOX,@"「test_探望时更改 %CALLNAME:0% 对主角称呼的台词。」"
+		CALL MESSAGE_BOX,@"「test_%MASTER_CALL()% ← 可用来复核更改后的称呼。」"
+		CALL MESSAGE_BOX,@"「test_通常仅在非【反抗】时才会进入本分支。」"
+	
+	CASE "摸头"
+		CALL MESSAGE_BOX,@"「test_探望时摸头后的台词。」"
+	CASE "接吻"
+		CALL MESSAGE_BOX,@"「test_探望时接吻后的台词。」"
+	CASE "更改发型"
+		CALL MESSAGE_BOX,@"「test_探望时更改发型后的台词。」"
+	CASE "彩色隐形眼镜"
+		CALL MESSAGE_BOX,@"「test_探望时使用＜彩色隐形眼镜＞改变瞳色等时的台词。」"
+	CASE "自室分配"
+		CALL MESSAGE_BOX,@"「test_给奴隶分配单间时的台词。」"
+	CASE "宿舍分配"
+		CALL MESSAGE_BOX,@"「test_把奴隶安排进宿舍时的台词。」"
+	ENDSELECT
+
+;会重复触发的事件（已改名）
+CASE "重复事件"
+	SELECTCASE ARGS:1
+	CASE "拘束抵抗"
+		SELECTCASE ARGS:2
+		CASE "抵抗"
+			CALL MESSAGE_BOX,@"「test_戴着＜魔力枷＞迎来清晨，选择抵抗并消耗魔力时的台词。」"
+		CASE "休息"
+			CALL MESSAGE_BOX,@"「test_戴着＜魔力枷＞迎来清晨，因体力不足未抵抗时的台词。」"
+		ENDSELECT
+	
+	CASE "等级下降"
+		IF TFLAG:Ｍ装备
+			CALL MESSAGE_BOX,@"（test_嘴被堵住时遭受能量吸取／等级下降的台词。）"
+			CALL MESSAGE_BOX,@"（test_若在开头口枷分支写了例外，请别漏写这里的对应说明。）"
+			CALL MESSAGE_BOX,@"（test_口枷分支即使留空，也可当作『堵住嘴就不说话』使用。）"
+			SELECTCASE ARGS:2
+			CASE "初次"
+				CALL MESSAGE_BOX,@"（test_嘴被堵住时，灵力抽出／能量吸取导致 %CALLNAME% 等级首次下降的台词。）"
+			CASE "灵力0"
+				CALL MESSAGE_BOX,@"（test_嘴被堵住时，灵力抽出／能量吸取把 %CALLNAME% 灵力吸干的台词。）"
+			CASE "普通"
+				CALL MESSAGE_BOX,@"（test_嘴被堵住时，灵力抽出／能量吸取导致 %CALLNAME% 等级下降的台词。）"
+			ENDSELECT
+		ELSE
+			SELECTCASE ARGS:2
+			CASE "初次"
+				CALL MESSAGE_BOX,@"「test_灵力抽出／能量吸取导致 %CALLNAME% 等级首次下降的台词。」"
+			CASE "灵力0"
+				CALL MESSAGE_BOX,@"「test_灵力抽出／能量吸取把 %CALLNAME% 灵力吸干的台词。」"
+			CASE "普通"
+				CALL MESSAGE_BOX,@"「test_灵力抽出／能量吸取导致 %CALLNAME% 等级下降的台词。」"
+			ENDSELECT
+		ENDIF
+	ENDSELECT
+
+; 膨乳、敏感度提升等；母乳体质化犹豫后归入「事件」（只发生一次）
+; 除膨乳外大多不太关键
+CASE "肉体改造"
+	; 若有口枷专用分支会更清晰；此处因开头口枷例外仍可正常 CALL
+	IF TFLAG:Ｍ装备
+		CALL KOJO_PRINT("Ｍ装备中肉体改造",ARGS:1,ARGS:2,ARGS:3)
+		RETURN
+	ENDIF
+	SELECTCASE ARGS:1
+	CASE "膨乳"
+		IF !EXP:膨乳
+			CALL MESSAGE_BOX,@"「test_%CALLNAME% 首次接受膨乳时的台词。」"
+		ELSE
+			CALL MESSAGE_BOX,@"「test_%CALLNAME% 再次接受膨乳（第 2 次及以后）时的台词。」"
+		ENDIF
+	CASE "母乳浓厚化"
+		CALL MESSAGE_BOX,@"「test_药品等使【母乳浓厚化 EXP】增加时的台词。」"
+	CASE "Ａ敏感度上升"
+		CALL MESSAGE_BOX,@"「test_药品等使【A 感度】增加时的台词。」"
+	CASE "Ｂ敏感度上升"
+		CALL MESSAGE_BOX,@"「test_药品等使【B 感度】增加时的台词。」"
+		CALL MESSAGE_BOX,@"「test_使用＜淫乳改造精华液＞提升 B 感度时也会显示本句。」"
+	CASE "Ｃ敏感度上升"
+		CALL MESSAGE_BOX,@"「test_药品等使【C 感度】增加时的台词。」"
+	CASE "Ｖ敏感度上升"
+		CALL MESSAGE_BOX,@"「test_药品等使【V 感度】增加时的台词。」"
+	CASE "Ｎ敏感度上升"
+		CALL MESSAGE_BOX,@"「test_药品等使【N 感度】增加时的台词。」"
+		CALL MESSAGE_BOX,@"「test_若因 B 感度提升连带导致 N 感度同时提升，则不会进入本候选。」"
+	ENDSELECT
+
+CASE "Ｍ装备中肉体改造"
+	SELECTCASE ARGS:1
+	CASE "膨乳"
+		IF !EXP:膨乳
+			CALL MESSAGE_BOX,@"（test_嘴被堵住时，%CALLNAME% 首次接受膨乳的台词。）"
+		ELSE
+			CALL MESSAGE_BOX,@"（test_嘴被堵住时，%CALLNAME% 再次接受膨乳的台词。）"
+		ENDIF
+	CASE "母乳浓厚化"
+		CALL MESSAGE_BOX,@"（test_嘴被堵住时，药品等使【母乳浓厚化 EXP】增加的台词。）"
+	CASE "Ａ敏感度上升"
+		CALL MESSAGE_BOX,@"（test_嘴被堵住时，药品等使【A 感度】增加的台词。）"
+	CASE "Ｂ敏感度上升"
+		CALL MESSAGE_BOX,@"（test_嘴被堵住时，药品等使【B 感度】增加的台词。）"
+		CALL MESSAGE_BOX,@"（test_使用＜淫乳改造精华液＞提升 B 感度时也会显示本句。）"
+	CASE "Ｃ敏感度上升"
+		CALL MESSAGE_BOX,@"（test_嘴被堵住时，药品等使【C 感度】增加的台词。）"
+	CASE "Ｖ敏感度上升"
+		CALL MESSAGE_BOX,@"（test_嘴被堵住时，药品等使【V 感度】增加的台词。）"
+	CASE "Ｎ敏感度上升"
+		CALL MESSAGE_BOX,@"（test_嘴被堵住时，药品等使【N 感度】增加的台词。）"
+		CALL MESSAGE_BOX,@"（test_若因 B 感度提升连带导致 N 感度同时提升，则不会进入本候选。）"
+	ENDSELECT
+	
+; 与佣兵打工剧情开战时；触发不多故重要度低，喊招类也好填
+CASE "战斗"
+	SELECTCASE ARGS:1
+	CASE "战斗开始"
+		CALL MESSAGE_BOX,@"「test_佣兵打工中与 %CALLNAME% 开战前的台词。」"
+	CASE "委托他人"
+		CALL MESSAGE_BOX,@"「test_佣兵打工中与 %CALLNAME% 开战前，因【非战斗职】躲到同伴身后的台词。」"
+	CASE "非战斗职业攻击"
+		CALL MESSAGE_BOX,@"「test_战斗中发动攻击，但因【非战斗职】而实际无效的台词。」"
+	CASE "支援"
+		CALL MESSAGE_BOX,@"「test_战斗中因【非战斗职】未攻击、仅在后方支援同伴时的台词。」"
+	CASE "同伴全灭"
+		CALL MESSAGE_BOX,@"「test_战斗中同伴全灭时的台词。」"
+	CASE "投降"
+		CALL MESSAGE_BOX,@"「test_战斗中或开战前，因【非战斗职】立刻投降时的台词。」"
+	CASE "攻击"
+		CALL MESSAGE_BOX,@"「test_战斗中普攻时的台词。」"
+	CASE "大招"
+		CALL MESSAGE_BOX,@"「test_战斗中释放大招时的台词。」"
+	CASE "被击中"
+		CALL MESSAGE_BOX,@"「test_战斗中受伤时的台词。」"
+		CALL MESSAGE_BOX,@"「test_连续攻击段内只显示一次。」"
+	CASE "胜利"
+		CALL MESSAGE_BOX,@"「test_战斗中 %CALLNAME% 获胜时的台词。」"
+	CASE "败北"
+		CALL MESSAGE_BOX,@"「test_战斗中 %CALLNAME% 败北时的台词。」"
+	CASE "殿后"
+		CALL MESSAGE_BOX,@"「test_战斗中同伴殿后、掩护 %CALLNAME% 撤离时的台词。」"
+	CASE "同伴回复"
+		CALL MESSAGE_BOX,@"「test_战斗中或战后 %CALLNAME% 为同伴回复时的台词。」"
+	CASE "自我回复"
+		CALL MESSAGE_BOX,@"「test_战斗中或战后 %CALLNAME% 自我回复时的台词。」"
+	ENDSELECT
+ENDSELECT
+

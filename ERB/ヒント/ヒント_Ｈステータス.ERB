@@ -1,0 +1,324 @@
+﻿
+;Ｈステータス目次
+@HINT_SENSITIVE_STATUS
+#DIM DYNAMIC PAGE
+
+PAGE_MAX = 2
+SIF PAGE < 1
+	PAGE = 1
+CLEARLINE LINECOUNT
+PRINTL 请选择要查看其说明的项目。
+DRAWLINE
+BR = 0
+STR_REF = 9160
+SELECTCASE PAGE
+CASE 1
+	CALL HINT_BUTTON_LIST(0,15)
+CASE 2
+	CALL HINT_BUTTON_LIST(15)
+ENDSELECT
+DRAWLINE
+CALL HINT_DETAIL_SENSITIVE_STATUS
+CALL PRINTL_ALIGN(5)
+DRAWLINE
+PRINTLC [90] 页面切换
+PRINTFORMLC PAGE：{PAGE}／{PAGE_MAX}
+PRINTL [99] 返回
+INPUT
+PRINTL
+SELECTCASE RESULT
+CASE 0 TO 29
+	SELECT_TIPS = RESULT
+CASE 90
+	PAGE ++
+	SIF PAGE > PAGE_MAX
+		PAGE = 1
+	SELECT_TIPS = -1
+CASE 99
+	RETURN
+ENDSELECT
+RESTART
+
+
+
+;Ｈステータスの解説
+@HINT_DETAIL_SENSITIVE_STATUS
+
+STR_NUM = STR_REF +SELECT_TIPS
+
+;対応IDでないなら汎用出して帰る
+IF SELECT_TIPS < 0 || SELECT_TIPS >= 30 || STR:STR_NUM == ""
+	CALL NOT_SELECT_HINT_COMMON
+	RETURN
+ENDIF
+
+;項目名
+PRINTFORML 　《 %STR:STR_NUM% 》
+SELECTCASE STR:STR_NUM
+CASE "Ａ感觉／Ａ敏感度"
+	PRINTFORML 当%SAVESTR:标识／肛门%被刺激时，根据达到绝顶的次数来计算的状态。
+	PRINTL
+	PRINTL 《 Ａ感觉 》
+	PRINTFORML %SAVESTR:标识／肛门%LvUP，取决于被刺激和绝顶的次数
+	PRINTL 每1Lv快感值倍率增加　～10：+10　11～：+5
+	PRINTFORML Lv3以下的情况，Ａ插入时主人公的%SAVESTR:标识／阴茎%的快感+10\%
+	PRINTL
+	PRINTL 《 Ａ敏感度 》
+	PRINTL 通过使用＜渗透媚药＞＜感受器敏感化药＞＜敏感度上升粘液＞来增加
+	PRINTL 直接作为计算快感值的倍率
+	
+CASE "Ｂ感觉／Ｂ敏感度"
+	PRINTFORML 当%SAVESTR:标识／乳房%被刺激时，根据达到绝顶的次数来计算的状态。
+	PRINTL
+	PRINTL 《 Ｂ感觉 》
+	PRINTFORML %SAVESTR:标识／乳房%LvUP，取决于被刺激和绝顶的次数
+	PRINTL 每1Lv快感值倍率增加　～10：+10　11～：+5
+	PRINTL
+	PRINTL 《 Ｂ敏感度 》
+	PRINTL 通过使用＜渗透媚药＞＜感受器敏感化药＞＜敏感度上升粘液＞来增加
+	PRINTL 当感度低于300%时，作为＜淫乳改造精华＞的副作用而增加。
+	PRINTL 直接作为计算快感值的倍率
+	PRINTL 在生成随机角色时，（在调整之前的）初始胸部尺寸较小的角色
+	PRINTL 有【Ｂ敏感度】容易变高的倾向
+	
+CASE "Ｃ感觉／Ｃ敏感度"
+	PRINTFORML 当%SAVESTR:标识／阴蒂%被刺激时，根据达到绝顶的次数来计算的状态
+	PRINTL
+	PRINTL 《 Ｃ感觉 》
+	PRINTFORML %SAVESTR:标识／阴蒂%LvUP，取决于被刺激和绝顶的次数
+	PRINTL 每1Lv快感值倍率增加　～10：+10　11～：+5
+	PRINTL
+	PRINTL 《 Ｃ敏感度 》
+	PRINTL 通过使用＜渗透媚药＞＜感受器敏感化药＞＜敏感度上升粘液＞来增加
+	PRINTL （与在其他部位使用时相比，增加量翻倍）
+	PRINTL 直接作为计算快感值的倍率
+	
+CASE "Ｖ感觉／Ｖ敏感度"
+	PRINTFORML 当%SAVESTR:标识／膣%被刺激时，根据达到绝顶的次数来计算的状态
+	PRINTL
+	PRINTL 《 Ｖ感觉 》
+	PRINTFORML %SAVESTR:标识／膣%LvUP，取决于被刺激和绝顶的次数
+	PRINTL 每1Lv快感值倍率增加　～10：+10　11～：+5
+	PRINTFORML Lv3以下时，Ｖ插入时主人公的%SAVESTR:标识／阴茎%的快感+10\%
+	PRINTL
+	PRINTL 《 Ｖ敏感度 》
+	PRINTL 通过使用＜渗透媚药＞＜感受器敏感化药＞＜敏感度上升粘液＞来增加
+	PRINTL 直接作为计算快感值的倍率
+	
+CASE "Ｎ感觉／Ｎ敏感度"
+	PRINTL 当被刺激乳头时的感觉状态。
+	PRINTL
+	PRINTL 《 Ｎ感觉 》
+	PRINTL 根据被刺激乳头绝顶的次数LvUP
+	PRINTL 每1Lv快感值倍率增加　～10：+10　11～：+5
+	PRINTFORML Lv3以下时，Ｎ插入时主人公的%SAVESTR:标识／阴茎%的快感+10\%
+	PRINTL
+	PRINTL 《 Ｎ敏感度 》
+	PRINTL 通过使用＜渗透媚药＞＜感受器敏感化药＞＜敏感度上升粘液＞来增加
+	PRINTL 直接作为计算快感值的倍率
+	
+CASE "胸围大小"
+	CALL PART_HINT_BUSTSIZE
+	
+CASE "胸围大小补充"
+	CALL PART_HINT_BUSTSIZE2
+	
+CASE "母乳容量"
+	CALL PART_HINT_MILK_CAPACITY
+	
+CASE "母乳生产力"
+	CALL PART_HINT_MILK_PRODUCT
+	
+CASE "母乳容量和生产力计算"
+	CALL PART_HINT_MILK_CALC
+	
+CASE "母乳浓度"
+	CALL PART_HINT_MILK_RICHNESS
+	
+CASE "母性"
+	CALL PART_HINT_MATERNAL
+	
+CASE "母性补充"
+	CALL PART_HINT_MATERNAL2
+	
+CASE "技巧"
+	PRINTL 调教技能表示通过调教提供的快感的状态。
+	PRINTL
+	PRINTL 《 技巧经验获取 》
+	PRINTL 在执行调教命令时，调教者获得经验值
+	PRINTL ・将调教对象推至绝顶，该命令的经验值获取将翻倍
+	PRINTFORML 在对调教者的%SAVESTR:标识／阴茎%执行提供快感的命令时，调教对象获得经验值（少量）
+	PRINTL 执行奉仕指令时，调教对象获得经验值（大量）
+	PRINTL
+	PRINTL 《 技巧效果 》
+	PRINTL ・在调教奴隶时进行挤奶时提供的快感进行修正
+	PRINTL ～Lv10：每提高1级+8%　Lv11～：每提高1级+5%
+	PRINTL 
+	PRINTL ・直接刺激（除器具和触手之外）时提供给调教对象的快感进行修正
+	PRINTL ～Lv10：每提高1级+10%　Lv11～：每提高1级+5%
+	PRINTL
+	PRINTL ・奉仕指令时和【奉仕精神】的合计给予调教者的快感增加
+	PRINTL ~总计Lv15：每Lv+8%　总Lv16至：每Lv+3%
+	PRINTL 满足[淫欲]50,000以上/【奉仕精神】Lv10以上/【恋慕】/【洗脑】中任意一种情况
+	PRINTL 【技巧】每提高1级进一步增加+3%
+	
+CASE "奉仕精神"
+	PRINTL 该状态增加在执行奉仕时对「调教者」提供的快感。
+	PRINTL 同时也在执行奉仕命令等决定时进行参考。
+	PRINTL
+	PRINTL 《 奉仕精神经验值获取 》
+	PRINTL 在获取【技巧】经验值时乘以【好感度】追加获取
+	PRINTL
+	PRINTL 《 奉仕精神效果 》
+	PRINTL ・如果达到Lv5以上，即使没有【陷落】即使没有【屈服】也可以实行奉仕指令
+	PRINTL ・执行奉仕命令时
+	PRINTL Lv×500[情爱]增加　持续中每Lv×300增加
+	PRINTL 与【技巧】总和一起，增加给调教者的快感
+	PRINTL ~总计Lv15：每Lv+8%　总Lv16至：每Lv+3%
+	PRINTL  ·【母性】经验每1级额外+3%
+	
+CASE "膣内射精中毒"
+	PRINTFORML 当%SAVESTR:标识／膣%被%SAVESTR:标识／阴茎%刺激时，
+	PRINTL 以及腔内射精时，影响的状态。
+	PRINTL
+	PRINTL 《 膣内射精中毒经验获取 》
+	PRINTL 在腔内射精时获取，每Lv×200额外获取
+	PRINTL 
+	PRINTL 《 腔内射精中毒效果 》
+	PRINTL ・在V插入中
+	PRINTL Lv×500[情爱]增加　每1级增加[Ｖ快感]+5%
+	PRINTL 增加给调教者的[射精]参数
+	PRINTL ～Lv10：每提高1级+8%　Lv11～：每提高1级+3%
+	PRINTL
+	PRINTL ・在腔内射精时
+	PRINTL Lv×1000×射精次数[情爱]增加　Lv×200[Ｖ快感]增加
+	
+CASE "尻穴射精中毒"
+	PRINTFORML 当%SAVESTR:标识／肛门%被%SAVESTR:标识／阴茎%刺激时，
+	PRINTL 以及尻穴射精时，影响的状态。
+	PRINTL
+	PRINTL 《 尻穴射精中毒经验获取 》
+	PRINTL 在尻穴射精时获取，每Lv×200额外获取
+	PRINTL 
+	PRINTL 《 尻穴射精中毒效果 》
+	PRINTL ·Ａ插入中
+	PRINTL Lv×500[情爱]增加　每1级增加[Ａ快感]+5%
+	PRINTL 增加给调教者的[射精]参数
+	PRINTL ～Lv10：每提高1级+8%　Lv11～：每提高1级+3%
+	PRINTL
+	PRINTL ・尻穴射精时
+	PRINTL Lv×1000×射精次数[情爱]增加　Lv×200[Ａ快感]增加
+	
+CASE "乳内射精中毒"
+	PRINTL 当正在进行乳交时，
+	PRINTL 以及乳内射精时，影响的状态。
+	PRINTL
+	PRINTL 《 乳内射精中毒经验获取 》
+	PRINTL 在乳内射精时获取，每Lv×200额外获取
+	PRINTL 
+	PRINTL 《 乳内射精中毒效果 》
+	PRINTL ·Ｂ插入中
+	PRINTL Lv×500[情爱]增加　每1级增加[Ｂ快感]+5%
+	PRINTL 当体力大于1时，增加给调教者的[射精]参数
+	PRINTL ～Lv10：每提高1级+8%　Lv11～：每提高1级+2%
+	PRINTL
+	PRINTL ・乳内射精时
+	PRINTL Lv×1000×射精次数[情爱]增加　Lv × 200[Ｂ快感]增加
+	
+CASE "精饮中毒"
+	PRINTL 口内射精时影响的状态。
+	PRINTL
+	PRINTL 《 精饮中毒经验获取 》
+	PRINTL 在口内射精时获取，每Lv×200额外获取
+	PRINTL 
+	PRINTL 《 精饮中毒效果 》
+	PRINTL ・在Ｍ插入中
+	PRINTL Lv×500[情爱]增加
+	PRINTL 当体力大于1时，增加给调教者的[射精]参数
+	PRINTL ～Lv10：每提高1级+8%　Lv11～：每提高1级+3%
+	PRINTL
+	PRINTL ・口内射精时
+	PRINTL Lv×1000×射精次数[情爱]增加
+	PRINTL （在当前版本中，M感觉尚未实现。）
+	
+CASE "精液中毒"
+	PRINTL 在任何部位射精时影响的状态。
+	PRINTL
+	PRINTL 《 精液中毒经验获取 》
+	PRINTL 在任何部位射精时获取
+	PRINTL 
+	PRINTL 《 精液中毒效果 》
+	PRINTL ・射精时
+	PRINTL Lv×300×射精次数[顺从]增加
+	
+CASE "轮奸中毒"
+	PRINTL 当进行轮奸时影响的状态。
+	PRINTL
+	PRINTL ・抱歉：当前可能未启用
+	PRINTL 《 轮奸中毒经验值取得 》
+	PRINTL 在雇佣傭兵兼职的时候雇佣哥布林，每次发生轮奸时获取
+	PRINTL 
+	PRINTL 《 轮奸中毒效应 》
+	PRINTL （未实现）
+	
+CASE "受虐癖"
+	PRINTL 在接受带有疼痛的调教时影响的状态。
+	PRINTL
+	PRINTL 《 受虐癖经验获取 》
+	PRINTL 在执行强制奉仕命令，持续拘束命令的调教时获取
+	PRINTL 
+	PRINTL 《 受虐癖效果 》
+	PRINTL 与被刺激部位的【感觉】总和达到5级以上，根据等级将部位的[苦痛]转化为快感
+	PRINTL 　对于不包含快感的部位，仅通过【受虐癖】来判定，判断并转化为[淫欲]
+	PRINTL 拘束+在蒙眼状态下，所有【敏感度】每提高1级+增加5%
+	PRINTL 减轻由[苦痛][视觉恐惧]引起的[恐惧][反感]，每1Lv减少10%
+	PRINTL 由[触手恐惧]引起的[恐惧][失意]通过和【触手中毒】的合计Lv来减轻
+	PRINTL Lv5以上时，受到的[屈辱][支配][羞辱][被虐快感经验]增加[淫欲]
+	PRINTL 　受到的[痛苦]进一步增加[被虐快感经验]
+	
+CASE "百合癖"
+	PRINTL 当女性接受女性的调教，或进行女性对女性的调教时影响的状态。
+	PRINTL
+	PRINTL 《 百合癖经验值获取 》
+	PRINTL 在日程【百合调教】中，调教者少量，被调教者大量获取
+	PRINTL ・调教者
+	PRINTFORML 调教对象的百合癖Lv×500增加　直接饮用的%SAVESTR:标识／母乳%量×5增加
+	PRINTL ・被调教者
+	PRINTL 调教者的百合癖Lv×1000增加　被绝顶次数× 50增加
+	PRINTFORML 直接饮用的%SAVESTR:标识／母乳%的量×5增加
+	PRINTL 
+	PRINTL 《 百合气效果 》
+	PRINTL 调教者・调教对象的【百合气】Lv的合计×3%全部位的快感值增加
+	PRINTL 　如果修正值超过50%，则超出部分减少1／4
+	
+CASE "搾乳中毒"
+	CALL PART_HINT_LACTATION_RELIANCE
+	
+CASE "触手中毒"
+	PRINTL 在触手调教时影响的状态。
+	PRINTL 在经历触手刺激并达到绝顶的情况下，将在【触手绝顶次数】中累加在触手刺激的部位发生绝顶的次数。
+	PRINTL 超过一定次数【触手中毒】Lv会增加。
+	PRINTL
+	PRINTL 《 触手中毒效果 》
+	PRINTL 增加触手责罚的快感值
+	PRINTL ～Lv10：每提高1级+10%　Lv11～20：每提高1级+5%　Lv21～：每提高1级+2%
+	PRINTL 触手搾乳时【搾乳中毒】【触手中毒】合计10Lv以上的话[恭顺]·【母性】经验值增加
+	
+CASE "Ｖ・Ａ・Ｐ的尺寸"
+	PRINTFORML それぞれ%SAVESTR:标识／膣%浓密%SAVESTR:标识／肛门%浓密%SAVESTR:标识／阴茎%の直径での尺寸です。
+	PRINTL 如果是〇〇～〇〇mm，则表明在上限侧可以无痛扩展（具有柔韧性）。
+	PRINTL
+	PRINTFORML 插入时%SAVESTR:标识／阴茎%的尺寸在插入侧的尺寸范围内时，互相的快感增加。
+	PRINTL 超出范围则快感反而减少。
+	PRINTFORML 此外，若%SAVESTR:标识／阴茎%的尺寸超出插入侧的尺寸范围，
+	PRINTL 根据尺寸差异，痛苦会增加，尺寸的上限侧有概率上升，并且
+	PRINTFORML 当差距超过20mm或%SAVESTR:标识／阴茎%的尺寸达到一定以上时，尺寸的下限侧也会提高。
+	PRINTL (当下限侧上升时，尺寸显示部分会以红色显示)
+	PRINTL
+	PRINTFORML 此外，%SAVESTR:标识／阴茎%的尺寸基本上越大对对方的快感越增加，但
+	PRINTL 根据插入侧的尺寸差异，可能会减少。
+	PRINTL
+	PRINTL 即使在非插入情况下，Ｖ・Ａ产生快感时，尺寸的上限侧也有一定概率上升至某个数值。
+ENDSELECT
+
+

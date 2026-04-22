@@ -1,0 +1,485 @@
+﻿
+;射精メッセージ
+@PRINT_EJACULATION_MESSAGE
+
+SIF !TFLAG:调教中 && !TFLAG:日程外Ｈ && !TFLAG:循环中消息显示
+	RETURN
+SIF !SOURCE:射精次数
+	RETURN
+MESSAGE_EXIST ++
+SIF !LINEISEMPTY()
+	PRINTL
+
+;スケジュール外なら射精メッセージ前に止める
+IF TFLAG:日程外Ｈ
+	PRINTW
+ELSE
+	PRINTL
+ENDIF
+
+;注ぎ込みは別パターン呼ぶ
+IF SOURCE:注入灵力量 || SOURCE:注入魔力量
+	TFLAG:深喉避孕套射精地文 = 0
+	CALL PRINT_EJACULATION_MESSAGE_GIVE_ENERGY
+	RETURN
+ENDIF
+
+IF TEQUIP:0:避孕套
+	IF GETBIT(＃Ｐ使用／Ｍ插入＃) && TEQUIP:深喉 && TFLAG:深喉避孕套射精地文 == 1
+		SELECTCASE RAND:5
+		CASE 0
+			PRINTFORM 在胀到极限的前一刻扯掉皱巴巴的避孕套，
+		CASE 1
+			PRINTFORM 铃口抵着痉挛的咽壁、在脉动开始的瞬间拽开胶套——
+		CASE 2
+			PRINTFORM 掐着根部把套子撸到冠状沟下缘再一把扯远，
+		CASE 3
+			PRINTFORM 扯开卷边的橡胶时发出黏腻的剥离声，炙热的龟头重新楔回喉口——
+		CASEELSE
+			PRINTFORM 用指节勾住套底猛地撸下，最后一截离体的刹那浊流已堵不住，
+		ENDSELECT
+	ELSE
+		PRINT 依然带着避孕套
+	ENDIF
+	IF GETBIT(＃Ｐ使用／Ｖ插入＃)
+		PRINTFORM %CALLNAME%的%SLANG_V()%中
+	ELSEIF GETBIT(＃Ｐ使用／Ａ插入＃)
+		PRINTFORM %CALLNAME%的%SLANG_A()%中
+	ELSEIF GETBIT(＃Ｐ使用／乳交＃)
+		PRINTFORM 在%CALLNAME%的%SLANG_B()%的乳沟
+	ELSEIF TEQUIP:素股
+		PRINTFORM %CALLNAME%的私处
+	ELSEIF TEQUIP:足交
+		PRINTFORM %CALLNAME%的足底与趾缝间
+	ELSEIF GETBIT(＃Ｐ使用／Ｍ插入＃) || TEQUIP:触手口交 || TEQUIP:触手深喉
+		IF TEQUIP:触手深喉
+			PRINTFORM %CALLNAME%被触手堵满的喉管深处
+		ELSEIF TEQUIP:触手口交
+			PRINTFORM %CALLNAME%齿列与舌面上缠绕的触手之间
+		ELSEIF TEQUIP:深喉
+			IF TFLAG:深喉避孕套射精地文 == 1
+				CALL PRINT_深喉无套口内射精叙述
+			ELSE
+				PRINTFORM %CALLNAME%被顶到发软的喉口深处（避孕套前端仍堵在那里）
+			ENDIF
+		ELSEIF TEQUIP:口交
+			PRINTFORM %CALLNAME%温热的口腔深处（裹着避孕套的%SLANG_PENIS()%前端）
+		ELSE
+			PRINTFORM %CALLNAME%的口内
+		ENDIF
+	ELSEIF TEQUIP:手淫 || TEQUIP:授乳手交
+		PRINTFORM %CALLNAME%的手中
+	ENDIF
+
+;膣内射精
+ELSEIF SOURCE:膣内射精经验
+	PRINTFORM %CALLNAME%的%SLANG_V()%被
+
+;尻穴射精
+ELSEIF SOURCE:尻穴射精经验
+	PRINTFORM %CALLNAME%的%SLANG_A()%被
+
+;引き抜いて外出しor素股
+ELSEIF SOURCE:股间射精
+	IF TEQUIP:足交
+		SELECTCASE RAND:5
+		CASE 0
+			PRINTFORM %CALLNAME%用足弓与趾缝死死箍住%SLANG_PENIS()%前端，每一次碾磨都像在宣告「只配被脚弄出来」——
+		CASE 1
+			PRINTFORM 脚掌贴着柱身上下撸动，足跟偶尔顶弄铃口，%CALLNAME%甚至故意把脚趾蜷起夹住系带磨蹭——
+		CASE 2
+			PRINTFORM 双足一上一下绞住肉棒，足背与脚心交替施力，黏腻的水声里%CALLNAME%把%SLANG_PENIS()%当成脚下的玩物——
+		CASE 3
+			PRINTFORM 趾腹一下下点戳铃口，另一只脚的脚跟压着根部不让逃，%CALLNAME%带着羞辱的笑意看着它胀到极限——
+		CASEELSE
+			PRINTFORM 足心裹着肉柱来回碾磨，趾腹一下下刮过冠状沟，每一次收紧趾缝都让%SLANG_PENIS()%猛地一跳——
+		ENDSELECT
+	ELSEIF TEQUIP:素股
+		PRINTFORM %CALLNAME%的私处
+	ELSEIF GETBIT(＃Ｐ使用／Ｖ插入＃)
+		PRINTFORM %SLANG_PENIS()%从%CALLNAME%的%SLANG_V()%拔出后，
+	ELSEIF GETBIT(＃Ｐ使用／Ａ插入＃)
+		PRINTFORM %SLANG_PENIS()%从%CALLNAME%的%SLANG_A()%拔出后，
+	ENDIF
+
+;乳内射精
+ELSEIF SOURCE:乳内射精经验
+	PRINTFORM 在%CALLNAME%的%SLANG_B()%的乳沟
+
+;胸ぶっかけ
+ELSEIF SOURCE:乳房射精
+	IF !SOURCE:阴茎拔出
+		PRINTFORM %CALLNAME%的%SLANG_B()%中
+	ELSEIF ABL:胸围大小 < BUSTSIZE_普乳
+		PRINTFORM 将%SLANG_PENIS()%从%CALLNAME%%SLANG_B()%上移开，到%SAVESTR:标识／乳房%
+	ELSE
+		PRINTFORM 从%CALLNAME%%SLANG_B()%拔出%SLANG_PENIS()%，%SAVESTR:标识／乳房%
+	ENDIF
+
+;顔ぶっかけ
+ELSEIF SOURCE:颜面射精
+	IF GETBIT(＃Ｐ使用／乳交＃)
+		IF ABL:胸围大小 < BUSTSIZE_普乳
+			PRINTFORM 让%SLANG_PENIS()%离开%SLANG_B()%，
+		ELSE
+			PRINTFORM 从%SLANG_B()%拔出%SLANG_PENIS()%，
+		ENDIF
+	ELSEIF GETBIT(＃Ｐ使用／Ｍ插入＃)
+		IF TEQUIP:深喉
+			IF TALENT:深喉嗜好
+				SELECTCASE RAND:5
+				CASE 0
+					PRINTFORM 从%CALLNAME%痉挛着合不拢的喉口抽出%SLANG_PENIS()%，涎水混着前液把下巴弄得一塌糊涂，
+				CASE 1
+					PRINTFORM 猛地自食道口般的紧窒里拔出肉棒，%CALLNAME%干呕般仰起颈子、眼角还挂着生理泪水，
+				CASE 2
+					PRINTFORM 铃口贴着软腭最后蹭了一下才抽离，%CALLNAME%大张着嘴喘息，舌根还在无意识地追逐龟头，
+				CASE 3
+					PRINTFORM 拔出的瞬间%CALLNAME%喉间发出一声黏腻的呜咽，唇角牵出银丝——仿佛还恋恋不舍那窒息般的填满，
+				CASEELSE
+					PRINTFORM 自深喉一路抽到只剩龟头含在唇间，%CALLNAME%却主动用舌尖顶住铃口磨蹭，
+				ENDSELECT
+			ELSEIF TALENT:口穴
+				SELECTCASE RAND:3
+				CASE 0
+					PRINTFORM 从被撑得发酸的喉管里抽出%SLANG_PENIS()%，%CALLNAME%大口吸气时嘴角还挂着涎，
+				CASE 1
+					PRINTFORM 拔出时喉肉恋恋不舍地绞了一下龟头，%CALLNAME%呛咳着仰脸，
+				CASEELSE
+					PRINTFORM 从口中拔出%SLANG_PENIS()%，
+				ENDSELECT
+			ELSE
+				SELECTCASE RAND:4
+				CASE 0
+					PRINTFORM 从被顶得红肿的喉口抽出%SLANG_PENIS()%，%CALLNAME%剧烈咳嗽、涎水溅出，
+				CASE 1
+					PRINTFORM 一口气抽到只剩龟头卡在唇间，%CALLNAME%泪眼朦胧地干呕，
+				CASE 2
+					PRINTFORM 自深喉深处拔出时带出黏腻的水声，%CALLNAME%张着嘴像离水的鱼，
+				CASEELSE
+					PRINTFORM 从口中拔出%SLANG_PENIS()%，
+				ENDSELECT
+			ENDIF
+		ELSEIF TEQUIP:口交
+			IF TALENT:口穴
+				SELECTCASE RAND:4
+				CASE 0
+					PRINTFORM 让%SLANG_PENIS()%离开%CALLNAME%那被吮吸得湿热的口腔，唇瓣还黏糊糊地粘在柱身上，
+				CASE 1
+					PRINTFORM 从%CALLNAME%恋恋不舍的舌吻里抽出肉棒，舌尖还追着冠状沟舔，
+				CASE 2
+					PRINTFORM 抽出时%CALLNAME%下意识嘬紧铃口发出「啾」的一声，涎丝拉长，
+				CASEELSE
+					PRINTFORM 从口中拔出%SLANG_PENIS()%，
+				ENDSELECT
+			ELSEIF TALENT:深喉嗜好
+				SELECTCASE RAND:3
+				CASE 0
+					PRINTFORM 即使只是口交也伺候得格外卖力，抽出时%CALLNAME%还用舌面从铃口一路舔到杆腹侧，
+				CASE 1
+					PRINTFORM 从温软的口腔里拔出%SLANG_PENIS()%，%CALLNAME%抬眼望着铃口、喉结微动像在忍耐想吞下去的冲动，
+				CASEELSE
+					PRINTFORM 从口中拔出%SLANG_PENIS()%，
+				ENDSELECT
+			ELSE
+				SELECTCASE RAND:3
+				CASE 0
+					PRINTFORM 自%CALLNAME%裹得紧紧的口腔里抽出%SLANG_PENIS()%，唇角溢出混着唾液的淫靡水痕，
+				CASE 1
+					PRINTFORM 把肉棒从吮吸着的嘴里拔出来，%CALLNAME%还微微前倾想追，
+				CASEELSE
+					PRINTFORM 从口中拔出%SLANG_PENIS()%，
+				ENDSELECT
+			ENDIF
+		ELSE
+			PRINTFORM 从口中拔出%SLANG_PENIS()%，
+		ENDIF
+		
+		;口上の関係でここでリセットする（強制開口器は例外）
+		SIF !TEQUIP:强制开口器
+			TFLAG:Ｍ装备 = 0
+	ENDIF
+	IF GETBIT(＃Ｐ使用／Ｍ插入＃) && (TEQUIP:深喉 || TEQUIP:口交)
+		IF TEQUIP:深喉 && TALENT:深喉嗜好
+			SELECTCASE RAND:4
+			CASE 0
+				PRINTFORM 白浊泼溅在%CALLNAME%的脸上、鼻梁与唇角，像给这张刚被操干喉咙的脸盖章——
+			CASE 1
+				PRINTFORM 精液糊满%CALLNAME%的眉心与眼睑，顺着泪痕流进张开的嘴里——
+			CASE 2
+				PRINTFORM 浓稠一股接一股拍在%CALLNAME%潮红的脸颊与舌尖上，羞辱与快意混成一片——
+			CASEELSE
+				PRINTFORM 在%CALLNAME%的脸上
+			ENDSELECT
+		ELSEIF TEQUIP:口交 && (TALENT:口穴 || ABL:精饮中毒 >= 8)
+			SELECTCASE RAND:3
+			CASE 0
+				PRINTFORM 浊液溅在%CALLNAME%仰起的脸上，唇舌本能地伸出想舔干净——
+			CASE 1
+				PRINTFORM 精液挂在%CALLNAME%的睫毛与鼻尖，张嘴喘息的样子像在讨下一口——
+			CASEELSE
+				PRINTFORM 在%CALLNAME%的脸上
+			ENDSELECT
+		ELSE
+			PRINTFORM 在%CALLNAME%的脸上
+		ENDIF
+	ELSE
+		PRINTFORM 在%CALLNAME%的脸上
+	ENDIF
+
+;口内射精
+ELSEIF SOURCE:精饮经验
+	IF TEQUIP:触手深喉
+		SELECTCASE RAND:6
+		CASE 0
+			PRINTFORM 触手茎干深深楔在%CALLNAME%喉口、异形精液一股股泵进食道，吸盘刮过咽壁时%CALLNAME%全身痉挛，
+		CASE 1
+			PRINTFORM 黏浊灌满%CALLNAME%被触手撑开的喉管，环纹碾过软腭，%CALLNAME%呛咳着却吐不出那团滑腻，
+		CASE 2
+			PRINTFORM 触手尖端在食道口搏动射精，%CALLNAME%鼻翼翕动、泪水滚落，喉结仍被迫上下滚动吞咽，
+		CASE 3
+			PRINTFORM 分叉触手同时释放在咽壁与舌根，%CALLNAME%口腔里腥甜炸开、黏液从鼻腔溢出，
+		CASE 4
+			PRINTFORM 粗壮的触手堵死喉口脉动，%CALLNAME%干呕着接纳那不属于人类的浊流，
+		CASEELSE
+			PRINTFORM 触手在%CALLNAME%深喉里胀大释放，喉肉一圈圈榨取那黏滑的异形精液，
+		ENDSELECT
+	ELSEIF TEQUIP:触手口交
+		SELECTCASE RAND:6
+		CASE 0
+			PRINTFORM 触手在%CALLNAME%口腔里胀大射精，吸盘嘬着上颚与舌面，浊液把齿列糊成一片，
+		CASE 1
+			PRINTFORM 细须触手缠着舌系带脉动喷溅，%CALLNAME%整张嘴被异形精液烫得发麻，
+		CASE 2
+			PRINTFORM 黏液与白浊在%CALLNAME%颊沟积成小滩，触手抽出时仍从铃口状裂隙挤出残浆，
+		CASE 3
+			PRINTFORM %CALLNAME%被迫含住触手根部，异形精液沿舌面灌入，腥膻在味蕾上翻腾，
+		CASE 4
+			PRINTFORM 触手尖端抵着%CALLNAME%上颚释放，吸盘一开一合像在接吻般榨取，
+		CASEELSE
+			PRINTFORM 数根触手在%CALLNAME%温热的口腔深处同时搏动，浊液从唇缝溢出又舔回，
+		ENDSELECT
+	ELSEIF TEQUIP:深喉
+		CALL PRINT_深喉无套口内射精叙述
+	ELSEIF TEQUIP:口交
+		IF TALENT:口穴 && ABL:精饮中毒 >= 8
+			SELECTCASE RAND:5
+			CASE 0
+				PRINTFORM 龟头抵着%CALLNAME%上颚射精，整张口腔被烫得发麻、舌却卷着铃口像在接吻，
+			CASE 1
+				PRINTFORM 在%CALLNAME%湿软的口腔里、
+			CASE 2
+				PRINTFORM %CALLNAME%把腮帮吸成真空嘬着肉棒，精液喷涌时喉间发出满足的哼声，
+			CASE 3
+				PRINTFORM 铃口贴着舌系带脉动，%CALLNAME%眯起眼像品尝琼浆，
+			CASEELSE
+				PRINTFORM 在%CALLNAME%被吮吸得滚烫的口腔深处、
+			ENDSELECT
+		ELSEIF TALENT:口穴
+			SELECTCASE RAND:4
+			CASE 0
+				PRINTFORM 在%CALLNAME%敏感得过分的口腔里、
+			CASE 1
+				PRINTFORM 龟头被舌窝与颊肉层层包裹时射精，%CALLNAME%腮帮一鼓一鼓地全部接住，
+			CASE 2
+				PRINTFORM 整根含到根部的嘴里爆发，%CALLNAME%鼻尖蹭着耻毛仍不肯松口，
+			CASEELSE
+				PRINTFORM 在%CALLNAME%温热的口内、
+			ENDSELECT
+		ELSEIF TALENT:深喉嗜好
+			SELECTCASE RAND:4
+			CASE 0
+				PRINTFORM 即使只是口交也含得极深，在%CALLNAME%喉咙口前一寸、
+			CASE 1
+				PRINTFORM %CALLNAME%主动把龟头往喉口送，精液灌入时眼角一抽却咽得干净，
+			CASE 2
+				PRINTFORM 在%CALLNAME%卖力伺候的口腔深处、
+			CASEELSE
+				PRINTFORM 在%CALLNAME%口内、
+			ENDSELECT
+		ELSEIF ABL:精饮中毒 >= 10
+			SELECTCASE RAND:4
+			CASE 0
+				PRINTFORM 在%CALLNAME%迫不及待吮吸着的嘴里、
+			CASE 1
+				PRINTFORM 精液喷满%CALLNAME%舌面，%CALLNAME%立刻卷舌舔净冠状沟，
+			CASE 2
+				PRINTFORM 铃口顶着舌根脉动，%CALLNAME%像渴极了一样吞咽，
+			CASEELSE
+				PRINTFORM 在%CALLNAME%口内、
+			ENDSELECT
+		ELSEIF ABL:精饮中毒 >= 5
+			SELECTCASE RAND:4
+			CASE 0
+				PRINTFORM 在%CALLNAME%裹紧的口腔里、
+			CASE 1
+				PRINTFORM 热精一股股浇在舌面上，%CALLNAME%喉结滚动着咽下，
+			CASE 2
+				PRINTFORM 在%CALLNAME%吮吸着的唇舌之间、
+			CASEELSE
+				PRINTFORM 在%CALLNAME%口内、
+			ENDSELECT
+		ELSE
+			SELECTCASE RAND:5
+			CASE 0
+				PRINTFORM 在%CALLNAME%被撑开的唇间、
+			CASE 1
+				PRINTFORM 龟头抵着舌面射精，%CALLNAME%呛了一下仍紧闭嘴角，
+			CASE 2
+				PRINTFORM 在%CALLNAME%温热的口腔深处、
+			CASE 3
+				PRINTFORM 整根含住的嘴里脉动释放，%CALLNAME%腮帮微微鼓起，
+			CASEELSE
+				PRINTFORM 在%CALLNAME%口内、
+			ENDSELECT
+		ENDIF
+	ELSE
+		PRINTFORM 在%CALLNAME%口内
+	ENDIF
+
+;手コキ射精
+ELSEIF TEQUIP:手淫 || TEQUIP:授乳手交
+	PRINTFORM 在%CALLNAME%的手上，%CALLNAME:0%
+
+;足交射精（SOURCE:股间射精側で上段を通らない保険）
+ELSEIF TEQUIP:足交
+	SELECTCASE RAND:4
+	CASE 0
+		PRINTFORM %CALLNAME%的足底与趾缝被%SLANG_PENIS()%顶得一片狼藉，%CALLNAME:0%
+	CASE 1
+		PRINTFORM 白浊沿着足背淌下趾缝，%CALLNAME%的脚还夹着余韵轻轻发抖，%CALLNAME:0%
+	CASE 2
+		PRINTFORM 精液在足弓积成一小滩又滑落到脚踝，%CALLNAME%像是刚用脚榨干了最后一滴，%CALLNAME:0%
+	CASEELSE
+		PRINTFORM 趾缝与铃口之间拉出黏丝，脚掌内侧全是黏糊糊的痕迹，%CALLNAME:0%
+	ENDSELECT
+
+ENDIF
+SIF SOURCE:射精次数 > 1
+	PRINT 大量的
+CALL TRAIN_EJACULATION_FINISH_MESSAGE
+IF TEQUIP:0:避孕套 && GETBIT(＃Ｐ使用／Ｍ插入＃) && TEQUIP:深喉
+	IF TFLAG:深喉避孕套射精地文 == 0
+		SELECTCASE RAND:4
+		CASE 0
+			PRINTFORML 橡胶套前端鼓胀成一小囊，浊液全积在胶膜里，从喉口抽出时沉甸甸地晃荡。
+		CASE 1
+			PRINTFORML 精液并未直接接触黏膜，只在套内脉动，把%CALLNAME%喉口的形状顶得更清晰。
+		CASE 2
+			PRINTFORML %CALLNAME%舌面仍能感到隔着乳胶传来的搏动与温热。
+		CASEELSE
+			PRINTFORML 避孕套承接了全部量，喉深处只剩被顶弄的酸胀与橡胶的闷味。
+		ENDSELECT
+	ENDIF
+ENDIF
+TFLAG:深喉避孕套射精地文 = 0
+CALL ONOMATOPOEIA("射精")
+
+;口上は準備していないのでコンドーム使用中は一時封鎖
+SIF !TEQUIP:0:避孕套
+	CALL KOJO_PRINT("射精")
+
+
+
+;深喉・口内射精（无套／摘套后地文与真实无套共用）
+@PRINT_深喉无套口内射精叙述
+
+IF TALENT:深喉嗜好 && ABL:精饮中毒 >= 10
+	SELECTCASE RAND:5
+	CASE 0
+		PRINTFORM 龟头深深楔在%CALLNAME%喉口、脉冲一股股灌进食道深处，%CALLNAME%鼻翼翕动却拼命吞咽不让漏出一滴，
+	CASE 1
+		PRINTFORM 铃口抵着痉挛的咽壁射精，%CALLNAME%眼里泛着泪花却像上瘾般收紧喉肉榨干最后一滴，
+	CASE 2
+		PRINTFORM 整根没入喉底时爆发，%CALLNAME%被呛得发抖仍用手按住自己的后颈不许逃——
+	CASE 3
+		PRINTFORM 浓稠精液直接泵进%CALLNAME%胃里，舌根徒劳地顶着柱身像在品尝屈辱的甜味，
+	CASEELSE
+		PRINTFORM 深喉深处被灌满，%CALLNAME%喉间发出咕噜咕噜的吞咽声，眼角却带着餍足的湿意，
+	ENDSELECT
+ELSEIF TALENT:深喉嗜好
+	SELECTCASE RAND:5
+	CASE 0
+		PRINTFORM 在%CALLNAME%被顶到失神的喉管里、
+	CASE 1
+		PRINTFORM 龟头卡在软腭与喉口之间脉动射精，%CALLNAME%生理性泪水滚落却死死含着不让吐出，
+	CASE 2
+		PRINTFORM 自食道口般的紧窒里整根灌入，%CALLNAME%喉结滚动着把浊液全部咽下，
+	CASE 3
+		PRINTFORM 深喉尽头被热精烫得一缩，%CALLNAME%却下意识把脸埋得更深，
+	CASEELSE
+		PRINTFORM 在%CALLNAME%痉挛的咽喉深处、
+	ENDSELECT
+ELSEIF TALENT:口穴
+	SELECTCASE RAND:4
+	CASE 0
+		PRINTFORM 在%CALLNAME%被肉棒塞满的喉口与舌根之间、
+	CASE 1
+		PRINTFORM 铃口顶着上颚射精，%CALLNAME%口腔敏感得浑身一颤却仍贪婪地吮吸，
+	CASE 2
+		PRINTFORM 整根喉交的节奏在射精瞬间乱套，%CALLNAME%呛咳着却用舌面接住每一股，
+	CASEELSE
+		PRINTFORM 在%CALLNAME%湿热的深喉里、
+	ENDSELECT
+ELSEIF ABL:精饮中毒 >= 8
+	SELECTCASE RAND:4
+	CASE 0
+		PRINTFORM 在%CALLNAME%被操干的喉咙深处、
+	CASE 1
+		PRINTFORM 精液灌进喉管，%CALLNAME%边干呕边拼命吞咽，像怕浪费似的，
+	CASE 2
+		PRINTFORM 深喉里黏腻地搅动后射出，%CALLNAME%眼角泛红却咽得一滴不剩，
+	CASEELSE
+		PRINTFORM 在%CALLNAME%口内深处、
+	ENDSELECT
+ELSE
+	SELECTCASE RAND:5
+	CASE 0
+		PRINTFORM 在%CALLNAME%被顶到发呕的喉底、
+	CASE 1
+		PRINTFORM 肉棒堵死喉口脉动射精，%CALLNAME%鼻腔里溢出窒息般的呜咽，
+	CASE 2
+		PRINTFORM 浓稠一股股灌进%CALLNAME%食道口，涎水与精液在舌根混成白沫，
+	CASE 3
+		PRINTFORM 在%CALLNAME%痉挛收紧的咽喉里、
+	CASEELSE
+		PRINTFORM 在%CALLNAME%口内深处、
+	ENDSELECT
+ENDIF
+RETURN
+
+
+
+;注ぎ込みのパターン
+@PRINT_EJACULATION_MESSAGE_GIVE_ENERGY
+
+IF SOURCE:膣内射精经验
+	PRINTFORM %CALLNAME%的%SLANG_V()%被
+ELSEIF SOURCE:尻穴射精经验
+	PRINTFORM %CALLNAME%的%SLANG_A()%被
+ENDIF
+SIF SOURCE:大量注入
+	PRINT 充分的
+IF SOURCE:注入灵力量
+	PRINT 注入了灵力精液…
+ELSE
+	PRINT 注入了魔力精液…
+ENDIF
+PRINTL
+IF SOURCE:外射次数
+	PRINT 继续
+	IF SOURCE:膣内射精经验
+		PRINTFORM %CALLNAME%的%SLANG_V()%被
+	ELSEIF SOURCE:尻穴射精经验
+		PRINTFORM %CALLNAME%的%SLANG_A()%被
+	ENDIF
+	SIF SOURCE:外射次数 > 1
+		PRINT 大量的
+	CALL TRAIN_EJACULATION_FINISH_MESSAGE
+ENDIF
+CALL ONOMATOPOEIA("射精")
+CALL KOJO_PRINT("射精")
+
+
+
+

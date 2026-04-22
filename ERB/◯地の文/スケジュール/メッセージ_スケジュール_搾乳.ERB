@@ -1,0 +1,95 @@
+﻿
+;搾乳待機表示
+@STANDBY_SLAVE_LACTATION_MESSAGE
+
+;あなたがいるかどうかはここで判断
+IF CSTR:0:日程 == "奶农"
+	IF CFLAG:崩坏
+		PRINTFORML 看到%CALLNAME:0%的身影，%CALLNAME%瘫倒在地…
+	ELSEIF CFLAG:虚脱
+		IF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／恋慕以上＃
+			PRINTFORML 看到%CALLNAME:0%的身影，%CALLNAME%露出了笑容，但似乎没有站起来的底气…
+		ELSEIF ＃陷落状态／屈服以上＃
+			PRINTFORML 看到%CALLNAME:0%的身影，筋疲力尽的%CALLNAME%就算逃跑也没有力气…
+		ELSE
+			PRINTFORML 看到%CALLNAME:0%的身影，%CALLNAME%想要逃跑，但似乎已经没有力气站起来了…
+		ENDIF
+	ELSEIF CFLAG:乳牛
+		PRINTFORML %CALLNAME:0%前往家畜小屋，看见%CALLNAME%露出发情的脸抓住木框探出上半身，
+		PRINTFORML 露出的%SLANG_B()%摇晃着，等待着幸福的时间…
+	ELSEIF ＃陷落状态／隶属＃ || CFLAG:洗脑
+		PRINTFORML %CALLNAME:0%一露面，%CALLNAME%高兴地露出%SLANG_B()%，等待着被榨取母乳…
+	ELSEIF ＃陷落状态／恋慕以上＃
+		PRINTFORML %CALLNAME:0%一露面，%CALLNAME%脸红着露出%SLANG_B()%，等待着被榨取母乳…
+	ELSEIF ＃陷落状态／拒绝以上＃
+		PRINTFORML %CALLNAME:0%一露面，就看见%CALLNAME%摆出抓住木框等待榨乳的姿势…
+	ELSE
+		PRINTFORML 看见%CALLNAME:0%出现时%CALLNAME%用手臂护住自己的%SLANG_B()%不断后退…
+	ENDIF
+ELSE
+	IF CFLAG:崩坏
+		PRINTFORML 看到%CALLNAME%要挤%SLANG_MILK()%的奴隶%PRINT_WORK_GROUP()%的身影，然而
+		PRINTFORML 但%CALLNAME%却瘫软在地一动不动…
+	;初回
+	ELSEIF !EXP:执行次数／搾乳
+		PRINTFORML 由于同一牧场的奴隶%PRINT_WORK_GROUP()%来到了养殖小屋，%CALLNAME%一直在观察他们，不知道是出于何种目的…
+		PRINTFORML %CALLNAME%逐渐理解是来榨取她那%SLANG_MILK()%的
+	ELSE
+		PRINTFORML 看到为了挤取%CALLNAME%的%SLANG_MILK()%而来的同牧场的奴隶%PRINT_WORK_GROUP()%的身影，
+
+	ENDIF
+	IF CFLAG:虚脱
+		IF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／隶属＃
+			PRINTFORML %CALLNAME%露出笑容，但似乎没有站起来的力气…
+		ELSEIF ＃陷落状态／屈服以上＃
+			PRINTFORML %CALLNAME%虽然看起来有点讨厌，但好像没有逃跑的力气…
+		ELSE
+			PRINTFORML %CALLNAME%想逃跑，但是好像已经没有站起来的力气了…
+		ENDIF
+	ELSEIF CFLAG:乳牛
+		PRINTFORML %CALLNAME%抓住木框探出上半身，
+		PRINTFORML 露出%SLANG_B()%摇晃着等待挤奶的时间…
+	ELSEIF ＃陷落状态／隶属＃ || CFLAG:洗脑
+		PRINTFORML %CALLNAME%高兴地露出%SLANG_B()%等待着榨乳的时间…
+	ELSEIF ＃陷落状态／恋慕以上＃
+		PRINTFORML 有些厌恶的露出着%SLANG_B()%，等待着榨乳时刻…
+	ELSEIF ＃陷落状态／拒绝以上＃
+		PRINTFORML %CALLNAME%抗拒的抓住木框，等待着榨乳时间
+	ELSE
+		PRINTFORML %CALLNAME%用手臂遮挡住%SLANG_B()%，不断向后退着…
+	ENDIF
+ENDIF
+
+;乳首を見られたことがないなら口上
+SIF !EXP:被看见乳头
+	CALL KOJO_PRINT("调教命令","脱衣","主人公")
+CALL KOJO_PRINT("日程","搾乳","执行前",KOJO_TYPE)
+PRINTL
+
+
+
+;搾乳開始地の文
+;ARGS→LACTATION_TOOL
+@SLAVE_LACTATION_RUN_MESSAGE(ARGS)
+
+IF CFLAG:崩坏 || CFLAG:虚脱
+	PRINTFORML 抬起筋疲力尽的%CALLNAME%的身体，将脖子和手臂固定固定在拘束台上，
+	PRINTFORML 为%SLANG_B()%安装上%ARGS%，开始榨乳…
+ELSEIF CFLAG:乳牛
+	SIF BASE:母乳容量
+		PRINT 已经开始滴下母乳了
+	PRINTFORML 将%ARGS%吸附在%SLANG_B()%上，开始从%CALLNAME%中挤出%SLANG_MILK()%…
+ELSEIF CFLAG:洗脑 || ＃陷落状态／恋慕以上＃
+	PRINTFORML 将%ARGS%吸附在微微颤动尖端的%SLANG_B()%上，开始从%CALLNAME%中挤出%SLANG_MILK()%…
+ELSEIF ＃陷落状态／拒绝以上＃
+	IF ABL:胸围大小 >= BUSTSIZE_巨乳
+		PRINT 咕咚咕咚地摇晃着的
+	ELSE
+		PRINT 谦逊
+	ENDIF
+	PRINTFORML 将%ARGS%吸附在%SLANG_B()%上，开始从%CALLNAME%中挤出%SLANG_MILK()%…
+ELSE
+	PRINTFORML 用手铐束缚反抗的%CALLNAME%，使其处于弯曲姿势，将%ARGS%吸附在暴露的%SLANG_B()%上，开始挤出%SLANG_MILK()%…
+ENDIF
+PRINTW
+

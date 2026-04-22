@@ -1,0 +1,30 @@
+﻿
+;チュートリアル用
+@TUTORIAL_TIPS_TRAIN
+
+;まだ【母乳体質】がいないなら方法誘導
+IF !CMATCH(MARK:母乳体质,1)
+	IF !GETBIT(＃有效药品／魔力母乳分泌促进药＃)
+		CALL PRINTL_WORD_COLOR("要让奴隶拥有【母乳体质】，如果奴隶反抗，就先进行拘束，脱掉衣服，露出乳头。","浅蓝色")
+		CALL PRINTL_WORD_COLOR("【道具】开启→【药品・触手药剂注入】→使用＜魔力母乳分泌促进药＞。","浅蓝色")
+		RETURN
+	
+	;イかせればOK
+	ELSE
+		CALL PRINTL_WORD_COLOR("在＜魔力母乳分泌促进药＞有效状态下，通过胸部达到绝顶（B或N绝顶），可成为【魔力母乳体质】。","浅蓝色")
+		RETURN
+	ENDIF
+
+;まだ出荷してないなら搾り方
+ELSEIF !FLAG:母乳出货总量 && !CFLAG:预计出货母乳量
+	CALL PRINTL_WORD_COLOR,@"【Ｎ刺激】【道具】开启→使用【家畜用挤奶器】可以从奴隶那里挤出%SAVESTR:标识／母乳%。","浅蓝色"
+	CALL PRINTL_WORD_COLOR,@"如果奴隶的乳头上附着有%SAVESTR:标识／母乳%以外的物质，请先开启【Ｎ刺激】并选择【胸部污垢擦拭】。","浅蓝色"
+	RETURN
+ENDIF
+
+
+
+
+
+
+

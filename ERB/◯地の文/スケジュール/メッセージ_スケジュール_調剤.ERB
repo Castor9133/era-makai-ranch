@@ -1,0 +1,38 @@
+﻿
+;調合内容地の文
+@WORK_PHARMACY_BEGIN_MESSAGE
+
+SIF !EXP:执行次数／调剂 && TARGET
+	PRINTFORML %CALLNAME%被你命令，开始帮助调制%ITEMNAME:(FLAG:调合中药品ID)%…
+PRINTFORM %CALLNAME%%PRINT_WORK_GROUP()%将
+
+SIF CSTR:0:日程 == "调剂" && TARGET > 0
+	PRINTFORM 和%CALLNAME:0%一起
+PRINTFORML 进行了%ITEMNAME:(FLAG:调合中药品ID)%的调制工作。
+CALL KOJO_PRINT("日程","调剂",KOJO_TYPE)
+
+
+
+;調合上手さ表示
+@WORK_PHARMACY_ABL_MESSAGE
+
+SIF !TARGET
+	RETURN
+IF !EXP:执行次数／调剂
+	IF ABL:药学 >= 8
+		PRINTL 利用以前的经验，非常有效率的进行事务工作。
+	ELSEIF ABL:药学 >= 4
+		PRINTL 看来很有条理。
+	ELSE
+		PRINTL …似乎还没能理解。
+	ENDIF
+ELSE
+	IF ABL:药学 >= 8
+		PRINTL 以专业的手法完成调合工作。
+	ELSEIF ABL:药学 >= 4
+		PRINTL 进步得相当不错。
+	ELSE
+		PRINTL …似乎还没能理解。
+	ENDIF
+ENDIF
+

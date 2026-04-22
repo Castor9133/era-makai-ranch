@@ -1,0 +1,22 @@
+﻿
+;うちの近くに温泉湧かない？
+@SELECT_WISH_GROW_SPA
+
+CALL DRAGON_SPA_MESSAGE
+CALL ASK_YN
+SIF RESULT
+	RETURN
+PRINTL 龙的身体发光，地面开始震动…似乎不同于地震。
+PRINTL 突然牧场内喷涌出温泉！
+CALL MANYL(3)
+PRINTL …联系了马凯德建筑公司，让他们为我们建造温泉浴场。
+CALL PRINTL_WORD_COLOR("＜天然温泉＞已经可以使用了！","黄")
+PRINTFORML （工程费用：%VALUE_DIGIT(ITEMPRICE:天然温泉)%G）
+PRINTW
+MONEY -= ITEMPRICE:天然温泉
+ITEM:天然温泉 ++
+ITEM:龙之珠 = 0
+
+
+
+

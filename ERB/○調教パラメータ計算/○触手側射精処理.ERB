@@ -1,0 +1,188 @@
+﻿
+;触手側射精処理
+@T_EJACULATION
+
+;射精をMAXで割った回数射精
+TFLAG:触手射精次数 = TFLAG:触手射精量表 / TFLAG:触手射精量表MAX
+TFLAG:触手射精量表 -= TFLAG:触手射精量表MAX * TFLAG:触手射精次数
+DAMAGE = 0
+
+;射精箇所
+SIF TEQUIP:触手Ｖ插入
+	CALL T_EJACULATION_V
+SIF TEQUIP:触手Ａ插入
+	CALL T_EJACULATION_A
+SIF TEQUIP:触手强制乳交
+	CALL T_EJACULATION_B
+IF TEQUIP:触手口交 || TEQUIP:触手深喉
+	SIF TEQUIP:触手口交
+		SOURCE:学习 += TFLAG:触手射精次数 * 500
+	CALL T_EJACULATION_M
+ENDIF
+SIF TEQUIP:触手强制手交
+	CALL T_EJACULATION_HAND
+
+RESETCOLOR
+SOURCE:不洁 += DAMAGE
+SOURCE:精液经验 += DAMAGE / 2
+IF FLAG:主人公的触手也是主人公 && !PLAYER
+	TFLAG:射精次数 += TFLAG:触手射精次数
+
+	;奴隷の「あなたに射精された回数」とあなたの「射精した回数」+1
+	EXP:经验次数／主人公／射精合计 += 1
+	EXP:PLAYER:射精次数合计 += 1
+	;SOURCE:調教者体力消費 += TFLAG:触手射精回数 * 100
+ELSE
+	EXP:经验次数／异形／射精合计 += 1
+ENDIF
+
+
+;膣内射精
+@T_EJACULATION_V
+
+SOURCE:耻辱 += TFLAG:触手射精次数 * 250
+SIF ABL:触手中毒
+	SOURCE:爱情 += ABL:膣内射精中毒 * TFLAG:触手射精次数 * ABL:触手中毒
+SOURCE:屈辱 += TFLAG:触手射精次数 * 1000
+DAMAGE += TFLAG:触手射精次数 * 500
+
+;Ｖ快楽増加　膣内射精中毒によりさらに増加
+PLEASURE = 1000 +ABL:膣内射精中毒 *200 +MARK:膣内射精中毒 * 1000 +MARK:榨精淫穴 * 2000 +MARK:精液便女 * 3000
+
+;濃厚精液による増加
+CALL T_STRONG_SEMEN_FIX
+SOURCE:膣内射精经验 += PLEASURE
+SOURCE:Ｖ快感／触手 += PLEASURE
+
+;射精回数記録
+IF FLAG:主人公的触手也是主人公 && !PLAYER
+	;奴隷の「射精された回数」「あなたに射精された回数」・あなたの「射精した回数」を増加
+	;全体の回数は共通部分でやってる
+	EXP:膣内射精次数 += 1
+	EXP:经验次数／主人公／膣内射精 += 1
+	EXP:PLAYER:膣内射精次数 += 1
+ELSE
+	EXP:膣内射精次数 += 1
+	EXP:经验次数／异形／膣内射精 += TFLAG:触手射精次数
+ENDIF
+
+;妊娠判定
+CALL TENTACLE_PREGNANT_JUDGE
+SOURCE:Ｖ润滑追加 += TFLAG:触手射精次数 * 1000
+CALL SET_STAIN_TARGET("膣","精液")
+TFLAG:子宫内精液量 += TFLAG:触手射精次数
+TFLAG:膣内精液 += TFLAG:触手射精次数
+
+
+
+;尻穴射精
+@T_EJACULATION_A
+
+SOURCE:耻辱 += TFLAG:触手射精次数 * 500
+SIF ABL:触手中毒
+	SOURCE:爱情 += ABL:尻穴射精中毒 * TFLAG:触手射精次数 * 10 * ABL:触手中毒
+SOURCE:屈辱 += TFLAG:触手射精次数 * 1500
+DAMAGE += TFLAG:触手射精次数 * 1000
+PLEASURE = 1000 +ABL:尻穴射精中毒 * 200 +MARK:尻穴射精中毒 * 1000 +MARK:榨精尻穴 * 2000 +MARK:尻穴便器 * 3000
+CALL T_STRONG_SEMEN_FIX
+SOURCE:尻穴射精经验 += PLEASURE
+SOURCE:Ａ快感／触手 += PLEASURE
+
+IF FLAG:主人公的触手也是主人公 && !PLAYER
+	EXP:尻穴射精次数 += 1
+	EXP:经验次数／主人公／尻穴射精 += 1
+	EXP:PLAYER:尻穴射精次数 += 1
+ELSE
+	EXP:尻穴射精次数 += 1
+	EXP:经验次数／异形／尻穴射精 += TFLAG:触手射精次数
+ENDIF
+
+SOURCE:Ａ润滑追加 += TFLAG:触手射精次数 * 1000
+CALL SET_STAIN_TARGET("肛门","精液")
+TFLAG:肠内精液量 += (TFLAG:触手射精次数 +TFLAG:尻穴精液 -1)
+TFLAG:尻穴精液 += TFLAG:触手射精次数
+
+
+;乳内射精
+@T_EJACULATION_B
+
+SOURCE:耻辱 += TFLAG:触手射精次数 * 750
+SIF ABL:触手中毒
+	SOURCE:爱情 += ABL:乳内射精中毒 *TFLAG:触手射精次数 * ABL:触手中毒
+SOURCE:屈辱 += TFLAG:触手射精次数 * 1000
+DAMAGE += TFLAG:触手射精次数 * 7500
+PLEASURE = 1000 + ABL:乳内射精中毒 * 200
+CALL T_STRONG_SEMEN_FIX
+SOURCE:乳内射精经验 += PLEASURE
+SOURCE:Ｂ快感／触手 += PLEASURE
+
+IF FLAG:主人公的触手也是主人公 && !PLAYER
+	EXP:乳内射精次数 += 1
+	EXP:经验次数／主人公／乳内射精 += 1
+	EXP:PLAYER:乳内射精次数 += 1
+ELSE
+	EXP:乳内射精次数 += 1
+	EXP:经验次数／异形／乳内射精 += TFLAG:触手射精次数
+ENDIF
+CALL SET_STAIN_TARGET("乳房","精液")
+TFLAG:乳内精液 += TFLAG:触手射精次数
+
+
+;口内射精
+@T_EJACULATION_M
+
+SOURCE:耻辱 += TFLAG:触手射精次数 * 250
+SIF ABL:触手中毒
+	SOURCE:爱情 += ABL:精饮中毒 * TFLAG:触手射精次数 * ABL:触手中毒
+SOURCE:屈辱 += TFLAG:触手射精次数 * 1250
+DAMAGE += TFLAG:触手射精次数 * 1250
+PLEASURE = 1000 +ABL:精饮中毒 * 200
+CALL T_STRONG_SEMEN_FIX
+SOURCE:精饮经验 += PLEASURE
+
+IF FLAG:主人公的触手也是主人公 && !PLAYER
+	EXP:精饮次数 += 1
+	EXP:经验次数／主人公／精饮 += 1
+	EXP:PLAYER:精饮次数 += 1
+ELSE
+	EXP:精饮次数 += 1
+	EXP:经验次数／异形／精饮 += TFLAG:触手射精次数
+ENDIF
+CALL SET_STAIN_TARGET("口","精液")
+TFLAG:咽下精液量 += (TFLAG:触手射精次数 +TFLAG:口内精液 -1)
+TFLAG:口内精液 += TFLAG:触手射精次数
+
+
+
+;手コキ射精
+@T_EJACULATION_HAND
+
+SOURCE:耻辱 += TFLAG:触手射精次数 * 175
+SIF ABL:触手中毒
+	SOURCE:爱情 += TFLAG:触手射精次数 * ABL:触手中毒
+SOURCE:屈辱 += TFLAG:触手射精次数 * 250
+DAMAGE += TFLAG:触手射精次数 * 500
+;CALL T_STRONG_SEMEN_FIX
+
+IF FLAG:主人公的触手也是主人公 && !PLAYER
+	EXP:手淫射精次数 += 1
+	EXP:经验次数／主人公／手淫射精 += 1
+	EXP:PLAYER:手淫射精次数 += 1
+ELSE
+	EXP:手淫射精次数 += 1
+	EXP:经验次数／异形／手淫射精 += TFLAG:触手射精次数
+ENDIF
+CALL SET_STAIN_TARGET("手","精液")
+SOURCE:学习 += DAMAGE
+
+
+
+;濃厚精液による快楽、不快値増加　ARGS:補正ABL
+@T_STRONG_SEMEN_FIX(ARGS)
+
+PLEASURE *= TFLAG:触手射精次数
+;そのうちABL:0:精液濃度　で判定
+
+;TIMES PLEASURE,1.50
+;TIMES DAMAGE,1.50
+

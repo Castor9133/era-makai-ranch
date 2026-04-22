@@ -1,0 +1,150 @@
+﻿
+;会いに行く→コマンド判定
+@VISIT_SLAVE_CHECK
+
+;訪問回数使い切っていたら着替えだけできる
+IF FLAG:当前访问次数 >= 3
+	CALL PRINTL_WORD_COLOR("目前时间仅能更换衣服（推进时间后其他指令将重新可用）","黄")
+	PRINTL [ 9] 更改衣服
+	RETURN
+ENDIF
+
+;成長途中の娘
+IF CSTR:状态／主人公的孩子 == "成长中"
+	PRINTL [ 9] 更改衣服
+	PRINTL
+
+	PRINTL 《 亲密互动 》
+	IF CFLAG:时刻限制／摸头
+		CALL PRINTL_WORD_COLOR("　此时间已经抚摸过头了","灰")
+	ELSE
+		PRINTL [10] 摸摸脑袋
+	ENDIF
+	IF CFLAG:时刻限制／接吻
+		CALL PRINTL_WORD_COLOR("　此时间已经亲吻过了","灰")
+	ELSE
+		PRINTL [11] 接吻
+	ENDIF
+	IF CFLAG:时刻限制／和孩子一起玩
+		CALL PRINTL_WORD_COLOR("　这个时间已玩过","灰")
+	ELSE
+		PRINTL [15] 玩
+	ENDIF
+	RETURN
+ENDIF
+EXIST = 0
+IF !＃陷落状态／拒绝以上＃
+	CALL PRINTL_WORD_COLOR("　由于反抗，无法更改发型・使用着色隐形眼镜","灰")
+ELSE
+	IF !ITEM:发型工具套装
+		CALL PRINTL_WORD_COLOR("需要＜发型工具套装＞","灰")
+	ELSE
+		PRINTL [ 0] 更改发型
+	ENDIF
+	PRINTL [ 1] 改变瞳色和瞳孔
+ENDIF
+
+IF !＃穿着衣服／胸部撕裂＃ && !＃穿着衣服／私处撕裂＃
+	CALL PRINTL_WORD_COLOR("　当前穿着的衣服没有破损","灰")
+ELSEIF !ITEM:裁缝工具套装
+	CALL PRINTL_WORD_COLOR("　需要＜裁缝工具套装＞","灰")
+ELSEIF !ITEM:衣服修理布
+	CALL PRINTL_WORD_COLOR("　需要＜衣服修理布＞","灰")
+ELSE
+	PRINTL [ 2] 修复破损的穿着中的衣服
+ENDIF
+
+IF !＃陷落状态／拒绝以上＃
+	CALL PRINTL_WORD_COLOR("　在反抗状态下无法更改称呼","灰")
+ELSE
+	PRINTFORML [ 4] 更改%CALLNAME:0%的称呼
+ENDIF
+
+IF !ITEM:家畜管理标签 && !EQUIP:家畜管理标签／身分
+	CALL PRINTL_WORD_COLOR("　需要＜家畜管理标签＞","灰")
+	EXIST ++
+ELSE
+	PRINTL [ 5] 赋予新身份
+ENDIF
+IF !ITEM:家畜管理标签 && !EQUIP:家畜管理标签／称呼
+	IF EXIST
+		PRINTL
+	ELSE
+		CALL PRINTL_WORD_COLOR("　需要＜家畜管理标签＞","灰")
+	ENDIF
+ELSE
+	PRINTL [ 6] 更改称呼
+ENDIF
+
+;栄養ドリンクは1日1本
+IF CFLAG:当日制限／营养饮料
+	CALL PRINTL_WORD_COLOR("　请确保每天只饮用一瓶＜营养饮料＞","灰")
+ELSEIF BASE:体力 == MAXBASE:体力
+	CALL PRINTL_WORD_COLOR("　体力已满","灰")
+ELSEIF !ITEM:营养饮料
+	CALL PRINTL_WORD_COLOR("　没有<营养饮料>","灰")
+ELSE
+	PRINTFORML [ 7] 给予＜营养饮料＞：所持数量{ITEM:营养饮料}瓶
+ENDIF
+
+IF CFLAG:时刻限制／花草茶
+	CALL PRINTL_WORD_COLOR("　请在下一个时间点饮用＜花草茶＞","灰")
+{
+ELSEIF CFLAG:崩坏 || CFLAG:洗脑 || 
+((!BASE:理性 || BASE:理性 == MAXBASE:理性) && (!BASE:精神力 || BASE:精神力 == MAXBASE:精神力) && (!BASE:乳牛堕落 || CFLAG:乳牛))
+}
+	CALL PRINTL_WORD_COLOR("　＜花草茶＞好像没效果","灰")
+ELSEIF !ITEM:花草茶
+	CALL PRINTL_WORD_COLOR("　没有＜花草茶＞","灰")
+ELSE
+	PRINTFORML [ 8] 给予＜花草茶＞：所持数量{ITEM:花草茶}瓶
+ENDIF
+
+;とりあえず衣服変更の条件なし
+PRINTL [ 9] 更改衣服
+PRINTL
+
+PRINTL 《 亲密互动 》
+IF CFLAG:时刻限制／摸头
+	CALL PRINTL_WORD_COLOR("　此时间已经抚摸过头了","灰")
+ELSE
+	PRINTL [10] 摸摸脑袋
+ENDIF
+
+IF CFLAG:时刻限制／接吻
+	CALL PRINTL_WORD_COLOR("　此时间已经亲吻过了","灰")
+ELSE
+	PRINTL [11] 接吻
+ENDIF
+
+;母乳体質でなくても授乳要求は一応できる
+IF CFLAG:时刻限制／授乳
+	CALL PRINTL_WORD_COLOR("　此时间已经提出哺乳请求","灰")
+ELSE
+	PRINTL [12] 吸欧派
+ENDIF
+
+IF !PLAYER_PENIS
+ELSEIF !ITEM:灵力注入
+	CALL PRINTL_WORD_COLOR("　需要＜灵力注入＞","灰")
+ELSEIF TALENT:处女结界
+	CALL PRINTL_WORD_COLOR("　【处女结界】无法进行灵力注入","灰")
+ELSEIF CFLAG:时刻限制／灵力注入
+	CALL PRINTL_WORD_COLOR("　此时间已经进行灵力注入","灰")
+ELSEIF BASE:0:灵力 < 10000
+	CALL PRINTL_WORD_COLOR,@"　%CALLNAME:0%的灵力不足","灰"
+ELSEIF !BASE:0:精力
+	CALL PRINTL_WORD_COLOR,@"　%CALLNAME:0%的精力不足","灰"
+ELSE
+	PRINTL [13] 灵力注入
+ENDIF
+
+IF !ITEM:触手变化
+	CALL PRINTL_WORD_COLOR("　调教外用药需要＜触手变化＞","灰")
+ELSEIF CFLAG:时刻限制／用药
+	CALL PRINTL_WORD_COLOR("　这段时间已经用药了","灰")
+ELSE
+	PRINTL [14] 用触手拘束并用药
+ENDIF
+
+

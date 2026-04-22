@@ -1,0 +1,265 @@
+﻿
+;奴隷候補の服装
+@RANDOM_SLAVE_CLOTHE
+
+VARSET EQUIP
+VARSET CSTR,"",1000,2000
+CALL RANDOM_SLAVE_CLOTHE_BASE
+CALL RANDOM_SLAVE_CLOTHE_ARMOR
+CALL RANDOM_SLAVE_CLOTHE_LINGERIE
+CALL RANDOM_SLAVE_CLOTHE_ACCESSORY
+CALL CHARA_EQUIP_REGISTER
+CALL RANDOM_SLAVE_CLOTHE_COLOR
+CALL RANDOM_SLAVE_LINGERIE_COLOR
+CALL RANDOM_SLAVE_ACCESSORY_COLOR
+
+
+
+;ベース衣服
+@RANDOM_SLAVE_CLOTHE_BASE
+
+;基本的にジョブにより決定
+SELECTCASE CSTR:职业
+
+;たまにビキニアーマーのジョブ
+CASE "冒险家","弓箭手","剑客","士兵","女武神"
+	SIF RAND:100 < 10
+		EQUIP:比基尼盔甲 ++
+
+;確率高め
+CASE "角斗士","战士"
+	SIF RAND:100 < 50
+		EQUIP:比基尼盔甲 ++
+{
+CASE "牧师","治疗师","咒术师","炼金术师","白魔法师","黑魔法师","贤者","死灵术士","时魔道士","女巫",
+"学者","战士","枢机主教","主教","大魔导师"
+}
+	EQUIP:长袍 ++
+CASE "圣母","公主"
+	EQUIP:礼服 ++
+CASE "巫女","姫巫女"
+	EQUIP:女巫服 ++
+CASE "退魔巫女"
+	EQUIP:战斗用女巫服 ++
+CASE "萨满","阴阳师"
+	EQUIP:法衣 ++
+CASE "放牛的","牧羊人"
+	EQUIP:工作服 ++
+	SIF RAND:100 < 20
+		EQUIP:连体背带裤 ++
+CASE "厨师"
+	EQUIP:布衣 ++
+	EQUIP:围裙装 ++
+CASE "女忍者"
+	EQUIP:忍装束 ++
+CASE "女仆"
+	EQUIP:女仆装 ++
+CASE "战斗女仆"
+	EQUIP:战斗女仆装 ++
+CASE "修女"
+	EQUIP:修道服 ++
+CASE "战斗修女"
+	EQUIP:战斗修女服 ++
+CASE "舞女"
+	EQUIP:舞女的服装 ++
+CASE "姫骑士"
+	EQUIP:战斗礼服 ++
+ENDSELECT
+
+;種族・身分で上書きする場合
+;種族による上書き
+SELECTCASE CSTR:种族
+CASE "吸血鬼"
+	IF RAND:100 < 30
+		VARSET EQUIP
+		EQUIP:外套 ++
+		EQUIP:布衣 ++
+	ENDIF
+	IF RAND:100 < 30
+		VARSET EQUIP
+		EQUIP:礼服 ++
+	ENDIF
+CASE "天人","女神"
+	;ジョブないはずなので100%でいいか
+	VARSET EQUIP
+	EQUIP:长袍 ++
+ENDSELECT
+
+;身分による上書き
+;装備判定ない場合は100%
+SELECTCASE CSTR:身份
+CASE "贵族"
+	IF RAND:100 < 30 || !SUMARRAY(EQUIP)
+		VARSET EQUIP
+		EQUIP:贵族服 ++
+	ENDIF
+CASE "王族"
+	IF RAND:100 < 30 || !SUMARRAY(EQUIP)
+		VARSET EQUIP
+		EQUIP:礼服 ++
+	ENDIF
+ENDSELECT
+
+;ここまでEQUIPがない場合布の服
+SIF !SUMARRAY(EQUIP)
+	EQUIP:布衣 ++
+
+
+
+;鎧の有無
+@RANDOM_SLAVE_CLOTHE_ARMOR
+
+;ビキニアーマーなら飛ばす
+SIF EQUIP:比基尼盔甲
+	RETURN
+SELECTCASE CSTR:职业
+
+;たまに軽鎧
+CASE "冒险家","旅客","骑士","弓箭手","角斗士","自卫团员","士兵","魔法战士"
+	SIF RAND:100 < 20
+		EQUIP:轻铠 ++
+
+;確率高め
+CASE "骑士","剑客","圣骑士","女武神"
+	SIF RAND:100 < 60
+		EQUIP:轻铠 ++
+
+;100%
+CASE "战士","骑士团长","圣骑士"
+	EQUIP:轻铠 ++
+CASE "武将"
+	EQUIP:甲胄 ++
+CASE "重装兵"
+	EQUIP:重铠 ++
+
+;バリエーションあり
+CASE "武士"
+	SELECTCASE RAND:100
+	CASE 0 TO 9
+		EQUIP:甲胄 ++
+	CASE 10 TO 39
+		EQUIP:轻铠 ++
+	ENDSELECT
+
+CASE "黑暗骑士","暗黑骑士"
+	SELECTCASE RAND:100
+	CASE 0 TO 29
+		EQUIP:重铠 ++
+	CASEELSE
+		EQUIP:轻铠 ++
+	ENDSELECT
+ENDSELECT
+
+
+
+;下着
+@RANDOM_SLAVE_CLOTHE_LINGERIE
+
+;衣服によって決定　だいたい基本ブラ・ショーツ
+IF EQUIP:女巫服 || EQUIP:战斗用女巫服 || EQUIP:法衣 || EQUIP:忍装束 || EQUIP:甲胄
+	EQUIP:裹胸布 ++
+	EQUIP:私处贴纸 ++
+ELSEIF EQUIP:贵族服 || EQUIP:礼服
+	EQUIP:紧身胸衣 ++
+	EQUIP:内裤 ++
+
+;下着不可の衣服
+ELSEIF EQUIP:比基尼盔甲 || EQUIP:舞女的服装
+
+ELSE
+	EQUIP:胸罩 ++
+	EQUIP:内裤 ++
+ENDIF
+
+
+
+;アクセサリー
+@RANDOM_SLAVE_CLOTHE_ACCESSORY
+#DIM SELECT_FIX
+
+;メガネ率に補正かけるジョブ
+IF GROUPMATCH(CSTR:职业,"药师","炼金术师","学者","贤者","枢机主教","战士")
+	;5割増しくらいがいい気がする
+	SELECT_FIX = FLAG:眼镜率
+	TIMES SELECT_FIX,1.50
+	SIF RAND:100 < SELECT_FIX
+		EQUIP:眼镜 ++
+ELSE
+	;メガネ率コンフィグを参照
+	SIF RAND:100 < FLAG:眼镜率
+		EQUIP:眼镜 ++
+ENDIF
+
+;頭アクセサリーちょっとややこしい
+CALL RANDOM_SLAVE_CLOTHE_ACCESSORY_HEAD
+
+;チョーカーの条件特になし
+SIF RAND:100 < 10
+	EQUIP:项圈 ++
+
+;グローブとソックス
+IF EQUIP:女仆装 || EQUIP:战斗女仆装 || EQUIP:贵族服 || EQUIP:礼服
+	;グローブはないこともある
+	SIF RAND:100 < 90
+		EQUIP:手套 ++
+	
+	;メイド服などはガーターベルトの場合あり
+	IF RAND:100 < 30
+		EQUIP:吊袜带 ++
+	ELSE
+		EQUIP:袜子 ++
+	ENDIF
+
+;つけない衣服
+ELSEIF EQUIP:工作服 || EQUIP:连体背带裤 || EQUIP:比基尼盔甲 || EQUIP:舞女的服装
+
+;他
+ELSE
+	IF RAND:100 < 30
+		SIF RAND:100 < 80
+			EQUIP:手套 ++
+		EQUIP:袜子 ++
+	ENDIF
+ENDIF
+
+;マント・ケープをつけるのそんなにないかも
+IF EQUIP:布衣 || EQUIP:长袍 || EQUIP:贵族服
+	SELECTCASE RAND:100
+	CASE 0 TO 9
+		EQUIP:披肩 ++
+	CASE 10 TO 24
+		EQUIP:斗篷 ++
+	ENDSELECT
+ENDIF
+
+
+
+;頭アクセサリー
+@RANDOM_SLAVE_CLOTHE_ACCESSORY_HEAD
+
+;シスター
+IF GROUPMATCH(CSTR:职业,"修女","战斗修女")
+	SIF RAND:100 < 90
+		EQUIP:修女面纱 ++
+	SIF RAND:100 < 50
+		EQUIP:项圈 ++
+	RETURN
+ENDIF
+
+;王族だとティアラだったりする
+IF CSTR:身份 == "王族"
+	IF RAND:100 < 30
+		EQUIP:皇冠 ++
+		RETURN
+	ENDIF
+ENDIF
+
+;ここまで通ったらリボン、カチューシャ、なしの3択
+SELECTCASE RAND:100
+CASE 0 TO 19
+	EQUIP:丝带 ++
+CASE 20 TO 39
+	EQUIP:发箍 ++
+ENDSELECT
+
+

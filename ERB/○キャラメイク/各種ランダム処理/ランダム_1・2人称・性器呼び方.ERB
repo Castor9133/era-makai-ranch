@@ -1,0 +1,123 @@
+﻿
+;奴隷候補の1・2人称・性器呼び方
+@RANDOM_SLAVE_CALLPERSON
+
+;性器呼び方を一旦ランダム
+CALL RANDOM_GENITAL_CALL
+
+CFLAG:第一人称是名字 = 0
+
+;性格で分岐
+SELECTCASE CSTR:性格
+CASE "强势"
+	CSTR:第一人称 = 我
+	CSTR:主人公的称呼／陷落前 = 您
+	
+	;さらに種族で変化
+	SIF GROUPMATCH(CSTR:种族,"龙人","仙人","吸血鬼","妖狐") && RAND:100 < 50
+		CSTR:第一人称 = 我
+		
+	;ペニス呼び方に補正
+	SIF GROUPMATCH(CSTR:性器称呼／阴茎,"男人的","鸡鸡","小鸡鸡")
+		CSTR:性器称呼／阴茎 = 阴茎
+	SIF GROUPMATCH(CSTR:性器称呼／膣,"小穴","屄穴")
+		CSTR:性器称呼／膣 = 膣穴
+		
+CASE "傲慢"
+	CSTR:第一人称 = 我
+	CSTR:主人公的称呼／陷落前 = 你
+	SIF GROUPMATCH(CSTR:种族,"龙人","仙人","吸血鬼","妖狐") && RAND:100 < 50
+		CSTR:第一人称 = 我
+		
+CASE "清纯","高尚"
+	CSTR:第一人称 = 妾身
+	CSTR:主人公的称呼／陷落前 = 主人公
+	SIF RAND:100 < 30
+		CSTR:性器称呼／阴茎 = 男人的
+	SIF RAND:100 < 30
+		CSTR:性器称呼／阴茎 = 男性器
+	
+CASE "弱势"
+	CSTR:第一人称 = %CALLNAME%
+	CSTR:主人公的称呼／陷落前 = 主人公
+	CFLAG:第一人称是名字 = 1
+	
+CASEELSE
+	CSTR:第一人称 = 我
+	CSTR:主人公的称呼／陷落前 = 主人公
+	
+ENDSELECT
+
+IF TALENT:性知识贫乏
+	CSTR:性器称呼／阴茎 = 小鸡鸡
+	CSTR:性器称呼／膣 = 屄穴
+	CSTR:性器称呼／肛门 = 屁眼
+ENDIF
+
+;陥落後は一旦「ご主人様」と呼ぶように設定
+CSTR:主人公的称呼／陷落后 = 主人大人
+
+;服従時の呼び方は服従時に○○と呼べ、とするようにしよう
+
+
+
+;性器呼び方入口
+@RANDOM_GENITAL_CALL
+
+CALL RANDOM_PENIS_CALL
+CALL RANDOM_VAGINA_CALL
+CALL RANDOM_ANAL_CALL
+
+
+
+;ペニス呼び方
+@RANDOM_PENIS_CALL
+
+;1500～,ペニス呼び方前半
+STR_REF = 1500
+STR_MAX = 19
+LAST_SHUFFLE_S = %CSTR:性器称呼／阴茎%
+CALL STR_REF_SHUFFLE(STR_REF)
+IF SHUFFLE_COUNT < 10 && LAST_SHUFFLE_S == RESULTS
+	SHUFFLE_COUNT ++
+	RESTART
+ENDIF
+SHUFFLE_COUNT = 0
+CSTR:性器称呼／阴茎 = %RESULTS%
+
+
+
+;膣呼び方
+@RANDOM_VAGINA_CALL
+
+;1600～,膣呼び方前半
+STR_REF = 1600
+STR_MAX = 19
+LAST_SHUFFLE_S = %CSTR:性器称呼／膣%
+CALL STR_REF_SHUFFLE(STR_REF)
+IF SHUFFLE_COUNT < 10 && LAST_SHUFFLE_S == RESULTS
+	SHUFFLE_COUNT ++
+	RESTART
+ENDIF
+SHUFFLE_COUNT = 0
+CSTR:性器称呼／膣 = %RESULTS%
+
+
+
+;アナル呼び方
+@RANDOM_ANAL_CALL
+
+;1700～,アナル呼び名前半
+STR_REF = 1700
+STR_MAX = 19
+LAST_SHUFFLE_S = %CSTR:性器称呼／肛门%
+CALL STR_REF_SHUFFLE(STR_REF)
+IF SHUFFLE_COUNT < 10 && LAST_SHUFFLE_S == RESULTS
+	SHUFFLE_COUNT ++
+	RESTART
+ENDIF
+SHUFFLE_COUNT = 0
+CSTR:性器称呼／肛门 = %RESULTS%
+
+
+

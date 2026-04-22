@@ -1,0 +1,101 @@
+﻿
+@COM102_MESSAGE
+;乳包み花弁搾乳触手
+
+PRINTFORML 从%CALLNAME:0%的身体里长出了两个触手，在%CALLNAME%的眼前晃动着…
+PRINTFORML 触手的尖端分成四个后、内侧有无数的褶皱在蠕动、中央的小孔在伸缩、黏液如涎水般滴落…
+CALL KOJO_PRINT("调教命令",TRAINNAME:SELECTCOM,"挑逗")
+CALL LACTATION_TENTACLE_EQUIP_MESSAGE
+PRINTFORM 经过片刻的挑逗，榨乳触手就吸上了%SLANG_B()%，
+IF BASE:母乳容量
+	PRINTFORM 一边揉搓一边吸吮着%SLANG_MILK()%…
+ELSE
+	PRINTFORM 连同%SLANG_N()%也开始激烈地吸吮…
+ENDIF
+PRINTL
+
+
+
+@COM103_MESSAGE
+;透明カップ搾乳触手
+
+PRINTFORML 从%CALLNAME:0%的身体里长出了两个触手，在%CALLNAME%的眼前晃动着…
+PRINT 触手的前端有一个透明的杯子，大小足以完全覆盖乳轮，
+PRINTL 杯子的内部，细细的触手像瞄准猎物一样蠕动着…
+CALL KOJO_PRINT("调教命令",TRAINNAME:SELECTCOM,"挑逗")
+CALL LACTATION_TENTACLE_EQUIP_MESSAGE
+PRINTFORM 经过片刻的挑逗，吸乳触手吸附在%SLANG_B()%上、在吸引的同时细小的触手缠绕着%SLANG_N()%
+IF BASE:母乳容量
+	PRINTFORM 一边玩弄一边开始榨%SLANG_MILK()%…
+ELSE
+	PRINT 开始玩弄…
+ENDIF
+PRINTL
+
+
+
+@COM104_MESSAGE
+;搾乳ワーム触手
+
+PRINTFORML 从%CALLNAME:0%的身体里长出了两个触手，在%CALLNAME%的眼前晃动着…
+PRINTFORML 触角的末端形状像无眼的生物，大嘴舔着舌头…
+CALL KOJO_PRINT("调教命令",TRAINNAME:SELECTCOM,"挑逗")
+CALL LACTATION_TENTACLE_EQUIP_MESSAGE
+PRINTFORM 经过片刻的挑逗，榨乳触手就吸上了%SLANG_B()%，
+IF BASE:母乳容量
+	PRINTFORM 咕噜咕噜地响着开始吸食%SLANG_MILK()%…
+ELSE
+	PRINTFORM 开始吧嗒吧嗒地吸吮%SLANG_N()%…
+ENDIF
+PRINTL
+
+
+
+;搾乳触手装備前共通メッセージ
+@LACTATION_TENTACLE_EQUIP_MESSAGE
+
+IF BASE:母乳容量
+	SELECTCASE RAND:3
+	CASE 0
+		PRINT 将体验到由这根触手带来的极致吸乳快感
+	CASE 1
+		PRINTFORM 被爬出来的触手吸干自己的%SLANG_MILK()%
+	CASE 2
+		PRINTFORM 触手正瞄准自己的%SLANG_B()%
+	ENDSELECT
+ELSE
+	PRINTFORM 触手正瞄准自己的%SLANG_B()%
+ENDIF
+PRINTFORM 理解了的%CALLNAME%
+IF CFLAG:乳牛 || MARK:搾乳中毒 || ＃陷落状态／恋慕以上＃
+	PRINT 并且，
+ELSE
+	PRINT 但是，
+ENDIF
+IF CFLAG:乳牛
+	PRINTFORM 光是看着就已经漏出%SLANG_MILK()%和爱液了…
+ELSEIF MARK:搾乳中毒
+	PRINTFORM 只要想象一下%SLANG_B()%就已经开始疼了…
+ELSEIF ＃陷落状态／恋慕以上＃
+	PRINTFORM 处于任凭%CALLNAME:0%的摆布的状态…
+ELSEIF TFLAG:拘束BIT
+	PRINT 在被拘束的状态下无法逃避，
+	IF ABL:胸围大小 >= BUSTSIZE_巨乳
+		PRINTFORM 即使想要抵抗看起来像是在摇动着%SLANG_B()%诱惑着…
+	ELSE
+		PRINTFORM 只能看到逼近%SLANG_B()%的触手…
+	ENDIF
+ELSEIF !BASE:体力
+	PRINT 体力已经到了极限，无法逃避…
+ELSE
+	PRINTL
+	PRINTFORM 在狭窄的调教室里没有逃避的地方，拼命隐藏%SAVESTR:标识／乳房%的手臂被触手缠住，
+	PRINTFORM 触手迫近毫无防备的%SLANG_B()%…
+ENDIF
+IF FLAG:搾乳触手挑逗
+	PRINTW
+ELSE
+	PRINTL
+ENDIF
+
+

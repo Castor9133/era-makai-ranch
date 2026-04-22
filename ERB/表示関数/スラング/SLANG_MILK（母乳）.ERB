@@ -1,0 +1,126 @@
+﻿;**********************************************************
+;母乳の淫語
+;**********************************************************
+@SLANG_MILK(ARG)
+#FUNCTIONS
+
+;初期化
+EXIST = 0
+SLANGWORD =
+
+IF GETBIT(FLAG:黑话前缀／母乳,0) && ABL:母乳浓度
+	SELECTCASE RAND:10
+	CASE 0
+		SLANGWORD += "营养丰富"
+	CASE 1
+		SLANGWORD += "营养丰富"
+	CASE 2
+		SLANGWORD += "营养丰富"
+	ENDSELECT
+ENDIF
+SIF GETBIT(FLAG:黑话前缀／母乳,2) && ABL:母乳浓度 && RAND:100 < 15
+	SLANGWORD += "好吃的"
+SIF GETBIT(FLAG:黑话前缀／母乳,4) && ABL:母乳浓度 >= 4 && RAND:100 < 15
+	SLANGWORD += "最高级"
+SIF GETBIT(FLAG:黑话前缀／母乳,5) && !EXP:肉体改造 && RAND:100 < 30
+	SLANGWORD += "天然"
+SIF GETBIT(FLAG:黑话前缀／母乳,6) && CSTR:初始值／身分 == "王族" && RAND:100 < 30
+	SLANGWORD += "皇家"
+IF GETBIT(FLAG:黑话前缀／母乳,1) && ABL:母乳浓度
+	SELECTCASE ABL:母乳浓度
+	CASE 1
+		SIF RAND:100 < 70
+			SLANGWORD += "浓厚"
+	CASE 2
+		SIF RAND:100 < 70
+			SLANGWORD += "上质"
+	CASE 3
+		SIF RAND:100 < 70
+			SLANGWORD += "丰润"
+	CASE 4
+		SIF RAND:100 < 70
+			SLANGWORD += "特浓"
+	CASE 5
+		SIF RAND:100 < 70
+			SLANGWORD += "极品"
+	ENDSELECT
+ENDIF
+SIF GETBIT(FLAG:黑话前缀／母乳,3) && ABL:母乳浓度 >= 2 && RAND:100 < 10
+	SLANGWORD += "浓稠"
+
+;フレーバーミルク判定
+IF CSTR:风味牛奶 != ""
+	SLANGWORD += CSTR:风味牛奶
+	RETURNF SLANGWORD
+ENDIF
+
+;母乳スラングの場合のみ魔力母乳時の置換がある
+IF GETBIT(FLAG:黑话替换／母乳,10) && MARK:魔力母乳体质
+	EXIST ++
+	SIF RAND:100 < 50
+		RETURNF SAVESTR:标识／魔力母乳
+ENDIF
+IF GETBIT(FLAG:黑话替换／母乳,9)
+	EXIST ++
+	SIF RAND:100 < 50
+		RETURNF SAVESTR:标识／母乳
+ENDIF
+IF GETBIT(FLAG:黑话替换／母乳,4) && CFLAG:身高 < FLAG:黑话／儿童标准上限身高数值
+	EXIST ++
+	IF RAND:100 < 50
+		SLANGWORD += "萝莉母乳"
+		RETURNF SLANGWORD
+	ENDIF
+ENDIF
+IF GETBIT(FLAG:黑话前缀／母乳,7)
+	IF TALENT:ＪＳ && RAND:100 < 50
+		SLANGWORD += "ＪＳ"
+	ELSEIF TALENT:ＪＣ && RAND:100 < 50
+		SLANGWORD += "ＪＣ"
+	ELSEIF TALENT:ＪＫ && RAND:100 < 50
+		SLANGWORD += "ＪＫ"
+	ENDIF
+ENDIF
+IF GETBIT(FLAG:黑话替换／母乳,3) && MARK:魔力母乳体质 && BASE:魔力
+	EXIST ++
+	IF RAND:100 < 50
+		SLANGWORD += "魔力母乳"
+		RETURNF SLANGWORD
+	ENDIF
+ENDIF
+IF GETBIT(FLAG:黑话替换／母乳,2) && TALENT:处女
+	EXIST ++
+	IF RAND:100 < 50
+		SLANGWORD += "处女母乳"
+		RETURNF SLANGWORD
+	ENDIF
+ENDIF
+IF GETBIT(FLAG:黑话替换／母乳,1) && TALENT:处女
+	EXIST ++
+	IF RAND:100 < 50
+		SLANGWORD += "处女乳"
+		RETURNF SLANGWORD
+	ENDIF
+ENDIF
+SIF GETBIT(FLAG:黑话替换／母乳,0) && EXIST
+	RESTART
+
+IF GETBIT(FLAG:黑话标识／母乳,0) && RAND:100 < 50
+	SLANGWORD += "母乳"
+	RETURNF SLANGWORD
+ELSEIF GETBIT(FLAG:黑话标识／母乳,2) && RAND:100 < 50
+	SLANGWORD += "母乳"
+	RETURNF SLANGWORD
+ELSEIF GETBIT(FLAG:黑话标识／母乳,4) && RAND:100 < 50
+	SLANGWORD += "欧派母乳"
+	RETURNF SLANGWORD
+ELSEIF GETBIT(FLAG:黑话标识／母乳,1) && RAND:100 < 30
+	SLANGWORD += "奶"
+	RETURNF SLANGWORD
+ELSEIF GETBIT(FLAG:黑话标识／母乳,3)
+	SLANGWORD += "牛奶"
+	RETURNF SLANGWORD
+ENDIF
+RESTART
+
+

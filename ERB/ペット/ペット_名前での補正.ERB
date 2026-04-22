@@ -1,0 +1,138 @@
+﻿
+;名前による毛並みと性別補正
+@NAMING_PET_NAME_FIX
+
+SELECTCASE ANIMAL
+CASE "堕落天马"
+	CALL NAMING_PET_NAME_FIX_HORSE
+CASE "双头犬"
+	CALL NAMING_PET_NAME_FIX_DOG
+CASE "魔界仓鼠"
+	CALL NAMING_PET_NAME_FIX_HAMSTER
+ENDSELECT
+
+
+
+;ｳﾏﾁｬﾝ
+;候補に上がってるやつ以外はキリがないのでやめ
+@NAMING_PET_NAME_FIX_HORSE
+
+SELECTCASE PET_NAME
+CASE "施奈德","健太"
+	PET_GENDER = 1
+CASE "赤兔马"
+	PET_COAT = 赤毛
+CASE "松树"
+	PET_COAT = 鹿毛
+CASE "古尔法克西"
+	PET_COAT = 金色
+CASE "牧场王"
+	PET_COAT = 白马
+	PET_GENDER = 1
+CASE "玛卡玛卡"
+	PET_COAT = 黑鹿毛
+	PET_GENDER = 0
+CASE "奥达西"
+	PET_COAT = 白马
+	PET_GENDER = 0
+CASE "黑王号","奶油"
+	PET_COAT = 黑毛
+	PET_GENDER = 1
+CASE "糖果科城"
+	PET_COAT = 鹿毛
+	PET_GENDER = 0
+CASE "叶波纳"
+	PET_COAT = 尾花栗毛
+	PET_GENDER = 0
+ENDSELECT
+
+
+
+;ｲﾇﾁｬﾝ
+@NAMING_PET_NAME_FIX_DOG
+
+SELECTCASE PET_NAME
+CASE "太郎","二郎"
+	PET_GENDER = 1
+CASE "银牙"
+	PET_COAT = 银色
+	PET_GENDER = 1
+CASE "赫姆赫姆"
+	PET_COAT = 奶油
+	PET_GENDER = 1
+CASE "定春"
+	PET_COAT = 白色
+	PET_GENDER = 1
+CASE "匆忙"
+	PET_COAT = 红色
+	PET_GENDER = 1
+CASE "福音"
+	PET_COAT = 紫色
+	PET_GENDER = 1
+CASE "拿铁","孟堡"
+	PET_COAT = 奶油
+	PET_GENDER = 0
+CASE "帕姆帕姆"
+	PET_COAT = 棕色
+	PET_GENDER = 0
+CASE "虎狼丸"
+	PET_COAT = 灰色
+	PET_GENDER = 1
+CASE "拦截"
+	PET_COAT = 黑色
+	PET_GENDER = 1
+CASE "安吉洛"
+	PET_COAT = 棕色
+	PET_GENDER = 1
+CASE "米尔希奥莱"
+	PET_COAT = 粉红色
+	PET_GENDER = 0
+CASE "椛"
+	PET_COAT = 白色
+	PET_GENDER = 0
+ENDSELECT
+
+
+
+;ﾊﾑﾁｬﾝ
+@NAMING_PET_NAME_FIX_HAMSTER
+
+SELECTCASE PET_NAME
+CASE "阿尔吉农"
+	PET_COAT = 白色
+CASE "马卡丘"
+	PET_COAT = 黄色
+CASE "公太郎","瑞克","杰瑞","薯条"
+	PET_COAT = 正常
+	PET_GENDER = 1
+CASE "哈姆斯克"
+	PET_COAT = 正常
+	PET_GENDER = 0
+CASE "火腿"
+	PET_COAT = 红色
+	PET_GENDER = 0
+CASE "根津子"
+	PET_COAT = 黑色
+	PET_GENDER = 0
+CASE "纳苏林"
+	PET_COAT = 灰色
+	PET_GENDER = 0
+CASE "比卡拉"
+	PET_COAT = 白色
+	PET_GENDER = 0
+CASE "摇晃","楚兵卫"
+	PET_COAT = 灰色
+	PET_GENDER = 1
+CASE "白莫"
+	PET_COAT = 白色
+	PET_GENDER = 1
+CASE "艾比"
+	PET_COAT = 奶油
+	PET_GENDER = 1
+ENDSELECT
+
+
+
+
+
+

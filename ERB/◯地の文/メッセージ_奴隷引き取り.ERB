@@ -1,0 +1,19 @@
+﻿
+;奴隷受け取り地の文
+@SLAVE_RECEIVE_MESSAGE
+
+IF CFLAG:轮奸次数
+	PRINTFORML 虽然%CALLNAME%因终于摆脱了凌辱而松了一口气，但当她意识到自己没有得救时，她感到害怕…
+ELSEIF TALENT:冷漠 || TALENT:感情缺乏
+	PRINTFORML %CALLNAME%面无表情地盯着这边…
+ELSEIF TALENT:胆怯 || TALENT:悲观
+	PRINTFORML %CALLNAME%对于接下来将会发生什么感到害怕…
+ELSEIF TALENT:高傲 || TALENT:自尊心高
+	PRINTFORML %CALLNAME%在呼喊着要快点解放自己…
+ELSE
+	PRINTFORML %CALLNAME%发现%CALLNAME:0%是主谋后，怒视着这边…
+ENDIF
+
+
+
+

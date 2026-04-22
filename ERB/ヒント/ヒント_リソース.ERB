@@ -1,0 +1,171 @@
+﻿
+;リソース目次
+@HINT_RESOURCE
+
+CLEARLINE LINECOUNT
+PRINTL 请选择要查看其说明的项目。
+DRAWLINE
+BR = 0
+STR_REF = 9200
+CALL HINT_BUTTON_LIST
+DRAWLINE
+CALL HINT_DETAIL_RESOURCE
+CALL PRINTL_ALIGN(5)
+DRAWLINE
+PRINTL [99] 返回
+INPUT
+PRINTL
+SELECTCASE RESULT
+CASE 0 TO 29
+	SELECT_TIPS = RESULT
+CASE 99
+	RETURN
+ENDSELECT
+RESTART
+
+
+
+;リソースの解説
+@HINT_DETAIL_RESOURCE
+
+STR_NUM = STR_REF +SELECT_TIPS
+
+;対応IDでないなら汎用出して帰る
+IF SELECT_TIPS < 0 || SELECT_TIPS >= 30 || STR:STR_NUM == ""
+	CALL NOT_SELECT_HINT_COMMON
+	RETURN
+ENDIF
+
+;項目名
+PRINTFORML 　《 %STR:STR_NUM% 》
+SELECTCASE STR:STR_NUM
+CASE "资金"
+	PRINTL 牧场目前拥有的资金。
+	CALL PRINTL_WORD_COLOR("・在这个变体中，即使资金为0也不会导致游戏结束。","黄")
+	PRINTL
+	PRINTL 《 资金用途 》
+	PRINTL 在城市设施购买物品／扩建牧场
+	PRINTL 早晨日程结束时进行的「结算」时用于牧场的维护费用
+	PRINTL 购买【拍卖行】的奴隶
+	PRINTL 雇佣傭兵兼职
+	PRINTL 在接收奴隶时购入＜家畜用搾乳器＞
+	PRINTL
+	PRINTL 《 筹集资金 》
+	PRINTFORML 在早晨日程结束时的「结算」时，通过出售【魔界乳牛】的母乳或奴隶的%SAVESTR:标识／母乳%来获得
+	
+CASE "储存灵力"
+	PRINTFORML 奴隶的%SAVESTR:标识／母乳%一起榨取，保存在灵力抽出装置中的灵力。
+	PRINTL
+	PRINTL 《 储存灵力用途 》
+	PRINTL 从【开发・学习】中的药品制造
+	PRINTL 在【魔王军研究所】购买物品／购买设备／【贡献pt】转换
+	PRINTL
+	PRINTL 《 储存灵力获取 》
+	PRINTL 在日程【抽出】或调教中使用＜小型灵力抽出装置＞
+	PRINTFORML 与奴隶的%SAVESTR:标识／母乳%一起提取
+	
+CASE "储存魔力"
+	PRINTFORML 与【魔力母乳体质】的奴隶的%SAVESTR:标识／母乳%一起挤取，
+	PRINTL 并存储在各种＜魔力储存器＞中的魔力。
+	PRINTL
+	PRINTL 《 增加储存魔力上限 》
+	PRINTL 【家居中心】购买、通过成就获得、在【魔王军研究所】改造中获得
+	PRINTL 较高等级的＜魔力储存器＞
+	PRINTL
+	PRINTL 《 储存魔力用途 》
+	PRINTL 从【开发・学习】中的药品制造
+	PRINTL 【魔王军研究所】购买物品/购买设备
+	PRINTL 结算时作为魔力电池费用消耗
+	PRINTL 通过＜魔力补给装置＞对主人公的魔力补给
+	PRINTL
+	PRINTL 《 储存魔力获取 》
+	PRINTL 在日程【抽出】或调教中使用＜小型灵力抽出装置＞
+	PRINTFORML 与【魔力母乳体质】的奴隶的%SAVESTR:标识／母乳%一起抽出
+	PRINTL 睡觉时主人公的魔力回复时溢出部分的1/5储存,存储超过000MP
+	
+CASE "主人公的灵力"
+	PRINTFORML 与奴隶的%SAVESTR:标识／母乳%一起被＜搾乳能量吸收＞吸取，成为你的灵力。
+	PRINTL
+	PRINTL 《 主人公的灵力用途 》
+	PRINTL 通过增加灵力上限来提高体力・等级
+	PRINTL 使用命令＜注入灵力＞
+	PRINTL 从【开发・学习】中的药品制造
+	PRINTL 在【魔王军研究所】购买物品／购买设备／【贡献pt】转换
+	PRINTL
+	PRINTL 《 主人公的灵力获取 》
+	PRINTFORML 当＜能量吸收＞有效的时候，通过吸吮奴隶的%SAVESTR:标识／母乳%增加
+	PRINTL 就寝时：回复2%
+	PRINTL 日程【战斗训练】：5%回复
+	
+CASE "主人公的魔力"
+	PRINTFORML 与【母乳体质】的奴隶的%SAVESTR:标识／母乳%一起吸取，成为主人公的魔力。
+	PRINTL
+	PRINTL 《 主人公的魔力用途 》
+	PRINTL 通过【开发・学习】或【魔王军研究所】消耗代替储存的魔力
+	PRINTL 游戏中各种魔法的发动
+	PRINTL 调教中触手魔法的维持
+	PRINTL 【体内凌辱】的维持
+	PRINTL
+	PRINTL 《 主人公的魔力获取 》
+	PRINTFORML 通过吸吮【魔力母乳体质】的奴隶的%SAVESTR:标识／母乳%可增加
+	PRINTL 就寝时：回复20%
+	PRINTL 通过＜魔力补给装置＞对主人公的魔力补给
+	
+CASE "贡献pt"
+	PRINTL 在你的活动为魔王军做出贡献时获得的神秘点数。
+	PRINTL
+	PRINTL 《 贡献pt用途 》
+	PRINTL 在随机角色制作时用于个性再调整
+	PRINTFORML 外部读取和执行手动角色创建将消耗%VALUE_DIGIT(CHARA_MAKE_COST)%
+	PRINTL
+	PRINTL 《 贡献pt获取 》
+	PRINTFORML 结算时，如果人类的%SAVESTR:标识／母乳%的发货金额超过10,000G，则获得发货金额的√计算部分
+	PRINTL 在【魔王军研究所】兑换灵力
+	
+CASE "奶牛健康度"
+	PRINTL 这是在牧场中【魔界乳牛】的健康度。
+	PRINTL
+	PRINTL 《 乳牛健康度影响 》（在执行日程时判断）
+	PRINTL 【奶农】执行者的体力消耗发生变化
+	PRINTL 　～20：400HP　21～89：200HP　90～：100HP
+	PRINTL 早晚挤奶时，魔界乳牛奶的发货计划金额增加量发生变化
+	PRINTL 　～19：5,000G　20～49：9,000G　50～90：12,000G　91～：15,000G（每个+随机数）
+	PRINTL
+	PRINTL 《 乳牛增加健康度的行动 》
+	PRINTL 【奶农】日程实行时，根据执行者的【奶农】Lv总和增加
+	PRINTL
+	PRINTL 《 乳牛减少健康度的行动 》
+	PRINTL 每小时在早晨到晚上消耗5～7
+	PRINTL 消耗后，如果【奶农】日程执行者的【奶农】Lv总和低于20，则最多减少90
+	PRINTL 如果没有人执行【奶农】日程，将减少30-40
+	
+CASE "事务工作量"
+	PRINTL 这是每天在牧场中积累的需要处理的行政工作的量。
+	PRINTL
+	PRINTL 《 事务工作量影响 》
+	PRINTL 20以上的情况下，主人公的（基本上是中午的）日程强制变成【事务】
+	PRINTL
+	PRINTL 《 增加事务工作量的行动 》
+	PRINTL 在每天的结算时增加3～4
+	PRINTL
+	PRINTL 《 减少事务工作量的行动 》
+	PRINTL 在执行【事务】日程时，根据执行者的【事务】Lv的总和减少
+	PRINTL 在【做完事务工作再睡觉】实行时，根据主人公的【事务】Lv减少1/2
+	
+CASE "大浴场清洁完成度"
+	PRINTL 在建造＜大浴场＞后，这是用于清扫以使用大浴场的进度。
+	PRINTL
+	PRINTL 《 大浴场清洁完成度影响 》
+	PRINTL 如果达到100％，则奴隶们可以在晚间行动后使用大浴场
+	PRINTL
+	PRINTL 《 大浴场清洁完成度增加行动 》
+	PRINTL 在执行【大浴场清洁】日程时，根据执行者的【清洁】Lv总和增加
+	PRINTL 直到体力为0／10次循环／清扫完成　↑重复
+	PRINTL
+	PRINTL 《 大浴场清洁完成度减少行动 》
+	PRINTL 在使用大浴场后重置为0％
+	PRINTL 如果不使用大浴场，就寝时-10%
+	
+ENDSELECT
+
+

@@ -1,0 +1,21 @@
+﻿
+;収入計算
+@INCOME_CALC
+
+PRINTL 　　　《 收入 》
+PRINTFORML 魔界乳牛的牛奶出货金额：%VALUE_DIGIT(MONEY:魔界乳牛母乳出货预定金额)%G
+MONEY_SELL:1 += MONEY:魔界乳牛母乳出货预定金额
+MONEY:魔界乳牛母乳出货预定金额 = 0
+
+;奴隷のミルク価格は別関数にする
+CALL MILK_PRICE_CALC
+
+;事業提携先からの報酬
+CALL PARTNER_REWORD_CALC
+
+;合計
+MONEY_SELL:0 = SUMARRAY(MONEY_SELL)
+PRINTFORML ＜合计收入：%VALUE_DIGIT(MONEY_SELL:0)%G ＞
+PRINTL
+
+

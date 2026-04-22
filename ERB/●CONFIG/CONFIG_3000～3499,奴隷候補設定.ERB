@@ -1,0 +1,174 @@
+﻿
+;奴隷候補設定一覧
+@LIST_CONFIG_SLAVE_BODY
+
+PRINTL --- 《 奴隶候选设置 》 ---
+ALIGNMENT LEFT
+DRAWLINE
+CALL PRINTL_WORD_COLOR("＜身体特征比例＞以及更多　・游戏开始前　・开发者模式　・<奴隶候补设定变更票>只能在使用中更改。","黄")
+CALL CONFIG_CHANGE_FLAG_CHECK(1)
+FLAG_REF = 3000
+FOR LOCAL,0,50
+	SIF FLAGNAME:(LOCAL +FLAG_REF) == ""
+		CONTINUE
+	CALL PRINT_CONFIG_SLAVE_BODY(LOCAL)
+NEXT
+PRINTL
+PRINTL [70] 身体特征比例
+PRINTL [71] 一部角色的非处女时再抽选
+
+
+
+;ARG→LOCAL　FLAG_REFを足すことでフラグ番号
+@PRINT_CONFIG_SLAVE_BODY(ARG)
+
+FLAG_NAME = %FLAGNAME:(ARG +FLAG_REF)%
+SELECTCASE FLAG_NAME
+CASE "银色头发派"
+	LOCALS = 【白发】改为【银发】
+	PRINTFORM [{ARG,2}] %LOCALS,32%
+	CALL PRINT_ONOFF(FLAG:FLAG_NAME)
+	
+CASE "现实的发色率","日本式职业的日本名率","日本式职业的黑色头发率"
+	IF !FLAG:FLAG_NAME
+		PRINTFORM [{ARG,2}] %FLAG_NAME,32%无替代
+	ELSE
+		PRINTFORM [{ARG,2}] %FLAG_NAME,32%：{FLAG:FLAG_NAME}\%
+	ENDIF
+
+CASE "随机名称替代"
+	PRINTFORM [{ARG,2}] %FLAG_NAME,32%：
+	SELECTCASE FLAG:FLAG_NAME
+	CASE 0
+		PRINT 无优先级
+	CASE 1
+		PRINT 日本系
+	CASE 2
+		PRINT 英系
+	CASE 3
+		PRINT 法系
+	CASE 4
+		PRINT 德系
+	CASE 5
+		PRINT 意大利系
+	CASE 6
+		PRINT 俄系
+	CASE 7
+		PRINT 幻想系
+	ENDSELECT
+
+CASE "眼镜率"
+	PRINTFORM [{ARG,2}] %FLAG_NAME,32%：{FLAG:FLAG_NAME}\%
+
+CASE "高挑时的外表年龄修正"
+	PRINTFORM [{ARG,2}] %FLAG_NAME,32%：+{FLAG:FLAG_NAME}岁
+ENDSELECT
+PRINTL
+
+
+
+;ARG→INPUT
+@CHANGE_CONFIG_SLAVE_BODY(ARG)
+
+SELECTCASE ARG
+CASE 70	;身体特徴割合
+	CALL TENDENCY_CONFIG_COMMON
+CASE 71	;非処女時再抽選
+	CALL NON_VIRGIN_REROLL_CONFIG
+CASEELSE
+	CALL CHANGE_CONFIG_SLAVE_BODY_NAME(ARG)
+ENDSELECT
+
+
+
+@CHANGE_CONFIG_SLAVE_BODY_NAME(ARG)
+
+FLAG_NUM = ARG +FLAG_REF
+FLAG_NAME = %FLAGNAME:FLAG_NUM%
+CALL CHANGE_CONFIG_INVERTBIT
+SIF RESULT
+	RETURN
+SELECTCASE FLAG_NAME
+CASE "银色头发派"
+	PRINTL 在角色设置中选择【白发】的话会自动变更为【银发】或者设定。
+	PRINTL
+	PRINTL [ 0] 保持原样即可（默认）
+	PRINTL [ 1] 变成【银色】
+	BINPUT
+	FLAG:FLAG_NUM = RESULT
+		
+CASE "现实的发色率"
+	PRINTL 设定角色设置调整时成为现实的发色的概率。
+	PRINTL （选择0也会出现「黒色・金色・栗色」这些三次元基础发色）
+	PRINTL
+	PRINTLC [  0] 黑锅上等（默认）
+	PRINTL [100] 「黑发、金发、栗发」哪个好
+	PRINTL 或输入0～100之间的数字。
+	INPUT
+	SIF RESULT >= 0 && RESULT <= 100
+		FLAG:FLAG_NUM = RESULT
+
+CASE "随机名称替代"
+	PRINTL 设定从哪个系统中选择角色的名字初始设定。
+	PRINTL
+	PRINTLC [ 0] 无优先级（默认）
+	PRINTLC [ 1] 日本系
+	PRINTLC [ 2] 英系
+	PRINTLC [ 3] 法系
+	PRINTLC [ 4] 德系
+	PRINTLC [ 5] 意大利系
+	PRINTLC [ 6] 俄系
+	PRINTL [ 7] 幻想系
+	BINPUT
+	FLAG:FLAG_NUM = RESULT
+		
+CASE "日本式职业的日本名率"
+	PRINTL 在角色创建时选择了【巫女】【忍者】等日本风格的职业时
+	PRINTL 设定优先使用日本名称的概率。（选择0也会出现「黒色・金色・栗色」这些三次元基础发色）
+	PRINTL 在随机名称替代之后确定覆盖。
+	PRINTL
+	PRINTLC [  0] 无优先级
+	PRINTLC [ 80] 偶尔日本名以外也可以（默认）
+	PRINTL [100] 日本名一定好
+	PRINTL 或输入0～100之间的数字。
+	INPUT
+	SIF RESULT >= 0 && RESULT <= 100
+		FLAG:FLAG_NUM = RESULT
+		
+CASE "日本式职业的黑色头发率"
+	PRINTL 在角色创建时选择了【巫女】【忍者】等日本风格的职业时
+	PRINTL 优先设定成为【黑发】的概率。（选择0也会出现「黒色・金色・栗色」这些三次元基础发色）
+	PRINTL [现实的发色比例]→[此项目]→[种族修正]的顺序将被覆盖。
+	PRINTL
+	PRINTLC [  0] 无优先级
+	PRINTLC [ 50] 大约一半是黑发（默认）
+	PRINTL [100] 黑发最高
+	PRINTL 或输入0～100之间的数字。
+	INPUT
+	SIF RESULT >= 0 && RESULT <= 100
+		FLAG:FLAG_NUM = RESULT
+
+CASE "眼镜率"
+	PRINTL 设定打乱角色妆容时戴眼镜的几率。
+	PRINTL （没有特别的现在地位的意义，也有作为饰品的伊达眼镜。根据个人喜好请选择）
+	PRINTL ・关于一部分学者系的职业，戴眼镜的概率是这里设定的1.5倍
+	PRINTL
+	PRINTLC [  0] 绝对不要
+	PRINTLC [ 10] 偶尔进入（默认）
+	PRINTL [100] 绝对有
+	PRINTL 或输入0～100之间的数字。
+	INPUT
+	SIF RESULT >= 0 && RESULT <= 100
+		FLAG:FLAG_NUM = RESULT
+
+CASE "高挑时的外表年龄修正"
+	PRINTL 身高达到【高身高】以上时，设定外表年龄下限值的修正量。
+	PRINTL
+	PRINTL [ 0] 无修正（默认）
+	PRINTFORML 或输入0～{VISUAL_AGE_ADULT_MAX -VISUAL_AGE_CHILD_MAX -1}（成年时的外表年龄范围）。
+	INPUT
+	SIF RESULT >= 0 && RESULT <= VISUAL_AGE_ADULT_MAX -VISUAL_AGE_CHILD_MAX -1
+		FLAG:FLAG_NUM = RESULT
+ENDSELECT
+
+

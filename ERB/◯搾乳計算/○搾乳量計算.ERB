@@ -1,0 +1,78 @@
+﻿
+;噴乳量計算
+@LACTATION_VALUE_CALC
+#DIM MILK,5
+
+VARSET MILK
+IF TFLAG:搾乳刺激 || TFLAG:搾乳器
+	;搾乳責め中基礎噴乳量を追加
+	MILK:0 = MAXBASE:基础喷乳量
+	
+	;搾乳責めされながら部位関係なく絶頂時に追加
+	MILK:1 = SQRT(NOWEX:总绝顶 *2000 +1) -1
+ENDIF
+
+;乳絶頂したら追加
+MILK:2 = (SQRT(NOWEX:Ｂ绝顶 *10000 +1) -1) /2
+MILK:3 = (SQRT(NOWEX:Ｎ绝顶 *10000 +1) -1) /2
+
+;合計が搾ったミルクcc
+NOWEX:喷乳 = SUMARRAY(MILK)
+CALL RANDOM_FIX(NOWEX:喷乳,10,"喷乳量")
+NOWEX:喷乳 += FIX
+
+;料理用のときは一回半減してから最低限を100cc=1人前にする
+SIF TFLAG:烹调搾乳
+	NOWEX:喷乳 = MAX(NOWEX:喷乳 /2,100)
+
+;不足ミルク計算　ちとややこしい
+SIF NOWEX:喷乳 > BASE:母乳容量
+	CALL LACK_MILK_CALC
+
+;倍率カスタム
+CALL DIFFICULTY_CONFIG_APPLY("喷乳量")
+
+
+
+;不足ミルク計算
+@LACK_MILK_CALC
+#DIM MAX_MILK
+
+NOWEX:母乳不足 = NOWEX:喷乳 -BASE:母乳容量
+NOWEX:喷乳 = BASE:母乳容量
+
+;魔力母乳体質で魔力がある→1/2して魔力か母乳生産力の高いほうで上限
+;魔力母乳の場合魔力=母乳生産力になる
+IF MARK:魔力母乳体质 && BASE:魔力
+	IF NOWEX:母乳不足 /2 < BASE:魔力
+		NOWEX:喷乳 += (NOWEX:母乳不足 /2)
+	ELSE
+		NOWEX:喷乳 += BASE:魔力
+	ENDIF
+	MAX_MILK = MAX(BASE:魔力,BASE:母乳生产力)
+	NOWEX:喷乳 = LIMIT(NOWEX:喷乳,0,MAX_MILK)
+	
+	;経験値用の値を計算する
+	NOWEX:母乳不足经验值 = NOWEX:母乳不足 /2
+
+;魔力母乳体質だけど魔力がない、か魔力母乳体質でない、かつ霊力吸収状態で霊力あり→
+;1/2して霊力か母乳生産力の高いほうで上限
+ELSEIF (TFLAG:能量吸收 || TFLAG:抽出中) && BASE:灵力
+	IF NOWEX:母乳不足 /2 < BASE:灵力
+		NOWEX:喷乳 += (NOWEX:母乳不足 /2)
+	ELSE
+		NOWEX:喷乳 += BASE:灵力
+	ENDIF
+	MAX_MILK = MAX(BASE:灵力,BASE:母乳生产力)
+	NOWEX:喷乳 = LIMIT(NOWEX:喷乳,0,MAX_MILK)
+	NOWEX:母乳不足经验值 = NOWEX:母乳不足 /2
+
+;全部NOなら不足を1/5にして生産力で上限
+ELSE
+	NOWEX:喷乳 += (NOWEX:母乳不足 /5)
+	NOWEX:喷乳 = LIMIT(NOWEX:喷乳,0,BASE:母乳生产力)
+	NOWEX:母乳不足经验值 = NOWEX:母乳不足 *4 /5
+ENDIF
+
+
+

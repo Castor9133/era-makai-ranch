@@ -1,0 +1,278 @@
+﻿
+;精神力・状態目次
+@HINT_MIND_STATUS
+#DIM DYNAMIC PAGE
+
+PAGE_MAX = 2
+SIF PAGE < 1
+	PAGE = 1
+CLEARLINE LINECOUNT
+PRINTL 请选择要查看其说明的项目。
+DRAWLINE
+BR = 0
+STR_REF = 9130
+SELECTCASE PAGE
+CASE 1
+	CALL HINT_BUTTON_LIST(0,7)
+CASE 2
+	CALL HINT_BUTTON_LIST(7)
+ENDSELECT
+DRAWLINE
+CALL HINT_DETAIL_MIND_STATUS
+CALL PRINTL_ALIGN(5)
+DRAWLINE
+PRINTLC [90] 页面切换
+PRINTFORMLC PAGE：{PAGE}／{PAGE_MAX}
+PRINTL [99] 返回
+INPUT
+PRINTL
+SELECTCASE RESULT
+CASE 0 TO 29
+	SELECT_TIPS = RESULT
+CASE 90
+	PAGE ++
+	SIF PAGE > PAGE_MAX
+		PAGE = 1
+	SELECT_TIPS = -1
+CASE 99
+	RETURN
+ENDSELECT
+RESTART
+
+
+
+;メインメニュー選択肢の解説
+@HINT_DETAIL_MIND_STATUS
+
+STR_NUM = STR_REF +SELECT_TIPS
+
+;対応IDでないなら汎用出して帰る
+IF SELECT_TIPS < 0 || SELECT_TIPS >= 30 || STR:STR_NUM == ""
+	CALL NOT_SELECT_HINT_COMMON
+	RETURN
+ENDIF
+
+;項目名
+PRINTFORML 　《 %STR:STR_NUM% 》
+SELECTCASE STR:STR_NUM
+CASE "抵抗心"
+	PRINTL 这是拒绝成为魔族奴隶的情感
+	PRINTL 在存在抵抗心的情况下，除了某些事件外，其他精神参数的变化将被防御。
+	PRINTL
+	PRINTL 《 减少行动 》
+	PRINTL 各种调教一般情况
+	PRINTL 获取相应的刻印
+	PRINTL 处女丧失、肉体改造等
+	
+CASE "尊严"
+	PRINTL 尽管成为奴隶，仍然保持作为人类的尊严的情感。
+	PRINTL 通过将其降至0％，可以失去反抗意愿，【抗拒】就会被删除。
+	PRINTL 主要是在这个阶段＜魔力枷锁＞将被解除。
+	PRINTL 当其降至0％时，【理性】【精神力】会减少，并且【厌恶感】的减少条件将得到缓解。
+	PRINTL
+	PRINTL 在其降至0％时，将进行之前受到的惩罚的结算，并且在屈服的惩罚中，如果
+	PRINTL 【痛苦】【恐惧】调教的比例超过40％，
+	PRINTL 则分别刻上【痛苦刻印】【恐怖刻印】。
+	PRINTL
+	PRINTL 《 减少行动 》
+	PRINTL 不包括顺从效果的惩罚（小量）・失意效果的惩罚（大幅减少）
+	PRINTL 获取相应的刻印　处女丧失·肉体改造等（可穿透其他参数的防御）
+	
+CASE "厌恶感"
+	PRINTL 对你将人类女性视为奴隶的反感之情。
+	PRINTL 通过降至0％，【好感度】会增加。
+	PRINTL
+	PRINTL 《 减少行动 》
+	PRINTL 尊严值为1以上时：「恭顺-恐怖-耻辱-失意-根据「反感」而减少。
+	PRINTL 尊严为0%　：「恭顺+淫欲-根据「反感」而减少。
+	PRINTL 共同：与主人公一起执行日程
+	PRINTL
+	PRINTL 《 增加行动 》
+	PRINTL 处女丧失、肉体改造等
+	
+CASE "理性"
+	PRINTL 这是抵抗受到快感刺激的决心。
+	PRINTL 将其降至0％，【乳牛堕落】状态将增加。
+	PRINTL
+	PRINTL 《 减少行动 》
+	PRINTL 「淫欲+根据搾乳快感增加
+	PRINTL 获得相应的刻印（可穿透其他参数的防御）
+	PRINTL 在日程或调教结束时，总绝顶次数超过50次（可穿透其他参数的防御）
+	PRINTL
+	PRINTL 《 回复行为（理性为1以上） 》
+	PRINTL ＜草药茶＞：10%回复（当天第一次）
+	
+CASE "精神力"
+	PRINTL 是否怀有希望，心灵是否受到打击的数值。
+	PRINTL 通过将其削减至10％，将进入【屈服】状态，可以让她顺从您的指令，就有可能把事务委托给主人公。
+	PRINTL 将其降至0％将导致【崩溃】状态，使其无法执行工作并导致各种后遗症。
+	PRINTL 如果在执行日程之前，【体力】为1以上，则在其降至10％时，精神力减少的时间会停止。
+	PRINTL
+	CALL PRINTL_WORD_COLOR("【乳牛】状态时，由于感到成为挤奶奴隶的最高幸福，将被固定在100％。","桃")
+	CALL PRINTL_WORD_COLOR("【隶属】状态时，由于只需看到您的形象就感到非常幸福，将被固定在100％。","桃")
+	PRINTL
+	PRINTL 《 减少行动 》
+	PRINTL 失意效果惩罚：精神力低于30％时减少值减半
+	PRINTL 获取相应的刻印　处女丧失·肉体改造等（可穿透其他参数的防御）
+	PRINTL
+	PRINTL 《 回复行动 》
+	PRINTL 休息、待机、就寝（在【崩溃】状态下仅在体力达到最大值时）
+	PRINTL ＜草药茶＞：10%回复（当天第一次）
+	
+	
+CASE "好感度"
+	PRINTL 对主人公的好感。
+	PRINTL 达到50％后，将进入【陷落】状态，她将顺从您的指令，就有可能把事务委托给主人公。
+	PRINTL 在您进行【调教】后，如果好感度为100％，则将发生事件，并进入【恋慕】状态。
+	PRINTL
+	PRINTL 将其带入【恋慕】将使好感度上限增加到200％。
+	PRINTL 根据主人公的【调教】后，如果好感度为200％，则将发生事件，并进入【隶属】状态。
+	PRINTL
+	PRINTL 《 调教影响 》
+	PRINTL 高好感度将为【奉仕精神】经验值提供奖励
+	PRINTL
+	PRINTL 《 减少行动 》
+	PRINTL 处女丧失、肉体改造等
+	PRINTL
+	PRINTL 《 增加行动 》
+	PRINTL 「恭顺-根据反感值增加
+	PRINTL 通过【去见面】执行与她亲密互动（微量）
+	PRINTL 在日程做和主人公一起的事务
+	
+CASE "乳牛堕落"
+	CALL PART_HINT_CATTLE_MIND_PALAM
+	
+CASE "反抗"
+	PRINTL 是对主人公反抗的状态。就在我们捕获奴隶之后，我们就从这个状态开始。
+	PRINTL 将【抵抗心】和【尊严】降至0%，可以删除【反抗】并进入【拒绝】状态。
+	PRINTL 即使跳过尊严为0%的状态，进入其他状态时【反抗】也会被删除。
+	PRINTL
+	PRINTL 《 反抗效果 》
+	PRINTL 无法执行工作或脱衣
+	PRINTL 【去见面】→无法更改发型或使用有色隐形眼镜
+	PRINTL 每天早晨发生对＜魔力枷锁＞的抵抗判定发生
+	
+CASE "拒绝"
+	PRINTL 通过调教【反抗】被消除，但还是对调教·奉仕等是消极的状态。
+	PRINTL 削减【尊严】至0%，进入此状态。
+	PRINTL 仍然保留【抵抗】的心情，奉仕等命令会受到限制。
+	PRINTL 
+	PRINTL 《 拒绝效果 》
+	PRINTL 无法执行工作或脱衣
+	
+CASE "屈服"
+	PRINTL 通过调教，心灵已经开始崩溃，变得顺从于你的状态。
+	PRINTL 降低【精神力】至10%以下可达到此状态。
+	PRINTL 从这里开始，进入【无抵抗】状态，解除各种限制。
+	PRINTL
+	PRINTL 如果在进一步休息的情况下，不断降低精神力，可能导致【崩溃】，请注意。
+	
+CASE "无抵抗时限制解除"
+	PRINTL 进入【屈服】【陷落】等状态，对主人公你顺从时适用的限制解除一览。
+	PRINTL ・可执行工作　・脱衣时无抵抗　・不抵抗使用药品
+	PRINTL ・调教开始时的束缚／脱衣配置与无抵抗时相同
+	
+CASE "崩坏"
+	PRINTL 经过调教后，心灵崩溃，眼中失去光芒的状态。
+	PRINTL 【精神力】降至0%将导致此状态。
+	PRINTL 通常情况下，只有从【屈服】状态进一步休息并未接受调教，才会进入这个状态，
+	PRINTL 但在一些事件中，如处女失落等，有时会无法阻止，精神力大幅减少，请注意。
+	PRINTL
+	PRINTL 《 崩坏后立即效果 》
+	PRINTL 破坏​【自尊心高】等一些素质，赋予破坏后专用素质（不可删除）
+	PRINTL 赋予【绝望刻印】（不可消除）
+	PRINTL 【好感度】-20%　【乳牛堕落】-20%
+	PRINTL
+	PRINTL 《 崩坏中效果 》
+	PRINTL 无事务能力　・无法奉仕　・【处女结界】不能防御
+	PRINTL 锁定除精神力回复外的所有情感参数
+	PRINTL 休息、待机、睡眠时，如果体力未达到最大值，则不会回复精神力
+	
+CASE "洗脑"
+	PRINTL 使用＜洗脑触手＞后，被迫进入适合你的状态。
+	PRINTL 强行变得顺从，类似【屈服】，可以进行工作等指示。
+	PRINTL 再次使用＜洗脑触手＞可解除此状态。
+	PRINTL
+	PRINTL 《 洗脑中效果 》
+	PRINTL 可以工作　・可奉仕　・【处女结界】不能防御
+	PRINTL 锁定所有情感参数
+	PRINTFORML 在服务命令时，【技巧】对主人公的%SAVESTR:标识／阴茎%的快感修正始终有效
+	
+CASE "陷落"
+	PRINTL 对你的反感消失，开始考虑为你工作的状态。
+	PRINTL 【厌恶感】0%，【好感度】50%就会变成这个状态。
+	PRINTL 进入【不抵抗】状态，各种限制被解除。
+	
+CASE "恋慕"
+	PRINTL 对待你温柔、给予愉悦的你，让她产生了爱意的状态。
+	PRINTL 【好感度】达到100%，你进行了【调教】，并执行了3次以上的命令后，
+	PRINTL 将触发事件，进入这个状态。
+	PRINTL
+	PRINTL 《 恋慕时效果 》
+	PRINTL 提高好感度上限至200%
+	PRINTL 【处女结界】自行解除
+	PRINTFORML 在服务命令时，【技巧】对主人公的%SAVESTR:标识／阴茎%的快感修正始终有效
+	PRINTFORML 当您的%SAVESTR:标识／阴茎%被插入时，以及被【吸奶】时，根据与您的经验次数增加的快感
+	PRINTL 若体力大于1，则[失意]不增加，若[苦痛]为0，则[反感]也不增加
+	PRINTL 　（体力为0的情况下也会被减半）
+	PRINTL 当调教她称呼性器时，解禁了更加淫秽的选项
+	
+CASE "隶属"
+	PRINTL 对你产生了深深的依赖，没有你她无法生存的程度，深深陷入爱意的状态。
+	PRINTL 【好感度】达到200%，你进行了【调教】，并执行了3次以上的命令后，
+	PRINTL 将触发事件，进入这个状态。
+	PRINTL
+	PRINTL 《 隶属时效果 》
+	PRINTL 【恋慕】效果全部包括
+	PRINTL 好感度上限增至999%
+	PRINTL 【处女结界】自行解除（伴随事件）
+	PRINTL [失意][反感]参数一直为0
+	PRINTL 【精神力】100%固定　·【好感度】不会下降
+	PRINTL 符合其他条件的情况下，使用＜灵力注入＞和＜魔力注入＞会启用灵力／魔力上限增加
+	PRINTL 使用＜空间转移＞后，可以与其他人类进行战斗。
+	
+CASE "奶牛（状态）"
+	CALL PART_HINT_CATTLE_MIND_STATUS
+	
+CASE "家畜"
+	PRINTFORML 将%SAVESTR:标识／乳房%发育为【超乳】，以换取适合【家畜】的身体
+	PRINTL 变成了甚至无法行走的状态。
+	PRINTL 与其他状态不同，仅由身体改造判定。
+	PRINTL
+	PRINTL 《 家畜状态效果 》
+	PRINTL 无法执行工作（比其他所有状态都具有更高优先级）
+	
+CASE "虚脱"
+	PRINTL 不断受到无法想象的快感折磨，耗尽了所有的精力，变得毫无招架之力。
+	PRINTL 在执行＜体内凌辱＞日程时，如果体力为0，则会进入此状态。
+	PRINTL 与其他状态不同，仅由执行日程时的体力判定。
+	PRINTL
+	PRINTL 持续休息，当体力回复满时将从【虚脱】状态中回复。
+	PRINTL
+	PRINTL 《 虚脱效应 》
+	PRINTL 无法执行工作和奉仕（比其他所有状态都具有更高优先级）
+	
+CASE "痛苦刻印"
+	PRINTL 当【反抗】被删除时，作为导致屈服的原因之一，如果之前接受的惩罚中
+	PRINTL [苦痛]调教的比例超过40%，则会获得。
+	PRINTL
+	PRINTL 成为【隶属】或者【乳牛堕落】就会消失。
+	PRINTL
+	PRINTL 《 痛苦刻印效果 》
+	PRINTL [顺从]的增加量为1／5，在调教结束时结算为0
+	
+CASE "恐怖刻印"
+	PRINTL 当【反抗】被删除时，作为导致屈服的原因之一，如果之前接受的惩罚中
+	PRINTL [恐惧]调教的比例超过40%，则会获得。
+	PRINTL
+	PRINTL 成为【隶属】或者【乳牛堕落】就会消失。
+	PRINTL
+	PRINTL 《 恐怖刻印效果 》
+	PRINTL [顺从]的增加量为1／5，在调教结束时结算为0
+	
+CASE "绝望刻印"
+	PRINTL 当进入​[崩溃]状态时同时获得。
+	PRINTL 被视为「有过一次精神崩溃经验」的证明，没有消除手段。
+ENDSELECT
+
+

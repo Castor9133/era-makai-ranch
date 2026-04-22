@@ -1,0 +1,31 @@
+﻿
+;促進薬での母乳体質化判定
+@TRAIN_MILK_PROMOTION_CHECK
+
+;Ｂ／Ｎ絶頂していなければおわり
+SIF !NOWEX:Ｂ绝顶 && !NOWEX:Ｎ绝顶
+	RETURN
+
+;魔力母乳→母乳で見る
+IF GETBIT(＃有效药品／魔力母乳分泌促进药＃)
+	;既に魔力母乳体質ならおわり（一応）
+	SIF MARK:魔力母乳体质
+		RETURN
+	CALL KOJO_PRINT("绝顶")
+	CALL MILK_PROMOTION_MESSAGE
+	CALL MAKEUP_MAGIC_MILK
+	CLEARBIT ＃有效药品／魔力母乳分泌促进药＃
+	PRINTW
+	
+ELSEIF GETBIT(＃有效药品／母乳分泌促进药＃)
+	;既に母乳体質ならおわり
+	SIF MARK:母乳体质
+		RETURN
+	CALL KOJO_PRINT("绝顶")
+	CALL MILK_PROMOTION_MESSAGE
+	CALL MAKEUP_MILK
+	CLEARBIT ＃有效药品／母乳分泌促进药＃
+	PRINTW
+ENDIF
+
+

@@ -1,0 +1,66 @@
+﻿
+;奉仕判定
+;メッセージ部分が本体みたいなとこある
+@SERVICE_JUDGE
+
+IF !BASE:体力
+	PRINTFORMW 因为%CALLNAME%的体力耗尽，不能侍奉…
+	RETURN
+	
+ELSEIF CFLAG:崩坏
+	PRINTFORMW 心灵已经崩坏的%CALLNAME%连正常运动都做不到，不能侍奉…
+	RETURN
+	
+ELSEIF CFLAG:洗脑
+	PRINTFORML 对被洗脑的%CALLNAME%下达了侍奉的指示后，她用依恋的声音开始了侍奉…
+	
+ELSEIF ＃陷落状态／隶属＃
+	PRINTFORML 对%CALLNAME%下达了侍奉的指示后，她用高兴的表情开始了侍奉…
+	
+ELSEIF ＃陷落状态／恋慕以上＃ || CFLAG:乳牛
+	PRINTFORML 对%CALLNAME%下达了侍奉的指示后，她微笑着开始了侍奉…
+	
+ELSEIF ＃陷落状态／陷落以上＃
+	;処女で騎乗位させる場合ちょっと特殊
+	IF GROUPMATCH(SELECTCOM,34,38) && TALENT:处女
+		PRINTFORML 对%CALLNAME%发出了坐上来自己动的指示，但%CALLNAME%似乎对以这种形式失去处女有抵触情绪…
+		IF MARK:淫纹
+			CALL PRINTL_WORD_COLOR("但是，却无法违抗淫纹所产生的欲望而开始了行动…","桃")
+		ELSE
+			PRINTW
+			RETURN
+		ENDIF
+	ELSE
+		PRINTFORML 对%CALLNAME%下达了侍奉的指示后，%CALLNAME%露出很困惑的表情开始了侍奉…
+	ENDIF
+	
+ELSEIF MARK:淫纹
+	CALL PRINTL_WORD_COLOR,@"%CALLNAME%虽然不喜欢奉仕，但是她无法抗拒淫纹产生的欲望，于是开始了侍奉…","桃"
+	
+ELSEIF PALAM:淫欲 >= 10000
+	IF GROUPMATCH(SELECTCOM,34,38) && TALENT:处女
+		PRINTFORMW 对%CALLNAME%发出了坐上来自己动的指示，但%CALLNAME%似乎对以这种形式失去处女有抵触情绪…
+		RETURN
+	ELSE
+		PRINTFORML 虽然%CALLNAME%露出厌恶的表情，但因调教开始淫乱的身体却不受控制的开始侍奉%CALLNAME:0%…
+	ENDIF
+	
+ELSEIF ABL:奉仕精神 >= 5 && BASE:抵抗心 < MAXBASE:抵抗心 /2
+	IF GROUPMATCH(SELECTCOM,34,38) && TALENT:处女
+		PRINTFORMW 对%CALLNAME%发出了坐上来自己动的指示，但%CALLNAME%似乎对以这种形式失去处女有抵触情绪…
+		RETURN
+	ELSE
+		PRINTFORML %CALLNAME%屈服于自己被调教后的身体，本能的服从开始侍奉%CALLNAME:0%…
+	ENDIF
+	
+ELSE
+	PRINTFORMW %CALLNAME%对你的调教指示露出了厌恶的表情…
+	RETURN
+ENDIF
+
+;RETURN1したらOK、しかメッセージ以外の処理する場所がないのでここでやっちゃう
+RETURN 1
+
+
+
+

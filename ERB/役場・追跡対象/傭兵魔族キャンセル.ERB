@@ -1,0 +1,27 @@
+﻿
+;雇った傭兵のキャンセル
+@DISMISSAL_MERCENARY
+
+SIF !CFLAG:追踪者
+	RETURN
+SELECTCASE CFLAG:追踪者
+CASE 1
+	PRINTFORML 哥布林军团{CFLAG:追踪人数}部队正在追踪%CALLNAME%。
+CASE 2
+	PRINTFORML 新秀雇佣兵{CFLAG:追踪人数}人正在追踪%CALLNAME%。
+CASE 3
+	PRINTFORML 老手雇佣兵{CFLAG:追踪人数}人正在追踪%CALLNAME%。
+CASE 4
+	PRINTFORML 鬼人雇佣兵{CFLAG:追踪人数}人正在追踪%CALLNAME%。
+ENDSELECT
+PRINTL 取消请求，让他们返回？（支付的资金不会退回）
+CALL ASK_YN
+SIF RESULT
+	RETURN
+
+;FLAG:傭兵バイト標的ID／ゴブリン→440
+FLAG_REF = 439
+FLAG:(FLAG_REF +CFLAG:追踪者) = 0
+CFLAG:追踪者 = 0
+CFLAG:追踪人数 = 0
+

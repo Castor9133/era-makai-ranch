@@ -1,0 +1,28 @@
+﻿
+;鎧
+@ITEM_DETAIL_CLOTHE_ARMOR
+
+SELECTCASE ITEMNAME:SELECT_ITEM
+CASE "皮铠"
+	CALL ACCESSORY_DETAIL_COMMON("铠")
+	PRINTL 使用兽类坚固皮革制作的廉价铠。
+	PRINTL 虽然便宜，但其轻便性也成为了优点，因此很受欢迎。
+	
+CASE "轻铠"
+	CALL ACCESSORY_DETAIL_COMMON("铠")
+	PRINTL 用金属加工制作的铠。
+	PRINTL 为了不妨碍移动而轻便制造。
+	
+CASE "重铠"
+	CALL ACCESSORY_DETAIL_COMMON("铠")
+	PRINTL 用金属加工制作的铠。
+	PRINTL 为了重视防御力而叠加多层，结果非常重。
+	
+CASE "甲胄"
+	CALL ACCESSORY_DETAIL_COMMON("铠")
+	PRINTL 用金属加工制作的铠。
+	PRINTL 这是日本地区特有的铠，专为使用刀剑作战而优化。
+	
+ENDSELECT
+
+

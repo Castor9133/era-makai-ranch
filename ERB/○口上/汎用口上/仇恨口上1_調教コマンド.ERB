@@ -1,0 +1,76 @@
+; ======================================
+; 泛用口上・调教命令（性格：仇恨）
+; ======================================
+
+@KOJO_GENERAL_仇恨口上1_TRAIN(ARGS:0,ARGS:1,ARGS:2,ARGS:3)
+
+SELECTCASE ARGS:2
+CASE "执行"
+	SELECTCASE ARGS:1
+	CASE "接吻","舔舐脸","舔舐耳","舔舐腋"
+		IF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「离我远点……！……呜……♥」"
+			CALL MESSAGE_BOX,@"「……别亲……不对……再亲一下……♥」"
+		ELSE
+			CALL MESSAGE_BOX,@"「别碰我！」"
+		ENDIF
+
+	CASE "口交","触手口交"
+		IF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……我才不是想含……只是……别、别停……♥」"
+			CALL MESSAGE_BOX,@"「……恨死你了……♥ 你还敢顶……♥」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……滚开……」"
+		ENDIF
+
+	CASE "手淫","授乳手交"
+		IF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……别误会……我只是……不想让你轻松……♥」"
+			CALL MESSAGE_BOX,@"「……哈……抖什么抖……恶心……♥」"
+		ELSE
+			CALL MESSAGE_BOX,@"「别让我碰……」"
+		ENDIF
+
+	CASE "足交"
+		IF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「用脚……？……恶心……但……别停……♥」"
+			CALL MESSAGE_BOX,@"「……我会记住这种屈辱……♥」"
+		ELSE
+			CALL MESSAGE_BOX,@"「滚开……」"
+		ENDIF
+
+	CASE "正常位","后背位","对面坐位","背面坐位","骑乘位","对面立位","背面立位","强制骑乘位","背面骑乘位"
+		IF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……进来……！……不对……别进来……♥」"
+			CALL MESSAGE_BOX,@"「……我会记住这种屈辱……但别停……♥」"
+		ELSE
+			CALL MESSAGE_BOX,@"「住手……！」"
+		ENDIF
+
+	CASE "肛塞"
+		CALL MESSAGE_BOX,@"「……后面要塞东西……？你这混账……」"
+
+	CASE "尿道塞"
+		CALL MESSAGE_BOX,@"「……别碰那里……！……呜……」"
+
+	CASEELSE
+		CALL MESSAGE_BOX,@"「……别做%ARGS:1%……」"
+	ENDSELECT
+
+CASE "继续"
+	CALL MESSAGE_BOX,@"「……继续……？……哼……随你……」"
+
+CASE "移除"
+	SELECTCASE ARGS:1
+	CASE "肛塞"
+		CALL MESSAGE_BOX,@"「……拔出来了……？……啧……」"
+	CASE "尿道塞"
+		CALL MESSAGE_BOX,@"「……拿掉了……？……别得意。」"
+	CASEELSE
+		CALL MESSAGE_BOX,@"「……拿掉了……？……别以为你有多温柔。」"
+	ENDSELECT
+
+CASEELSE
+ENDSELECT
+RETURN
+

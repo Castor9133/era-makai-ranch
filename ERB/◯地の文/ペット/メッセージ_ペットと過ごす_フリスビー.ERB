@@ -1,0 +1,82 @@
+﻿
+;ペットとフリスビー遊び：地の文
+;TARGET,ANIMAL,PET_NAME指定済み
+@PET_COMMU_MESSAGE_PLAY_FRISBEE
+
+FLAG_NAME = 亲和度／%ANIMAL%
+IF TALENT:受动物喜欢 || BASE:FLAG_NAME >= 8000
+	CALL PET_COMMU_MESSAGE_PLAY_FRISBEE_LOVE
+	
+	;投げる回数が多いのでむしろ懐かれてる場合のが体力消費が多い
+	DAMAGE = 150
+ELSEIF !TALENT:被动物讨厌 || BASE:FLAG_NAME >= 5000
+	CALL PET_COMMU_MESSAGE_PLAY_FRISBEE_LOW
+	DAMAGE = 120
+ELSE
+	CALL PET_COMMU_MESSAGE_PLAY_FRISBEE_HATE
+	DAMAGE = 50
+ENDIF
+
+
+
+;【動物に好かれる】orなつき時
+@PET_COMMU_MESSAGE_PLAY_FRISBEE_LOVE
+
+PRINTFORML %CALLNAME%决定使用飞盘和%PET_NAME%一起玩。
+PRINTFORML 投掷飞盘，%PET_NAME%兴奋地追逐着！
+SELECTCASE ANIMAL
+CASE "堕落天马"
+	PRINTFORML 在助跑后灵巧地咬住并跳跃，然后冲向%CALLNAME%，将飞盘差到手中。
+CASE "双头犬"
+	PRINTFORML 巧妙地用两个头咬住，然后冲向%CALLNAME%，将飞盘差到手中。
+CASEELSE
+	PRINTFORML 伸出小小的手臂巧妙地抓住，然后咬住并冲向%CALLNAME%，将飞盘差到手中。
+ENDSELECT
+PRINTL 它用着一种再次邀请的眼神看着你。
+PRINTL ………
+PRINTFORML 投掷和接住飞盘多次重复，%PET_NAME%看起来非常满足。
+
+
+
+;【動物に嫌われる】ではないor嫌われるけどなつき程々
+@PET_COMMU_MESSAGE_PLAY_FRISBEE_LOW
+
+PRINTFORML %CALLNAME%决定使用飞盘和%PET_NAME%一起玩。
+PRINTFORML %CALLNAME%决定使用飞盘和%PET_NAME%一起玩。
+SELECTCASE ANIMAL
+CASE "堕落天马"
+	PRINTFORML 在助跑后灵巧地咬住并跳跃，然后冲向%CALLNAME%，将飞盘差到手中。
+CASE "双头犬"
+	PRINTFORML 巧妙地用两个头咬住，然后冲向%CALLNAME%，将飞盘差到手中。
+CASEELSE
+	PRINTFORML 伸出小小的手臂巧妙地抓住，然后咬住并冲向%CALLNAME%，将飞盘差到手中。
+ENDSELECT
+PRINTL 摇着尾巴，想再来一次。
+PRINTL ………
+PRINTFORML 多次投掷和接住飞盘后，%PET_NAME%看起来很满足。
+
+
+
+;【動物に嫌われる】
+@PET_COMMU_MESSAGE_PLAY_FRISBEE_HATE
+
+PRINTFORML %CALLNAME%尝试使用飞盘和%PET_NAME%一起玩…
+PRINTFORML %PET_NAME%面带「嗯，我就陪你玩玩」的表情…
+PRINTFORML 尽管如此，当投掷飞盘时，%PET_NAME%看起来相当高兴地追赶着！
+SELECTCASE ANIMAL
+CASE "堕落天马"
+	PRINTFORML 在助跑后灵巧地咬住并跳跃，然后冲向%CALLNAME%，将飞盘差到手中。
+CASE "双头犬"
+	PRINTFORML 巧妙地用两个头咬住，然后冲向%CALLNAME%，将飞盘差到手中。
+CASEELSE
+	PRINTFORML 伸出小小的手臂巧妙地抓住，然后咬住并冲向%CALLNAME%，将飞盘差到手中。
+ENDSELECT
+PRINTL 摇着尾巴，想再来一次。
+PRINTL ………
+PRINTFORML 几次玩飞盘后，%PET_NAME%看起来很满足。
+
+
+
+
+
+

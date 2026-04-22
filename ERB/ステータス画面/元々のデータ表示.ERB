@@ -1,0 +1,254 @@
+﻿
+;ジョブ・身分・所属・種族などの元々を参照
+@PRINT_ORIGINAL_AFFILIATION_DATA
+#DIMS AFFILIATION
+
+CALL PRINT_TRIVE
+
+;ここで帰る場合
+SIF CSTR:初始值／职业 == "" && CSTR:初始值／身分 == "" && CSTR:初始值／所属 == ""
+	RETURN
+
+AFFILIATION = 【
+EXIST = 0
+IF CSTR:初始值／所属 != ""
+	AFFILIATION += CSTR:初始值／所属
+	EXIST = 1
+ENDIF
+IF CSTR:初始值／身分 != ""
+	AFFILIATION += CSTR:初始值／身分
+	EXIST = 1
+ENDIF
+IF CSTR:初始值／职业 != ""
+	SIF EXIST
+		AFFILIATION += "・"
+	AFFILIATION += CSTR:初始值／职业
+ENDIF
+AFFILIATION += "】"
+PRINTFORM %AFFILIATION%
+
+
+
+;元の肩書き
+@PRINT_ORIGINAL_SECOND_NAME
+
+IF CSTR:头衔 == CSTR:初始值／头衔
+	CALL PRINTL_WORD_COLOR("保持原始头衔　","灰")
+ELSE
+	PRINTFORML 原始头衔：%CSTR:初始值／头衔%
+ENDIF
+
+
+
+;元のヘアスタイル　変更してる場合だけ表示
+@PRINT_ORIGINAL_HAIR_STYLE
+
+SIF CFLAG:初始值／颜色编码／头发
+	SETCOLOR CFLAG:初始值／颜色编码／头发
+PRINTFORM 【%CSTR:初始值／发色%%CSTR:初始值／发特征%%CSTR:初始值／发型%】
+RESETCOLOR
+SIF !(CSTR:发色 == CSTR:初始值／发色 && CSTR:头发特征 == CSTR:初始值／发特征 && CSTR:发型 == CSTR:初始值／发型)
+	PRINT <更改>
+
+
+
+;元の目の色
+@PRINT_ORIGINAL_EYE_COLOR
+
+PRINT 瞳色：
+SIF CFLAG:初始值／颜色编码／右眼
+	SETCOLOR CFLAG:初始值／颜色编码／右眼
+PRINTFORM %CSTR:初始值／右瞳色%
+
+;左が黒の時に対応
+SIF CSTR:初始值／左瞳色 != ""
+	RESETCOLOR
+SIF CFLAG:初始值／颜色编码／左眼
+	SETCOLOR CFLAG:初始值／颜色编码／左眼
+SIF CSTR:初始值／左瞳色 != ""
+	PRINTFORM ／%CSTR:初始值／左瞳色%
+RESETCOLOR
+IF CSTR:初始值／瞳孔形状 != ""
+	SIF CFLAG:初始值／颜色编码／右眼
+		SETCOLOR CFLAG:初始值／颜色编码／右眼
+	PRINTFORM 【%CSTR:初始值／瞳孔形状%】
+ENDIF
+SIF CSTR:眼睛特征 != ""
+	PRINTFORM 【%CSTR:眼睛特征%】
+RESETCOLOR
+SIF !(CSTR:右瞳色 == CSTR:初始值／右瞳色 && CSTR:左瞳色 == CSTR:初始值／左瞳色 && CSTR:瞳孔形状 == CSTR:初始值／瞳孔形状)
+	PRINT <更改>
+
+
+
+;元のおっぱい
+@PRINT_ORIGINAL_BUST
+
+IF ABL:胸围大小 == ABL:初始值／胸围大小
+	PRINTFORM 胸围大小：%PRINT_BUSTSIZE(ABL:胸围大小)%
+ELSE
+	PRINTFORM 胸围大小：%PRINT_BUSTSIZE(ABL:初始值／胸围大小)%
+	CALL PRINT_BUSTSIZE_SPECIFY(1,1,ABL:初始值／胸围大小)
+	PRINTFORM →%PRINT_BUSTSIZE(ABL:胸围大小)%
+ENDIF
+CALL PRINT_BUST_C(1,1,1)
+
+;バストサイズ不変で弾力が変化ありの場合あるか不明だけど一応
+SIF ABL:胸围大小 == ABL:初始值／胸围大小 && CSTR:乳房弹性 != CSTR:初始值／乳弾力
+	PRINTFORM %SAVESTR:标识／乳房%弾力：%CSTR:初始值／乳弾力% → %CSTR:乳房弹性% 
+SETCOLOR CFLAG:初始值／颜色编码／乳头
+PRINTFORM [乳头：%CSTR:初始值／乳头颜色%] 
+RESETCOLOR
+
+;カラーコードでは変更してる判定しなくていいかな
+SIF CSTR:乳头颜色 != CSTR:初始值／乳头颜色
+	PRINT <更改>
+PRINTL
+
+
+
+;元々のレベル・HPSPEPMP
+@PRINT_ORIGINAL_LEVEL_POWER
+
+PRINTFORML 　Lv{MAXBASE:初始值／等级} → {BASE:等级}
+PRINTFORML 　HP：{MAXBASE:初始值／体力,4} → {MAXBASE:体力,4} 
+PRINTFORML 　SP：{MAXBASE:初始值／气力,4} → {MAXBASE:气力,4} 
+PRINTFORML 灵力：%VALUE_DIGIT(MAXBASE:初始值／灵力)% → %VALUE_DIGIT(MAXBASE:灵力)%EP 
+PRINTFORML 魔力：%VALUE_DIGIT(MAXBASE:初始值／魔力)% → %VALUE_DIGIT(MAXBASE:魔力)%MP 
+PRINTL
+
+
+
+;元々の性格・人称
+@PRINT_ORIGINAL_PERSONALITY_CALL_PERSON
+
+PRINTFORM 　性格：%CSTR:初始值／性格%
+
+;多分変化しないはずだけどこんなふうになるよ
+SIF CSTR:性格 != CSTR:初始值／性格
+	PRINT <纪律>
+PRINTL
+PRINTFORM 第一人称：%CSTR:初始值／一人称%（%CSTR:初始值／第一人称／沉沦%）
+
+;どれかが変更されてると表示なのでやたら長い
+SIF CSTR:第一人称 != CSTR:初始值／第一人称 || CSTR:第一人称／沉沦 != CSTR:初始值／第一人称／沉沦
+	PRINT <纪律>
+PRINTL
+PRINTL
+PRINTFORML 　　　＜%CALLNAME:0%的称呼＞
+
+;グレーアウトすると大変だけどまあやるか…
+IF ＃陷落状态／陷落以上＃
+	CALL PRINT_WORD_COLOR,@"陷落前：%CSTR:初始值／主人公的称呼／陷落前%（%CSTR:初始值／主人公的称呼／陷落前／沉沦%）","灰"
+	SIF CSTR:主人公的称呼／陷落前 != CSTR:初始值／主人公的称呼／陷落前 || CSTR:主人公的称呼／陷落前／沉沦 != CSTR:初始值／主人公的称呼／陷落前／沉沦
+		PRINT <纪律>
+	PRINTL
+	PRINTFORM 陷落后：%CSTR:初始值／主人公的称呼／陷落后%（%CSTR:初始值／主人公的称呼／陷落后／沉沦%・%CSTR:初始值／主人公的称呼／依恋%）
+	SIF CSTR:主人公的称呼／陷落后 != CSTR:初始值／主人公的称呼／陷落后 || CSTR:主人公的称呼／陷落后／沉沦 != CSTR:初始值／主人公的称呼／陷落后／沉沦 || CSTR:主人公的称呼／依恋 != CSTR:初始值／主人公的称呼／依恋
+		PRINT <纪律>
+	PRINTL
+ELSE
+	PRINTFORM 陷落前：%CSTR:主人公的称呼／陷落前%（%CSTR:主人公的称呼／陷落前／沉沦%）
+	SIF CSTR:主人公的称呼／陷落前 != CSTR:初始值／主人公的称呼／陷落前 || CSTR:主人公的称呼／陷落前／沉沦 != CSTR:初始值／主人公的称呼／陷落前／沉沦
+		PRINT <纪律>
+	PRINTL
+	CALL PRINT_WORD_COLOR,@"陷落后：%CSTR:初始值／主人公的称呼／陷落后%（%CSTR:初始值／主人公的称呼／陷落后／沉沦%・%CSTR:初始值／主人公的称呼／依恋%）","灰"
+	SIF CSTR:主人公的称呼／陷落后 != CSTR:初始值／主人公的称呼／陷落后 || CSTR:主人公的称呼／陷落后／沉沦 != CSTR:初始值／主人公的称呼／陷落后／沉沦 || CSTR:主人公的称呼／依恋 != CSTR:初始值／主人公的称呼／依恋
+		PRINT <纪律>
+	PRINTL
+ENDIF
+PRINTL 　　　＜性器称呼＞
+PRINTFORM 阴茎称呼：%CSTR:初始值／性器称呼／阴茎%（%CSTR:初始值／性器称呼／阴茎／沉沦%）
+SIF CSTR:性器称呼／阴茎 != CSTR:初始值／性器称呼／阴茎 || CSTR:性器称呼／阴茎／沉沦 != CSTR:初始值／性器称呼／阴茎／沉沦
+	PRINT <纪律>
+PRINTL
+PRINTFORM 　　膣称呼：%CSTR:初始值／性器称呼／膣%（%CSTR:初始值／性器称呼／膣／沉沦%）
+SIF CSTR:性器称呼／膣 != CSTR:初始值／性器称呼／膣 || CSTR:性器称呼／膣／沉沦 != CSTR:初始值／性器称呼／膣／沉沦
+	PRINT <纪律>
+PRINTL
+PRINTFORM 肛门称呼：%CSTR:初始值／性器称呼／肛门%（%CSTR:初始值／性器称呼／肛门／沉沦%）
+SIF CSTR:性器称呼／肛门 != CSTR:初始值／性器称呼／肛门 || CSTR:性器称呼／肛门／沉沦 != CSTR:初始值／性器称呼／肛门／沉沦
+	PRINT <纪律>
+PRINTL
+PRINTL
+
+
+
+;元々の仕事ABLほか
+@ORIGINAL_ABL_WORK_LIST_PLUS
+
+IF TALENT:男性
+	PRINTFORML 奶农Lv{ABL:初始值／奶农,2} → {ABL:奶农,2}
+	PRINTFORML 事务Lv{ABL:初始值／事务,2} → {ABL:事务,2}
+	PRINTFORML 清洁Lv{ABL:初始值／清洁,2} → {ABL:清洁,2}
+	PRINTFORML 料理Lv{ABL:初始值／料理,2} → {ABL:料理,2}
+	PRINTFORML 药学Lv{ABL:初始值／药学,2} → {ABL:药学,2}
+	PRINTFORML 接客Lv{ABL:初始值／接客,2} → {ABL:接客,2}
+	PRINTFORML 技巧Lv{ABL:初始值／技巧,2} → {ABL:技巧,2}
+ELSE
+	;段々になる
+	PRINTFORMLC 　　奶农Lv{ABL:初始值／奶农,2} → {ABL:奶农,2}
+	PRINTFORML 　　技巧Lv{ABL:初始值／技巧,2} → {ABL:技巧,2}
+	PRINTFORMLC 　　事务Lv{ABL:初始值／事务,2} → {ABL:事务,2}
+	PRINTFORML 　　母性Lv{ABL:初始值／母性,2} → {ABL:母性,2}
+	PRINTFORMLC 　　清洁Lv{ABL:初始值／清洁,2} → {ABL:清洁,2}
+	PRINTFORML 奉仕精神Lv{ABL:初始值／奉仕精神,2} → {ABL:奉仕精神,2}
+	PRINTFORMLC 　　料理Lv{ABL:初始值／料理,2} → {ABL:料理,2}
+	PRINTFORML 受虐癖Lv{ABL:初始值／受虐癖,2} → {ABL:受虐癖,2}
+	PRINTFORMLC 　　药学Lv{ABL:初始值／药学,2} → {ABL:药学,2}
+	PRINTFORML 百合癖Lv{ABL:初始值／百合癖,2} → {ABL:百合癖,2}
+	PRINTFORML 　　接客Lv{ABL:初始值／接客,2} → {ABL:接客,2}
+ENDIF
+CALL MANYL(2)
+
+
+
+;元々の性器サイズ
+@PRINT_ORIGINAL_PSIZE
+
+PRINTFORM Ｐ：{ABL:初始值／阴茎尺寸,3} → {ABL:阴茎尺寸,3}mm 
+
+
+@PRINT_ORIGINAL_VSIZE
+
+IF ABL:Ｖ扩张
+	PRINTFORM Ｖ：{ABL:初始值／Ｖ尺寸,3} → {ABL:Ｖ尺寸,3}～{ABL:Ｖ尺寸 + ABL:Ｖ扩张,3}mm　
+ELSE
+	PRINTFORM Ｖ：{ABL:初始值／Ｖ尺寸,3} → {ABL:Ｖ尺寸,3}mm　
+ENDIF
+
+
+@PRINT_ORIGINAL_ASIZE
+
+IF ABL:Ａ扩张
+	PRINTFORM Ａ：{ABL:初始值／Ａ尺寸,3} → {ABL:Ａ尺寸,3}～{ABL:Ａ尺寸 + ABL:Ａ扩张,3}mm　
+ELSE
+	PRINTFORM Ａ：{ABL:初始值／Ａ尺寸,3} → {ABL:Ａ尺寸,3}mm　
+ENDIF
+
+
+
+;元々の感覚・感度
+@PRINT_ORIGINAL_SENSITIVE_LIST
+
+CALL SENSITIVE_ORIGINAL("Ｂ")
+CALL SENSITIVE_ORIGINAL("Ｎ")
+CALL SENSITIVE_ORIGINAL("Ｃ")
+CALL SENSITIVE_ORIGINAL("Ｖ")
+CALL SENSITIVE_ORIGINAL("Ａ")
+PRINTFORML 总绝顶次数：%TOSTR(EXP:总绝顶次数,"#,0")% 
+PRINTL
+
+
+@SENSITIVE_ORIGINAL(ARGS)
+#DIMS S_ABL,2
+#DIMS S_KANDO,2
+
+S_ABL = %ARGS%感觉
+S_KANDO = %ARGS%敏感度
+S_ABL:1 = 初始值／%ARGS%感觉
+S_KANDO:1 = 初始值／%ARGS%敏感度
+CALL PRINTL_WORD_COLOR,@"%S_ABL%Lv{ABL:(S_ABL:1),2} → {ABL:S_ABL,2} <{ABL:(S_KANDO:1),3} → {ABL:S_KANDO,3}\%> ","桃"
+
+
+

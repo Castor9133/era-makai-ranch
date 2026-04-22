@@ -1,0 +1,45 @@
+﻿
+;調教結果表示
+@TRAIN_END_RESULT
+
+PRINTL 《 本次调教结果 》
+;各絶頂回数表示
+
+SIF EX:总绝顶
+	PRINT 绝顶次数　
+SETCOLOR 0xFF70FF
+SIF EX:Ｂ绝顶
+	PRINTFORM %SAVESTR:标识／乳房%：{EX:Ｂ绝顶}　
+SIF EX:Ｎ绝顶
+	PRINTFORM 乳头：{EX:Ｎ绝顶}　
+SIF EX:Ｃ绝顶
+	PRINTFORM %SAVESTR:标识／阴蒂%：{EX:Ｃ绝顶}　
+SIF EX:Ｖ绝顶
+	PRINTFORM %SAVESTR:标识／膣%：{EX:Ｖ绝顶}　
+SIF EX:Ａ绝顶
+	PRINTFORM %SAVESTR:标识／肛门%：{EX:Ａ绝顶}　
+PRINTL
+CALL HEARTCB(0xD02830)
+PRINTFORM 总计：{EX:总绝顶}
+CALL HEARTCB(0xD02830)
+
+;全部噴き出してそのままかもなので一応こう
+IF EX:搾乳器母乳 || EX:触手搾乳母乳 || EX:直饮母乳 || EX:抽出母乳
+	PRINTFORM %CALLNAME%特制%PRINT_MILKWORD(1)%榨乳量：{EX:喷乳}%MILK_COUNTING()%
+	CALL HEARTCB(0xD02830)
+	PRINTL
+	RESETCOLOR
+	PRINT （
+	SIF EX:搾乳器母乳
+		PRINTFORM 预定出售：{EX:搾乳器母乳}%MILK_COUNTING()% 
+	SIF EX:触手搾乳母乳
+		PRINTFORM 触手榨乳：{EX:触手搾乳母乳}%MILK_COUNTING()% 
+	SIF EX:直饮母乳
+		PRINTFORM 母乳直饮：{EX:直饮母乳}%MILK_COUNTING()% 
+	SIF EX:抽出母乳
+		PRINTFORM 灵力抽出器：{EX:抽出母乳}%MILK_COUNTING()% 
+	PRINT ）
+ENDIF
+RESETCOLOR
+CALL MANYL(2)
+

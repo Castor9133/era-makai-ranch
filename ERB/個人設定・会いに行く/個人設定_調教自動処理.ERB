@@ -1,0 +1,257 @@
+﻿
+;調教自動処理個人設定
+@SLAVE_CONFIG_TRAIN_AUTO
+
+CLEARLINE LINECOUNT
+CALL SHOW_SLAVE_STATE
+PRINTL ・如果正在进行设置，则它们将优先于全局配置应用。
+CALL SLAVE_CONFIG_TRAIN_AUTO_CHOICE
+CALL PRINTL_ALIGN
+DRAWLINE
+PRINTLC [98] 回复默认值
+PRINTLC 　
+PRINTL [99] 完成
+INPUT
+PRINTL
+SIF RESULT == 99
+	RETURN
+CALL SLAVE_CONFIG_TRAIN_AUTO_CHANGE(RESULT)
+RESTART
+
+
+
+;選択肢表示
+@SLAVE_CONFIG_TRAIN_AUTO_CHOICE
+#DIMS SUBJECT
+
+PRINTL 　《 调教开始时 》
+SUBJECT = 脱衣
+
+;ver1.030で「毎回選ぶ」がなくなった
+;STR:デフォルト脱衣状態→8130
+STR_REF = 8130
+PRINTFORM [ 0] %SUBJECT,16%：
+SELECTCASE CFLAG:个人设置／调教开始自动处理／脱衣
+CASE 0
+	CALL PRINTL_WORD_COLOR("使用全体配置","灰")
+CASEELSE
+	PRINTFORML %STR:(STR_REF +CFLAG:个人设置／调教开始自动处理／脱衣)%
+ENDSELECT
+
+;STR:拘束中→3930
+STR_REF = 3930
+SUBJECT = 拘束
+PRINTFORM [ 1] %SUBJECT,16%：
+SELECTCASE CFLAG:个人设置／开始调教自动处理／拘束
+CASE 0
+	CALL PRINTL_WORD_COLOR("使用全体配置","灰")
+CASE 1
+	PRINTL 不拘束
+CASEELSE
+	;選べないはずなので必要アイテムは出さない
+	PRINTFORML %STR:(STR_REF +CFLAG:个人设置／开始调教自动处理／拘束 -2)%
+ENDSELECT
+PRINTL
+PRINTL 　《 射精位置 》
+SUBJECT = 乳交
+PRINTFORM [10] %SUBJECT,16%：
+SELECTCASE CFLAG:个人设置／射精位置／乳交
+CASE -1
+	PRINTL 每次选择
+CASE 0
+	CALL PRINTL_WORD_COLOR("使用全体配置","灰")
+CASE 1
+	PRINTL 经常乳内射精
+CASE 2
+	PRINTL 经常射到胸前
+CASE 3
+	PRINTL 经常射到脸上
+ENDSELECT
+
+;縦ズリは豊乳以上
+IF ABL:胸围大小 >= BUSTSIZE_丰乳
+	SUBJECT = 纵乳交
+	PRINTFORM [11] %SUBJECT,16%：
+	SELECTCASE CFLAG:个人设置／射精位置／纵乳交
+	CASE -1
+		PRINTL 每次选择
+	CASE 0
+		CALL PRINTL_WORD_COLOR("使用全体配置","灰")
+	CASE 1
+		PRINTL 经常乳内射精
+	CASE 2
+		PRINTL 经常射到胸前
+	CASE 3
+		PRINTL 经常射到脸上
+	ENDSELECT
+ELSE
+	CALL PRINTL_WORD_COLOR("　纵乳交只有【丰乳】以上","灰")
+ENDIF
+
+SUBJECT = 口交
+PRINTFORM [12] %SUBJECT,16%：
+SELECTCASE CFLAG:个人设置／射精位置／口交
+CASE -1
+	PRINTL 每次选择
+CASE 0
+	CALL PRINTL_WORD_COLOR("使用全体配置","灰")
+CASE 1
+	PRINTL 经常口内射精
+CASE 2
+	PRINTL 经常射到脸上
+ENDSELECT
+
+SUBJECT = 深喉
+PRINTFORM [13] %SUBJECT,16%：
+SELECTCASE CFLAG:个人设置／射精位置／深喉
+CASE -1
+	PRINTL 每次选择
+CASE 0
+	CALL PRINTL_WORD_COLOR("使用全体配置","灰")
+CASE 1
+	PRINTL 经常口内射精
+CASE 2
+	PRINTL 经常射到脸上
+ENDSELECT
+
+SUBJECT = Ｖ性交
+PRINTFORM [14] %SUBJECT,16%：
+SELECTCASE CFLAG:个人设置／射精位置／Ｖ性交
+CASE -1
+	PRINTL 每次选择
+CASE 0
+	CALL PRINTL_WORD_COLOR("使用全体配置","灰")
+CASE 1
+	PRINTL 经常腔内射精
+CASE 2
+	PRINTL 经常拔阴道外射精
+ENDSELECT
+
+SUBJECT = Ａ性交
+PRINTFORM [15] %SUBJECT,16%：
+SELECTCASE CFLAG:个人设置／射精位置／Ａ性交
+CASE -1
+	PRINTL 每次选择
+CASE 0
+	CALL PRINTL_WORD_COLOR("使用全体配置","灰")
+CASE 1
+	PRINTL 经常尻穴射精
+CASE 2
+	PRINTL 经常拔出外射
+ENDSELECT
+
+
+
+;変更部分
+;ARG→INPUT
+@SLAVE_CONFIG_TRAIN_AUTO_CHANGE(ARG)
+
+SELECTCASE ARG
+CASE 0
+	;STR:デフォルト脱衣状態→8130
+	STR_REF = 8130
+	PRINTL 设定奴隶的调教开始时的衣服・内衣的状态。
+	PRINTL
+	PRINTL [ 0] 使用全体配置
+	FOR LOCAL,1,7
+		PRINTFORM [{LOCAL,2}] %STR:(STR_REF +LOCAL)%
+		PRINTL
+		IF LOCAL == 4 && !CFLAG:无抵抗
+			CALL PRINTL_WORD_COLOR("　【抵抗】不会让你脱衣服","灰")
+			BREAK
+		ENDIF
+	NEXT
+	BINPUT
+	CFLAG:个人设置／调教开始自动处理／脱衣 = RESULT
+
+CASE 1
+	;別関数使う
+	PRINTL 设定奴隶的调教开始时的拘束状态。
+	CALL BIND_CHOICE("个人设置")
+	SIF RESULT >= 0
+		CFLAG:个人设置／开始调教自动处理／拘束 = RESULT
+
+CASE 10
+	PRINTL 选择在乳交中射精的地方。
+	PRINTL
+	PRINTL [ 0] 每次选择
+	PRINTL [ 1] 使用全体配置
+	IF ABL:胸围大小 >= BUSTSIZE_普乳
+		PRINTL [ 2] 经常乳内射精
+	ELSE
+		CALL PRINTL_WORD_COLOR("　乳内射精只有【普乳】以上","灰")
+	ENDIF
+	PRINTL [ 3] 经常射到胸前
+	PRINTL [ 4] 经常射到脸上
+	INPUT
+	SIF RESULT >= 0 && RESULT <= 4 && !(RESULT == 2 && ABL:胸围大小 < BUSTSIZE_普乳)
+		CFLAG:个人设置／射精位置／乳交 = RESULT -1
+
+CASE 11
+	;豊乳未満ならおわり
+	SIF ABL:胸围大小 < BUSTSIZE_丰乳
+		RETURN
+	PRINTL 选择纵乳交时射精的位置。
+	PRINTL
+	PRINTL [ 0] 每次选择
+	PRINTL [ 1] 使用全体配置
+	PRINTL [ 2] 经常乳内射精
+	PRINTL [ 3] 经常射到胸前
+	PRINTL [ 4] 经常射到脸上
+	INPUT
+	SIF RESULT >= 0 && RESULT <= 4
+		CFLAG:个人设置／射精位置／纵乳交 = RESULT -1
+
+CASE 12
+	PRINTL 选择在口交时射精的位置。
+	PRINTL
+	PRINTL [ 0] 每次选择
+	PRINTL [ 1] 使用全体配置
+	PRINTL [ 2] 经常口内射精
+	PRINTL [ 3] 经常射到脸上
+	INPUT
+	SIF RESULT >= 0 && RESULT <= 3
+		CFLAG:个人设置／射精位置／口交 = RESULT -1
+
+CASE 13
+	PRINTL 选择在深喉时射精的位置。
+	PRINTL
+	PRINTL [ 0] 每次选择
+	PRINTL [ 1] 使用全体配置
+	PRINTL [ 2] 经常口内射精
+	PRINTL [ 3] 经常射到脸上
+	INPUT
+	SIF RESULT >= 0 && RESULT <= 3
+		CFLAG:个人设置／射精位置／深喉 = RESULT -1
+
+CASE 14
+	PRINTL 选择Ｖ性交时射精的位置。
+	PRINTL
+	PRINTL [ 0] 每次选择
+	PRINTL [ 1] 使用全体配置
+	PRINTL [ 2] 经常腔内射精
+	PRINTL [ 3] 经常拔阴道外射精
+	INPUT
+	SIF RESULT >= 0 && RESULT <= 3
+		CFLAG:个人设置／射精位置／Ｖ性交 = RESULT -1
+
+CASE 15
+	PRINTL 选择Ａ性交时射精的位置。
+	PRINTL
+	PRINTL [ 0] 每次选择
+	PRINTL [ 1] 使用全体配置
+	PRINTL [ 2] 经常尻穴射精
+	PRINTL [ 3] 经常拔出外射
+	INPUT
+	SIF RESULT >= 0 && RESULT <= 3
+		CFLAG:个人设置／射精位置／Ａ性交 = RESULT -1
+
+CASE 98
+	PRINTL 将所有项目返回到＜基于全局配置＞吗？
+	CALL ASK_YN
+	SIF !RESULT
+		VARSET CFLAG,0,540,550
+	
+ENDSELECT
+
+

@@ -1,0 +1,89 @@
+﻿
+;奴隷候補の仕事ABL
+@RANDOM_SLAVE_WORK_ABL
+
+;身分が高いと事務経験が高いこともある
+SELECTCASE CSTR:身份
+CASE "贵族"
+	ABL:事务 += RAND:4
+CASE "王族"
+	ABL:事务 += RAND:8
+ENDSELECT
+
+;種族補正
+;けもの入ってると家畜の気持ちもﾁｮｯﾄﾜｶﾙ　猫耳族を除く
+SELECTCASE CSTR:种族
+CASE "翼人","犬耳族","兔耳族","狐耳族","狸耳族","鹿角族","牛角族","羊角族"
+	ABL:奶农 += RAND:3
+ENDSELECT
+
+;ジョブ補正
+SELECTCASE CSTR:职业
+CASE "女仆","战斗女仆"
+	;当然掃除ができる　できないこともある(RANDで0付近引くこともある)
+	ABL:清洁 += RAND:15
+
+CASE "学者","商人","战士","贤者"
+	;当然頭がいい
+	ABL:事务 += (6 +RAND:6)
+
+CASE "厨师"
+	;当然料理ができる
+	;下で料理好き補正する分減らした
+	ABL:料理 += (6 +RAND:6)
+
+CASE "修女","战斗修女","巫女","猎人"
+	;わりと掃除ができることがある
+	ABL:清洁 += RAND:5
+
+CASE "放牛的"
+	;もちろん酪農経験たっぷり
+	ABL:奶农 += (7 +RAND:4)
+
+CASE "牧羊人"
+	;牛の酪農にだいたい活かせる
+	ABL:奶农 += (5 +RAND:4)
+
+ENDSELECT
+
+;接客
+SELECTCASE CSTR:职业
+CASE "商人"
+	;当然商売は慣れてる
+	ABL:接客 += (8 +RAND:5)
+
+CASE "女仆","修女","厨师","铁匠"
+	;客商売ではある
+	ABL:接客 += (3 +RAND:5)
+
+CASE "旅客","冒险家","学者","战士","贤者","盗贼"
+	;口が回る　回らないこともある
+	ABL:接客 += RAND:8
+ENDSELECT
+
+;趣味嗜好素質の補正
+SIF TALENT:喜欢清洁 > 0
+	ABL:清洁 += 2
+SIF TALENT:喜欢料理 > 0
+	ABL:料理 += 2
+SIF TALENT:喜欢读书 > 0
+	ABL:事务 += 2
+
+SIF TALENT:喜欢清洁 < 0
+	ABL:清洁 -= 2
+SIF TALENT:喜欢料理 < 0
+	ABL:料理 -= 2
+SIF TALENT:喜欢读书 < 0
+	ABL:事务 -= 2
+
+;ランダムで2までUP
+ABL:奶农 += RAND:3
+ABL:事务 += RAND:3
+ABL:清洁 += RAND:3
+ABL:料理 += RAND:3
+
+ABL:奶农 = LIMIT(ABL:奶农,0,10)
+ABL:事务 = LIMIT(ABL:事务,0,10)
+ABL:清洁 = LIMIT(ABL:清洁,0,10)
+ABL:料理 = LIMIT(ABL:料理,0,10)
+

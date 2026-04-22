@@ -1,0 +1,11 @@
+﻿
+;搾乳器装着　ARGS:装着する搾乳器
+@MOUNTING_LACTATION_MACHINE_MESSAGE(ARGS)
+
+PRINTFORML %CALLNAME%的%SLANG_B()%吸附了%ARGS%…
+CALL KOJO_PRINT("调教命令",TRAINNAME:SELECTCOM,"执行")
+
+;搾れる場合乳搾り、そうでないなら乳揉みに自動派生するので「そして」止め
+PRINT 还有
+
+

@@ -1,0 +1,304 @@
+﻿
+;魔術説明
+;ARG→SELECT_ITEM
+@ITEM_DETAIL_TENTACLE_MAGIC(ARG)
+
+IF ARG < ITEM_ID_MIN || ARG >= ITEM_ID_MAX || ITEMNAME:ARG == ""
+	PRINTL  　《 将显示所选魔法的描述。 》
+	RETURN
+ENDIF
+PRINTFORML 　《 %ITEMNAME:ARG% 》%VALUE_DIGIT(ITEMPRICE:ARG)%AP
+SELECTCASE ITEMNAME:ARG
+CASE "触手变化"
+	PRINTL ＜解锁＞
+	PRINTL 调教中：拘束命令【触手拘束】【触手目盲】
+	PRINTL 奴隶接收时・「去见面」时：拘束药物
+	PRINTL
+	PRINTFORML %CALLNAME:0%能够从身体中生出触手，并且在对人类的调教中可以用来拘束。
+	PRINTL 从这里开始可以变换成各种派生触手，似乎能进行多种多样的刺激和身体改造。
+	IF FLAG:玩笑表示
+		PRINTL
+		PRINTL 特别是如果不特别注意，就会从背部长出来，但靠近手臂更容易控制形象吧？
+		PRINTL 魔法书上说在日常生活中也能方便地拿到远处的东西，
+		PRINTL 实际上没有相当的习惯，控制去拿小东西是相当困难的，
+		PRINTL 在更熟练之前，拿来的东西很滑，普通走过去取会更好。
+	ENDIF
+	
+CASE "刷子触手"
+	PRINTL ＜解锁＞
+	PRINTL 调教中：触手指令【刷子触手】
+	PRINTL 使用刷状的触手摩擦奴隶的性感带。
+	PRINTL 对于暴露状态且没有装备刺激道具的部位都会受到刺激。
+	PRINTL 当其他刺激进入时，该部位的刷子触手将缩回。
+	PRINTL
+	PRINTFORML %SAVESTR:标识／膣%浓密%SAVESTR:标识／肛门%用刷子触手擦拭时，
+	PRINTL 由于不是插入，可以在没有痛感的情况下给予快感，这可能是对奴隶友好的调教。
+	PRINTL 为了全身均匀地进行触手刺激，可能非常方便于习惯触手的使用。
+	IF FLAG:玩笑表示
+		PRINTL
+		PRINTL 在紧张的时间内使用这个命令可能会很强大，因为第一回合就会发生全身的愉悦。
+		PRINTL 但是，这是什么急于求成的游戏？
+	ENDIF
+	
+CASE "阴茎触手"
+	PRINTL ＜解锁＞
+	PRINTL 调教中：触手命令【触手Ｖ插入】【触手Ａ插入】【触手强制乳交】【触手口交】【触手插入】
+	PRINTL
+	PRINTFORML %SAVESTR:标识／阴茎%形状的触手可以生成并插入奴隶的各种部位。
+	PRINTFORML 触手生物拥有%SAVESTR:标识／阴茎%并不奇怪，但
+	PRINTL 专门模仿它创造的魔法的原因是
+	PRINTL 人们说这大概是为了“对被捕获的人类雌性进行骚扰”。
+	
+CASE "吸引触手"
+	PRINTL ＜解锁＞
+	PRINTL 调教中：【触手阴蒂吸】
+	PRINTL
+	PRINTL 先端有一个小孔，可以强力吸取的触手。
+	PRINTL 只能吸取而不能饮用的确有点没用，但如果加以应用，似乎可以制作出能吸取并饮用的触手。
+	
+CASE "揉捏触手"
+	PRINTL ＜解锁＞
+	PRINTL 调教中：【触手乳揉】【触手挤奶】
+	PRINTL
+	PRINTL 通过调整收紧的力度，能够在不伤害人类肌肤的情况下收缩的触手。
+	PRINTFORML 分叉的触手温柔而猥亵地揉捏%SAVESTR:标识／乳房%。
+	PRINTL 反过来说，似乎没有其他用途。
+	
+CASE "前端分裂触手"
+	PRINTL ＜前提＞
+	PRINTL
+	PRINTL 先端如花般开放的触手。
+	PRINTL 熟悉后似乎可以抓住什么，但感觉几根细触手就足够了。
+	
+CASE "半透明触手"
+	PRINTL ＜前提＞
+	PRINTL
+	PRINTL 半透明包裹的东西从外部可见的触手。
+	PRINTL 说实话，我真的不知道该怎么用。
+	
+CASE "口型触手"
+	PRINTL ＜前提＞
+	PRINTL
+	PRINTL 模仿人类口部的触手。
+	PRINTL 我认为这大概是为骚扰而制作的。
+	
+CASE "注入触手"
+	PRINTL ＜前提＞
+	PRINTL
+	PRINTL 用于将本体生成的物质注入其他生物的触手。
+	PRINTL 使用在人的身上似乎需要医疗知识，但对人类来说大概没问题。
+	
+CASE "极细触手"
+	PRINTL ＜前提＞
+	PRINTL
+	PRINTL 比人的手指细得多的触手。
+	PRINTL 非常细但意外地坚固，非刀具的情况下也不会在中途断裂。
+	
+CASE "魔力注入触手"
+	PRINTL ＜解锁＞
+	PRINTL 调教中：触手指令【触手魔力注入】
+	PRINTL
+	PRINTFORML %SAVESTR:标识／膣%和%SAVESTR:标识／肛门%中插入的%SAVESTR:标识／阴茎触手%释放浓厚的魔力粘液。
+	PRINTL 通过疑似射精带来的快感和奴隶的魔力恢复，实际上就是用触手进行的＜魔力注入＞。
+	
+CASE "吸引搾乳触手"
+	PRINTL ＜解锁＞
+	PRINTL 调教中：触手指令【吸引搾乳触手】／手・口指令【直接饮用触手复合挤奶】
+	PRINTL
+	PRINTFORML 吸附在奴隶的乳头上，不断吸吮%SAVESTR:标识／母乳%。
+	PRINTFORML 吸取的%SAVESTR:标识／母乳%都会通过触手全部被%CALLNAME:0%吸收。
+	PRINTL
+	PRINTL 这是在吸引触手中增加了将吸取液体转移到本体的功能。
+	PRINTFORML 此外，仅针对乳头进行精准吸附，因此%SAVESTR:标识／乳房%不会产生快感。
+	PRINTL
+	PRINTL 目前仅有效【直接饮用触手复合挤奶】。
+	
+CASE "包乳花瓣搾乳触手"
+	PRINTL ＜解锁＞
+	PRINTL 调教中：触手指令【包乳花瓣搾乳触手】
+	PRINTL
+	PRINTFORML 触手的尖端像花瓣一样展开，包裹住奴隶的%SAVESTR:标识／乳房%，一边揉捏一边进行。
+	PRINTFORML 用无数的褶皱进行刺激，中央的吸引口挤取%SAVESTR:标识／母乳%的触手。
+	PRINTFORML 吸取的%SAVESTR:标识／母乳%都会通过触手全部被%CALLNAME:0%吸收。
+	PRINTL
+	PRINTL 用花瓣状触手揉捏移动需要一些技巧。
+	PRINTFORML %SAVESTR:标识／乳房%的快感刺激效果似乎非常高且强力。
+	
+CASE "透明杯状搾乳触手"
+	PRINTL ＜解锁＞
+	PRINTL 调教中：触手指令【透明杯状搾乳触手】
+	PRINTL
+	PRINTFORML 先端是透明杯状的触手包裹住奴隶的%SAVESTR:标识／乳房%，
+	PRINTFORML 吸引的同时，内部触手缠绕住乳头，搾取和擦拭%SAVESTR:标识／母乳%。
+	PRINTFORML 吸取的%SAVESTR:标识／母乳%都会通过触手全部被%CALLNAME:0%吸收。
+	PRINTL
+	PRINTFORML 透明且内部可见，因此乳头被刺激的场景及%SAVESTR:标识／母乳%喷出的样子都十分清晰可见，
+	PRINTL 奴隶的羞耻心被煽动的效果似乎很高。
+	
+CASE "榨乳蠕虫触手"
+	PRINTL ＜解锁＞
+	PRINTL 调教中：触手指令【挤奶虫触手】
+	PRINTL
+	PRINTL 先端圆润，像是口和舌头的触手，看起来像生物一样，
+	PRINTFORML 让触手吸附在奴隶的乳头上，一边舔舐一边挤出%SAVESTR:标识／母乳%。
+	PRINTFORML 吸取的%SAVESTR:标识／母乳%都会通过触手全部被%CALLNAME:0%吸收。
+	PRINTL
+	PRINTL 能够让人感受到被触手幼体吸附的感觉，
+	PRINTL 似乎有刺激奴隶母性本能的效果。
+	PRINTL 不过，被异形吸附的事实没有改变，触手刺激如果让人感觉舒服的话，那就是另外一回事。
+	
+CASE "耳奸触手"
+	PRINTL ＜解锁＞
+	PRINTL 调教中：触手指令【触手耳奸】
+	PRINTL
+	PRINTL 极细触手侵入奴隶的耳朵进行刺激的触手。
+	PRINTL 人类の耳内部には実は神経が集まっており浓密適切に開発してやれば立派な性感帯になる。
+	PRINTL 这是使用专用的细长触手和粘液来培养这些神经的方法。
+	PRINTL 值得注意的是，粘液在抽出之前会全部重新吸收，因此它是一种不会导致疾病的好东西。
+	IF FLAG:玩笑表示
+		PRINTL
+		PRINTL 目前只能操作情感参数，所以可能需要进行调整。
+	ENDIF
+	
+CASE "乳腺侵入触手"
+	PRINTL ＜解锁＞
+	PRINTL 【包乳花瓣搾乳触手】【透明杯状搾乳触手】使用中：派生指令【乳腺侵入触手】
+	PRINTL
+	PRINTL 极细触手从乳头侵入乳腺，直接进行刺激的技术。
+	PRINTL 显而易见，在使用过程中伴随着剧烈的疼痛，因此，如果奴隶在这种触手的使用下感觉愉悦，那就已经无药可救了。
+	PRINTL 除了能够有效提高母乳的浓度之外，若＜浓厚乳汁吸取＞生效，倍率还会进一步增加。
+	PRINTL
+	PRINTL ※试作中，因此无效。
+	
+	
+;肉体改造
+CASE "媚毒生成"
+	PRINTL ＜前提＞
+	PRINTL
+	PRINTL 能够生成对人类肉体产生作用的媚毒。
+	SIF FLAG:玩笑表示
+		PRINTFORML %SAVESTR:标识／乳房%和%SAVESTR:标识／母乳%相关的改造居多，但这也符合该变体的主题。
+	
+CASE "母乳体质化精华"
+	PRINTL ＜解锁＞
+	PRINTFORML 调教中：肉体改造→指令【母乳体质化精华】（1次需要%VALUE_DIGIT(MAGIC_USE_MP:ARG)%MP）
+	PRINTL
+	PRINTFORML 将特制的精华注入奴隶的%SAVESTR:标识／乳房%中，即使没有怀孕也可以使其成为​【母乳体质】。
+	PRINTFORML 成为能够产出%SAVESTR:标识／母乳%的奴隶，可以进行挤奶并出售%SAVESTR:标识／母乳%，
+	PRINTL 也可以与灵力抽出装置结合，将奴隶的灵力夺走，用途多种多样。
+	IF FLAG:玩笑表示
+		PRINTL
+		PRINTL 如果不是触手封印玩法，我认为这是应该优先选择的。
+		PRINTL 既省去了每次制作药物都需要去的麻烦，效果也是最好的。
+	ENDIF
+	
+CASE "魔力母乳体质化精华"
+	PRINTL ＜解锁＞
+	PRINTFORML 调教中：肉体改造→指令【魔力母乳体质化精华】（1次需要%VALUE_DIGIT(MAGIC_USE_MP:ARG)%MP）
+	PRINTL
+	PRINTFORML 将特制的精华注入拥有魔力的奴隶的%SAVESTR:标识／乳房%中，使其魔力以%SAVESTR:标识／母乳%的形式泄漏成为【魔力母乳体质】。
+	PRINTFORML 即使魔力被榨干临时降为零，只要%SAVESTR:标识／母乳%已经积累，就可以直接挤奶。
+	PRINTL
+	PRINTFORML %CALLNAME:0%可以通过直接吸取，理论上不清楚的是可以从奴隶那里夺取魔力，将其据为己有。
+	IF FLAG:玩笑表示
+		PRINTL
+		PRINTL 如果也不是触手封印玩的话我觉得应该优先拿第二。
+		PRINTFORML %CALLNAME:0%家系中有能够能量吸收的魔界生物不是这样的感觉吗？
+	ENDIF
+	
+CASE "膨乳改造精华"
+	PRINTL ＜解锁＞
+	PRINTFORML 调教中：肉体改造→指令【膨乳改造精华】（1次需要%VALUE_DIGIT(MAGIC_USE_MP:ARG)%MP）
+	PRINTL
+	PRINTFORML 将特制精华注入奴隶的颈部，使%SAVESTR:标识／乳房%增大一号。
+	PRINTL 如果乳房过于巨大则效果不显著，这种精华的膨乳效果不会超过【超乳】。
+	PRINTL
+	PRINTFORML 一次膨乳的%SAVESTR:标识／乳房%虽然有方法可以恢复，但非常麻烦，因此请务必注意。
+	IF FLAG:玩笑表示
+		PRINTL
+		PRINTL 派生的【淫乳改造精华】的影子似乎很多，但如果想要微调的话也可以使用。
+	ENDIF
+	
+CASE "淫乳改造精华"
+	PRINTL ＜解锁＞
+	PRINTFORML 调教中：肉体改造→命令【淫乳改造精华】（一次需要%VALUE_DIGIT(MAGIC_USE_MP:ARG)%MP）
+	PRINTL
+	PRINTFORML 将特制精华注入奴隶的脖子，令%SAVESTR:标识／乳房%增大数个阶段，并提高敏感度。
+	PRINTFORML 根据%CALLNAME:0%的最大魔力，乳房阶段将增加（最多5个阶段）。
+	PRINTL 如果B敏感度低于300％，则增加敏感度（敏感度越低，增幅越大）。
+	PRINTL
+	PRINTL 可以将奴隶的身体改造成超越【超乳】，使其只能以牲畜的身份生存。
+	PRINTFORML 一次膨乳的%SAVESTR:标识／乳房%虽然有方法可以恢复，但非常麻烦，因此请务必注意。
+	PRINTFORML %SAVESTR:标识／乳房%越大越好，适合牧场主。
+	
+CASE "母乳浓厚化精华"
+	PRINTL ＜解锁＞
+	PRINTFORML 调教中：肉体改造→命令【母乳浓缩精华】（一次需要%VALUE_DIGIT(MAGIC_USE_MP:ARG)%MP）
+	PRINTL
+	PRINTFORML 将特制精华注入奴隶的脖子，提高从奴隶身上挤出的%SAVESTR:标识／母乳%的浓度。
+	PRINTL 如果母乳浓度已经很高，则会进行相应的减算，需要多次使用。
+	PRINTL
+	PRINTFORML %SAVESTR:标识／母乳%越浓厚，味道越好，饮用者的体力恢复量也会增加。
+	PRINTL 出货价格和母乳需求也会增加。
+	PRINTL 另外，如果<浓厚乳汁吸取>有效，从同样数量中夺取的灵力和魔力也会增加。
+	
+CASE "增敏粘液"
+	PRINTL ＜解锁＞
+	PRINTFORML 调教中：肉体改造→指令【敏感度上升粘液】（1次需要%VALUE_DIGIT(MAGIC_USE_MP:ARG)%MP）
+	PRINTL
+	PRINTFORML 将黏液摩擦到奴隶的任何部位，增加该部位的敏感度。（上限{SENSITIVE_MAX}\%）
+	PRINTFORML 当前感度较低时，效果较好，如果在原本就敏感的部位，如乳头、%SAVESTR:标识／阴蒂%使用，则效果是其他部位的两倍。
+	IF FLAG:玩笑表示
+		PRINTL
+		PRINTL 总觉得「敏感度」还是不要涨得太高比较好。可能会调整。
+	ENDIF
+	
+	
+;機能開放
+CASE "触手射精"
+	PRINTL ＜被动技能＞
+	PRINTFORML 触手插入中：触手射精
+	PRINTL
+	PRINTFORML %SAVESTR:标识／阴茎触手%使用中，%CALLNAME:0%射精会作为独立的部分从触手中射出。
+	PRINTL 如果使用多根触手，会同时从所有触手射精。
+	PRINTL 由于参考了触手生物的开发，并不是生成疑似精液。
+	PRINTL 据说虽然无法再现怀孕的功能，但几乎是实际的射精。
+	
+CASE "触手受胎"
+	PRINTL ＜被动技能＞
+	PRINTL 在触手射精时，有概率使触手怀孕。
+	PRINTL
+	PRINTFORML 如果使用%SAVESTR:标识／阴茎触手%在%SAVESTR:标识／膣%内射精，有可能怀有触手生物。
+	PRINTL 在成功再现了怀孕的功能后，发现其受胎概率明显高于人类性交。
+	PRINTL
+		;PRINTL 産まれた触手をどうするかは、今のところ研究所に送ることになっています。
+	PRINTL 出生的触手生物可以在牧场饲养，并用于【触手刺激挤奶】。
+	PRINTL 此外，如果产出方未完全堕落，几乎肯定会精神崩溃。这是显而易见的。
+	PRINTL 对此，使用＜洗脑＞可以强行让其保持理智。
+	
+CASE "媚药粘液"
+	PRINTL ＜解锁＞
+	PRINTFORML 调教中：肉体改造→指令【媚药粘液】（1次需要%VALUE_DIGIT(MAGIC_USE_MP:ARG)%MP）
+	PRINTL
+	PRINTL 通过触手分泌特殊的黏液，让奴隶饮用，短暂地大幅提高性感。
+	PRINTL 比市售的＜媚药＞效果更强。然而，由于是强制感受到的，反感也会倍增。
+	PRINTFORML 此外，为防止异物混入，使用期间无法挤出用于出货的%SAVESTR:标识／母乳%。
+	IF FLAG:玩笑表示
+		PRINTL
+		PRINTL 在调教开始时选择是否使用春药的方式可能会成为一种可能性。
+	ENDIF
+	
+CASE "触手装备作成"
+	PRINTL ＜解锁＞
+	PRINTFORML 主界面「开发·学习」→【触手装备制作】
+	PRINTL
+	PRINTL 可以制作＜触手服＞等特殊装备。
+	
+CASE "触手分泌液增量"
+	PRINTL ＜被动技能＞
+	PRINTFORML 触手插入前：润滑增量。
+	PRINTL
+	PRINTFORML 在使用%SAVESTR:标识／阴茎触手%之前，应大幅增加%SAVESTR:标识／膣%或%SAVESTR:标识／肛门%的润滑后再插入。
+ENDSELECT
+
+

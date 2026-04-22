@@ -1,0 +1,260 @@
+﻿
+;実行内容
+;ARG→口上など表示
+;ARGS→スケジュール
+@SLAVE_LACTATION_RUN(ARG,ARGS)
+#DIMS LACTATION_TOOL
+
+;新バージョン、責めを10回に分けて行う
+CALL RESET_TRAIN_PALAM
+
+;先にフラグの上書き
+CALL BEFORE_TRAIN_AJUST_STRIP_FLAG
+
+;一旦消去
+SOURCE:脱衣消息显示 = 0
+
+;搾乳責めフラグは共通
+TFLAG:搾乳刺激 = 1
+TFLAG:训练前体力 = BASE:体力
+TFLAG:循环中消息显示 = ARG
+CALL STATUS_BEFORE_RECORD
+
+;触手服を着ている場合
+CALL BEFORE_TRAIN_T_CLOTHE
+
+;スケジュールにより変更
+SELECTCASE ARGS
+CASE "搾乳"
+	;おっぱい脱衣フラグをセット
+	;口上など表示状態なら脱衣メッセージも出す
+	SIF ARG
+		SOURCE:脱衣消息显示 = 1
+	CALL TRAIN_CLOTHE_STRIP("总计","上半脱衣")
+	TFLAG:Ｎ装备 = 1
+	TFLAG:搾乳器 = 1
+	
+	;搾乳器のアプグレに対応しようかな？と思うので拡張準備
+	LACTATION_TOOL = 家畜用搾乳器
+	TEQUIP:LACTATION_TOOL = 1
+	SIF ARG
+		CALL SLAVE_LACTATION_RUN_MESSAGE(LACTATION_TOOL)
+
+	;責め文表示なら最初に画像も表示
+	SIF ARG
+		CALL PRINT_IMAGE("调教执行")
+	
+	;本体
+	CALL SLAVE_LACTATION_LOOP(ARG)
+	
+	;最後に擬音
+	SIF ARG && EX:喷乳
+		CALL ONOMATOPOEIA("搾乳器")
+			
+	;全員出すことにした
+	SIF EX:喷乳
+		CALL KOJO_PRINT("搾乳")
+
+	;こっちは1人
+	SIF ARG
+		CALL PRINT_MILK_VOLUME
+	EXP:执行次数／搾乳 ++
+	EXP:区间执行次数／搾乳 ++
+	
+	;あなたが酪農参加していたら裸を見られる
+	IF CSTR:0:日程 == "奶农"
+		EXP:乳房被看见 ++
+		EXP:被看见乳头 ++
+	ENDIF
+	
+CASE "抽出"
+	SIF ARG
+		SOURCE:脱衣消息显示 = 1
+	CALL TRAIN_CLOTHE_STRIP("总计","上半脱衣")
+	LACTATION_TOOL = 灵力抽出装置
+	TEQUIP:LACTATION_TOOL = 1
+	SIF ARG
+		CALL SLAVE_DRAIN_RUN_MESSAGE(LACTATION_TOOL)
+	
+	;霊力を実際抽出するかの判定を別な部分にした
+	TFLAG:Ｎ装备 = 1
+	TFLAG:抽出中 = 1
+	TFLAG:搾乳器 = 1
+	SIF ARG
+		CALL PRINT_IMAGE("调教执行")
+	CALL SLAVE_DRAIN_LACTATION_LOOP(ARG)
+	
+	;メッセージ表示をON
+	TFLAG:循环中消息显示 = 1
+	SIF ARG && EX:喷乳
+		CALL ONOMATOPOEIA("搾乳器")
+	SIF EX:喷乳
+		CALL KOJO_PRINT("搾乳")
+	
+	;レベルドレインメッセージ
+	SIF EP_BEFORE > BASE:灵力
+		CALL SLAVE_ENERGY_DRAIN(2)
+	SIF ARG
+		CALL PRINT_MILK_VOLUME
+	EXP:执行次数／抽出 ++
+	EXP:区间执行次数／抽出 ++
+	CFLAG:继续抽出 = 1
+	
+	;あなたが起動するので基本裸を見られる
+	EXP:乳房被看见 ++
+	EXP:被看见乳头 ++
+	
+CASE "牛舍"
+	;牛舎は脱衣メッセージなし
+	CALL TRAIN_CLOTHE_STRIP("总计","上半脱衣")
+	TFLAG:Ｎ装备 = 1
+	TFLAG:搾乳器 = 1
+	LACTATION_TOOL = 家畜用搾乳器
+	TEQUIP:LACTATION_TOOL = 1
+	
+	;ここは簡易表示
+	TFLAG:循环中消息显示 = 0
+	CALL SLAVE_COWSHED_LACTATION_LOOP(ARG)
+	EXP:执行次数／搾乳 ++
+	EXP:区间执行次数／搾乳 ++
+	
+	IF CSTR:0:日程 == "奶农"
+		EXP:乳房被看见 ++
+		EXP:被看见乳头 ++
+	ENDIF
+
+CASE "体内凌辱"
+	;一応全部脱がす→ちゃんと通ってれば両方露出か全裸なので脱衣関数通す
+	CALL VORE_SEX_STRIP
+	PALAM:Ｖ润滑 = 5000
+	PALAM:Ａ润滑 = 5000
+	
+	;若干ランダムに触手使用
+	CALL VORE_SEX_RANDOM_TENTACLE
+	
+	;SOURCE一部上書き用
+	TFLAG:体内凌辱中 = 1
+	SIF ARG
+		CALL PRINT_IMAGE("调教执行")
+	CALL SLAVE_VORE_SEX_LOOP(ARG)
+	IF ARG
+		CALL ONOMATOPOEIA("触手活塞")
+		CALL ONOMATOPOEIA("揉胸")
+		SIF TEQUIP:包乳花瓣搾乳触手
+			CALL ONOMATOPOEIA("包乳花瓣搾乳触手")
+		SIF TEQUIP:透明杯状搾乳触手
+			CALL ONOMATOPOEIA("透明杯状搾乳触手")
+	ENDIF
+	
+	;口塞ぎ状態を解除しとく
+	TFLAG:Ｍ装备 = 0
+	
+	;メッセージ表示をON
+	TFLAG:循环中消息显示 = 1
+	SIF EX:喷乳
+		CALL KOJO_PRINT("搾乳")
+	
+	;レベルドレインメッセージ
+	SIF EP_BEFORE > BASE:灵力
+		CALL SLAVE_ENERGY_DRAIN(2)
+	EXP:执行次数／体内凌辱 ++
+	EXP:区间执行次数／体内凌辱 ++
+	CFLAG:继续体内凌辱 = 1
+	
+	;ここは着せない
+	
+CASE "触手刺激搾乳"
+	CALL TRAIN_CLOTHE_STRIP("总计","全半脱衣")
+	TFLAG:搾乳器 = 1
+	LACTATION_TOOL = 家畜用搾乳器
+	TEQUIP:LACTATION_TOOL = 1
+	SIF ARG
+		CALL SLAVE_T_LACTATION_RUN_MESSAGE(LACTATION_TOOL)
+	SETBIT ＃束缚／触手＃
+	PALAM:Ｖ润滑 = 5000
+	PALAM:Ａ润滑 = 5000
+	IF ABL:胸围大小 < BUSTSIZE_巨乳
+		TEQUIP:触手揉胸 = 1
+	ELSE
+		TEQUIP:触手榨乳 = 1
+	ENDIF
+	IF TALENT:Ａ处女 && ITEM:刷子触手
+		TEQUIP:刷子触手Ａ = 1
+	ELSE
+		TEQUIP:触手Ａ插入 = 1
+	ENDIF
+	IF ITEM:刷子触手
+		TEQUIP:刷子触手Ｃ = 1
+	ELSE
+		TEQUIP:触手吸吮阴蒂 = 1
+	ENDIF
+	IF TALENT:处女结界
+		;なし
+	ELSEIF TALENT:处女 && ITEM:刷子触手
+		TEQUIP:刷子触手Ｖ = 1
+	ELSE
+		TEQUIP:触手Ｖ插入 = 1
+	ENDIF
+	
+	;ブラシ触手ONにするコマンド
+	IF MATCH(TEQUIP,1,150,155)
+		TEQUIP:刷子触手 = 1
+		SOURCE:刷子触手指令 = 1
+	ENDIF
+	V_PENIS = 触手
+	A_PENIS = 触手
+	
+	;責め文表示なら最初に画像も表示
+	SIF ARG
+		CALL PRINT_IMAGE("调教执行")
+	
+	;本体
+	CALL SLAVE_T_LACTATION_LOOP(ARG)
+	
+	;最後に擬音
+	SIF ARG && EX:喷乳
+		CALL ONOMATOPOEIA("搾乳器")
+			
+	;全員出すことにした
+	SIF EX:喷乳
+		CALL KOJO_PRINT("搾乳")
+
+	;こっちは1人
+	SIF ARG
+		CALL PRINT_MILK_VOLUME
+	EXP:执行次数／触手刺激搾乳 ++
+	EXP:区间执行次数／触手刺激搾乳 ++
+ENDSELECT
+CALL SCHEDULE_ECSTASY_FIX
+CALL SCHEDULE_LACTATION_TOTAL_RESULT
+CFLAG:行动完毕 = 1
+
+;牛舎は簡易のみ
+SIF ARGS == "牛舍"
+	RETURN
+
+;ここで実行後口上呼ぶ
+SIF ARG
+	CALL KOJO_PRINT("日程",ARGS,"执行后",KOJO_TYPE)
+
+;改行するかのフラグ
+SIF FLAG:日程搾乳换行符
+	PRINTL
+
+
+
+;体内凌辱の脱衣関数
+@VORE_SEX_STRIP
+
+;下着はなし
+EQUIP:装备中ID／内衣上装 = 0
+EQUIP:装备中ID／内衣下装 = 0
+
+;両方露出状態じゃないなら脱がす
+SIF (＃穿着衣服／胸部撕裂＃ || ＃穿着衣服／乳房露出＃) && (＃穿着衣服／私处撕裂＃ || ＃穿着衣服／私处露出＃)
+	RETURN
+EQUIP:装备中ID／衣服 = 0
+
+
+
+

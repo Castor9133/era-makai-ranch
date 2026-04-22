@@ -1,0 +1,66 @@
+﻿
+;ホームセンターPAGE1
+@ITEM_SHOP_WORK_DETAIL_DISPOSABLE
+
+;アイテム名・価格・所持数
+PRINTFORML 　《 %ITEMNAME:SELECT_ITEM% 》%VALUE_DIGIT(ITEMPRICE:SELECT_ITEM)%G 持有数量{ITEM:SELECT_ITEM,2}个 
+SELECTCASE ITEMNAME:SELECT_ITEM
+CASE "营养饮料"
+	PRINTL ＜消耗品＞
+	PRINTL 去见面→给予营养饮料or拥有者→使用道具
+	PRINTL
+	PRINTL 稍微回复体力的二级准药品。
+	PRINTL 回复量将为最大生命值的20%或400，以较大者为准。
+	PRINTL 每天最多服用一瓶，请按照说明和剂量正确使用。
+	
+CASE "衣服修理布"
+	PRINTL ＜消耗品＞
+	PRINTL 去见面→修补破衣服
+	PRINTL ※＜裁缝工具套装＞是必要的
+	PRINTL
+	PRINTL 用于修补破损衣服的布，可用于任何衣服。
+	IF FLAG:玩笑表示
+		PRINTL 修理后，虽然有修理的痕迹和连接处的颜色，但突然发现不知道到底修理了哪里。
+		PRINTL 也许这种魔力已经融入其中。
+	ENDIF
+	
+CASE "染发剂"
+	PRINTL ＜消耗品＞
+	PRINTL 去见面→改变发型
+	PRINTL ※＜发型工具套装＞是必要的
+	PRINTL
+	PRINTL 一种通过融入头发来改变发色的美发产品。
+	IF FLAG:玩笑表示
+		PRINTL 原以为有一系列颜色，但实际上只有一种，如果你认为它应该是红色的，那么它就会变成红色。
+		PRINTL 而且洗澡什么的也不会掉下来。
+		PRINTL 也许这种魔力已经融入其中。
+	ENDIF
+	
+CASE "彩色隐形眼镜"
+	PRINTL ＜消耗品＞
+	PRINTL 去见面→改变瞳色和瞳孔
+	PRINTL
+	PRINTL 戴在眼睛上即可改变瞳色和形状的时尚单品。
+	IF FLAG:玩笑表示
+		PRINTL 原以为有一系列颜色，但实际上只有一种，如果你认为它应该是红色的，那么它就会变成红色。
+		PRINTL 此外，除非尝试将其移除，否则它不会脱落，并且如果保留它，也不会产生任何负面影响。
+		PRINTL 也许这种魔力已经融入其中。
+	ENDIF
+	
+CASE "家畜管理标签"
+	PRINTL ＜消耗品＞
+	PRINTL 去见面→赋予新身份
+	PRINTL
+	PRINTL 戴在家畜耳朵上，使其能够进行个体管理的标签。
+	PRINTL 本来人类不须要，但安装可以覆盖身分。
+	PRINTL 堕落为「奴隶」或「家畜」的身份，是最大屈辱的证明。
+	
+CASE "花草茶"
+	PRINTL ＜消耗品＞
+	PRINTL 去见面→给一杯花草茶
+	PRINTL
+	PRINTL 采用魔界草药制成的具有超强放松效果的茶。
+	PRINTL 回复理性、精神力量&减少乳牛堕落。
+ENDSELECT
+
+

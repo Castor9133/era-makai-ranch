@@ -1,0 +1,60 @@
+; ======================================
+; 泛用口上・调教命令（性格：天然）
+; ======================================
+
+@KOJO_GENERAL_天然口上1_TRAIN(ARGS:0,ARGS:1,ARGS:2,ARGS:3)
+
+SELECTCASE ARGS:2
+CASE "执行"
+	SELECTCASE ARGS:1
+	CASE "揉胸","育乳按摩","浓厚母乳按摩","乳罐按摩","胸爱抚","拧乳头"
+		CALL MESSAGE_BOX,@"「这是……胸部检查吗……？啊……♥」"
+		CALL MESSAGE_BOX,@"「力度记录：现在是……温柔模式……对吗……？」"
+
+	CASE "接吻","舔舐脸","舔舐耳","舔舐腋"
+		CALL MESSAGE_BOX,@"「……诶？这是……确认气味的步骤……？」"
+		CALL MESSAGE_BOX,@"「……嗯……我会配合……呼吸也要配合吗……♥」"
+
+	CASE "口交","触手口交"
+		CALL MESSAGE_BOX,@"「用嘴……明白了。我会先含住……然后……嗯……♥」"
+		CALL MESSAGE_BOX,@"「如果你眨一下眼，我就换个节奏……可以吗？」"
+
+	CASE "深喉","触手深喉"
+		CALL MESSAGE_BOX,@"「咳……咳……我还活着……继续也可以……♥」"
+
+	CASE "手淫","授乳手交"
+		CALL MESSAGE_BOX,@"「手的动作是……这样？嗯……我学会了……♥」"
+
+	CASE "足交"
+		CALL MESSAGE_BOX,@"「用脚……也算是触摸的一种，所以可以……对吧？」"
+
+	CASE "正常位","后背位","对面坐位","背面坐位","骑乘位","对面立位","背面立位","强制骑乘位","背面骑乘位"
+		CALL MESSAGE_BOX,@"「插入步骤开始……啊……♥ ……需要我抱紧吗？」"
+
+	CASE "肛塞"
+		CALL MESSAGE_BOX,@"「后方装着……明白。我要先深呼吸……」"
+
+	CASE "尿道塞"
+		CALL MESSAGE_BOX,@"「尿道装着……？这一步……听起来很难……」"
+
+	CASEELSE
+		CALL MESSAGE_BOX,@"「执行%ARGS:1%……我会认真配合……」"
+	ENDSELECT
+
+CASE "继续"
+	CALL MESSAGE_BOX,@"「继续步骤……好的。我会照刚才那样做……」"
+
+CASE "移除"
+	SELECTCASE ARGS:1
+	CASE "肛塞"
+		CALL MESSAGE_BOX,@"「肛塞移除完成……后方轻松了……」"
+	CASE "尿道塞"
+		CALL MESSAGE_BOX,@"「尿道塞移除完成……我还在发抖……」"
+	CASEELSE
+		CALL MESSAGE_BOX,@"「移除步骤完成……诶？说得太像报告了吗……」"
+	ENDSELECT
+
+CASEELSE
+ENDSELECT
+RETURN
+

@@ -1,0 +1,137 @@
+﻿
+;建築処理　時間跨ぎ処理をオミットしたので単純化できたかも
+;ARG→INPUT
+;ARG:1→牛舎増築時に使用：牛舎番号
+;ARGS→建築物
+@BUILD_COMMON(ARG,ARG:1,ARGS)
+
+;茶番
+CALL BUILD_FIRST_CONTACT
+SELECTCASE ARGS
+CASE "牛舍建筑"
+	CALL BUILD_RESULT_COWSHED(ARG)
+	
+CASE "牛舍扩建"
+	CALL BUILD_RESULT_COWSHED_EXTENTION(ARG,ARG:1)
+	
+CASE "事务所扩建"
+	CALL BUILD_RESULT_OFFICE_EXTENTION(ARG)
+
+;あとアイテム増加なので共通化
+;↑もアイテムにすれば共通化できるかも
+CASEELSE
+	CALL BUILD_RESULT_ITEM(ARG,ARGS)
+ENDSELECT
+
+;日付増加コンフィグONなら増加+日付再計算
+IF FLAG:由事件引起的日期经过
+	DAY += ESTATE_DAY:ARG
+	PRINTFORML ＜{ESTATE_DAY:ARG}天已经过去＞
+	CALL DATE_CALC
+ENDIF
+PRINTW
+
+;購入した場合マイルストーンの不動産部分をチェック
+CALL MILESTONE_CHECK_ESTATE
+
+
+
+;牛舎建築
+;ARG→INPUT
+@BUILD_RESULT_COWSHED(ARG)
+
+;ローン増加・資金減少
+CALL ITEM_LOAN_BUY(ITEMPRICE:牛舍)
+
+;FLAG:第1牛舎増築段階→500
+FLAG_REF = 490
+ITEM:牛舍 ++
+FLAG:(FLAG_REF +ITEM:牛舍 *10) ++
+CALL PRINTL_WORD_COLOR,@"%COWSHED_NAME:(ITEM:牛舍)%已经完成！","浅蓝色"
+
+
+
+;牛舎増築
+;ARG:1→増築する牛舎番号
+@BUILD_RESULT_COWSHED_EXTENTION(ARG,ARG:1)
+
+CALL ITEM_LOAN_BUY(ESTATE_COWSHED_EXTENSION)
+
+;3番牛舎を指定→3*10してFLAG:520を+1する
+;FLAG:第1牛舎増築段階→500
+FLAG_REF = 490
+FLAG:(FLAG_REF +ARG:1 *10) ++
+CALL PRINTL_WORD_COLOR,@"%COWSHED_NAME:(ARG:1)%的扩建完成了！！","浅蓝色"
+
+
+
+;事務所増築
+@BUILD_RESULT_OFFICE_EXTENTION(ARG)
+
+CALL ITEM_LOAN_BUY(ITEMPRICE:事务所扩建)
+ITEM:事务所扩建 ++
+FLAG:单间数／合计 += 4
+FLAG:单间数／空房 += 4
+CALL PRINTL_WORD_COLOR,@"事务所的扩建完成了！","浅蓝色"
+
+
+
+;アイテム増加
+;ARG→INPUT
+;ARGS→建築物
+@BUILD_RESULT_ITEM(ARG,ARGS)
+
+CALL ITEM_LOAN_BUY(ITEMPRICE:ARGS)
+ITEM:ARGS ++
+CALL BUILD_RESULT_ITEM_MESSAGE(ARGS)
+
+
+
+;建築物でメッセージ変更
+@BUILD_RESULT_ITEM_MESSAGE(ARGS)
+
+SETCOLOR 0x50C0FF
+SELECTCASE ARGS
+CASE "家庭浴池"
+	PRINTFORML  ＜家庭浴池＞改装完成了！
+CASE "大浴场"
+	PRINTFORML  ＜大浴场＞建造完成了！
+CASE "奴隶寮"
+	PRINTFORML  ＜奴隶寮＞建造完成了！
+CASE "奴隶寮扩建"
+	PRINTFORML  ＜奴隶寮＞扩建完成了！
+CASE "系统化厨房"
+	PRINTFORML  ＜系统化厨房＞改装完成了！
+CASE "宠物小屋"
+	PRINTFORML  ＜宠物小屋＞扩建完成了！
+ENDSELECT
+RESETCOLOR
+
+
+
+;初対面茶番
+@BUILD_FIRST_CONTACT
+
+;面識あれば帰る
+SIF GETBIT(＃面识／福多＃)
+	RETURN
+PRINTFORML 确实记得今天开始有工程计划，正在远处能清晰看到的巨大身影正朝着%SAVESTR:牧场名%走来…
+;CALL YOUR_COMMENT,@"＞相変わらずでっかいなあ"
+PRINTL ？？？　「咦…难道之前也见过面吗？」
+;CALL YOUR_COMMENT,@"＞いや、こっちが一方的に知ってるだけです　ケンチ…さん？"
+PRINTL 肯奇　「『健治君』，就行了。大家都这么叫我。」
+PRINTL 「那我再来一次…【马凯多建设】东分行经理的【健治】…请多指教。」
+PRINTL 身材魁梧的分行经理弯下腰，小心翼翼地将名片递给我。
+;CALL YOUR_COMMENT,@"＞ご丁寧にどうも、牧場主です"
+PRINTL 虽然听说了，但实际委托还是第一次。然后我想通了。
+PRINTL 如此庞大的身躯，确实很快就能建造出「魔界人用的建筑物」吧。
+PRINTL
+PRINTL 肯奇　「详情我已经从福多先生那里听说了，所以请照常工作就好了。」
+PRINTL 「不妨碍工作，迅速细致是座右铭」
+PRINTL 
+PRINTL 说着，他从车台上麻利地拿出木材，麻利地堆起来，戴上一个巨大的安全帽。
+PRINTL 虽说与庞大的身躯不相称，但似乎工作很认真。
+PRINTW
+SETBIT ＃面识／福多＃
+
+

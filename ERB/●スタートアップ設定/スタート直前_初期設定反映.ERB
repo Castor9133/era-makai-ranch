@@ -1,0 +1,196 @@
+﻿
+;初期設定の反映
+@SET_START_FLAG
+
+;1日目の昼から
+DAY = 1
+TIME = 1
+
+;週など計算
+CALL DATE_CALC
+
+;どんより
+SAVESTR:天气／今天 = 灰蒙蒙
+SAVESTR:天气／明天 = 灰蒙蒙
+
+MONEY = 100000
+FLAG:触手肉体改造可能次数 ++
+	;ITEM:霊力抽出装置 ++
+	;ITEM:小型霊力抽出装置 ++
+ITEM:魔力母乳分泌促进药 = 5
+ITEM:魔力枷锁 ++
+ITEM:家畜用搾乳器 ++
+FLAG:单间数／合计 = 4
+FLAG:奶牛健康度 = 60
+FLAG:保存数据显示信息BIT = 0b111010111
+FLAG:事务作业量MAX = 20
+FLAG:显示调教指令BIT = 0b01010001111
+
+;FLAG:メイン／拡張メニュー表示 = 1
+FLAG:能力有效BIT = 65535
+
+;納税割合
+FLAG:纳税比例／军事预算 = 10
+FLAG:纳税比例／科学技术预算 = 10
+FLAG:纳税比例／自治体预算 = 10
+FLAG:纳税比例／奶农业预算 = 10
+
+;掃除当番
+;FLAG:掃除当番基準／月→340
+;FLAG:掃除当番ID・ABL／月→350
+;あなたとスレイちゃん交互、月曜はなし
+FLAG_REF = 340
+FLAG_REF:1 = 350
+VARSET FLAG,3,FLAG_REF,FLAG_REF +7
+FOR LOCAL,0,7
+	FLAG:(FLAG_REF:1 +LOCAL) = LOCAL %2
+NEXT
+FLAG:FLAG_REF = 0
+
+;第n牛舎の名称もう入れとく
+FOR LOCAL,1,11
+	FLAG_NAME = 第%TOSTR(LOCAL)%牛舍
+	COWSHED_NAME:LOCAL = %FLAG_NAME%
+NEXT
+
+;補正を見つけた直後にしてスタート
+FLAG:龙之珠发现率修正 = DRAGON_BALL_CT
+
+PRINTL 领取：＜魔力母乳分泌促进药＞×5
+PRINTFORML 领取：「%CALLNAME:2%」
+PRINTL 　　获得：＜家畜用搾乳器＞
+
+;強くてニューゲームの引き継ぎ
+CALL NEWGAMEPLUS_BONUS
+
+;今何周目か
+FLAG:周回次数 = 1 +GLOBAL:继承前周次数
+
+;引き継いだらGLOBALの該当箇所を消してしまう
+VARSET GLOBAL,0,100,200
+SAVEGLOBAL
+
+;難易度表示再計算
+CALL PRINT_DIFFICULTY_CALC
+
+;楽々スタートキットのチェック
+CALL GIFTSET_CONFIG_CHECK
+CALL MANYL(5)
+
+;あなた、スレイ、巫女／シスターの初期設定
+CALL START_CHARA_CALC
+
+;スケジュールリセット
+CALL SCHEDULE_RESET
+
+;強制アンロック設定
+PRINTW
+CALL MANYL(3)
+CALL HALFLINE
+CALL ASK_ALL_UNLOCK
+
+;女あなたでのふたなりちんぽ取得設定
+CALL ASK_FUTANARI_UNLOCK
+
+
+
+;あなた、スレイ、巫女／シスターの初期設定
+@START_CHARA_CALC
+
+;ペット名持ってくる
+CALL GET_PET_FLAG_REF
+FOR LOCAL,0,10
+	ANIMAL = %ITEMNAME:(ITEM_REF +LOCAL)%
+	SIF ANIMAL == "" || !ITEM:ANIMAL
+		CONTINUE
+	BREAK
+NEXT
+FLAG_NAME = 亲和度／%ANIMAL%
+
+FOR TARGET_COUNT,0,2
+	TARGET = TARGET_COUNT
+	CALL CHARA_MAKE_END_CALC
+	CSTR:日程 = 奶农
+	EQUIP:单间 = 1
+	EQUIP:自室 = 1
+	CFLAG:追踪对象 = 0
+	
+	;CSTR:自動スケジュール／月→350
+	VARSET CSTR,"奶农／整天",350,357
+	
+	;初期ペットのあなたとスレイちゃんへのなつき度は90%に上げる
+	BASE:FLAG_NAME = 9000
+	MAXBASE:FLAG_NAME = 10000
+	
+	;個人BITを入れないと
+	CFLAG:能力有效个人BIT = FLAG:加入奴隶默认／能力有效个人BIT
+NEXT
+
+;スレイちゃんの補正
+TARGET = 1
+BASE:抵抗心 = 0
+BASE:尊严 = 1000
+BASE:厌恶感 = 0
+	;BASE:順応 = MAXBASE:順応
+BASE:好感度 = MAXBASE:好感度
+CFLAG:追踪对象 = 0
+CSTR:陷落状态 = 陷落
+CFLAG:捕获日 = -1
+CFLAG:陷落日 = -1
+CFLAG:无抵抗 = 1
+TARGET = -1
+
+;連れてきた奴隷用
+TARGET = 2
+CALL CHARA_MAKE_END_CALC
+CFLAG:捕获日 = DAY
+EQUIP:魔力枷锁 = 1
+CFLAG:能力有效个人BIT = FLAG:加入奴隶默认／能力有效个人BIT
+CALL TARGET_FLAG_RESET
+CALL INVASION_TARGET_CHARA
+CALL KOJO_PRINT("事件","领取奴隶")
+CALL SLAVE_RECEIVE_MESSAGE
+
+
+
+;強制アンロック設定
+@ASK_ALL_UNLOCK
+
+PRINTL 要将随着里程碑进度逐步解锁的所有要素全部开启吗？
+PRINTL ・由于会显示许多「当前进度无意义的项目」，这是面向熟悉游戏的牧场主的功能
+PRINTL ・稍后也可以在【选项】中开启
+PRINTL
+CALL ASK_YN
+SIF RESULT
+	RETURN
+FLAG:解锁要素强制开启 = 1
+CALL PRINTW_WORD_COLOR("已启用强制解锁。","黄色")
+
+
+
+;女あなたでのふたなりちんぽ取得設定
+@ASK_FUTANARI_UNLOCK
+
+;オトコなら帰る
+SIF TALENT:0:男性
+	RETURN
+CALL MANYL(3)
+
+PRINTL 是否取得魔法＜扶她阴茎＞后开始？
+PRINTL ・稍后也可以在【开发·学习】中取得，但条件较为苛刻
+PRINTL ・这个选项没有其他特别的优缺点（因为是EX模式）
+PRINTL
+CALL ASK_YN
+SIF RESULT
+	RETURN
+ITEM:扶她阴茎 = 1
+CALL PRINTW_WORD_COLOR("已取得＜扶她阴茎＞。","黄色")
+
+;ふたなりにしたらペニスサイズ計算
+ABL:0:阴茎尺寸 = CFLAG:0:身高 / 50 + RAND:6 + 15
+ABL:0:初始值／阴茎尺寸 = ABL:0:阴茎尺寸
+
+
+
+
+

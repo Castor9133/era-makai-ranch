@@ -1,0 +1,152 @@
+﻿
+@COM600_MESSAGE
+;母乳体質化薬
+
+PRINTFORML 托住%CALLNAME%的%SLANG_B()%，给她的乳头注射药物…
+PRINTFORML （母乳体质化药所持数-1 → {ITEM:母乳体质化药}支）
+CALL KOJO_PRINT("调教命令","注射","Ｎ")
+PRINTW
+PRINTL …药品效果立竿见影…！
+
+
+
+@COM601_MESSAGE
+;魔力母乳体質化薬
+
+PRINTFORML 托住%CALLNAME%的%SLANG_B()%，给她的乳头注射药物…
+PRINTFORML （魔力母乳体质化药所持数-1 → 魔力母乳体质化药}支）
+CALL KOJO_PRINT("调教命令","注射","Ｎ")
+PRINTW
+PRINTL …药品效果立竿见影…！
+
+
+
+@COM602_MESSAGE
+;膨乳薬
+
+PRINTFORML 给%CALLNAME%的脖颈注射了药物…
+PRINTFORML （膨乳药所持数-1 → {ITEM:膨乳药}支）
+CALL KOJO_PRINT("调教命令","注射","脖颈")
+PRINTW
+PRINTL …药品效果立竿见影…！
+PRINTFORML %CALLNAME%的%SLANG_B()%逐渐变大！
+
+
+
+@COM603_MESSAGE
+;母乳濃厚化薬
+
+PRINTFORML 托住%CALLNAME%的%SLANG_B()%，给她的乳头注射药物…
+PRINTFORML （母乳浓厚化药所持数-1 → {ITEM:母乳浓厚化药}支）
+CALL KOJO_PRINT("调教命令","注射","Ｎ")
+PRINTW
+PRINTL …药品效果立竿见影…！
+PRINTFORML %CALLNAME%的%SLANG_N()%中喷涌而出的%SLANG_MILK()%浓度增加了…！
+CALL KOJO_PRINT("肉体改造","母乳浓厚化")
+PRINTW
+
+
+
+@COM605_MESSAGE
+;超乳薬
+
+PRINTFORML 给%CALLNAME%的脖颈注射了药物…
+PRINTFORML （超乳药所持数-1 → {ITEM:超乳药}支）
+CALL KOJO_PRINT("调教命令","注射","脖颈")
+PRINTW
+PRINTL …药品效果立竿见影…！
+PRINTFORML …药品的作用，让%CALLNAME%的%SLANG_B()%一点点变大！
+
+
+
+@COM606_MESSAGE
+;受容器鋭敏化薬
+
+PRINTFORML 给%CALLNAME%的脖颈注射了药物…
+PRINTFORML （感受器敏感化药所持数-1 → {ITEM:感受器敏感化药}支）
+CALL KOJO_PRINT("调教命令","注射","脖颈")
+PRINTW
+PRINTFORML …%CALLNAME%的全身变得敏感，呼吸变得急促…！
+
+
+
+@COM607_MESSAGE
+;多臓器活性薬
+
+PRINTFORML 给%CALLNAME%的脖颈注射了药物…
+PRINTFORML （多器官活性药所持数-1 → {ITEM:多器官活性药}支）
+CALL KOJO_PRINT("调教命令","注射","脖颈")
+PRINTFORML %CALLNAME%感觉身体灼热，满地打滚…
+PRINTW
+
+
+
+@COM810_MESSAGE
+;浸透媚薬A
+
+PRINTFORML 给%CALLNAME%的%SLANG_A()%注射了药品…
+PRINTFORML （渗透媚药所持数-1 → {ITEM:渗透媚药}支）
+CALL KOJO_PRINT("调教命令","注射","Ａ")
+PRINTW
+PRINTFORML …%CALLNAME%的%SLANG_A()%疼痛起来，呼吸变得急促…！
+CALL KOJO_PRINT("肉体改造","Ａ敏感度上升")
+CALL PRINTL_WORD_COLOR,@"【Ａ敏感度+{ABL:Ａ敏感度 -SENSITIVE_BEFORE}→{ABL:Ａ敏感度}\%】","桃"
+PRINTW
+
+
+
+@COM811_MESSAGE
+;浸透媚薬B
+
+PRINTFORML 给%CALLNAME%的%SLANG_B()%注射了药品…
+PRINTFORML （渗透媚药所持数-1 → {ITEM:渗透媚药}支）
+CALL KOJO_PRINT("调教命令","注射","Ｂ")
+PRINTW
+PRINTFORML …%CALLNAME%的%SLANG_B()%疼痛起来，呼吸变得急促…！
+CALL KOJO_PRINT("肉体改造","Ｂ敏感度上升")
+CALL PRINTL_WORD_COLOR,@"【Ｂ敏感度+{ABL:Ｂ敏感度 -SENSITIVE_BEFORE}→{ABL:Ｂ敏感度}\%】","桃"
+
+
+
+@COM812_MESSAGE
+;浸透媚薬C
+
+PRINTFORML 给%CALLNAME%的%SLANG_C()%注射了药品…
+PRINTFORML （渗透媚药所持数-1 → {ITEM:渗透媚药}支）
+CALL KOJO_PRINT("调教命令","注射","Ｃ")
+PRINTW
+PRINTFORML …%CALLNAME%的%SLANG_C()%疼痛起来，呼吸变得急促…！
+CALL KOJO_PRINT("肉体改造","Ｃ敏感度上升")
+CALL PRINTL_WORD_COLOR,@"【Ｃ敏感度+{ABL:Ｃ敏感度 -SENSITIVE_BEFORE}→{ABL:Ｃ敏感度}\%】","桃"
+PRINTW
+
+
+
+@COM813_MESSAGE
+;浸透媚薬V
+
+PRINTFORML 给%CALLNAME%的%SLANG_V()%注射了药品…
+PRINTFORML （渗透媚药所持数-1 → {ITEM:渗透媚药}支）
+CALL KOJO_PRINT("调教命令","注射","Ｖ")
+PRINTW
+PRINTFORML …%CALLNAME%的%SLANG_V()%疼痛起来，呼吸变得急促…！
+CALL KOJO_PRINT("肉体改造","Ｖ敏感度上升")
+CALL PRINTL_WORD_COLOR,@"【Ｖ敏感度+{ABL:Ｖ敏感度 -SENSITIVE_BEFORE}→{ABL:Ｖ敏感度}\%】","桃"
+PRINTW
+
+
+
+@COM814_MESSAGE
+;浸透媚薬N
+
+PRINTFORML 托住%CALLNAME%的%SLANG_B()%，给她的乳头注射药物…
+PRINTFORML （渗透媚药所持数-1 → {ITEM:渗透媚药}支）
+CALL KOJO_PRINT("调教命令","注射","Ｎ")
+PRINTW
+PRINTFORML …%CALLNAME%的%SLANG_N()%疼痛起来，呼吸变得急促…！
+CALL KOJO_PRINT("肉体改造","Ｎ敏感度上升")
+CALL PRINTL_WORD_COLOR,@"【Ｎ敏感度+{ABL:Ｎ敏感度 -SENSITIVE_BEFORE}→{ABL:Ｎ敏感度}\%】","桃"
+PRINTW
+
+
+

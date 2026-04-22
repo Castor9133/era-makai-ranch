@@ -1,0 +1,183 @@
+﻿
+;露出した場合の口上、擬音、地の文表示のフラグ立て
+@TRAIN_CLOTHE_STRIP_SENTENCE_FLAG
+
+;脱衣TFLAGのセット、かつ部位露出のTFLAGをセットしていない状態でここに来る
+;→脱衣フラグONかつ露出フラグOFFなら擬音なんかを出して返す
+
+;おっぱい
+;既にＢ露出なら無効
+IF !TFLAG:Ｂ露出
+	SOURCE:Ｂ露出地文表示 = 1
+
+;Ｂ露出状態から乳首開放
+ELSEIF !TFLAG:Ｎ露出
+	SOURCE:Ｎ露出地文表示 = 1
+ENDIF
+
+;股間
+SIF !TFLAG:Ｖ露出
+	SOURCE:Ｖ露出地文表示 = 1
+
+
+
+;立てた表示フラグと露出フラグを比較して表示
+@TRAIN_CLOTHE_STRIP_SENTENCE
+
+;脱衣メッセージ表示の一時フラグが入っていないor成長途中の娘の場合帰る
+SIF !SOURCE:脱衣消息显示 || CSTR:状态／主人公的孩子 == "成长中"
+	RETURN
+SIF SOURCE:Ｂ露出地文表示 && TFLAG:Ｂ露出
+	CALL EXPOSURE_BUST_SENTENCE
+SIF SOURCE:Ｎ露出地文表示 && TFLAG:Ｎ露出
+	CALL EXPOSURE_NIPPLE_SENTENCE
+SIF SOURCE:Ｖ露出地文表示 && TFLAG:Ｖ露出
+	CALL EXPOSURE_VAGINA_SENTENCE
+
+
+
+;Ｂ露出擬音+地の文表示
+@EXPOSURE_BUST_SENTENCE
+
+CALL ONOMATOPOEIA("乳房露出")
+SETCOLOR 0xFF70FF
+
+;母乳容量5000+巨乳以上
+IF BASE:母乳容量 >= 5000 && ABL:胸围大小 >= BUSTSIZE_巨乳 && RAND:100 < 80
+	SELECTCASE RAND:5
+	CASE 0
+		PRINTFORM 仿佛渴望着挤%SLANG_MILK()%而摇摆
+	CASE 1
+		PRINTFORM 充满了丰富的滋味%SLANG_MILK()%
+	CASE 2
+		PRINTFORM 仿佛%SLANG_MILK()%马上就要溢出来
+	CASEELSE
+		PRINTFORM 储备了丰富的%SLANG_MILK()%
+	ENDSELECT
+
+ELSEIF ABL:胸围大小 >= BUSTSIZE_爆乳
+	;元々のバストサイズより5以上増えてる
+	IF ABL:初始值／胸围大小 +5 <= ABL:胸围大小 && RAND:100 < 50
+		SELECTCASE RAND:4
+		CASE 0
+			PRINTFORM 因%CALLNAME:0%而巨大而丰满
+		CASE 1
+			PRINTFORM 在%CALLNAME:0%的手下很好地长大
+		CASE 2
+			PRINT 硕大，美丽，下流丰满
+		CASEELSE
+			IF MARK:母乳体质 && RAND:100 < 80
+				PRINTFORM 为了充分挤取%SLANG_MILK()%而发育
+			ELSEIF ABL:初始值／胸围大小 < BUSTSIZE_巨乳
+				PRINT 比原先的大小要大得让人难以置信地丰满起来
+			ELSE
+				PRINT 比起先的大小更加丰盈成熟
+			ENDIF
+		ENDSELECT
+	ELSE
+		SELECTCASE RAND:8
+		CASE 0
+			PRINT 长得美丽而丰满
+		CASE 1
+			PRINT 柔软而有弹性
+		CASE 2
+			PRINT 饱满而水灵灵的
+		CASE 3
+			PRINT 令人垂涎摇晃着
+		CASE 4
+			PRINT 令人印象深刻
+		CASE 5
+			PRINT 引人注目大小
+		CASE 6
+			PRINT 硕大，美丽，下流丰满
+		CASEELSE
+			PRINT 配得上「乳牛」
+		ENDSELECT
+	ENDIF
+
+ELSEIF ABL:胸围大小 >= BUSTSIZE_巨乳
+	SELECTCASE RAND:4
+	CASE 0
+		PRINT 长得美丽而丰满
+	CASE 1
+		PRINT 柔软而有弹性
+	CASE 2
+		PRINT 饱满而水灵灵的
+	CASEELSE
+		PRINT 令人垂涎摇晃着
+	ENDSELECT
+
+ELSEIF ABL:胸围大小 >= BUSTSIZE_普乳
+	SELECTCASE RAND:3
+	CASE 0
+		PRINT 形状姣好
+	CASE 1
+		PRINT 软乎乎
+	CASEELSE
+		PRINT 水灵灵
+	ENDSELECT
+ENDIF
+PRINTFORM 的%CALLNAME%的%SLANG_B()%露了出来…
+CALL HEARTCB(0xD02830)
+PRINTL
+RESETCOLOR
+
+
+
+;乳首がこんにちは
+@EXPOSURE_NIPPLE_SENTENCE
+
+CALL ONOMATOPOEIA("乳头露出")
+SETCOLOR 0xFF70FF
+
+;母乳容量5000+巨乳以上
+IF BASE:母乳容量 >= 5000 && ABL:胸围大小 >= BUSTSIZE_巨乳 && RAND:100 < 80
+	SELECTCASE RAND:5
+	CASE 0
+		PRINT 声称自己迫不及待地想搾乳了
+	CASE 1
+		PRINTFORM %SLANG_MILK()%正在滴落
+	CASE 2
+		PRINTFORM %SLANG_MILK()%闻起来很香
+	CASEELSE
+		PRINTFORM %SLANG_MILK()%想要被吸吮
+	ENDSELECT
+ENDIF
+
+PRINTFORM %CALLNAME%的%SLANG_N()%露了出来…
+CALL HEARTCB(0xD02830)
+PRINTL
+RESETCOLOR
+
+
+
+;おまんこまるみえ 
+@EXPOSURE_VAGINA_SENTENCE
+
+;今ないけどここ擬音の候補あるだろうか
+SETCOLOR 0xFF70FF
+IF PALAM:Ｖ润滑 >= 50000
+	PRINTFORM 看着%SAVESTR:标识／阴茎%下面逐渐湿润了
+	
+ELSEIF PALAM:Ｖ润滑 >= 10000
+	PRINT 满怀期待地变湿了
+	
+ENDIF
+SIF TALENT:处女
+	PRINT 还没见过男人的
+
+;あなたとのセックス100以上くらい？
+SIF EXP:经验次数／主人公／Ｖ性交 >= 100
+	PRINTFORM 被调教成%CALLNAME:0%形状的
+
+;ここだけスラング使う
+SIF CFLAG:身高 < FLAG:黑话／儿童标准上限身高数值
+	PRINT 未熟
+PRINTFORM %CALLNAME%的%SLANG_V()%露了出来…
+CALL HEARTCB(0xD02830)
+PRINTL
+RESETCOLOR
+
+
+
+

@@ -1,0 +1,39 @@
+﻿
+;アビリティ中の乳揉み追加SOURCE
+@BUST_ABILITY_SOURCE_CHECK
+
+;あなた調教でないか乳揉みでないならおわり
+SIF PLAYER || !SOURCE:揉胸
+	RETURN
+
+;豊穣→豊穣バストサイズ以上だと無効
+IF ITEM:丰饶 && GETBIT(＃个人有效／丰饶＃) && GETBIT(＃有效／丰饶＃) && ABL:胸围大小 < FLAG:丰饶上限胸围大小
+	SOURCE:丰饶增加 += (ITEM:丰饶 *100)
+	
+	;マッサージを選んでると3倍+500
+	IF TRAINNAME:SELECTCOM == "育乳按摩"
+		TIMES SOURCE:丰饶增加,3.00
+		SOURCE:丰饶增加 += 500
+	ENDIF
+ENDIF
+
+;濃厚母乳マッサージ→Lv5だと無効
+IF ITEM:浓厚母乳按摩 && GETBIT(＃个人有效／浓厚母乳按摩＃) && GETBIT(＃有效／浓厚母乳按摩＃) && ABL:母乳浓度 < 5
+	SOURCE:母乳浓度增加 += (ITEM:浓厚母乳按摩 *100)
+	IF TRAINNAME:SELECTCOM == "浓厚母乳按摩"
+		TIMES SOURCE:母乳浓度增加,3.00
+		SOURCE:母乳浓度增加 += 500
+	ENDIF
+ENDIF
+
+;母乳生産力
+IF ITEM:乳罐按摩 && GETBIT(＃个人有效／乳罐按摩＃) && GETBIT(＃有效／乳罐按摩＃)
+	SOURCE:母乳生产力增加 += (ITEM:乳罐按摩 *100)
+	IF TRAINNAME:SELECTCOM == "乳罐按摩"
+		TIMES SOURCE:母乳生产力增加,3.00
+		SOURCE:母乳浓度增加 += 500
+	ENDIF
+ENDIF
+
+
+

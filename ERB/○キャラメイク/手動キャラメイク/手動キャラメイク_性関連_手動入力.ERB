@@ -1,0 +1,149 @@
+﻿
+;基礎・プロフィールの変更手動入力
+;ARGS→CHANGE_STATE
+@SELF_CHARA_MAKE_SENSITIVE_INPUT_MANUAL(ARGS)
+
+SELECTCASE ARGS
+CASE "Ａ敏感度","Ｂ敏感度","Ｃ敏感度","Ｖ敏感度","Ｎ敏感度"
+	PRINTFORML 请输入%ARGS%。（10～{SENSITIVE_MAX}，以10为单位进行取整）
+	SIF GROUPMATCH(ARGS,"Ｂ敏感度","Ｎ敏感度")
+		PRINTL 如果Ｎ敏感度小于Ｂ敏感度，则增加到Ｂ敏感度的值。
+	INPUT
+	IF RESULT >= 10 && RESULT < 1000
+		ABL:ARGS = RESULT
+		ABL:ARGS -= (ABL:ARGS %10)
+		CALL NIPPLE_SENSITIVE_FIX
+	ENDIF
+		
+CASE "母性","技巧","奉仕精神","受虐癖","百合癖"
+	PRINTFORML 请输入%ARGS%等级。（0～30）
+	INPUT
+	SIF RESULT >= 0 && RESULT <= 30
+		ABL:ARGS = RESULT
+
+
+;2ページ目
+CASE "母性本能","隶属愿望","抖Ｓ","幼稚","猫舌","锯齿","名器","Ａ名器","口穴","极上乳压"
+	INVERTBIT TALENT:ARGS,0
+
+CASE "性知识贫乏"
+	INVERTBIT TALENT:性知识贫乏,0
+	SIF TALENT:性知识贫乏
+		TALENT:性知识丰富 = 0
+
+;3ページ目
+CASE "性经验"
+	;基礎の性経験をそのまま呼ぶ
+	CALL SELF_CHARA_MAKE_PROFILE_INPUT_MANUAL("性经验")
+	
+CASE "处女结界","处女","Ａ处女","Ｍ处女","无乳交经验","无接吻经验","无授乳经验"
+	INVERTBIT TALENT:ARGS,0
+	
+	;処女リセットまとめる関数
+	CALL SELECT_VIRGIN_RESET
+
+
+;4ページ目
+CASE "初经验／Ｖ"
+	PRINTL 请输入Ｖ性交的初次经验对象。
+	INPUTS
+	CSTR:初经验／Ｖ = %RESULTS%
+	
+CASE "初经验／Ａ"
+	PRINTL 请输入Ａ性交的初次经验对象。
+	INPUTS
+	CSTR:初经验／Ａ = %RESULTS%
+	
+CASE "初经验／Ｍ性交"
+	PRINTL 请输入Ｍ性交的初次经验对象。
+	INPUTS
+	CSTR:初经验／Ｍ性交 = %RESULTS%
+	
+CASE "初经验／乳交"
+	PRINTL 请输入乳交初经验对象。
+	INPUTS
+	CSTR:初经验／乳交 = %RESULTS%
+	
+CASE "初经验／接吻"
+	PRINTL 请输入初次接吻的对象。
+	INPUTS
+	CSTR:初经验／接吻 = %RESULTS%
+	
+CASE "初经验／授乳"
+	PRINTL 请输入婴儿以外授乳的初次经验对象。
+	INPUTS
+	CSTR:初经验／授乳 = %RESULTS%
+
+CASE "初经验／一括"
+	PRINTL 请输入第一次体验的对象。批量设置为可设置的项目。
+	INPUTS
+	SIF !TALENT:处女
+		CSTR:初经验／Ｖ = %RESULTS%
+	SIF !TALENT:Ａ处女
+		CSTR:初经验／Ａ = %RESULTS%
+	SIF !TALENT:Ｍ处女
+		CSTR:初经验／Ｍ性交 = %RESULTS%
+	SIF !TALENT:无乳交经验
+		CSTR:初经验／乳交 = %RESULTS%
+	SIF !TALENT:无接吻经验
+		CSTR:初经验／接吻 = %RESULTS%
+	SIF !TALENT:无授乳经验
+		CSTR:初经验／授乳 = %RESULTS%
+
+CASE "地上经验人数／Ｖ"
+	PRINTL 请输入Ｖ性交的经验人数。（1～99999）
+	INPUT
+	SIF RESULT > 0 && RESULT < 100000
+		EXP:地上经验人数／人类／Ｖ性交 = RESULT
+	
+CASE "地上经验人数／Ａ"
+	PRINTL 请输入Ａ性交的经验人数。（1～99999）
+	INPUT
+	SIF RESULT > 0 && RESULT < 100000
+		EXP:地上经验人数／人类／Ａ性交 = RESULT
+	
+CASE "地上经验人数／Ｍ性交"
+	PRINTL 请输入Ｍ性交的经验人数。（1～99999）
+	INPUT
+	SIF RESULT > 0 && RESULT < 100000
+		EXP:地上经验人数／人类／Ｍ性交 = RESULT
+	
+CASE "地上经验人数／乳交"
+	PRINTL 请输入乳交经验的人数。（1～99999）
+	INPUT
+	SIF RESULT > 0 && RESULT < 100000
+		EXP:地上经验人数／人类／乳交 = RESULT
+	
+CASE "地上经验人数／接吻"
+	PRINTL 请输入接吻经验的人数。（1～99999）
+	INPUT
+	SIF RESULT > 0 && RESULT < 100000
+		EXP:地上经验人数／人类／接吻 = RESULT
+	
+CASE "地上经验人数／授乳"
+	PRINTL 请输入婴儿以外的授乳经验人数。（1～99999）
+	INPUT
+	SIF RESULT > 0 && RESULT < 100000
+		EXP:地上经验人数／人类／授乳 = RESULT
+
+CASE "地上经验人数／一括"
+	PRINTL 请输入经验人数。（1～99999）批量设置为可设置的项目。
+	INPUT
+	SIF RESULT <= 0 || RESULT >= 100000
+		RETURN
+	SIF !TALENT:处女
+		EXP:地上经验人数／人类／Ｖ性交 = RESULT
+	SIF !TALENT:Ａ处女
+		EXP:地上经验人数／人类／Ａ性交 = RESULT
+	SIF !TALENT:Ｍ处女
+		EXP:地上经验人数／人类／Ｍ性交 = RESULT
+	SIF !TALENT:无乳交经验
+		EXP:地上经验人数／人类／乳交 = RESULT
+	SIF !TALENT:无接吻经验
+		EXP:地上经验人数／人类／接吻 = RESULT
+	SIF !TALENT:无授乳经验
+		EXP:地上经验人数／人类／授乳 = RESULT
+
+ENDSELECT
+
+

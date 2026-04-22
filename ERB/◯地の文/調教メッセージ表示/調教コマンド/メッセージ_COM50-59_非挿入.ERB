@@ -1,0 +1,153 @@
+﻿
+@COM50_MESSAGE
+;素股
+
+IF TFLAG:拘束BIT || !TFLAG:奉仕可能
+	SIF TFLAG:拘束BIT
+		PRINT 被束缚了
+	PRINTFORM %CALLNAME%的%SLANG_STAIN("Ｖ")%%SLANG_V()%中摩擦着%SLANG_PENIS()%…
+ELSE
+	PRINTFORM %CALLNAME%的%SLANG_STAIN("Ｖ")%%SLANG_V()%中将%SLANG_PENIS()%对准后、%TRAIN_SERVICE()%开始移动腰部…
+ENDIF
+PRINTL
+
+
+
+@COM51_MESSAGE
+;フェラチオ
+
+PRINTFORM 当把%SLANG_PENIS()%靠近%CALLNAME%的嘴时，%TRAIN_SERVICE()%
+
+;ちんぽ汚れでのメッセージ
+CALL PENIS_STAIN_MESSAGE
+PRINTFORML 开始吮吸%SLANG_PENIS()%…
+
+
+
+@COM52_MESSAGE
+;イラマチオ
+
+PRINTFORM 强行对着%CALLNAME%的嘴
+CALL PENIS_STAIN_MESSAGE
+PRINTFORML 插入了%SLANG_PENIS()%…
+IF TALENT:处女 && TALENT:深喉嗜好
+	PRINTFORML %CALLNAME%在窒息般的反射与羞耻之间，竟下意识把喉咙当成%SAVESTR:标识／膣%的替身——仿佛只要说服自己「被填满的是这里」，就能守住最后一道防线似的，近乎自我催眠地放松舌根…
+ENDIF
+
+
+
+@COM53_MESSAGE
+;パイズリ
+
+PRINTFORM %CALLNAME%的%SLANG_STAIN("Ｂ")%%SLANG_B()%中
+CALL PENIS_STAIN_MESSAGE
+PRINTFORML 如果你把%SLANG_PENIS()%放在上面，
+IF ABL:胸围大小 >= BUSTSIZE_爆乳
+	PRINTFORM %PRINT_BUST()%完全包裹了%SLANG_PENIS()%，开始快速移动%TRAIN_SERVICE()%…
+ELSEIF ABL:胸围大小 >= BUSTSIZE_巨乳
+	PRINTFORM %PRINT_BUST()%尖端刺激着%SLANG_PENIS()%，开始搓揉%TRAIN_SERVICE()%…
+ELSEIF ABL:胸围大小 >= BUSTSIZE_普乳
+	PRINTFORM %PRINT_BUST()%摩擦着%SLANG_PENIS()%，开始搓揉%TRAIN_SERVICE()%…
+ELSEIF ABL:胸围大小 >= 1
+	PRINTFORM 用那小小的%SAVESTR:标识／乳房%%TRAIN_SERVICE()%，开始摩擦%SLANG_PENIS()%…
+ELSE
+	PRINTFORM 没有凹凸的%SAVESTR:标识／乳房%%TRAIN_SERVICE()%摩擦着%SLANG_PENIS()%…
+ENDIF
+PRINTL
+
+
+
+@COM54_MESSAGE
+;強制パイズリ
+
+PRINTFORM %CALLNAME%的%SLANG_STAIN("Ｂ")%%SLANG_B()%中
+CALL PENIS_STAIN_MESSAGE
+IF ABL:胸围大小 >= BUSTSIZE_普乳
+	PRINTFORM 夹住了%SLANG_PENIS()%、一边摇动腰部一边将%SLANG_PENIS()%
+	IF ABL:胸围大小 >= BUSTSIZE_爆乳
+		PRINT 完全包裹住了
+	ELSEIF ABL:胸围大小 >= BUSTSIZE_巨乳
+		PRINT 让前端露出
+	ELSEIF ABL:胸围大小 >= BUSTSIZE_普乳
+		PRINT 稍微露出来了
+	ENDIF
+	PRINTFORM 揉捏了%PRINT_BUST()%…
+ELSE
+	PRINTFORM 摩擦着%SLANG_PENIS()%…
+ENDIF
+PRINTL
+
+
+
+@COM55_MESSAGE
+;縦パイズリ
+
+;そもそも豊乳以上
+PRINTFORM %CALLNAME%的%SLANG_STAIN("Ｂ")%%SLANG_B()%中
+CALL PENIS_STAIN_MESSAGE
+PRINTFORML 夹住了%SLANG_PENIS()%、%TRAIN_SERVICE()%开始前后移动并摩擦%SLANG_PENIS()%…
+
+
+
+@COM56_MESSAGE
+;強制縦パイズリ
+
+PRINTFORM %CALLNAME%的%SLANG_STAIN("Ｂ")%%SLANG_B()%中
+CALL PENIS_STAIN_MESSAGE
+PRINTFORML 夹住了%SLANG_PENIS()%、揉捏着%PRINT_BUST()%的同时摇动腰部…
+
+
+
+@COM57_MESSAGE
+;手コキ
+
+PRINTFORM 为%CALLNAME%
+CALL PENIS_STAIN_MESSAGE
+PRINTFORML 靠近%SLANG_PENIS()%后，开始%TRAIN_SERVICE()%用手撸动%SLANG_PENIS()%…
+
+
+
+@COM58_MESSAGE
+;授乳手コキ
+
+PRINTFORML 让%CALLNAME%枕着膝盖，边揉搓%SLANG_B()%边吸%SLANG_N()%…
+PRINTFORM 同时，%CALLNAME%
+CALL PENIS_STAIN_MESSAGE
+PRINTFORML 的手飞快的撸动着%SLANG_PENIS()%…
+
+
+
+@COM59_MESSAGE
+;足交
+
+PRINTFORM %CALLNAME%
+CALL PENIS_STAIN_MESSAGE
+IF TALENT:足交爱好
+	SELECTCASE RAND:4
+	CASE 0
+		PRINTFORML 几乎是迫不及待地抬起双足，趾缝一张一合地叼住%SLANG_PENIS()%，脚掌内侧贴着柱身来回碾磨…
+	CASE 1
+		PRINTFORML 把足跟抵在根部、足尖绕着铃口打转，每一次收紧都像在用脚丈量%SLANG_PENIS()%能硬到什么程度…
+	CASE 2
+		PRINTFORML 用一只脚的足弓兜住肉棒上下撸动，另一只脚的趾腹不时点戳系带，眼神里带着藏不住的愉悦…
+	CASEELSE
+		PRINTFORML 把%SLANG_PENIS()%夹在脚心之间，脚趾蜷起绞住冠状沟，黏腻的水声里越弄越快…
+	ENDSELECT
+ELSE
+	SELECTCASE RAND:6
+	CASE 0
+		PRINTFORML 用脚掌与趾缝夹住%SLANG_PENIS()%，足背与脚心交替施力，一下一下地上下套弄…
+	CASE 1
+		PRINTFORML 把双足并成一道肉沟，足跟压着根部不让逃，足尖却故意在铃口周围画圈磨蹭…
+	CASE 2
+		PRINTFORML 单足踩着柱身前后滑动，另一只脚的脚趾不时夹住系带拉扯，羞辱感与快感缠在一起…
+	CASE 3
+		PRINTFORML 用足弓兜住肉棒根部往上推，趾缝卡住前端反复挤压，每一次收紧都让呼吸乱上一分…
+	CASE 4
+		PRINTFORML 冷着脸把%SLANG_PENIS()%踩在足下摆弄，脚掌贴着敏感带碾磨，仿佛那东西只配被脚伺候…
+	CASEELSE
+		PRINTFORML 岔开腿抬起双脚，脚跟与趾腹一齐箍住肉柱，黏滑的液体让摩擦变得更加淫靡…
+	ENDSELECT
+ENDIF
+
+

@@ -1,0 +1,89 @@
+﻿
+;アイテム説明と購入数
+;ARG→選択項目
+@ITEM_DETAIL_INSTITUTE(ARG)
+
+;対応IDでないなら汎用出して帰る
+;ここでは選択項目による
+IF ARG < 10 || ARG > 10 +INSTITUTE_LIST_NUM
+	PRINTL  　《 显示所选项目的描述 》
+	RETURN
+ENDIF
+
+SELECTCASE ARG
+CASE 10
+	PRINTFORML 转换为贡献pt　所持数：%VALUE_DIGIT(MONEY:贡献PT)%pt
+	PRINTFORML 费率：灵力{EP_CONTRIBUTION_PT}EP→贡献pt1
+	PRINTL
+	PRINTL 通过将储存的灵力交给研究用，可以得到＜贡献pt＞。
+
+CASE 11
+	PRINTFORML ＜奴隶候补设定变更票据＞　持有数量：{ITEM:奴隶候补设定变更票}张
+	PRINTFORML 必要灵力：%VALUE_DIGIT(ITEMPRICE:奴隶候补设定变更票)%EP
+	PRINTL
+	PRINTL 可以交换一种奇妙的票券，用来改变生活在地上的人类的倾向。
+	PRINTL 但是需要大量的储存灵力。
+	IF FLAG:玩笑表示
+		PRINTL
+		PRINTL 说实话，包括尤金在内的研究所的任何人都不了解这个机制。
+		PRINTL 从元数据的角度来看，似乎很难将其融入到世界观中。
+	ENDIF
+
+CASE 12
+	PRINTFORML ＜灵力抽出装置＞　持有数量：{ITEM:灵力抽出装置}台
+	PRINTFORML 　灵力：%VALUE_DIGIT(ITEMPRICE:灵力抽出装置 /2)%EP
+	PRINTFORML 　资金：%VALUE_DIGIT(ITEMPRICE:灵力抽出装置)%G
+	PRINTL
+	PRINTL 增加一台灵力抽出装置，增加可从日程同时进行【灵力抽出】的奴隶。
+
+CASE 13
+	PRINTFORML ＜魔力枷锁＞　持有数量：{ITEM:魔力枷锁}台
+	PRINTFORML 　魔力：%VALUE_DIGIT(ITEMPRICE:魔力枷锁 /2)%MP
+	PRINTFORML 　资金：%VALUE_DIGIT(ITEMPRICE:魔力枷锁)%G
+	PRINTL
+	PRINTL 增加1个魔力枷锁，增加能持有的未屈服状态下奴隶数量。
+
+CASE 14
+	PRINTL ＜魔力补给装置＞
+	PRINTFORML 　灵力：%VALUE_DIGIT(ITEMPRICE:魔力补给装置)%EP
+	PRINTFORML 　资金：%VALUE_DIGIT(ITEMPRICE:魔力补给装置)%G
+	PRINTL
+	PRINTL 将储存的魔力注入生物的装置。
+	PRINTFORML 可以安全地从魔力储存库向%CALLNAME:0%补充魔力。
+	PRINTL 补给的时候魔力的最大值不会增加。
+	PRINTL 可以从主菜单的[各种信息]→[牧场信息]→[魔力的补给]中使用。
+
+CASE 15
+	PRINTFORML ＜魔改造魔力储存器＞
+	PRINTFORML 　魔力：%VALUE_DIGIT(MAGIC_TANK_LARGE_CAPACITY)%MP
+	PRINTL 需要＜大容量魔力储存器＞
+	PRINTL
+	PRINTL 利用充满大容量魔力储存器的魔力，使其能够储存更多的魔力。
+	IF FLAG:玩笑表示
+		PRINTL 这是尤金和研究所成员恶作剧的结果。
+		PRINTL 可能并不需要这么大的储存容量。
+	ENDIF
+
+CASE 16
+	PRINTFORML ＜小型灵力抽出装置＞
+	PRINTFORML 　资金：%VALUE_DIGIT(ITEMPRICE:小型灵力抽出装置)%G
+	PRINTL
+	PRINTFORML 像搾乳器一样把它贴在奴隶的%SAVESTR:标识／乳房%上，
+	PRINTFORML 这是一种将灵力与%SAVESTR:标识／母乳%一起压榨的设备。
+	PRINTL 由于体积小，可以在调教中使用。
+	IF FLAG:玩笑表示
+		PRINTL
+		PRINTL 按照目前的规格，你可以在游戏开始时获得它，所以我认为它不会被制作。
+	ENDIF
+ENDSELECT
+
+
+;作るかもしれない
+;CASE "触手霊力抽出装置"
+	;PRINTFORML %CALLNAME:0%の魔力を使い、霊力抽出装置1台を触手霊力抽出装置に改造します。
+	;PRINTFORML 奴隷は触手により全身を責め立てられながらイキ狂い、無様に%SAVESTR:表記／母乳%と霊力を吸い取られる。
+
+
+
+
+

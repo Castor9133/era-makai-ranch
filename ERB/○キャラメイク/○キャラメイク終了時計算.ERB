@@ -1,0 +1,338 @@
+﻿
+;キャラメイク終了時計算
+@CHARA_MAKE_END_CALC
+
+;メイク以外でも来ることがあるので一旦ON
+FLAG:正在化妆角色 = 1
+
+;一旦ONで必要ない特殊な場合あとでOFF
+CFLAG:追踪对象 = 1
+
+;ABL数値からEXPに変換する
+CALL ABL_EXP_SET
+
+;経験人数からEXP、ABLを補正
+CALL EXP_FIX
+
+;母乳価格ボーナスの計算
+CALL MILK_PRICE_FIX_CALC
+
+;母乳容量補正値の計算
+CALL MILK_CAPACITY_FIX_CALC
+CALL MILKTANK_CALC
+IF TARGET
+	;吸収可能分保存
+	BASE:可吸收的灵力 = BASE:灵力
+	MAXBASE:可吸收的灵力 = BASE:可吸收的灵力
+	BASE:可吸收的魔力 = BASE:魔力
+	MAXBASE:可吸收的魔力 = BASE:可吸收的魔力
+
+	;上書きしない呼び方補正
+	CALL SWEET_PERSON_CALL_ALL(1)
+	CALL SWEET_GENITAL_CALL_ALL(1)
+	CALL PERSON_CALL_FIX
+ENDIF
+
+;画像があるかチェック
+GDISPOSE 2
+SIF !GCREATEFROMFILE(2,@"%CSTR:原作名%\\%CSTR:识别名%_调教执行_普通.png")
+	GCREATEFROMFILE 2,@"%CSTR:识别名%_调教执行_普通.png"
+SPRITECREATE @"%CSTR:识别名%_调教执行_普通",2
+SIF SPRITECREATED(@"%CSTR:识别名%_调教执行_普通")
+	CFLAG:有调教画面 = 1
+SPRITEDISPOSE @"%CSTR:识别名%_调教执行_普通"
+
+;初期精神ステータスの計算
+CALL CHARA_MAKE_MIND_CALC
+
+;母性とかを高くしてるとMARKがつくのでここで一旦つける
+SKIPDISP 1
+CALL MARK_GET
+SKIPDISP 0
+
+;処分寸前と競売商品はこの時点で反抗ON
+SIF CFLAG:进入魔界的目的 == 6 || CFLAG:进入魔界的目的 == 7
+	CSTR:陷落状态 = 反抗
+
+;キャラに通し番号を振る：キャラ登録時に+1、減らない
+CFLAG:ID = FLAG:奴隶序列号
+FLAG:奴隶序列号 ++
+
+;ペット初期なつき度設定
+CALL PET_START_FRIENDLY_ADD_CHARA
+
+;スケジュール予定を自由に設定
+CALL AUTO_SCHEDULE_FREE
+
+;ペニス・Ｖ・Ａのサイズ設定(男女関係なく一応全部)
+;ふたなり考えるにしてもつけた時に計算でいいと思う（数値上あるだけでなんか嫌というだけの理由）
+IF TALENT:男性
+	ABL:阴茎尺寸 = CFLAG:身高 / 50 + RAND:6 + 15
+ELSE
+	ABL:Ｖ尺寸 = CFLAG:身高 / 50 + RAND:6 + 10
+	ABL:Ｖ扩张 = LIMIT(EXP:地上经验人数／人类／Ｖ性交 / 2 + ABL:Ｖ感觉,0,ABL:Ｖ尺寸 * 2)
+ENDIF
+ABL:Ａ尺寸 = CFLAG:身高 / 100 + RAND:4 + 5
+ABL:Ａ扩张 = LIMIT(EXP:地上经验人数／人类／Ａ性交 + ABL:Ａ感觉,0,ABL:Ａ尺寸 * 2)
+
+;初期値記録
+CALL SAVE_ORIGINAL_DATA
+FLAG:正在化妆角色 = 0
+
+
+
+;ABLの数値からEXPに変換など
+@ABL_EXP_SET
+
+;感覚や中毒なんかはEXPには入れなくてもいいかも
+CALL NEXT_EXP("奶农",1)
+EXP:奶农经验 = RESULT
+CALL NEXT_EXP("事务",1)
+EXP:事务经验 = RESULT
+CALL NEXT_EXP("清洁",1)
+EXP:清洁经验 = RESULT
+CALL NEXT_EXP("料理",1)
+EXP:料理经验 = RESULT
+CALL NEXT_EXP("药学",1)
+EXP:药学经验 = RESULT
+CALL NEXT_EXP("接客",1)
+EXP:接客经验 = RESULT
+CALL NEXT_EXP("技巧",1)
+EXP:学习 = RESULT
+CALL NEXT_EXP("母性",1)
+EXP:授乳爱情经验 = RESULT
+CALL NEXT_EXP("奉仕精神",1)
+EXP:奉仕经验 = RESULT
+CALL NEXT_EXP("受虐癖",1)
+EXP:被虐快感经验 = RESULT
+CALL NEXT_EXP("百合癖",1)
+EXP:百合调教经验 = RESULT
+
+
+
+;初期値記録
+@SAVE_ORIGINAL_DATA
+
+;FORループ使って全部まとめて記録する
+;BASE,ABL,CFLAG,CSTR,EQUIP→0～99がキャラメイクで決定、100～199をバックアップする
+FOR LOCAL,0,100
+	MAXBASE:(LOCAL +100) = MAXBASE:LOCAL
+	ABL:(LOCAL +100) = ABL:LOCAL
+	CFLAG:(LOCAL +100) = CFLAG:LOCAL
+	CSTR:(LOCAL +100) = %CSTR:LOCAL%
+	EQUIP:(LOCAL +100) = EQUIP:LOCAL
+NEXT
+
+;CSTRの一部は手動
+CSTR:初始值／称呼 = %CALLNAME%
+CSTR:初始值／全名 = %NAME%
+
+;初期装備が必要
+;EQUIP+220
+CSTR_REF = 220
+FOR LOCAL,0,20
+	CSTR:(CSTR_REF +LOCAL) = %CSTR:(EQUIP:LOCAL)%
+NEXT
+
+
+
+;母乳価格ボーナスの計算
+@MILK_PRICE_FIX_CALC
+
+;CSVなど補正値が既に入っていれば帰る　野郎もなし
+SIF CFLAG:母乳价格奖励 || TALENT:男性
+	RETURN
+SIF TALENT:神格
+	CFLAG:母乳价格奖励 = 50
+SIF CSTR:身份 == "王族"
+	CFLAG:母乳价格奖励 = 100
+
+
+
+;母乳容量補正値の計算
+@MILK_CAPACITY_FIX_CALC
+
+;CSVなど補正値が既に入っていれば帰る　野郎もなし
+SIF CFLAG:母乳容量修正值 || TALENT:男性
+	RETURN
+CFLAG:母乳容量修正值 = 100
+SIF GROUPMATCH(CSTR:身高,"矮小","儿童体型")
+	CFLAG:母乳容量修正值 -= 10
+SIF CSTR:身高 == "幼儿体型"
+	CFLAG:母乳容量修正值 -= 25
+SIF GROUPMATCH(CSTR:身高,"高大","巨躯")
+	CFLAG:母乳容量修正值 += 10
+SIF CSTR:体型 == "性感"
+	CFLAG:母乳容量修正值 += 10
+SIF CSTR:体型 == "纤细"
+	CFLAG:母乳容量修正值 -= 10
+SIF GROUPMATCH(CSTR:体型,"丰满","丰腴")
+	CFLAG:母乳容量修正值 += 15
+SIF CSTR:种族 == "牛角族" && GETBIT(FLAG:种族设定／牛角族,4) && (RAND:100 < FLAG:体质反映率／牛角族)
+	CFLAG:母乳容量修正值 += 30
+
+
+
+;初期精神ステータスの計算
+@CHARA_MAKE_MIND_CALC
+
+;あなたには精神うんぬんは存在しない
+MAXBASE:疲劳度 = 100
+SIF !TARGET
+	RETURN
+
+;精神パラメータを100%=10000で設定
+;BASE:抵抗心→40
+FOR LOCAL,40,50
+	SIF BASENAME == ""
+		CONTINUE
+	MAXBASE:LOCAL = BASE_FIRST_MAX
+	BASE:LOCAL = MAXBASE:LOCAL
+NEXT
+
+;BASE:順応→50
+FOR LOCAL,50,60
+	SIF BASENAME == ""
+		CONTINUE
+	MAXBASE:LOCAL = BASE_FIRST_MAX
+NEXT
+MAXBASE:好感度 -= 1
+MAXBASE:乳牛堕落 -= 1
+
+
+
+;自動スケジュール関連を自由にしておく
+@AUTO_SCHEDULE_FREE
+
+;CSTR:自動スケジュール／月→350
+CSTR_REF = 350
+VARSET CSTR,"假日",CSTR_REF,CSTR_REF +7
+
+;CSTR:自動スケジュール／カスタムＡ／朝→360
+CSTR_REF = 360
+VARSET CSTR,"自由",CSTR_REF,CSTR_REF +9
+
+
+
+;まだ使ってない
+@NOUSE
+
+;尊厳・嫌悪感の補正
+SIF TALENT:天界种族
+	BASE:尊严 += 100
+SIF TALENT:自尊心高
+	BASE:尊严 += 200
+SIF TALENT:高傲
+	BASE:尊严 += 300
+SIF TALENT:自尊心低
+	BASE:尊严 -= 200
+SIF TALENT:坦率
+	BASE:尊严 -= 100
+SIF TALENT:冷漠
+	BASE:尊严 -= 200
+SIF TALENT:好奇心
+	BASE:尊严 -= 200
+SIF TALENT:感情缺乏
+	BASE:尊严 -= 200
+SIF TALENT:乐观
+	BASE:尊严 -= 150
+SIF TALENT:单纯
+	BASE:尊严 = 0
+BASE:尊严 = LIMIT(BASE:尊严,0,MAXBASE:尊严)
+
+SIF TALENT:坚强
+	BASE:厌恶感 += 200
+SIF TALENT:自尊心高
+	BASE:厌恶感 += 200
+SIF TALENT:高傲
+	BASE:厌恶感 += 300
+SIF TALENT:自尊心低
+	BASE:厌恶感 -= 200
+SIF TALENT:隶属愿望
+	BASE:厌恶感 -= 200
+	
+;乙女心だと初期は下がるけど上がり方に大幅補正
+SIF TALENT:少女心
+	BASE:厌恶感 -= 300
+SIF TALENT:幼稚
+	BASE:厌恶感 -= 500
+SIF TALENT:坦率
+	BASE:厌恶感 -= 100
+SIF TALENT:冷漠
+	BASE:厌恶感 -= 200
+SIF TALENT:感情缺乏
+	BASE:厌恶感 -= 200
+SIF TALENT:乐观
+	BASE:厌恶感 -= 150
+SIF TALENT:单纯
+	BASE:厌恶感 = 0
+BASE:厌恶感 = LIMIT(BASE:厌恶感,0,MAXBASE:厌恶感)
+
+
+
+
+;経験人数からEXP、ABLを増やしたり　手動キャラメイクした場合でもここでABL上がる場合あるけどユルシテ
+@EXP_FIX
+#DIM EXP_FIX_F = 0
+
+;経験人数がある場合人数 +RAND:人数 +RAND:10
+;絶頂回数は
+IF EXP:地上经验人数／人类／Ｖ性交
+	EXP_REF = EXP:地上经验人数／人类／Ｖ性交
+	EXP:膣内射精经验 += (1000 *(EXP_REF +RAND:EXP_REF +RAND:10))
+	EXP:Ｖ绝顶次数 += (RAND:(EXP:膣内射精经验 /500 *ABL:Ｖ敏感度 /100 +1))
+	EXP:Ｃ绝顶次数 += (RAND:(EXP:膣内射精经验 /500 *ABL:Ｃ敏感度 /100 +1))
+ENDIF
+IF EXP:地上经验人数／人类／Ａ性交
+	EXP_REF = EXP:地上经验人数／人类／Ａ性交
+	EXP:尻穴射精经验 += (1000 *(EXP_REF +RAND:EXP_REF +RAND:10))
+	EXP:Ａ绝顶次数 += (RAND:(EXP:尻穴射精经验 /500 *ABL:Ａ敏感度 /100 +1))
+ENDIF
+IF EXP:地上经验人数／人类／乳交
+	EXP_REF = EXP:地上经验人数／人类／乳交
+	EXP:乳内射精经验 += (1000 *(EXP_REF +RAND:EXP_REF +RAND:10))
+	EXP:Ｂ绝顶次数 += (RAND:(EXP:乳内射精经验 /500 *ABL:Ｂ敏感度 /100 +1))
+	EXP:Ｎ绝顶次数 += (RAND:(EXP:乳内射精经验 /500 *ABL:Ｎ敏感度 /100 +1))
+ENDIF
+IF EXP:地上经验人数／人类／Ｍ性交
+	EXP_REF = EXP:地上经验人数／人类／Ｍ性交
+	EXP:精饮经验 += (1000 *(EXP_REF +RAND:EXP_REF +RAND:10))
+ENDIF
+IF EXP:地上经验人数／人类／授乳
+	EXP_REF = EXP:地上经验人数／人类／授乳
+	EXP:授乳爱情经验 += (1000 *(EXP_REF +RAND:EXP_REF +RAND:10))
+	EXP:搾乳绝顶次数 += (RAND:(EXP:授乳爱情经验 /500 *ABL:Ｎ敏感度 /100 +1))
+	EXP:Ｂ绝顶次数 += (RAND:(EXP:授乳爱情经验 /500 *ABL:Ｂ敏感度 /100 +1))
+	EXP:Ｎ绝顶次数 += (RAND:(EXP:授乳爱情经验 /500 *ABL:Ｎ敏感度 /100 +1))
+ENDIF
+EXP:精液经验 += ((EXP:膣内射精经验 +EXP:尻穴射精经验 +EXP:乳内射精经验 +EXP:精饮经验) /2)
+
+;キャラメイクの最後なので習得,奉仕は入れない
+;輪姦を性経験で入れる
+SELECTCASE CSTR:性经验
+CASE "非处女","贞操死守","变态"
+	;1/4で入る
+	IF !RAND:4
+		EXP_REF = EXP:精液经验
+		EXP:轮奸经验 += (RAND:(EXP_REF *3 +1))
+		EXP:轮奸经验 -= (EXP:轮奸经验 -EXP:轮奸经验 %100)
+	ENDIF
+	
+CASE "碧池","肉便器","性奴隶"
+	EXP_REF = EXP:精液经验
+	EXP:轮奸经验 += (RAND:(EXP_REF *5 +1))
+	EXP:轮奸经验 -= (EXP:轮奸经验 -EXP:轮奸经验 %100)
+ENDSELECT
+
+IF EXP:出产 && !EXP:地上经验人数／人类／授乳
+	TALENT:无授乳经验 = 0
+	EXP:地上经验人数／人类／授乳 ++
+ENDIF
+IF !ISSKIP()
+	SKIPDISP 1
+	EXP_FIX_F = 1
+ENDIF
+CALL ABL_UP
+SIF EXP_FIX_F
+	SKIPDISP 0
+

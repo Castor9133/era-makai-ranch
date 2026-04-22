@@ -1,0 +1,170 @@
+﻿
+;自動スケジュール、時間帯からスケジュール呼び出し
+@AUTO_SCHEDULE_CONFORM
+#DIMS SCHEDULE_REF
+
+;夜なら就寝にしておく
+IF TIME >= 3
+	IF EQUIP:自室
+		CSTR:日程／予定 = 自室就寝
+	ELSEIF CSTR:日程 != "体内凌辱"
+		CSTR:日程／予定 = 小屋就寝
+	ENDIF
+	RETURN
+ENDIF
+
+;CSTR:自動スケジュール／月→350
+;曜日を足して呼ぶスケジュール参照
+CSTR_REF = 350
+SCHEDULE_REF = %CSTR:(CSTR_REF +DAY:曜日)%
+
+;時間帯や牧場の状態で予定スケジュールを入れる
+CALL AUTO_SCHEDULE_CONFORM_TIME(SCHEDULE_REF)
+
+
+
+;時間帯や牧場の状態で予定スケジュールを入れる
+;ARGS→スケジュールカテゴリ
+@AUTO_SCHEDULE_CONFORM_TIME(ARGS)
+
+;自動スケジュール無視の場所にいたら飛ばす
+SELECTCASE CSTR:住处
+CASE "牛舍"
+	CSTR:日程／予定 = 牛舍
+	RETURN
+
+CASE "体内"
+	CSTR:日程／予定 = 体内凌辱
+	RETURN
+ENDSELECT
+
+;搾乳優先の場合で母乳量基準以上なら搾乳
+IF BASE:母乳容量 < FLAG:搾乳休息母乳量 && GETBIT(CFLAG:日程／搾乳优先BIT,TIME)
+	CSTR:日程／予定 = 搾乳
+	RETURN
+ENDIF
+
+;時間帯→カテゴリ判定
+SELECTCASE TIME
+CASE 0,2
+	SELECTCASE ARGS
+	CASE "奶农／朝夕","调合・奶农","战斗训练・奶农"
+		CSTR:日程／予定 = 奶农
+	
+	CASE "搾乳／朝夕"
+		CSTR:日程／予定 = 搾乳
+	
+	CASE "灵力抽出／朝夕"
+		CSTR:日程／予定 = 抽出
+
+	CASE "触手刺激搾乳／朝夕"
+		CSTR:日程／予定 = 触手刺激搾乳
+	ENDSELECT
+CASE 1
+	SELECTCASE ARGS
+	CASE "奶农／朝夕","搾乳／朝夕","灵力抽出／朝夕","触手刺激搾乳／朝夕"
+		CSTR:日程／予定 = 自由
+	
+	CASE "调合・奶农"
+		CSTR:日程／予定 = 调剂
+	
+	CASE "战斗训练・奶农"
+		CSTR:日程／予定 = 训练
+	ENDSELECT
+ENDSELECT
+
+;時間帯無視・その他
+SELECTCASE ARGS
+CASE "假日"
+	CSTR:日程／予定 = 自由
+
+CASE "奶农／整天"
+	CSTR:日程／予定 = 奶农
+
+CASE "事务／即消化"
+	IF !FLAG:事务工作量
+		CSTR:日程／予定 = 奶农
+	ELSE
+		CSTR:日程／予定 = 事务
+	ENDIF
+
+CASE "事务／积累后处理"
+	IF FLAG:事务工作量 < FLAG:事务作业量MAX /2
+		CSTR:日程／予定 = 奶农
+	ELSE
+		CSTR:日程／予定 = 事务
+	ENDIF
+
+CASE "调合／整天"
+	CSTR:日程／予定 = 调剂
+
+CASE "搾乳／整天"
+	CSTR:日程／予定 = 搾乳
+
+CASE "灵力抽出／整天"
+	CSTR:日程／予定 = 抽出
+
+CASE "触手刺激搾乳／整天"
+	CSTR:日程／予定 = 触手刺激搾乳
+
+CASE "战斗训练／整天"
+	CSTR:日程／予定 = 训练
+
+;いろいろ見るその他
+CASE "大浴场清洁→乳农"
+	;大浴場の掃除が終わってなければ掃除、他は酪農
+	IF FLAG:大浴场清洁完成度 < 100
+		CSTR:日程／予定 = 大浴场清洁
+	ELSE
+		CSTR:日程／予定 = 奶农
+	ENDIF
+	
+CASE "大浴场清洁→自由"
+	;大浴場の掃除が終わってなければ掃除、他は自由
+	IF FLAG:大浴场清洁完成度 < 100
+		CSTR:日程／予定 = 大浴场清洁
+	ELSE
+		CSTR:日程／予定 = 自由
+	ENDIF
+
+CASE "战斗训练／从中午开始"
+	;朝は休憩
+	IF !TIME
+		CSTR:日程／予定 = 自由
+	ELSE
+		CSTR:日程／予定 = 训练
+	ENDIF
+
+CASE "搾乳→抽出"
+	;搾乳→搾乳→抽出
+	IF TIME == 2
+		CSTR:日程／予定 = 抽出
+	ELSE
+		CSTR:日程／予定 = 搾乳
+	ENDIF
+
+CASE "自定义Ａ"
+	CALL AUTO_SCHEDULE_CONFORM_TIME_CUSTOM(0)
+CASE "自定义Ｂ"
+	CALL AUTO_SCHEDULE_CONFORM_TIME_CUSTOM(1)
+CASE "自定义Ｃ"
+	CALL AUTO_SCHEDULE_CONFORM_TIME_CUSTOM(2)
+
+ENDSELECT
+
+;自由／待機の補正
+CALL AUTO_SCHEDULE_REST_FIX
+
+
+
+
+;カスタム用呼び出し
+;ARG→ＡＢＣ
+@AUTO_SCHEDULE_CONFORM_TIME_CUSTOM(ARG)
+
+;CSTR:自動スケジュール／カスタムＡ／朝→360
+;時間帯とＡＢＣで呼ぶ番号を取得
+CSTR_NUM = 360 +ARG *3 +TIME
+CSTR:日程／予定 = %CSTR:CSTR_NUM%
+
+

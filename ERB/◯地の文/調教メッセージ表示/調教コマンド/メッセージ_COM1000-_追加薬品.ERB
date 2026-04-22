@@ -1,0 +1,24 @@
+﻿
+@COM1000_MESSAGE
+;母乳分泌促進薬
+
+PRINTFORML 托住%CALLNAME%的%SLANG_B()%，给她的乳头注射药物…
+PRINTFORML （母乳分泌促进药所持数-1 → {ITEM:母乳分泌促进药}个）
+CALL KOJO_PRINT("调教命令","注射","Ｎ")
+PRINTW
+PRINTFORML %CALLNAME%感到%SAVESTR:标识／乳房%有些不适…
+CALL PRINTW_WORD_COLOR,@"・通过这次调教使乳头/%SAVESTR:标识／乳房%达到高潮后会变为【母乳体质】","桃"
+
+
+
+@COM1001_MESSAGE
+;魔力母乳分泌促進薬
+
+PRINTFORML 托住%CALLNAME%的%SLANG_B()%，给她的乳头注射药物…
+PRINTFORML （魔力母乳分泌促进药所持数-1 → {ITEM:魔力母乳分泌促进药}个）
+CALL KOJO_PRINT("调教命令","注射","Ｎ")
+PRINTW
+PRINTFORML %CALLNAME%感到%SAVESTR:标识／乳房%有些不适…
+CALL PRINTW_WORD_COLOR,@"・通过这次调教使乳头/%SAVESTR:标识／乳房%达到高潮后会变为【魔力母乳体质】","桃"
+
+

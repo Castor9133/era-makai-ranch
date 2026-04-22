@@ -1,0 +1,77 @@
+﻿
+;魔王軍研究所商品リスト
+@INSTITUTE_LIST
+
+;他の店とは違い一括判定しづらいので個別に
+FOR LOCAL,10,11 +INSTITUTE_LIST_NUM
+	CALL INSTITUTE_LIST_COLOR(LOCAL)
+	CALL INSTITUTE_LIST_PART(LOCAL)
+	RESETCOLOR
+NEXT
+PRINTL
+
+
+
+;色変更するかの個別判定
+;ARG→選択肢番号
+@INSTITUTE_LIST_COLOR(ARG)
+#DIM COLOR_SET
+
+COLOR_SET = 0
+SELECTCASE ARG
+CASE 10
+	SIF MONEY:储存灵力 < EP_CONTRIBUTION_PT
+		COLOR_SET ++
+CASE 11
+	SIF MONEY:储存灵力 < ITEMPRICE:奴隶候补设定变更票
+		COLOR_SET ++
+CASE 12
+	SIF MONEY:储存灵力 < ITEMPRICE:灵力抽出装置 /2 || MONEY < ITEMPRICE:灵力抽出装置
+		COLOR_SET ++
+CASE 13
+	SIF MONEY:储存魔力 < ITEMPRICE:魔力枷锁 /2 || MONEY < ITEMPRICE:魔力枷锁
+		COLOR_SET ++
+CASE 14
+	SIF ITEM:魔力补给装置 || MONEY < ITEMPRICE:魔力补给装置 || MONEY:储存灵力 < ITEMPRICE:魔力补给装置
+		COLOR_SET ++
+CASE 15
+	SIF ITEM:魔改造魔力储存器 || !ITEM:大容量魔力储存器 || MONEY:储存魔力 < MAGIC_TANK_LARGE_CAPACITY
+		COLOR_SET ++
+CASE 16
+	SIF ITEM:小型灵力抽出装置 || MONEY < ITEMPRICE:小型灵力抽出装置
+		COLOR_SET ++
+ENDSELECT
+SIF COLOR_SET
+	SETCOLOR 0x606060
+
+
+
+;選択肢表示
+;ARG→選択肢番号
+@INSTITUTE_LIST_PART(ARG)
+
+SELECTCASE ARG
+CASE 10
+	PRINTLC [10] 贡献pt变换
+CASE 11
+	PRINTLC [11] 奴隶候补设定变更票
+CASE 12
+	PRINTLC [12] 灵力抽出装置
+CASE 13
+	PRINTLC [13] 魔力枷锁
+CASE 14
+	PRINTLC [14] 魔力补给装置
+CASE 15
+	PRINTLC [15] 魔改造魔力储存器
+CASE 16
+	PRINTLC [16] 小型灵力抽出装置
+ENDSELECT
+RESETCOLOR
+
+;薬品開発
+;牧場の設備じゃできない高度な薬品の製造依頼をするよ
+;＜薬品研究室＞を作れば牧場でもできるようになる、とか
+
+
+
+

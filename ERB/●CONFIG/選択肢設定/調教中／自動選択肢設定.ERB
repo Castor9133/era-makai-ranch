@@ -1,0 +1,274 @@
+﻿
+;調教中自動選択肢設定
+@TRAIN_AUTO_CONFIG
+
+CLEARLINE LINECOUNT
+PRINTL 在调教过程中设置自动选择。
+DRAWLINE
+PRINTL 　《 调教开始时的自动处理 》
+FOR LOCAL,0,4
+	CALL PRINT_TRAIN_AUTO_CONFIG(LOCAL)
+NEXT
+PRINTL
+PRINTL 　《 射精位置 》
+FOR LOCAL,10,16
+	CALL PRINT_TRAIN_AUTO_CONFIG(LOCAL)
+NEXT
+PRINTL
+PRINTL 　《 调教结束时的衣服没收选项 》
+PRINTL ・抵抗时
+PRINTLC [20] 衣服
+CALL PRINT_ONOFF(GETBIT(＃衣服没收／抵抗＃),1)
+PRINTLC [21] 内衣
+CALL PRINT_ONOFF(GETBIT(＃内衣没收／抵抗＃),1)
+PRINTLC [22] 饰品
+CALL PRINT_ONOFF(GETBIT(＃饰品没收／抵抗＃),1)
+PRINTL ・无抵抗
+PRINTLC [23] 衣服
+CALL PRINT_ONOFF(GETBIT(＃衣服没收／无抵抗＃),1)
+PRINTLC [24] 内衣
+CALL PRINT_ONOFF(GETBIT(＃内衣没收／无抵抗＃),1)
+PRINTLC [25] 饰品
+CALL PRINT_ONOFF(GETBIT(＃饰品没收／无抵抗＃),1)
+
+CALL PRINTL_ALIGN
+CALL DEFAULT_VOID_RETURN_BUTTON(1)
+BINPUT
+PRINTL
+SELECTCASE RESULT
+CASE 98
+	PRINTL 回复默认状态屏幕显示设置？
+	CALL ASK_YN
+	SIF !RESULT
+		CALL DEFAULT_TRAIN_AUTO_CONFIG
+CASE 99
+	RETURN
+CASEELSE
+	CALL CHANGE_TRAIN_AUTO_CONFIG(RESULT)
+ENDSELECT
+RESTART
+
+
+
+;PRINT部分　長いので別関数
+;ARG→LOCAL
+@PRINT_TRAIN_AUTO_CONFIG(ARG)
+
+;FLAG:デフォルト脱衣状態／抵抗→2400
+;FLAG:射精箇所／パイズリ→2410
+;ARG >=10だと-10する関係でどうせ2400
+FLAG_REF = 2400
+
+;FLAG_NAMEを入れてCASEする
+FLAG_NAME = %FLAGNAME:(ARG +FLAG_REF)%
+PRINTFORM [{ARG,2}] %FLAG_NAME,30,LEFT%：
+SELECTCASE FLAG_NAME
+CASE "默认脱衣状态／抵抗","默认脱衣状态／无抵抗"
+	;ver1.030で「毎回選ぶ」がなくなったので-1されてる
+	;STR:デフォルト脱衣状態→8130
+	STR_REF = 8130
+	PRINTFORML %STR:(STR_REF +FLAG:FLAG_NAME)%
+
+CASE "默认拘束状态／抵抗","默认拘束状态／无抵抗"
+	;STR:拘束中→3930
+	STR_REF = 3930
+	SELECTCASE FLAG:FLAG_NAME
+	CASE 0
+		PRINTL 每次选择
+	CASE 1
+		PRINTL 不拘束
+	
+	CASEELSE
+		;拘束必要アイテム参照
+		CALL BIND_NEED_ITEM(FLAG:FLAG_NAME -1)
+		PRINTFORM %RESULTS,20,LEFT%
+		
+		;必要アイテムIDが入っていれば表示
+		IF !NEED_ITEM_ID
+			PRINTL
+		ELSEIF !NEED_ITEM_ID:1
+			PRINTFORML ：＜%ITEMNAME:NEED_ITEM_ID%＞必要
+		ELSE
+			PRINTFORML ：＜%ITEMNAME:NEED_ITEM_ID%＞・＜%ITEMNAME:(NEED_ITEM_ID:1)%＞必要
+		ENDIF
+	ENDSELECT
+
+CASE "射精位置／乳交","射精位置／纵乳交"
+	SELECTCASE FLAG:FLAG_NAME
+	CASE 0
+		PRINTL 每次选择
+	CASE 1
+		IF FLAG_NAME == "射精位置／乳交"
+			PRINTL 始终乳内射精（贫乳以下是射在胸部）
+		ELSE
+			PRINTL 经常乳内射精
+		ENDIF
+	CASE 2
+		PRINTL 经常射到胸前
+	CASE 3
+		PRINTL 经常射到脸上
+	ENDSELECT
+
+CASE "射精位置／口交","射精位置／深喉"
+	SELECTCASE FLAG:FLAG_NAME
+	CASE 0
+		PRINTL 每次选择
+	CASE 1
+		PRINTL 经常口内射精
+	CASE 2
+		PRINTL 经常射到脸上
+	ENDSELECT
+
+CASE "射精位置／Ｖ性交"
+	SELECTCASE FLAG:FLAG_NAME
+	CASE 0
+		PRINTL 每次选择
+	CASE 1
+		PRINTL 经常腔内射精
+	CASE 2
+		PRINTL 经常拔阴道外射精
+	ENDSELECT
+
+CASE "射精位置／Ａ性交"
+	SELECTCASE FLAG:FLAG_NAME
+	CASE 0
+		PRINTL 每次选择
+	CASE 1
+		PRINTL 经常尻穴射精
+	CASE 2
+		PRINTL 经常拔出外射
+	ENDSELECT
+ENDSELECT
+
+
+
+;設定変更
+;ARG→INPUT
+@CHANGE_TRAIN_AUTO_CONFIG(ARG)
+
+;20までは元CONFIG使いまわし
+IF ARG < 20
+	CALL CHANGE_TRAIN_AUTO_CONFIG_NAME(ARG)
+ELSE
+	CALL CHANGE_TRAIN_AUTO_CONFIG_NUM(ARG)
+ENDIF
+
+
+
+;FLAG_NAMEでの変更
+@CHANGE_TRAIN_AUTO_CONFIG_NAME(ARG)
+
+FLAG_REF = 2400
+FLAG_NUM = ARG +FLAG_REF
+FLAG_NAME = %FLAGNAME:FLAG_NUM%
+SELECTCASE FLAG_NAME
+CASE "默认脱衣状态／抵抗"
+	PRINTL 设定反抗性的奴隶的调教开始时的衣服・内衣的状态。
+	PRINTL
+	
+	;ver1.030で「毎回選ぶ」がなくなったので-1されてる
+	;STR:デフォルト脱衣状態→8130
+	STR_REF = 8130
+	FOR LOCAL,0,3
+		PRINTFORM [{LOCAL,2}] %STR:(STR_REF +LOCAL)%
+		SIF !LOCAL
+			PRINT （默认）
+		PRINTL
+	NEXT
+	BINPUT
+	FLAG:FLAG_NUM = RESULT
+
+CASE "默认拘束状态／抵抗"
+	PRINTL 设置叛逆奴隶调教开始时的拘束状态。
+	PRINTL 
+	CALL BIND_CHOICE("全局设置")
+	SIF RESULT >= 0
+		FLAG:FLAG_NUM = RESULT
+
+CASE "默认脱衣状态／无抵抗"
+	PRINTL 设定不抵抗的奴隶的调教开始时的衣服・内衣的状态。
+	PRINTL
+	STR_REF = 8130
+	FOR LOCAL,0,7
+		PRINTFORM [{LOCAL,2}] %STR:(STR_REF +LOCAL)%
+		SIF !LOCAL
+			PRINT （默认）
+		PRINTL
+	NEXT
+	BINPUT
+	FLAG:FLAG_NUM = RESULT
+
+CASE "默认拘束状态／无抵抗"
+	PRINTL 设置开始调教无阻力奴隶时的拘束状态。
+	PRINTL 
+	CALL BIND_CHOICE("全局设置")
+	SIF RESULT >= 0
+		FLAG:FLAG_NUM = RESULT
+
+CASE "射精位置／乳交"
+	PRINTL 在调教过程中选择在乳交中射精的位置。
+	PRINTL
+	PRINTL [ 0] 每次选择（默认）
+	PRINTL [ 1] 经常乳内射精
+	PRINTL [ 2] 经常射到胸前
+	PRINTL [ 3] 经常射到脸上
+	BINPUT
+	FLAG:FLAG_NUM = RESULT
+
+CASE "射精位置／纵乳交"
+	PRINTL 在调教过程中选择纵向乳交射精的位置。
+	PRINTL
+	PRINTL [ 0] 每次选择
+	PRINTL [ 1] 始终乳内射精（默认）
+	PRINTL [ 2] 经常射到胸前
+	PRINTL [ 3] 经常射到脸上
+	BINPUT
+	FLAG:FLAG_NUM = RESULT
+
+CASE "射精位置／口交"
+	PRINTL 在调教过程中选择口交射精的位置。
+	PRINTL
+	PRINTL [ 0] 每次选择（默认）
+	PRINTL [ 1] 经常口内射精
+	PRINTL [ 2] 经常射到脸上
+	BINPUT
+	FLAG:FLAG_NUM = RESULT
+
+CASE "射精位置／深喉"
+	PRINTL 在调教过程中选择深喉射精的位置。
+	PRINTL
+	PRINTL [ 0] 每次选择
+	PRINTL [ 1] 始终口内射精（默认）
+	PRINTL [ 2] 经常射到脸上
+	BINPUT
+	FLAG:FLAG_NUM = RESULT
+
+CASE "射精位置／Ｖ性交"
+	PRINTL 在调教过程中选择Ｖ性交射精的位置。
+	PRINTL
+	PRINTL [ 0] 每次选择
+	PRINTL [ 1] 始终腔内射精（默认）
+	PRINTL [ 2] 经常拔阴道外射精
+	BINPUT
+	FLAG:FLAG_NUM = RESULT
+
+CASE "射精位置／Ａ性交"
+	PRINTL 调教过程中选择Ａ性交射精的位置。
+	PRINTL
+	PRINTL [ 0] 每次选择
+	PRINTL [ 1] 始终尻穴射精（默认）
+	PRINTL [ 2] 经常拔出外射
+	BINPUT
+	FLAG:FLAG_NUM = RESULT
+ENDSELECT
+
+
+
+;番号変更
+@CHANGE_TRAIN_AUTO_CONFIG_NUM(ARG)
+
+;+20で来てる
+INVERTBIT FLAG:调教后衣服没收BIT,ARG -20
+
+
+

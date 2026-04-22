@@ -1,0 +1,66 @@
+﻿
+;下着
+@ITEM_DETAIL_CLOTHE_LINGERIE
+
+SELECTCASE ITEMNAME:SELECT_ITEM
+CASE "胸罩"
+	CALL LINGERIE_DETAIL_COMMON("上面","","","膨乳时破损")
+	PRINTFORML 拥抱并托住%SAVESTR:标识／乳房%的女士内衣。
+	PRINTL 随着胸围尺寸的增加，之前的文胸将无法再穿戴。
+
+CASE "裹胸布"
+	CALL LINGERIE_DETAIL_COMMON("上面")
+	PRINTFORML 包在%SAVESTR:标识／乳房%上提供保护，代替内衣的长布。
+	PRINTL 从事日本地区特有职业的女孩经常穿着它。
+
+CASE "内裤"
+	CALL LINGERIE_DETAIL_COMMON("下面")
+	PRINTL 保护私处的女性内衣。
+
+CASE "内裤"
+	CALL LINGERIE_DETAIL_COMMON("下面")
+	PRINTL 女性宽松的裤子。
+
+CASE "男式内裤"
+	CALL LINGERIE_DETAIL_COMMON("下面")
+	PRINTL 用于保护下体的男性内裤。
+
+
+;ここから拡張
+CASE "前钩胸罩"
+	CALL LINGERIE_DETAIL_COMMON("上面","","","膨乳时破损")
+	PRINTFORML 包裹并托住%SAVESTR:标识／乳房%的女性内衣,卡扣在胸前固定的类型。
+	PRINTFORML 差异是什么呢？%SAVESTR:标识／乳房%容易露出吗？
+	PRINTL 就游戏地位而言，没有高下之分。
+	
+CASE "授乳开口胸罩"
+	CALL LINGERIE_DETAIL_COMMON("上面","","授乳开口","膨乳时破损")
+	PRINTFORML 包裹并托住%SAVESTR:标识／乳房%的女性内衣，
+	PRINTFORML （原本）为了方便给婴儿哺%SAVESTR:标识／母乳%，设计了一个小窗口，可以展露乳头。
+
+CASE "紧身胸衣"
+	CALL LINGERIE_DETAIL_COMMON("上面","","","膨乳时破损")
+	PRINTFORML 从腹部到%SAVESTR:标识／乳房%提供保护，没有肩带的女性用内衣。
+
+CASE "细带胸罩"
+	CALL LINGERIE_DETAIL_COMMON("上面","","附带条件")
+	PRINTFORML 包裹并托住%SAVESTR:标识／乳房%的女性内衣,在前面系带子固定的类型。
+	PRINTL 不同的是，即使在被束缚的情况下，也能将其彻底脱下。
+
+CASE "细带内裤"
+	CALL LINGERIE_DETAIL_COMMON("下面","","附带条件")
+	PRINTL 用保护私处的女性用内衣，在旁边系带子的类型。
+	PRINTL 不同的是，即使在被束缚的情况下，也能将其彻底脱下。
+
+CASE "比基尼"
+	CALL LINGERIE_DETAIL_COMMON("上下","","附带条件")
+	PRINTL 上下配套的泳衣，可以作为内衣使用。
+	PRINTL 与其他比基尼类型类似，但由于它是通过系绳固定的，因此即使受到拘束也可以完全脱下。
+	IF FLAG:玩笑表示
+		PRINTL 我制作这个部分是因为我觉得如果有微比基尼的话，最好也有普通的比基尼。
+	ENDIF
+
+ENDSELECT
+
+
+

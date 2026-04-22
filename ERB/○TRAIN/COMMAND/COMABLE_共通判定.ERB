@@ -1,0 +1,247 @@
+﻿
+;Ｖ・Ａ挿入判定を一部まとめたもの
+;ARGS→コマンド名
+;ARG→1だとアナル
+@SEX_COMMAND_JUDGE(ARGS,ARG)
+
+;精力枯渇でもダメにした
+;挿入コマンド非表示だとおわり
+SIF !GETBIT(＃表示指令／阴茎＃) || TFLAG:Ｐ使用BIT || !BASE:0:精力
+	RETURN 0
+
+;調教者にちんぽが存在するかチェック
+SIF !PLAYER_PENIS
+	RETURN 0
+
+;前か後ろか
+IF !ARG
+	;処女結界での判定の代わりに破壊が可能かを有効フラグで判断する
+	;入ってたらNG
+	SIF TFLAG:处女结界有效 || TFLAG:Ｖ装备 || !TFLAG:Ｖ露出 || !GETBIT(＃表示指令／Ｖ刺激＃)
+		RETURN 0
+ELSE
+	;アナルセックスフィルタあり、アナル不可体位→NG
+	;肛塞装着中はＡ挿入不可（肛用震动棒と別枠）
+	SIF !GETBIT(＃表示指令／Ａ刺激＃) || GETBIT(＃各种Ａ插入无效＃) || TFLAG:Ａ装备 || TEQUIP:肛塞 || !TFLAG:Ａ露出 || GETBIT(＃体位制限／肛门＃)
+		RETURN 0
+ENDIF
+
+;拘束による体位制限
+SELECTCASE ARGS
+CASE "正常位"
+	SIF GETBIT(＃体位制限／正常位＃)
+		RETURN 0
+CASE "后背位"
+	SIF GETBIT(＃体位制限／后背位＃)
+		RETURN 0
+CASE "对面坐位"
+	SIF GETBIT(＃体位制限／对面座位＃)
+		RETURN 0
+CASE "背面坐位"
+	SIF GETBIT(＃体位制限／背面座位＃)
+		RETURN 0
+CASE "对面立位"
+	SIF GETBIT(＃体位制限／对面立位＃)
+		RETURN 0
+	
+	;非拘束だと体力ないとダメ
+	SIF !TFLAG:拘束BIT && !BASE:体力
+		RETURN 0
+CASE "背面立位"
+	SIF GETBIT(＃体位制限／背面立位＃)
+		RETURN 0
+	SIF !TFLAG:拘束BIT && !BASE:体力
+		RETURN 0
+
+CASE "骑乘位"
+	;騎乗位は体力1以上必要、拘束中だとダメ
+	SIF !BASE:体力 || TFLAG:拘束BIT
+		RETURN 0
+
+CASE "背面骑乘位"
+	;背面騎乗も騎乗と同条件
+	SIF !BASE:体力 || TFLAG:拘束BIT
+		RETURN 0
+
+CASE "强制骑乘位"
+	;触手拘束orハーネス拘束
+	;今触手だけ
+	SIF !GETBIT(＃束缚／触手＃)
+		RETURN 0
+ENDSELECT
+RETURN 1
+
+
+
+;奉仕判定なんとなくまとめ
+;実際やってくれるかは各コマンドで判定
+;ARGS→コマンド　フェラチオ判定だけに使う気がする
+@PENIS_SERVICE_COMMAND_JUDGE(ARGS)
+
+SIF !PLAYER_PENIS
+	RETURN 0
+
+;挿入中、HP0、虚脱→NG
+SIF !GETBIT(＃表示指令／阴茎＃) || TFLAG:Ｐ使用BIT || !BASE:体力 || CFLAG:虚脱
+	RETURN 0
+
+;フェラチオ以外の場合触手強制手コキしてるとダメ・精力枯渇だとダメ
+SIF (TEQUIP:触手强制手交 || !BASE:0:精力) && ARGS != "口交" && ARGS != "饮尿"
+	RETURN 0
+
+;フェラチオ以外の場合拘束or触手強制手コキしてるとダメ
+SIF (TFLAG:拘束BIT || TEQUIP:触手强制手交) && ARGS != "口交" && ARGS != "饮尿"
+	RETURN 0
+RETURN 1
+
+
+
+;パイズリ判定まとめ
+;ARGS→コマンド　通常or縦ズリ判定
+@PAIZURI_COMMAND_JUDGE(ARGS)
+
+;奉仕でない強制のほうからも来るので奉仕との重複部分はある
+SIF !PLAYER_PENIS
+	RETURN 0
+
+;触手ズリ中、体位で制限→NG
+SIF !GETBIT(＃表示指令／阴茎＃) || TFLAG:Ｐ使用BIT || TEQUIP:触手强制乳交 || GETBIT(＃体位制限／乳交＃) || !BASE:0:精力
+	RETURN 0
+
+;Ｂ露出しているか着衣パイズリ可能なら通す
+SIF !TFLAG:Ｂ露出 && !TFLAG:穿衣乳交可能
+	RETURN 0
+
+;通常か縦かで判定分け
+IF ARGS == "乳交"
+	;Ｎ装着かＢ装備の場合豊乳以上でないとダメ
+	SIF TFLAG:Ｎ装备 && ABL:胸围大小 < BUSTSIZE_丰乳
+		RETURN 0
+	SIF TFLAG:Ｂ装备 && ABL:胸围大小 < BUSTSIZE_丰乳
+		RETURN 0
+;縦ズリ
+ELSE
+	;豊乳以上でないとダメ
+	SIF ABL:胸围大小 < BUSTSIZE_丰乳
+		RETURN 0
+ENDIF
+RETURN 1
+
+
+
+;搾乳器判定まとめ
+;ARGS→コマンド
+@LACTATION_MACHINE_COMMAND_JUDGE(ARGS)
+
+;イラマ中、授乳手コキ中、Ｎ装備中、非母乳体質、媚薬使用中→NG
+;対応アイテム所持の必要あり
+{
+SIF !GETBIT(＃表示指令／Ｎ刺激＃) || !GETBIT(＃表示指令／道具＃) || GETBIT(＃Ｐ使用／Ｍ插入＃) || TEQUIP:授乳手交 || 
+TFLAG:Ｎ装备 || !MARK:母乳体质 || TFLAG:春药使用中 || !ITEM:ARGS
+}
+	RETURN 0
+
+;乳首に母乳汚れ以外→NG
+SIF STAIN:乳头 != 0 && STAIN:乳头 != 1
+	RETURN 0
+
+;Ｎ露出か授乳スリット→OK
+SIF TFLAG:Ｎ露出 || TFLAG:授乳开口
+	RETURN 1
+
+
+
+;搾乳触手判定まとめ
+;ARGS→コマンドの予定　そのうち段階取得にしようかな
+@LACTATION_TENTACLE_COMMAND_JUDGE
+
+;授乳手コキ中、Ｎ装備、あなたの魔力0→NG
+SIF !GETBIT(＃表示指令／触手＃) || !GETBIT(＃表示指令／Ｎ刺激＃) || TEQUIP:授乳手交 || TFLAG:Ｎ装备 || !BASE:0:魔力
+	RETURN 0
+SIF TFLAG:Ｎ露出 || TFLAG:授乳开口
+	RETURN 1
+
+
+
+;乳吸い判定まとめ
+@BREAST_SUCK_COM_JUDGE
+
+SIF !GETBIT(＃表示指令／Ｎ刺激＃)
+	RETURN 0
+SIF GETBIT(＃Ｐ使用／Ｍ插入＃) || GETBIT(＃Ｐ使用／乳交＃)
+	RETURN 0
+SIF TEQUIP:手淫
+	RETURN 0
+SIF GETBIT(＃体位制限／吸奶＃)
+	RETURN 0
+
+;汚れ無視判定
+CALL COMMAND_STAIN_JUDGE("乳头")
+SIF !RESULT
+	RETURN 0
+
+SIF TFLAG:Ｎ装备
+	RETURN 0
+
+RETURN 1
+
+
+
+;汚れ無視必要判定まとめ
+;ARGS→部位
+@COMMAND_STAIN_JUDGE(ARGS)
+
+;[触手粘液][精液][ペニス汚れ]：汚れ無視必要
+SIF ITEM:污臭无视 < 1 && (GETBIT(STAIN:ARGS,5) || GETBIT(STAIN:ARGS,6) || GETBIT(STAIN:ARGS,7))
+	RETURN 0
+
+;Ａ汚れがあるとき汚れ無視Lv2ないならダメ
+SIF ITEM:污臭无视 < 2 && GETBIT(STAIN:ARGS,2)
+	RETURN 0
+RETURN 1
+
+
+
+;調教者にちんぽ存在するかチェック
+@PLAYER_PENIS_CHECK
+
+;とりあえずPLAYERが0以外は帰る
+;奴隷をふたなりにしたい場合は自分でやって
+PLAYER_PENIS = 0
+SIF PLAYER
+	RETURN 0
+
+;オトコはOK
+SIF TALENT:PLAYER:男性
+	PLAYER_PENIS = 1
+
+;女あなたでもふたなりちんぽ取得+有効ならON
+SIF ITEM:扶她阴茎 && GETBIT(＃有效／扶她阴茎＃)
+	PLAYER_PENIS = 1
+
+
+
+;TARGETにちんぽ存在するかチェック
+@TARGET_PENIS_CHECK
+
+;TARGET == 0でない場合帰っていい
+TARGET_PENIS = 0
+SIF TARGET
+	RETURN
+
+;オトコはOK
+SIF TALENT:男性
+	TARGET_PENIS = 1
+
+;女あなたでもふたなりちんぽ取得+有効ならON
+SIF ITEM:扶她阴茎 && GETBIT(＃有效／扶她阴茎＃)
+	TARGET_PENIS = 1
+
+
+
+
+
+
+
+
+

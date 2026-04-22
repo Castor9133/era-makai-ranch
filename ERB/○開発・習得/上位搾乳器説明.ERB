@@ -1,0 +1,25 @@
+﻿
+;アイテム説明と購入数
+@ITEM_DETAIL_LACTATION_MACHINE
+
+SELECTCASE ITEMNAME:SELECT_ITEM
+CASE "魔动快感搾乳器"
+	;ここではアイテム毎に価格など出すことにする
+	PRINTFORML %ITEMNAME:SELECT_ITEM%：%VALUE_DIGIT(ITEMPRICE:SELECT_ITEM)%G 持有数量{ITEM:SELECT_ITEM,3}支 
+	PRINTL
+	PRINTL 把乳牛用的搾乳器改造成人类女性用。
+	PRINTL 除了通过增加和减少真空功率来吸吮乳头的乐趣之外，
+	PRINTFORML 杯内不规则运动的刑具刺激乳头挤出%SAVESTR:标识／母乳%。
+	
+CASE "触手快感搾乳器"
+	PRINTFORML %ITEMNAME:SELECT_ITEM%：%VALUE_DIGIT(ITEMPRICE:SELECT_ITEM)%MP 持有数量{ITEM:SELECT_ITEM,3}支 
+	PRINTL
+	PRINTFORML 使用%CALLNAME:0%的魔力，将乳牛用的搾乳器改造成人类女性用用的。
+	PRINTFORML 触手缠着女性的%SAVESTR:标识／乳房%进行激烈的搾乳刺激，
+	PRINTFORML 就连乳头也受到细细触手的攻击，最后用真空将%SAVESTR:标识／母乳%全部挤出。
+	
+CASEELSE
+	PRINTL  --- 显示选定设备的说明 --- 
+ENDSELECT
+
+

@@ -1,0 +1,119 @@
+﻿
+;触手射精メッセージ
+@PRINT_T_EJACULATION_MESSAGE
+#DIM SEX_PART
+
+SIF !TFLAG:调教中 && !TFLAG:日程外Ｈ && !TFLAG:循环中消息显示
+	RETURN
+SIF !TFLAG:触手射精次数
+	RETURN
+MESSAGE_EXIST ++
+SIF !LINEISEMPTY()
+	PRINTL
+
+;スケジュール外なら射精メッセージ前に止める
+IF TFLAG:日程外Ｈ
+	PRINTW
+ELSE
+	PRINTL
+ENDIF
+
+SEX_PART = TEQUIP:触手Ｖ插入 +TEQUIP:触手Ａ插入 +TEQUIP:触手强制乳交 +TEQUIP:触手口交 +TEQUIP:触手深喉 +TEQUIP:触手强制手交
+PRINTFORM 触手在%CALLNAME%的
+REPEAT 5
+	IF TEQUIP:触手Ｖ插入 && COUNT == 0
+		PRINTFORM %SLANG_V()%
+	ELSEIF TEQUIP:触手Ａ插入 && COUNT == 1
+		PRINTFORM %SLANG_A()%
+	ELSEIF TEQUIP:触手强制乳交 && COUNT == 2
+		PRINTFORM %SLANG_B()%的乳沟
+	ELSEIF TEQUIP:触手深喉 && COUNT == 3
+		PRINTFORM 被触手捅穿的咽喉深处
+	ELSEIF TEQUIP:触手口交 && COUNT == 3
+		PRINTFORM 被触手搅弄的口腔深处
+	ELSEIF TEQUIP:触手强制手交 && COUNT == 4
+		PRINTFORM 手
+	ELSE
+		CONTINUE
+	ENDIF
+	SEX_PART -= 1
+	IF SEX_PART
+		PRINT 、
+	ELSE
+		BREAK
+	ENDIF
+REND
+
+PRINT 着
+SIF TFLAG:触手射精次数 > 1
+	PRINT 大量的
+CALL TRAIN_EJACULATION_FINISH_MESSAGE
+IF TEQUIP:触手深喉
+	SELECTCASE RAND:6
+	CASE 0
+		PRINTFORML 黏浊的触手精液灌进%CALLNAME%痉挛的食道口，喉管一圈圈箍紧那仍在脉动的茎干，吸盘刮过咽壁时带出咕噜水声。
+	CASE 1
+		PRINTFORML 白浊沿着触手表面的沟槽倒流，从%CALLNAME%鼻翼与唇角一齐溢出，又被触手堵回喉底。
+	CASE 2
+		PRINTFORML %CALLNAME%干呕着吞咽，触手尖端在胃液边缘搅动，腥甜与屈辱混成一片黏腻的回味。
+	CASE 3
+		PRINTFORML 触手在喉结处鼓起又瘪下，每一次搏动都把更多异形精液泵进食道深处。
+	CASE 4
+		PRINTFORML 细须从%CALLNAME%唇缝间钻出又缩回，主茎仍堵死喉口，浊液只能从鼻腔呛成泡沫。
+	CASEELSE
+		PRINTFORML %CALLNAME%眼角泛红，喉肉被迫榨取触手里的每一滴，舌根徒劳地顶着那滑腻的侵入物。
+	ENDSELECT
+ELSEIF TEQUIP:触手口交
+	SELECTCASE RAND:6
+	CASE 0
+		PRINTFORML 触手在%CALLNAME%口腔里胀大射精，吸盘嘬着上颚与舌面，黏液与白浊把齿列糊得一片狼藉。
+	CASE 1
+		PRINTFORML 分叉的触手尖端同时喷溅，一股浇在舌系带，另一股缠住臼齿后侧，%CALLNAME%呛咳着却咽不下去。
+	CASE 2
+		PRINTFORML 异形精液在颊沟积成小滩，触手抽出时拉出银丝，%CALLNAME%舌尖还追着那腥甜的味道发抖。
+	CASE 3
+		PRINTFORML 触手表面的颗粒刮过味蕾，浊液烫得%CALLNAME%整张口腔发麻，涎水与精液从嘴角淌到锁骨。
+	CASE 4
+		PRINTFORML %CALLNAME%腮帮被灌得微微鼓起，触手仍堵在唇间脉动，每一次收缩都挤出新的黏浆。
+	CASEELSE
+		PRINTFORML 口腔被触手精液涂满，腥膻混着粘液的气味在鼻腔里翻腾，%CALLNAME%喉间发出含糊的呜咽。
+	ENDSELECT
+ENDIF
+CALL ONOMATOPOEIA("射精")
+;CALL KOJO_PRINT("射精")
+
+
+
+;精液ボテメッセージ
+@PRINT_B_EJACULATION_MESSAGE
+
+SIF !TFLAG:调教中 && !TFLAG:日程外Ｈ && !TFLAG:循环中消息显示
+	RETURN
+IF 30 < TFLAG:子宫内精液量 +TFLAG:肠内精液量 +TFLAG:咽下精液量
+	IF GETBIT(＃拘束／下半身填壁乳＃) || (CFLAG:妊娠日数 > 9 && CFLAG:妊娠日数 < 16) || CFLAG:妊娠日数 > 92
+		PRINTFORM 似乎已经没有空间了，尽管注入了%SLANG_SEMEN()%，但还是从缝隙中溢出来了…
+		;今のところは減らさなくても問題なさそうだけど一応減らす処理も
+		IF GETBIT(＃Ｐ使用／Ｖ插入＃)
+			TFLAG:子宫内精液量 = LIMIT(TFLAG:子宫内精液量 -TFLAG:射精次数,1,30)
+		ELSEIF GETBIT(＃Ｐ使用／Ａ插入＃)
+			TFLAG:肠内精液量 = LIMIT(TFLAG:肠内精液量 -TFLAG:射精次数,1,30)
+		ELSEIF GETBIT(＃Ｐ使用／Ｍ插入＃)
+			TFLAG:咽下精液量 = LIMIT(TFLAG:咽下精液量 -TFLAG:射精次数,1,30)
+		ENDIF
+		SIF TEQUIP:触手Ｖ插入
+			TFLAG:子宫内精液量 = LIMIT(TFLAG:子宫内精液量 -TFLAG:触手射精次数,1,30)
+		SIF TEQUIP:触手Ａ插入
+			TFLAG:肠内精液量 = LIMIT(TFLAG:肠内精液量 -TFLAG:触手射精次数,1,30)
+		SIF TEQUIP:触手口交 || TEQUIP:触手深喉
+			TFLAG:咽下精液量 = LIMIT(TFLAG:咽下精液量 -TFLAG:触手射精次数,1,30)
+	ELSE
+		PRINTFORM 大量的%SLANG_SEMEN()%被注入，%CALLNAME%的肚子
+		IF 60 < TFLAG:子宫内精液量 +TFLAG:肠内精液量 +TFLAG:咽下精液量
+			PRINTL 像孕妇一样大大地膨胀着…
+		ELSE
+			PRINTL 圆鼓鼓地膨胀着…
+		ENDIF
+	ENDIF
+ENDIF
+
+

@@ -1,0 +1,72 @@
+﻿
+@EQUIP_102_CONTINUE_MESSAGE
+;乳包み花弁搾乳触手
+
+IF BASE:母乳容量
+	SELECTCASE RAND:5
+	CASE 0
+		PRINTFORM 当花朵型榨乳触手用花瓣上的褶皱爱抚着%CALLNAME%的%SLANG_B()%时，
+	CASE 1
+		PRINTFORM 每当搾乳触手蠕动的时候，%CALLNAME%的%SLANG_B()%
+	CASE 2
+		PRINTFORM 花朵型榨乳触手吸着%CALLNAME%的%SLANG_B()%，被激烈着调教后产生的
+	CASE 3
+		PRINTFORM 花朵型榨乳触手吸附在%CALLNAME%的%SLANG_B()%上蠕动着
+	CASE 4
+		PRINTFORM 花朵型榨乳触手摩擦着%CALLNAME%的%SLANG_B()%
+	ENDSELECT
+	PRINTFORM %SLANG_MILK()%%LACTATION_VAL()%
+ELSE
+	PRINTFORM 花朵型榨乳触手吸着%CALLNAME%的%SLANG_B()%，被激烈着调教后产生的%SLANG_N()%上扭动着…
+ENDIF
+PRINTL
+CALL ONOMATOPOEIA("包乳花瓣搾乳触手")
+
+
+
+@EQUIP_103_CONTINUE_MESSAGE
+;透明カップ搾乳触手
+
+IF BASE:母乳容量
+	SELECTCASE RAND:5
+	CASE 0
+		PRINTFORM 通过榨奶触手的吸盘，%CALLNAME%的%SLANG_N()%中的%SLANG_MILK()%被挤压出来…
+	CASE 1
+		PRINTFORM 每当触手摆弄%CALLNAME%的%SLANG_N()%时，%SLANG_MILK()%就会喷涌而出，充满杯子…
+	CASE 2
+		PRINTFORM 触手在透明的杯子内部，挑逗地对%CALLNAME%的%SLANG_N()%进行刺激，榨取%SLANG_MILK()%…
+	CASE 3
+		PRINTFORM 触手不断地在%CALLNAME%的%SLANG_N()%上刺激，使杯子内部被%SLANG_MILK()%染成了白色…
+	CASE 4
+		PRINTFORM 搾乳触手吸取%CALLNAME%的%SLANG_B()%后，%SLANG_N()%就会从杯子内部的%SLANG_MILK()%喷涌而出…
+	ENDSELECT
+ELSE
+	PRINTFORM 搾乳触手吸附在%CALLNAME%的%SLANG_B()%上，同时在杯子内用触手刺激%SLANG_N()%…
+ENDIF
+PRINTL
+CALL ONOMATOPOEIA("透明杯状搾乳触手")
+
+
+
+@EQUIP_104_CONTINUE_MESSAGE
+;搾乳ワーム触手
+
+IF BASE:母乳容量
+	SELECTCASE RAND:3
+	CASE 0
+		PRINTFORM 榨乳的蠕虫触手吮吸着%CALLNAME%的%SLANG_N()%，
+	CASE 1
+		PRINTFORM %CALLNAME%的%SLANG_N()%上吸附的搾乳触手不松口，
+	CASE 2
+		PRINTFORM 吸附在%CALLNAME%的%SLANG_N()%上的搾乳触手用温柔的甜咬交织在%CALLNAME%的%SLANG_B()%上…
+	ENDSELECT
+	PRINTFORM %SLANG_MILK()%%LACTATION_VAL()%
+ELSE
+	PRINTFORM 搾乳触手吸附在%CALLNAME%的%SLANG_B()%上，温柔地吸吮、吸引，还带有咬合的动作，充满诱惑…
+ENDIF
+PRINTL
+CALL ONOMATOPOEIA("榨乳蠕虫触手")
+
+
+
+

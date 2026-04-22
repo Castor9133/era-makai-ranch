@@ -1,0 +1,173 @@
+﻿
+;表示設定デフォルト
+@DEFAULT_CONFIG_DISPLAY
+
+VARSET FLAG,0,2000,2300
+FLAG:口上表示 = 1
+FLAG:沉沦口上化绝顶次数 = 50
+FLAG:玩笑表示 = 1
+FLAG:自动对齐行数 = 30
+FLAG:颜色编码／主界面强调选项 = 0xFFFF70
+CALL DEFAULT_SLANG_CONFIG
+CALL DEFAULT_IMAGE_CONFIG
+CALL DEFAULT_PORTRAIT_CONFIG
+CALL DEFAULT_ONOMATOPEIA_CONFIG
+CALL DEFAULT_SENTENCE_CONFIG
+CALL DEFAULT_STATUS_CONFIG
+CALL DEFAULT_SCHEDULE_CONFIG
+
+
+
+;スラングデフォルト全部
+@DEFAULT_SLANG_CONFIG
+
+CALL DEFAULT_SLANG_CONFIG_BUST
+CALL DEFAULT_SLANG_CONFIG_NIPPLE
+CALL DEFAULT_SLANG_CONFIG_MILK
+CALL DEFAULT_SLANG_CONFIG_VAGINA
+CALL DEFAULT_SLANG_CONFIG_ANAL
+CALL DEFAULT_SLANG_CONFIG_CLITORIS
+CALL DEFAULT_SLANG_CONFIG_HIP
+CALL DEFAULT_SLANG_CONFIG_PENIS
+CALL DEFAULT_SLANG_CONFIG_SEMEN
+FLAG:黑话标识／污垢添加 = 1
+FLAG:黑话／儿童标准上限身高数值 = HEIGHT_MAX_矮小
+
+;おっぱいスラング
+@DEFAULT_SLANG_CONFIG_BUST
+
+;2進数表記
+FLAG:黑话标识／乳房 = 0b1100011
+FLAG:黑话前缀／乳房 = 0b1011
+FLAG:黑话替换／乳房 = 0b111100110
+
+;乳首スラング
+@DEFAULT_SLANG_CONFIG_NIPPLE
+
+FLAG:黑话标识／乳头 = 0b1
+FLAG:黑话前缀／乳头 = 0b1011
+FLAG:黑话替换／乳头 = 0b10
+
+;母乳スラング
+@DEFAULT_SLANG_CONFIG_MILK
+
+FLAG:黑话标识／母乳 = 0b10111
+FLAG:黑话前缀／母乳 = 0b11111111
+FLAG:黑话替换／母乳 = 0b10110
+
+;膣スラング
+@DEFAULT_SLANG_CONFIG_VAGINA
+
+FLAG:黑话标识／膣 = 0b1111
+FLAG:黑话前缀／膣 = 0b1
+FLAG:黑话替换／膣 = 0b110
+
+;アナルスラング
+@DEFAULT_SLANG_CONFIG_ANAL
+
+FLAG:黑话标识／肛门 = 0b100101
+FLAG:黑话前缀／肛门 = 0b101
+FLAG:黑话替换／肛门 = 0b1000
+
+;クリトリススラング
+@DEFAULT_SLANG_CONFIG_CLITORIS
+
+FLAG:黑话标识／阴蒂 = 0b11
+FLAG:黑话前缀／阴蒂 = 0b1
+FLAG:黑话替换／阴蒂 = 0b10
+
+;尻スラング
+@DEFAULT_SLANG_CONFIG_HIP
+
+FLAG:黑话标识／尻 = 0b111
+FLAG:黑话前缀／尻 = 0b101111110011
+FLAG:黑话替换／尻 = 0
+
+;ペニススラング
+@DEFAULT_SLANG_CONFIG_PENIS
+
+FLAG:黑话标识／阴茎 = 0b10000011
+FLAG:黑话前缀／阴茎 = 0
+FLAG:黑话替换／阴茎 = 0
+
+;精液スラング
+@DEFAULT_SLANG_CONFIG_SEMEN
+
+FLAG:黑话标识／精液 = 0b101000111
+FLAG:黑话前缀／精液 = 0
+FLAG:黑话替换／精液 = 0
+
+
+
+;画像コンフィグ
+@DEFAULT_IMAGE_CONFIG
+
+VARSET FLAG,0,2100,2120
+FLAG:头像／显示 = 1
+FLAG:头像／尺寸 = 1000
+FLAG:头像／横轴调整 = 5000
+FLAG:头像／调教时图像替换 = 1
+FLAG:头像／指令时换行数 = 5
+
+
+
+;ドット絵コンフィグ
+@DEFAULT_PORTRAIT_CONFIG
+
+VARSET FLAG,0,2120,2140
+FLAG:像素画／显示 = 1
+FLAG:像素画／尺寸 = 150
+FLAG:像素画／横轴调整 = 4500
+FLAG:像素画／更换画面追加横轴调整 = 1000
+FLAG:像素画／不支持服装的替换形式 = 1
+FLAG:像素画／娇小适用上限数值 = HEIGHT_MAX_娇小
+
+
+
+;擬音コンフィグ
+@DEFAULT_ONOMATOPEIA_CONFIG
+
+FLAG:拟音表示 = 0b111111111111
+FLAG:拟音显示颜色编码 = 0xA00080
+
+
+
+;地の文コンフィグ
+@DEFAULT_SENTENCE_CONFIG
+
+SAVESTR:标识／乳房 = 欧派
+SAVESTR:标识／母乳 = 母乳
+SAVESTR:标识／魔力母乳 = 魔力母乳
+SAVESTR:标识／膣 = 小穴
+SAVESTR:标识／肛门 = 肛门
+SAVESTR:标识／阴茎 = 阴茎
+SAVESTR:标识／阴茎触手 = 阴茎触手
+SAVESTR:标识／阴蒂 = 阴蒂
+SAVESTR:标识／精液 = 精液
+
+
+
+;ステータス画面表示コンフィグ
+@DEFAULT_STATUS_CONFIG
+
+VARSET FLAG,0,2070,2080
+FLAG:性经验显示BIT = 0b1111001
+FLAG:角色名称栏宽度 = 16
+FLAG:身高小数点显示 = 1
+
+
+
+;スケジュール・調教実行時表示コンフィグ
+@DEFAULT_SCHEDULE_CONFIG
+
+VARSET FLAG,0,2060,2070
+FLAG:参数上限到达后显示BIT = 0b10100
+FLAG:参数影响要素显示BIT = 0
+FLAG:电池消耗显示 = 1
+FLAG:日程搾乳换行符 = 1
+FLAG:休息回复显示格式 = 1
+
+
+
+
+

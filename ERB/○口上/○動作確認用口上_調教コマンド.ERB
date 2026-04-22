@@ -1,0 +1,708 @@
+﻿
+;动作确认用口上（调教指令）
+;真的是调试专用，几乎没有色情内容。
+;只有这套口上会走「把候选全部显示出来」的处理。
+; ======================================
+
+;动作确认用口上
+;口上识别名：动作确认用口上
+;口上作者：polt
+;本口上内容遵循 CC BY-NC（非商用可自由改造）
+;（creativecommons.org/licenses/by-nc/4.0/deed.ja）
+
+;加笔者：
+;（暂无）
+; ======================================
+
+; ARGS:0 场景；ARGS:1～ 用于更细分
+@KOJO_GENERAL_操作确认口上_TRAIN(ARGS:0,ARGS:1,ARGS:2,ARGS:3)
+
+; 进入此处时 ARGS:0 固定为「调教命令」；分支名见 TRAIN.csv
+; 当前流程：@COM 地文 → 口上
+
+SELECTCASE ARGS:1
+CASE "执行后"
+	IF SOURCE:处女丧失
+		CALL MESSAGE_BOX,@"「test_本指令导致处女丧失时会进入本候选。」"
+		RETURN
+	ELSEIF SOURCE:Ａ处女丧失
+		CALL MESSAGE_BOX,@"「test_本指令导致 A 处女丧失时会进入本候选。」"
+		RETURN
+	ELSEIF SOURCE:Ｍ处女丧失
+		CALL MESSAGE_BOX,@"「test_本指令导致 M 处女丧失时会进入本候选。」"
+		RETURN
+	ELSEIF SOURCE:初次乳交
+		CALL MESSAGE_BOX,@"「test_本指令为首次乳交时会进入本候选。」"
+		RETURN
+	ELSEIF SOURCE:初吻
+		CALL MESSAGE_BOX,@"「test_本指令为首次接吻时会进入本候选。」"
+		RETURN
+	ENDIF
+	CALL MESSAGE_BOX,@"「test_随时间推进的调教指令：与具体指令无关、仅做通用判定的执行后口上。」"
+
+CASE "揉胸","育乳按摩","浓厚母乳按摩","乳罐按摩"
+	; 从这里开始按变体细分；分支越多越有趣也越费工
+	; 常见写法：按好感／心境等拆分
+	
+	; 先看是否「首次」：工程在口上显示『之后』执行 EXP:(SELECTCOM+1000)++
+	; 故该值为 0 表示本角色从未受过该指令
+	; 隶属乳牛却从未揉过胸……若一直只榨乳倒也可能
+	; 用 \n 换行；源码里不要用 Enter 直接断行
+	; 勿为换行连写两次 CALL（只会显示其中一句）
+	
+	; 首次
+	IF !EXP:(SELECTCOM+1000)
+		CALL MESSAGE_BOX,@"「test_调教指令【揉胸】首次执行时的台词。」"
+	ELSE
+		CALL MESSAGE_BOX,@"「test_调教指令【揉胸】第 2 次及以后的台词。」"
+		SIF ABL:胸围大小 >= BUSTSIZE_丰乳
+			CALL MESSAGE_BOX,@"「test_胸围 ≥【丰乳】时进入候选。」"
+		SIF ABL:胸围大小 < BUSTSIZE_普乳
+			CALL MESSAGE_BOX,@"「test_胸围 ≤【贫乳】时进入候选。」"
+		SIF EX:Ｂ绝顶 >= 100
+			CALL MESSAGE_BOX,@"「test_本场调教中 B 高潮累计 ≥100 次时进入候选。」"
+		SIF !TFLAG:Ｎ露出
+			CALL MESSAGE_BOX,@"「test_非【胸露出】状态时进入候选。」"
+		
+		; 调教中可查污渍：GETBIT(STAIN:乳房,4) 判定乳房是否涂有润滑液（详见 Stain.csv）
+		SIF GETBIT(STAIN:乳房,4)
+			CALL MESSAGE_BOX,@"「test_乳房涂有润滑液时进入候选。」"
+	ENDIF
+	
+CASE "榨乳"
+	IF MARK:母乳体质
+		CALL MESSAGE_BOX,@"「test_调教指令【榨乳】且为【母乳体质】时的台词。」"
+		SIF ABL:搾乳中毒 >= 10
+			CALL MESSAGE_BOX,@"「test_调教指令【榨乳】且为【母乳体质】、且【榨乳中毒】≥10 时进入候选。」"
+	ELSE
+		CALL MESSAGE_BOX,@"「test_调教指令【榨乳】且非【母乳体质】时的台词。」"
+	ENDIF
+
+CASE "拧乳头"
+	CALL MESSAGE_BOX,@"「test_调教指令【拧乳头】的台词。」"
+
+CASE "Ｃ爱抚"
+	CALL MESSAGE_BOX,@"「test_调教指令【Ｃ爱抚】的台词。」"
+	SIF ABL:Ｃ敏感度 >= 200 || ABL:Ｃ感觉 >= 10
+		CALL MESSAGE_BOX,@"「test_【Ｃ爱抚】执行时 C 敏感 ≥200\% 或 C 感觉 ≥10 时进入候选。」"
+
+CASE "Ｖ指插入"
+	CALL MESSAGE_BOX,@"「test_调教指令【Ｖ指插入】的台词。」"
+
+CASE "Ａ指插入"
+	CALL MESSAGE_BOX,@"「test_调教指令【Ａ指插入】的台词。」"
+	IF PALAM:Ａ润滑 >= 5000
+		CALL MESSAGE_BOX,@"「test_【Ａ指插入】执行且 A 润滑 ≥5000 时进入候选。」"
+	ELSE
+		CALL MESSAGE_BOX,@"「test_【Ａ指插入】执行且 A 润滑 ＜5000 时进入候选。」"
+	ENDIF
+
+CASE "尻爱抚"
+	CALL MESSAGE_BOX,@"「test_调教指令【尻爱抚】的台词。」"
+	
+CASE "胸爱抚"
+	CALL MESSAGE_BOX,@"「test_调教指令【胸爱抚】的台词。」"
+	
+CASE "挠痒"
+	CALL MESSAGE_BOX,@"「test_调教指令【挠痒】的台词。」"
+	
+; 相似指令可写在同一 CASE（逗号分隔）；首次判定仍各自独立
+CASE "吸奶","母乳吸尽"
+	CALL MESSAGE_BOX,@"「test_调教指令【吸奶】【母乳吸尽】共用台词。」"
+	
+	; 榨乳处理前会先显示口上，可读当前奶量
+	IF BASE:母乳容量
+		CALL MESSAGE_BOX,@"「test_【吸奶／母乳吸尽】执行且母乳容量非 0 时进入候选。」"
+	ELSE
+		CALL MESSAGE_BOX,@"「test_【吸奶／母乳吸尽】执行且母乳容量为 0 时进入候选。」"
+	ENDIF
+	
+CASE "吸乳头","揉胸吸奶","直饮触手复合搾乳"
+	CALL MESSAGE_BOX,@"「test_调教指令【吸乳头】【揉胸吸奶】【直饮触手复合搾乳】共用台词。」"
+	CALL MESSAGE_BOX,@"「test_逗号可合并相似指令；若用 1000 段 EXP 记经验，则每条指令各自有首次判定，请注意。」"
+	
+CASE "接吻"
+	SIF TALENT:无接吻经验
+		RETURN
+	CALL MESSAGE_BOX,@"「test_调教指令【接吻】的台词。」"
+	CALL MESSAGE_BOX,@"「test_初吻口上在【事件】侧触发；【无接吻经验】时请直接 RETURN，勿在此重复。」"
+	
+CASE "Ｃ舔舐"
+	CALL MESSAGE_BOX,@"「test_调教指令【Ｃ舔舐】的台词。」"
+	
+CASE "Ｖ舔舐"
+	CALL MESSAGE_BOX,@"「test_调教指令【Ｖ舔舐】的台词。」"
+	
+CASE "Ａ舔舐"
+	CALL MESSAGE_BOX,@"「test_调教指令【Ａ舔舐】的台词。」"
+	
+CASE "舔舐胸"
+	CALL MESSAGE_BOX,@"「test_调教指令【舔舐胸】的台词。」"
+	
+CASE "舔舐耳"
+	CALL MESSAGE_BOX,@"「test_调教指令【舔舐耳】的台词。」"
+	
+CASE "舔舐腋"
+	CALL MESSAGE_BOX,@"「test_调教指令【舔舐腋】的台词。」"
+	
+CASE "舔舐脸"
+	CALL MESSAGE_BOX,@"「test_调教指令【舔舐脸】的台词。」"
+	
+
+CASE "正常位","后背位","对面坐位","背面坐位","骑乘位","背面骑乘位","对面立位","背面立位","强制骑乘位"
+		;CALL MESSAGE_BOX,@"「test_↓ 调用 V 性交共通口上」"
+		;CALL MESSAGE_BOX,@"「test_实务上只保留下方 CALL，勿留这三行说明，较利于处女丧失分支」"
+		;CALL MESSAGE_BOX,@"「test_若按体位拆分 CASE，请勿用 ↓ 或另行补写」"
+		; 拆分后处女例外要各写一遍；共用函数可省事并在丧失时跳过执行口上
+	CALL KOJO_GENERAL_操作确认口上_TRAIN_INSIDE("Ｖ性交",ARGS:2)
+
+CASE "Ａ正常位","Ａ后背位","Ａ对面坐位","Ａ背面坐位","Ａ骑乘位","Ａ背面骑乘位","Ａ对面立位","Ａ背面立位","强制Ａ骑乘位"
+		;CALL MESSAGE_BOX,@"「test_↓ 调用 A 性交共通口上」"
+	CALL KOJO_GENERAL_操作确认口上_TRAIN_INSIDE("Ａ性交",ARGS:2)
+	
+CASE "素股"
+	SELECTCASE ARGS:2
+	CASE "执行"
+		CALL MESSAGE_BOX,@"「test_调教指令【素股】执行瞬间的台词。」"
+	CASE "继续"
+		CALL MESSAGE_BOX,@"「test_调教指令【素股】持续中的台词。」"
+	ENDSELECT
+
+CASE "口交"
+	SELECTCASE ARGS:2
+	CASE "执行"
+		; 首次 M 丧失走【事件】，此处 RETURN
+		SIF SOURCE:Ｍ处女丧失
+			RETURN
+		CALL MESSAGE_BOX,@"「test_调教指令【口交】执行瞬间的台词。」"
+	CASE "继续"
+		CALL MESSAGE_BOX,@"「test_调教指令【口交】持续中的台词。」"
+		CALL MESSAGE_BOX,@"「test_虽有口枷判定，但本句由例外分支仍会显示（说明用）。」"
+	ENDSELECT
+
+CASE "深喉"
+	SELECTCASE ARGS:2
+	CASE "执行"
+		SIF SOURCE:Ｍ处女丧失
+			RETURN
+		CALL MESSAGE_BOX,@"「test_调教指令【深喉】执行瞬间的台词。」"
+	CASE "继续"
+		CALL MESSAGE_BOX,@"「test_调教指令【深喉】持续中的台词。」"
+		CALL MESSAGE_BOX,@"「test_虽有口枷判定，但本句由例外分支仍会显示（说明用）。」"
+	ENDSELECT
+
+CASE "乳交"
+	SELECTCASE ARGS:2
+	CASE "执行"
+		SIF SOURCE:初次乳交
+			RETURN
+		CALL MESSAGE_BOX,@"「test_调教指令【乳交】执行瞬间的台词。」"
+	CASE "继续"
+		CALL MESSAGE_BOX,@"「test_调教指令【乳交】持续中的台词。」"
+	ENDSELECT
+
+CASE "强制乳交"
+	SELECTCASE ARGS:2
+	CASE "执行"
+		SIF SOURCE:初次乳交
+			RETURN
+		CALL MESSAGE_BOX,@"「test_调教指令【强制乳交】执行瞬间的台词。」"
+	CASE "继续"
+		CALL MESSAGE_BOX,@"「test_调教指令【强制乳交】持续中的台词。」"
+	ENDSELECT
+
+CASE "纵乳交"
+	SELECTCASE ARGS:2
+	CASE "执行"
+		SIF SOURCE:初次乳交
+			RETURN
+		CALL MESSAGE_BOX,@"「test_调教指令【纵乳交】执行瞬间的台词。」"
+	CASE "继续"
+		CALL MESSAGE_BOX,@"「test_调教指令【纵乳交】持续中的台词。」"
+	ENDSELECT
+
+CASE "强制纵乳交"
+	SELECTCASE ARGS:2
+	CASE "执行"
+		SIF SOURCE:初次乳交
+			RETURN
+		CALL MESSAGE_BOX,@"「test_调教指令【强制纵乳交】执行瞬间的台词。」"
+	CASE "继续"
+		CALL MESSAGE_BOX,@"「test_调教指令【强制纵乳交】持续中的台词。」"
+	ENDSELECT
+
+CASE "手淫"
+	SELECTCASE ARGS:2
+	CASE "执行"
+		CALL MESSAGE_BOX,@"「test_调教指令【手淫】执行瞬间的台词。」"
+	CASE "继续"
+		CALL MESSAGE_BOX,@"「test_调教指令【手淫】持续中的台词。」"
+	ENDSELECT
+
+CASE "授乳手交"
+	SELECTCASE ARGS:2
+	CASE "执行"
+		CALL MESSAGE_BOX,@"「test_调教指令【授乳手交】执行瞬间的台词。」"
+	CASE "继续"
+		CALL MESSAGE_BOX,@"「test_调教指令【授乳手交】持续中的台词。」"
+	ENDSELECT
+
+CASE "家畜用搾乳器","魔动快感搾乳器","触手快感搾乳器","小型灵力抽出装置"
+	SELECTCASE ARGS:2
+	CASE "执行"
+		CALL MESSAGE_BOX,@"「test_【家畜用搾乳器】等装上瞬间的台词。」"
+		SIF !EXP:搾乳器
+			CALL MESSAGE_BOX,@"「test_从未被各类搾乳器榨过奶时进入候选。」"
+		SIF TEQUIP:触手快感搾乳器
+			CALL MESSAGE_BOX,@"「test_搾乳器为【触手快感搾乳器】时进入候选。」"
+		SIF NOWEX:Ｎ绝顶
+			CALL MESSAGE_BOX,@"「test_『本段责罚若 N 高潮』的说明候选；因高潮判定晚于执行口上，此处通常不会显示。」"
+	CASE "继续"
+		CALL MESSAGE_BOX,@"「test_【家畜用搾乳器】等持续榨乳中的台词。」"
+		SIF GETBIT(＃Ｐ使用／Ｖ插入＃)
+			CALL MESSAGE_BOX,@"「test_V 插入同时被搾乳器榨乳时进入候选。」"
+		SIF NOWEX:Ｎ绝顶
+			CALL MESSAGE_BOX,@"「test_『本段责罚若 N 高潮』的说明候选；因高潮判定晚于执行口上，此处通常不会显示。」"
+	
+	CASE "移除"
+		CALL MESSAGE_BOX,@"「test_卸下搾乳器时的台词（说明）。」"
+		CALL MESSAGE_BOX,@"「test_实际会走『搾乳器移除』专用入口，故本句通常不可见。」"
+	ENDSELECT
+
+CASE "触手揉胸"
+	SELECTCASE ARGS:2
+	CASE "执行"
+		CALL MESSAGE_BOX,@"「test_【触手揉胸】开始瞬间的台词。」"
+	CASE "继续"
+		CALL MESSAGE_BOX,@"「test_【触手揉胸】持续中的台词。」"
+	ENDSELECT
+
+CASE "触手榨乳"
+	SELECTCASE ARGS:2
+	CASE "执行"
+		CALL MESSAGE_BOX,@"「test_【触手榨乳】开始瞬间的台词。」"
+	CASE "继续"
+		CALL MESSAGE_BOX,@"「test_【触手榨乳】持续中的台词。」"
+	ENDSELECT
+
+CASE "包乳花瓣搾乳触手","透明杯状搾乳触手","榨乳蠕虫触手"
+	SELECTCASE ARGS:2
+	CASE "挑逗"
+		IF !TFLAG:眼罩
+			CALL MESSAGE_BOX,@"「test_未【遮眼】时使用各类【搾乳触手】在胸前挑逗的台词。」"
+		ELSE
+			CALL MESSAGE_BOX,@"「test_已【遮眼】时使用各类【搾乳触手】在胸前挑逗的台词。」"
+		ENDIF
+	
+	CASE "执行"
+		CALL MESSAGE_BOX,@"「test_各类【搾乳触手】开始榨乳瞬间的台词。」"
+	
+	CASE "继续"
+		CALL MESSAGE_BOX,@"「test_各类【搾乳触手】持续榨乳中的台词。」"
+		SIF TEQUIP:包乳花瓣搾乳触手
+			CALL MESSAGE_BOX,@"「test_＜包乳花瓣搾乳触手＞持续榨乳时进入候选。」"
+		SIF TEQUIP:榨乳蠕虫触手
+			CALL MESSAGE_BOX,@"「test_＜榨乳蠕虫触手＞持续榨乳时进入候选。」"
+		IF TEQUIP:透明杯状搾乳触手 && !TFLAG:眼罩
+			CALL MESSAGE_BOX,@"「test_未【遮眼】且＜透明杯状搾乳触手＞持续榨乳时进入候选。」"
+			CALL MESSAGE_BOX,@"「test_＜透明杯状搾乳触手＞偏视觉，建议把遮眼与否写进条件。」"
+		ENDIF
+	
+	CASE "移除"
+		CALL MESSAGE_BOX,@"「test_卸下搾乳触手时的台词（说明）。」"
+		CALL MESSAGE_BOX,@"「test_实际走『取下榨乳触手』入口，故本句通常不可见。」"
+	ENDSELECT
+
+CASE "触手Ｖ插入"
+	SELECTCASE ARGS:2
+	CASE "执行"
+		; 处女丧失走【事件】
+		SIF SOURCE:处女丧失
+			RETURN
+		CALL MESSAGE_BOX,@"「test_【触手Ｖ插入】执行瞬间的台词。」"
+	CASE "移除"
+		CALL MESSAGE_BOX,@"「test_卸下【触手Ｖ插入】时的台词。」"
+	CASE "继续"
+		CALL MESSAGE_BOX,@"「test_【触手Ｖ插入】持续中的台词。」"
+	ENDSELECT
+
+CASE "触手Ａ插入"
+	SELECTCASE ARGS:2
+	CASE "执行"
+		SIF SOURCE:Ａ处女丧失
+			RETURN
+		CALL MESSAGE_BOX,@"「test_【触手Ａ插入】执行瞬间的台词。」"
+	CASE "移除"
+		CALL MESSAGE_BOX,@"「test_卸下【触手Ａ插入】时的台词。」"
+	CASE "继续"
+		CALL MESSAGE_BOX,@"「test_【触手Ａ插入】持续中的台词。」"
+	ENDSELECT
+
+CASE "触手强制乳交"
+	SELECTCASE ARGS:2
+	CASE "执行"
+		SIF SOURCE:初次乳交
+			RETURN
+		CALL MESSAGE_BOX,@"「test_【触手强制乳交】执行瞬间的台词。」"
+	CASE "移除"
+		CALL MESSAGE_BOX,@"「test_卸下【触手强制乳交】时的台词。」"
+	CASE "继续"
+		CALL MESSAGE_BOX,@"「test_【触手强制乳交】持续中的台词。」"
+	ENDSELECT
+
+CASE "触手口交"
+	SELECTCASE ARGS:2
+	CASE "执行"
+		SIF SOURCE:Ｍ处女丧失
+			RETURN
+		CALL MESSAGE_BOX,@"「test_【触手口交】执行瞬间的台词。」"
+	CASE "移除"
+		CALL MESSAGE_BOX,@"「test_卸下【触手口交】时的台词。」"
+	CASE "继续"
+		CALL MESSAGE_BOX,@"「test_【触手口交】持续中的台词。」"
+		CALL MESSAGE_BOX,@"「test_虽有口枷判定，本句为说明用仍可能显示。」"
+	ENDSELECT
+
+CASE "触手深喉"
+	SELECTCASE ARGS:2
+	CASE "执行"
+		SIF SOURCE:Ｍ处女丧失
+			RETURN
+		CALL MESSAGE_BOX,@"「test_【触手深喉】执行瞬间的台词。」"
+	CASE "移除"
+		CALL MESSAGE_BOX,@"「test_卸下【触手深喉】时的台词。」"
+	CASE "继续"
+		CALL MESSAGE_BOX,@"「test_【触手深喉】持续中的台词。」"
+		CALL MESSAGE_BOX,@"「test_虽有口枷判定，本句为说明用仍可能显示。」"
+	ENDSELECT
+
+CASE "刷子触手"
+	; 结构略复杂，此处拆清
+	SELECTCASE ARGS:2
+	CASE "执行"
+		CALL MESSAGE_BOX,@"「test_【刷子触手】执行瞬间的台词。」"
+		CALL MESSAGE_BOX,@"「test_会装到所有尚无其它责具的部位，台词宜写得通用些。」"
+	CASE "移除"
+		CALL MESSAGE_BOX,@"「test_卸下【刷子触手】时的台词。」"
+	CASE "继续"
+		CALL MESSAGE_BOX,@"「test_【刷子触手】持续中的台词。」"
+		CALL MESSAGE_BOX,@"「test_若要对各部位分别呼叫口上，请在下列 SIF 后分别填写。」"
+		
+		SIF TEQUIP:刷子触手Ａ
+			CALL MESSAGE_BOX,@"「test_【刷子触手Ａ】持续中时进入候选。」"
+		SIF TEQUIP:刷子触手Ｂ
+			CALL MESSAGE_BOX,@"「test_【刷子触手Ｂ】持续中时进入候选。」"
+		SIF TEQUIP:刷子触手Ｃ
+			CALL MESSAGE_BOX,@"「test_【刷子触手Ｃ】持续中时进入候选。」"
+		SIF TEQUIP:刷子触手Ｖ
+			CALL MESSAGE_BOX,@"「test_【刷子触手Ｖ】持续中时进入候选。」"
+		SIF TEQUIP:刷子触手Ｎ
+			CALL MESSAGE_BOX,@"「test_【刷子触手Ｎ】持续中时进入候选。」"
+	ENDSELECT
+
+CASE "触手遮眼"
+	SELECTCASE ARGS:2
+	CASE "执行"
+		CALL MESSAGE_BOX,@"「test_【触手遮眼】执行瞬间的台词。」"
+	CASE "移除"
+		CALL MESSAGE_BOX,@"「test_卸下【触手遮眼】时的台词。」"
+		CALL MESSAGE_BOX,@"「test_实际走『去除遮眼』类指令，本句通常不可见。」"
+	CASE "继续"
+		CALL MESSAGE_BOX,@"「test_【触手遮眼】持续中的台词。」"
+		CALL MESSAGE_BOX,@"「test_更自然的做法常是按遮眼 TFLAG 在其它口上里分支。」"
+	ENDSELECT
+
+CASE "触手吸吮阴蒂"
+	SELECTCASE ARGS:2
+	CASE "执行"
+		CALL MESSAGE_BOX,@"「test_【触手吸吮阴蒂】执行瞬间的台词。」"
+	CASE "移除"
+		CALL MESSAGE_BOX,@"「test_卸下【触手吸吮阴蒂】时的台词。」"
+	CASE "继续"
+		CALL MESSAGE_BOX,@"「test_【触手吸吮阴蒂】持续中的台词。」"
+	ENDSELECT
+
+CASE "触手耳奸"
+	SELECTCASE ARGS:2
+	CASE "执行"
+		CALL MESSAGE_BOX,@"「test_【触手耳奸】执行瞬间的台词。」"
+	CASE "移除"
+		CALL MESSAGE_BOX,@"「test_卸下【触手耳奸】时的台词。」"
+	CASE "继续"
+		CALL MESSAGE_BOX,@"「test_【触手耳奸】持续中的台词。」"
+	ENDSELECT
+
+CASE "震动棒"
+	SELECTCASE ARGS:2
+	CASE "执行"
+		SIF SOURCE:处女丧失
+			RETURN
+		CALL MESSAGE_BOX,@"「test_＜震动棒＞使用瞬间的台词。」"
+	CASE "移除"
+		CALL MESSAGE_BOX,@"「test_卸下＜震动棒＞时的台词。」"
+	CASE "继续"
+		CALL MESSAGE_BOX,@"「test_＜震动棒＞持续中的台词。」"
+	ENDSELECT
+
+CASE "肛用震动棒"
+	SELECTCASE ARGS:2
+	CASE "执行"
+		SIF SOURCE:Ａ处女丧失
+			RETURN
+		CALL MESSAGE_BOX,@"「test_＜肛用震动棒＞使用瞬间的台词。」"
+	CASE "移除"
+		CALL MESSAGE_BOX,@"「test_卸下＜肛用震动棒＞时的台词。」"
+	CASE "继续"
+		CALL MESSAGE_BOX,@"「test_＜肛用震动棒＞持续中的台词。」"
+	ENDSELECT
+
+CASE "乳头跳蛋"
+	SELECTCASE ARGS:2
+	CASE "执行"
+		CALL MESSAGE_BOX,@"「test_＜乳头跳蛋＞使用瞬间的台词。」"
+	CASE "移除"
+		CALL MESSAGE_BOX,@"「test_卸下＜乳头跳蛋＞时的台词。」"
+	CASE "继续"
+		CALL MESSAGE_BOX,@"「test_＜乳头跳蛋＞持续中的台词。」"
+	ENDSELECT
+
+CASE "阴蒂跳蛋"
+	SELECTCASE ARGS:2
+	CASE "执行"
+		CALL MESSAGE_BOX,@"「test_＜阴蒂跳蛋＞使用瞬间的台词。」"
+	CASE "移除"
+		CALL MESSAGE_BOX,@"「test_卸下＜阴蒂跳蛋＞时的台词。」"
+	CASE "继续"
+		CALL MESSAGE_BOX,@"「test_＜阴蒂跳蛋＞持续中的台词。」"
+	ENDSELECT
+
+CASE "乳头吸引器"
+	SELECTCASE ARGS:2
+	CASE "执行"
+		CALL MESSAGE_BOX,@"「test_＜乳头吸引器＞使用瞬间的台词。」"
+	CASE "移除"
+		CALL MESSAGE_BOX,@"「test_卸下＜乳头吸引器＞时的台词。」"
+	CASE "继续"
+		CALL MESSAGE_BOX,@"「test_＜乳头吸引器＞持续中的台词。」"
+	ENDSELECT
+
+CASE "阴蒂吸引器"
+	SELECTCASE ARGS:2
+	CASE "执行"
+		CALL MESSAGE_BOX,@"「test_＜阴蒂吸引器＞使用瞬间的台词。」"
+	CASE "移除"
+		CALL MESSAGE_BOX,@"「test_卸下＜阴蒂吸引器＞时的台词。」"
+	CASE "继续"
+		CALL MESSAGE_BOX,@"「test_＜阴蒂吸引器＞持续中的台词。」"
+	ENDSELECT
+
+CASE "眼罩"
+	SELECTCASE ARGS:2
+	CASE "执行"
+		CALL MESSAGE_BOX,@"「test_＜眼罩＞使用瞬间的台词。」"
+	CASE "移除"
+		CALL MESSAGE_BOX,@"「test_卸下＜眼罩＞时的台词。」"
+		CALL MESSAGE_BOX,@"「test_实际走『去除遮眼』入口，本句通常不可见。」"
+	CASE "继续"
+		CALL MESSAGE_BOX,@"「test_＜眼罩＞持续中的台词。」"
+		CALL MESSAGE_BOX,@"「test_更自然的做法常是按遮眼 TFLAG 在其它口上里分支。」"
+	ENDSELECT
+
+; 读懂用途后可整段删去亦无妨
+CASE "口枷","口塞球","强制开口器"
+	SELECTCASE ARGS:2
+	CASE "执行"
+		CALL MESSAGE_BOX,@"「test_＜口枷＞等使用瞬间的台词（说明）。」"
+		CALL MESSAGE_BOX,@"「test_未处理【口枷装备】例外时本句通常不可见。」"
+	CASE "移除"
+		CALL MESSAGE_BOX,@"「test_卸下＜口枷＞等时的台词（说明）。」"
+		CALL MESSAGE_BOX,@"「test_实际走『取下口枷』入口，本句通常不可见。」"
+	CASE "继续"
+		CALL MESSAGE_BOX,@"「test_＜口枷＞等持续中的台词（说明）。」"
+		CALL MESSAGE_BOX,@"「test_未处理【口枷装备】例外时本句通常不可见。」"
+	ENDSELECT
+
+CASE "时间压缩"
+	CALL MESSAGE_BOX,@"「test_使用【时间压缩】时的台词。」"
+	SIF MAXBASE:魔力 >= 500000
+		CALL MESSAGE_BOX,@"「test_魔力充裕时可仿此分支加额外反应。」"
+
+CASE "洗脑触手"
+	SELECTCASE ARGS:2
+	CASE "洗脑中"
+		CALL MESSAGE_BOX,@"「test_【洗脑触手】洗脑进行中的台词。」"
+	CASE "洗脑完成"
+		CALL MESSAGE_BOX,@"「test_【洗脑触手】洗脑完成时的台词。」"
+	CASE "解除洗脑"
+		CALL MESSAGE_BOX,@"「test_【洗脑触手】解除洗脑时的台词。」"
+	ENDSELECT
+
+CASE "淫纹赋予"
+	SELECTCASE ARGS:2
+	CASE "授予中"
+		CALL MESSAGE_BOX,@"「test_【淫纹赋予】进行中的台词。」"
+	CASE "完成"
+		CALL MESSAGE_BOX,@"「test_【淫纹赋予】完成时的台词。」"
+	ENDSELECT
+
+CASE "绝顶魔力回复淫纹赋予"
+	SELECTCASE ARGS:2
+	CASE "授予中"
+		CALL MESSAGE_BOX,@"「test_【绝顶魔力回复淫纹赋予】进行中的台词。」"
+	CASE "完成"
+		CALL MESSAGE_BOX,@"「test_【绝顶魔力回复淫纹赋予】完成时的台词。」"
+	ENDSELECT
+
+CASE "润滑液"
+	CALL MESSAGE_BOX,@"「test_使用润滑液时的台词（总入口说明）。」"
+	CALL MESSAGE_BOX,@"「test_实际按部位分别 CALL，本句通常不可见。」"
+
+CASE "Ｖ润滑液"
+	CALL MESSAGE_BOX,@"「test_润滑液用于阴道时的台词。」"
+
+CASE "Ａ润滑液"
+	CALL MESSAGE_BOX,@"「test_润滑液用于肛门时的台词。」"
+
+CASE "Ｂ润滑液"
+	CALL MESSAGE_BOX,@"「test_润滑液用于乳房时的台词。」"
+
+CASE "媚药"
+	CALL MESSAGE_BOX,@"「test_使用【媚药】时的台词。」"
+
+CASE "媚药粘液"
+	CALL MESSAGE_BOX,@"「test_使用【媚药粘液】时的台词。」"
+
+CASE "增敏粘液"
+	; 可按 ARGS:2 拆部位
+	CALL MESSAGE_BOX,@"「test_各类【增敏粘液】执行时的台词。」"
+	CALL MESSAGE_BOX,@"「test_若要对各部位分别写口上，请用 SELECTCASE ARGS:2。」"
+	
+	SELECTCASE ARGS:2
+	CASE "Ａ"
+		CALL MESSAGE_BOX,@"「test_【增敏粘液Ａ】执行时的台词。」"
+	CASE "Ｂ"
+		CALL MESSAGE_BOX,@"「test_【增敏粘液Ｂ】执行时的台词。」"
+	CASE "Ｃ"
+		CALL MESSAGE_BOX,@"「test_【增敏粘液Ｃ】执行时的台词。」"
+	CASE "Ｖ"
+		CALL MESSAGE_BOX,@"「test_【增敏粘液Ｖ】执行时的台词。」"
+	CASE "Ｎ"
+		CALL MESSAGE_BOX,@"「test_【增敏粘液Ｎ】执行时的台词。」"
+	ENDSELECT
+
+CASE "注射"
+	; 结构已改为 ARGS:2 分支
+	CALL MESSAGE_BOX,@"「test_各类药剂注射时的台词。」"
+	CALL MESSAGE_BOX,@"「test_若要对各部位分别写口上，请用 SELECTCASE ARGS:2。」"
+	
+	SELECTCASE ARGS:2
+	CASE "Ａ"
+		CALL MESSAGE_BOX,@"「test_A 部位注射时的台词。」"
+	CASE "Ｂ"
+		CALL MESSAGE_BOX,@"「test_B 部位注射时的台词。」"
+	CASE "Ｃ"
+		CALL MESSAGE_BOX,@"「test_C 部位注射时的台词。」"
+	CASE "Ｖ"
+		CALL MESSAGE_BOX,@"「test_V 部位注射时的台词。」"
+	CASE "Ｎ"
+		CALL MESSAGE_BOX,@"「test_N 部位注射时的台词。」"
+	CASE "脖颈"
+		CALL MESSAGE_BOX,@"「test_颈部注射时的台词。」"
+	ENDSELECT
+	
+CASE "拘束"
+	CALL MESSAGE_BOX,@"「test_各类拘束装上时的台词。」"
+	CALL MESSAGE_BOX,@"「test_若要对每种拘束分别写口上，请用 SELECTCASE ARGS:2。」"
+	CALL MESSAGE_BOX,@"「test_持续拘束若每回合都播会显得啰嗦，工程上通常不每回显示。」"
+	SELECTCASE ARGS:2
+	CASE "颈手枷"
+		CALL MESSAGE_BOX,@"「test_＜示众台拘束＞时的台词。」"
+	CASE "吊索"
+		CALL MESSAGE_BOX,@"「test_＜悬吊拘束＞时的台词。」"
+	CASE "打桩机"
+		CALL MESSAGE_BOX,@"「test_＜开腿固定拘束＞时的台词。」"
+	CASE "触手拘束"
+		CALL MESSAGE_BOX,@"「test_＜触手拘束＞时的台词。」"
+	CASE "麻绳拘束"
+		CALL MESSAGE_BOX,@"「test_＜麻绳拘束＞时的台词。」"
+	ENDSELECT
+
+CASE "脱衣"
+	SELECTCASE ARGS:2
+	CASE "主人公"
+		IF !EXP:被看见乳头
+			CALL MESSAGE_BOX,@"「test_被剥衣或撕衣，且首次被 %CALLNAME:0% 看到乳头时的台词。」"
+		ELSE
+			CALL MESSAGE_BOX,@"「test_被剥衣或撕衣时的台词。」"
+		ENDIF
+	ENDSELECT
+
+CASE "去除触手遮眼"
+	CALL MESSAGE_BOX,@"「test_卸下＜眼罩＞类（含触手遮眼）时的台词。」"
+
+CASE "取下口枷"
+	CALL MESSAGE_BOX,@"「test_卸下＜口枷＞等时的台词。」"
+
+CASE "解除拘束"
+	CALL MESSAGE_BOX,@"「test_解除各类拘束时的台词。」"
+
+CASE "Ｖ阴茎拔出"
+	CALL MESSAGE_BOX,@"「test_从阴道拔出阴茎时的台词。」"
+	SIF TFLAG:膣内精液
+		CALL MESSAGE_BOX,@"「test_阴道内射且阴道残留精液时进入候选。」"
+
+CASE "Ａ阴茎拔出"
+	CALL MESSAGE_BOX,@"「test_从肛门拔出阴茎时的台词。」"
+	SIF TFLAG:尻穴精液
+		CALL MESSAGE_BOX,@"「test_肛门内射且肛门残留精液时进入候选。」"
+
+CASE "Ｂ阴茎拔出"
+	CALL MESSAGE_BOX,@"「test_从乳交中拔出阴茎时的台词。」"
+	SIF TFLAG:乳内精液
+		CALL MESSAGE_BOX,@"「test_乳内射且乳沟残留精液时进入候选。」"
+
+CASE "Ｍ阴茎拔出"
+	CALL MESSAGE_BOX,@"「test_从口中拔出阴茎时的台词。」"
+	SIF TFLAG:口内精液
+		CALL MESSAGE_BOX,@"「test_口内射且口腔残留精液时进入候选。」"
+
+CASE "搾乳器移除"
+	CALL MESSAGE_BOX,@"「test_卸下各类＜搾乳器＞时的台词。」"
+
+CASE "取下榨乳触手"
+	CALL MESSAGE_BOX,@"「test_卸下各类＜搾乳触手＞时的台词。」"
+
+CASE "擦拭胸口污垢"
+	CALL MESSAGE_BOX,@"「test_擦去胸部污渍时的台词。」"
+ENDSELECT
+
+
+
+; 口上内共用的内部 CALL；只写 MESSAGE_BOX 即可
+; 若复制到性格口上，请把识别名等一并改掉
+@KOJO_GENERAL_操作确认口上_TRAIN_INSIDE(ARGS:1,ARGS:2)
+
+SELECTCASE ARGS:1
+CASE "Ｖ性交"
+	SELECTCASE ARGS:2
+	CASE "执行"
+		; 处女丧失走【事件】
+		SIF SOURCE:处女丧失
+			RETURN
+		CALL MESSAGE_BOX,@"「test_阴茎插入阴道瞬间的台词。」"
+	CASE "继续"
+		CALL MESSAGE_BOX,@"「test_V 插入持续中的台词。」"
+	ENDSELECT
+	
+CASE "Ａ性交"
+	SELECTCASE ARGS:2
+	CASE "执行"
+		SIF SOURCE:Ａ处女丧失
+			RETURN
+		CALL MESSAGE_BOX,@"「test_阴茎插入肛门瞬间的台词。」"
+	CASE "继续"
+		CALL MESSAGE_BOX,@"「test_A 插入持续中的台词。」"
+	ENDSELECT
+ENDSELECT
+
+

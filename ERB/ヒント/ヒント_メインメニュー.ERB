@@ -1,0 +1,145 @@
+﻿
+@HINT_MAIN_MENU
+
+SELECT_TIPS = -1
+PRINTL 在这个变体中，选择【日程运行】
+PRINTL 会执行您和其他每个角色设置的日程内容，并推进时间。
+PRINTL 请从以下选项中选择您想了解的内容。
+PRINTL
+PRINTL ・由于施工中，信息可能过时，敬请谅解。
+PRINTL
+PRINTLC [ 0] 首先要做什么？
+PRINTLC [ 1] 获得魔力的方法
+PRINTLC [正在施工] 下一成就提示
+PRINTLC [ 2] 主菜单按钮
+PRINTLC [ 3] 日程
+PRINTLC [ 4] 时间流逝
+PRINTLC [ 5] 结算
+PRINTLC [ 6] 晚上能做的事
+PRINTL
+CALL HINT_SPECIFICATION
+PRINTLC [99] 返回
+INPUT
+INPUT_NUM = RESULT
+CALL MANYL(3)
+SELECTCASE INPUT_NUM
+CASE 0
+	CALL HINT_FIRST
+CASE 1
+	CALL HINT_MAGIC_POWER
+CASE 2
+	CALL HINT_MAIN_MENU_BUTTON
+	RETURN
+CASE 3
+	CALL HINT_SCHEDULE
+	RETURN
+CASE 4
+	CALL HINT_TIME
+CASE 5
+	CALL HINT_SELL
+CASE 6
+	CALL HINT_NIGHT
+CASE 10
+	CALL HINT_MILK
+CASE 11
+	CALL HINT_PALAMETER
+CASE 12
+	CALL HINT_MIND_STATUS
+CASE 13
+	CALL HINT_SENSITIVE_STATUS
+CASE 14
+	CALL HINT_RESOURCE
+ENDSELECT
+SIF INPUT_NUM >= 10
+	RETURN
+DRAWLINE
+PRINTW
+
+
+
+;まず何をするか
+@HINT_FIRST
+
+CALL PRINTL_WORD_COLOR("即使重命名，提示中的默认名称仍为「主人公」「斯蕾」。请您谅解。","黄")
+PRINTFORML 这个变体的主要目的是挤压奴隶的%SAVESTR:标识／母乳%。
+PRINTL 将奴隶调成【母乳体质】可以进行搾乳调教，
+PRINTL ・用搾乳器进行挤奶并出售，获得资金
+PRINTL ・使用＜灵力抽出装置＞与【灵力】一起挤取
+PRINTL ・直接吸食，培养成优秀的奶牛奴隶
+PRINTL 以上可以做
+PRINTL
+PRINTL 通过使用从尤金那里获得的人类用＜母乳体质化药＞能使奴隶变成【母乳体质】。
+PRINTL 在早期，可以从奴隶的【调教】日程中使用药物。
+PRINTL 在主菜单的【调教对象选择】中选择获得的奴隶，设置一个​【调教】​日程，
+PRINTL 让斯蕾家畜的照料，然后尝试执行【日程实行】。
+PRINTL
+PRINTL 在【调教】提示中，详细说明了将其变为【母乳体质】的命令步骤。
+
+
+
+@HINT_MAGIC_POWER
+
+PRINTFORML 将具有魔力的奴隶变为【魔力母乳体质】后，您将能够挤取%SAVESTR:标识／母乳%和魔力。
+PRINTL 通过搾乳【魔力母乳体质】的奴隶，
+PRINTL ・可以使用＜灵力抽出装置＞同时挤取【魔力】
+PRINTL ・通过直接吸食，您的魔力最大值将逐渐增加，并且您将能够使用各种魔法
+PRINTL 以上可以做
+PRINTL
+PRINTL 第一个＜魔力母乳体质化药＞可以在[成就]的进展中获得。
+PRINTL 顺序进行时，它将在数天内可用，因此，
+PRINTL 在主菜单中选择→​【各类信息与管理】→【成就】以推进。
+PRINTL
+PRINTL ＜魔力母乳体质化药＞可以像＜母乳体质化药＞一样使用相似的步骤。
+
+
+
+
+
+@HINT_TIME
+
+PRINTL 在这个变体中，《早上→中午→下午→晚上》时间过去，每个时间都有一些行动的变化。
+PRINTL 早上：无法执行【上街】和【确认成就】。
+PRINTL 中午和下午：几乎没有限制，可以自由行动。
+PRINTL 晚上：只能进行就寝、您对奴隶的调教以及睡前的事务处理。
+PRINTL
+PRINTL 此外，早上、中午和下午都需要照顾魔界乳牛，您或者顺从的奴隶中的至少一个
+PRINTL 必须设置【奶农】日程，否则魔界乳牛的【健康度】​将大幅下降，请注意。
+PRINTL
+PRINTL 最初从《第1年·春·星期一》开始，7天＝1周，
+PRINTL 5周＝35天＝1季，20周＝140天＝4季＝1年。　游戏内时间会不断推移。
+
+
+
+@HINT_SELL
+
+PRINTL 在早上结束时，会进行【结算】。
+PRINTL 这个变体的主要收入来源是从牧场中的【魔界乳牛】中挤出的牛奶，
+PRINTFORML 以及从人类奴隶的挤奶器中挤出的%SAVESTR:标识／母乳%。
+PRINTL 这些不会立即兑现，而是储存在这里，在结算时转化为资金。
+PRINTL
+PRINTL 在结算时，也会进行定期支出，如生活费等，导致资金减少。
+PRINTL 奴隶数量越多，使用的魔法装置越多，支出也越多，但是
+PRINTFORML 即使没有人类的%SAVESTR:标识／母乳%销售，只要奴隶数量不多，增加的资金也会很小。
+PRINTL
+PRINTL 结算时，【事务工作量】会增加3～4。
+PRINTL 累积的事务工作可以通过选择【事务】日程进行，减少执行者的【事务】Lv的总和。
+PRINTL 如【事务工作量】小于20没有什么特别的缺点。
+PRINTL 如果超过20，您的（基本上是中午的）日程将被强制转为【事务】。
+
+
+
+@HINT_NIGHT
+
+PRINTL 夕方的行动结束后进入夜晚。
+PRINTL 夜晚只能进行就寝、您对奴隶的调教以及睡前的事务处理。
+PRINTL 如果没有特殊指示，所有奴隶都会【就寝】，体力和魔力会回复。
+PRINTL
+PRINTL 【奴隶调教】：选择白天无法选择的奴隶，开始调教。
+PRINTL 此时可以选择【牛舍】内的奴隶或者​【体内凌辱】中的奴隶。
+PRINTL 调教后就寝，但您和调教对象的回复量会比普通就寝少。
+PRINTL
+PRINTL 【今天要睡觉了】：就寝让主人公的体力得到很大的回复。
+PRINTL
+PRINTL 【做事务工作睡觉】：只减少主人公【事务】Lv一半的事务工作量，
+PRINTL 然后就寝，体力和魔力会稍微回复。
+

@@ -1,0 +1,112 @@
+﻿
+@HINT_TRAIN
+
+SELECT_TIPS = -1
+PRINTL 将解释有关调教中各项内容。
+PRINTL 请从以下选项中选择您想了解的内容。
+PRINTL
+PRINTLC [ 0] 想要将奴隶变成【母乳体质】
+PRINTLC [ 1] 调教的时间流逝
+PRINTLC [ 2] 切换指令
+PRINTLC [ 3] 无法插入
+PRINTLC [ 9] 其他规格
+PRINTL
+CALL HINT_SPECIFICATION
+PRINTLC [99] 返回
+INPUT
+INPUT_NUM = RESULT
+CALL MANYL(3)
+SELECTCASE INPUT_NUM
+CASE 0
+	CALL HINT_LACTATION_PROCESS
+CASE 1
+	CALL HINT_TRAIN_TIME
+CASE 2
+	CALL HINT_TRAIN_COMMAND
+CASE 3
+	CALL HINT_SEX_PROCESS
+CASE 9
+	CALL HINT_TRAIN_OTHER
+CASE 10
+	CALL HINT_MILK
+CASE 11
+	CALL HINT_PALAMETER
+CASE 12
+	CALL HINT_MIND_STATUS
+CASE 13
+	CALL HINT_SENSITIVE_STATUS
+CASE 14
+	CALL HINT_RESOURCE
+ENDSELECT
+SIF INPUT_NUM >= 10
+	RETURN
+DRAWLINE
+PRINTW
+
+
+
+
+
+@HINT_LACTATION_PROCESS
+
+PRINTL 要让奴隶变成【母乳体质】，需要注射＜母乳体质化药＞。
+PRINTL 由于＜母乳体质化药＞是注射到乳头中上的药物，所以使用的条件是
+PRINTL 1：【Ｎ露出】状态　　2：奴隶处于无抵抗状态　　3：没有穿戴Ｎ装备
+PRINTL 以上三点是必须的。
+PRINTL （+还没有【母乳体质】，持有【母乳体质化药】）
+PRINTL
+PRINTFORML 1：使用【衣服状态变更】脱掉上衣，让%SAVESTR:标识／乳房%暴露出来。
+PRINTL 2：确保奴隶处于以下状态：HP为0，【屈服】状态，或者奴隶被拘束。　之一
+PRINTL 这样就可以在没有抵抗的情况下注射。
+PRINTL 调教如果还在初期，从【拘束状态变更】拘束奴隶吧。
+PRINTL 3：如果正在使用<乳头吸引器>等工具，请在注射前解除【刑具解除】或重新选择一次指令
+PRINTL 并将其取下。
+PRINTL
+PRINTL 在这种状态下，选择【道具・魔法指令】→【药品・触手药剂注入】→【母乳体质化药】
+PRINTL 即可使用＜母乳体质化薬＞
+
+
+
+@HINT_TRAIN_TIME
+
+PRINTL 调教从初始剩余时间10回合开始，每次使用增加快感值的责罚指令（～300番）
+PRINTL 都会过去1回合。
+PRINTL 衣服更换、拘束状态更改等不会消耗回合。
+PRINTL
+PRINTL 《 调教结束条件 》
+PRINTL 【调教结束】→在确认界面按「是」
+PRINTL 调教剩余时间变成0回合
+PRINTL 主人公HP降为0
+
+
+
+@HINT_TRAIN_COMMAND
+
+PRINTL 当选择类似【阴茎指令】，的400番台的指令时，会在屏幕上部显示
+PRINTL 相应的调教指令。
+PRINTL 切换指令不会消耗回合。
+
+
+
+@HINT_SEX_PROCESS
+
+PRINTL 如果奴隶不是【Ｖ露出】（想插入肛门的话【Ａ露出】），则不会显示调教指令。
+PRINTL 同样，如果未切换到【阴茎指令】​，则不会显示插入指令。
+PRINTL
+PRINTL 一些奴隶，包括最初获得的奴隶，可能具有【处女结界】。
+PRINTL 当此保护有效时，将无法进行Ｖ调教。
+PRINTL
+PRINTL 在以下情况下，您可以突破【处女结界】的保护：
+PRINTL ・处于【隶属】【洗脑】【爱慕】【崩溃】【乳牛】等状态之一
+PRINTL ・当前灵力低于最大值的一半
+
+
+
+@HINT_TRAIN_OTHER
+
+PRINTL 这是当前变体的规则：
+PRINTL ・没有指令连续使用的惩罚
+PRINTL ・没有【反发刻印】（因为奴隶已经被魔族捕获且反感已满）
+PRINTL ・即使敏感度低，也可以多次进行乳房绝顶，这是设计上的特点
+CALL PRINTL_WORD_COLOR("・在这个变种中，即使奴隶的体力降至0，也不会导致死亡。","黄")
+

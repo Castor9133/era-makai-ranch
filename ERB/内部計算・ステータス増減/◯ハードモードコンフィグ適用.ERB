@@ -1,0 +1,108 @@
+﻿
+;カスタマイズコンフィグ適用
+;ARGS→適用項目
+;ARG→性EXPで来るときのSOURCE番号／精算支出の合計
+@DIFFICULTY_CONFIG_APPLY(ARGS,ARG)
+
+SELECTCASE ARGS
+CASE "母乳容量・生产力"
+	IF FLAG:减半／母乳容量・生产力
+		BASE:母乳容量 /= 2
+		BASE:母乳容量 -= (BASE:母乳容量 %10)
+		BASE:母乳生产力 /= 2
+		BASE:母乳生产力 -= (BASE:母乳生产力 %10)
+	ENDIF
+
+CASE "喷乳量"
+	IF FLAG:自定义／喷乳量
+		NOWEX:喷乳 *= FLAG:自定义／喷乳量
+		NOWEX:喷乳 /= 100
+	ENDIF
+	SIF FLAG:减半／喷乳量
+		NOWEX:喷乳 /= 2
+
+CASE "母乳出货价格"
+	IF FLAG:自定义／母乳出货价格
+		CFLAG:母乳出荷金额／当日 *= FLAG:自定义／母乳出货价格
+		CFLAG:母乳出荷金额／当日 /= 100
+	ENDIF
+	SIF FLAG:减半／母乳出货价格
+		CFLAG:母乳出荷金额／当日 /= 2
+
+CASE "快感值"
+	IF FLAG:自定义／快感值
+		FOR LOCAL,0,5
+			SOURCE:LOCAL *= FLAG:自定义／快感值
+			SOURCE:LOCAL /= 100
+		NEXT
+	ENDIF
+	IF FLAG:减半／快感值
+		FOR LOCAL,0,5
+			SOURCE:LOCAL /= 2
+		NEXT
+	ENDIF
+
+CASE "事务EXP获得量"
+	IF FLAG:自定义／事务经验值获取量
+		EXPUP *= FLAG:自定义／事务经验值获取量
+		EXPUP /= 100
+	ENDIF
+	SIF FLAG:减半／业务EXP获得量
+		EXPUP /= 2
+
+CASE "性EXP获得量"
+	IF FLAG:自定义／性EXP获得量
+		EXPUP *= FLAG:自定义／性EXP获得量
+		EXPUP /= 100
+	ENDIF
+	SIF FLAG:减半／性EXP获得量
+		EXPUP /= 2
+
+;SOURCE_UPで来る場所
+CASE "性EXP获得量_PALAM"
+	IF FLAG:自定义／性EXP获得量
+		PALAM:ARG *= FLAG:自定义／性EXP获得量
+		PALAM:ARG /= 100
+	ENDIF
+	SIF FLAG:减半／性EXP获得量
+		PALAM:ARG /= 2
+
+CASE "魔力消耗量"
+	IF FLAG:自定义／魔力消耗量,
+		SOURCE:魔力消耗量 *= FLAG:自定义／魔力消耗量,
+		SOURCE:魔力消耗量 /= 100
+	ENDIF
+
+CASE "电池消费量"
+	IF FLAG:自定义／电池消耗量,
+		SOURCE:电池消费量 *= FLAG:自定义／电池消耗量,
+		SOURCE:电池消费量 /= 100
+	ENDIF
+
+CASE "战斗给予伤害"
+	IF FLAG:自定义／战斗与伤害
+		DAMAGE *= FLAG:自定义／战斗与伤害
+		DAMAGE /= 100
+	ENDIF
+	SIF FLAG:减半／战斗与伤害
+		DAMAGE /= 2
+
+CASE "战斗承受伤害"
+	IF FLAG:自定义／战斗被伤害
+		DAMAGE *= FLAG:自定义／战斗被伤害
+		DAMAGE /= 100
+	ENDIF
+
+CASE "结算支出"
+	SIF !FLAG:自定义／结算支出
+		RETURN
+	PART_COST = ARG
+	PART_COST *= FLAG:自定义／结算支出
+	PART_COST /= 100
+	PRINTFORML ＜自定义设定：{FLAG:自定义／结算支出}\% 合计支出：%VALUE_DIGIT(PART_COST)%G＞
+	RETURN PART_COST
+ENDSELECT
+
+
+
+

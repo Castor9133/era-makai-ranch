@@ -1,0 +1,79 @@
+﻿
+;母乳生産力表示
+;魔力母乳と霊力母乳と母乳体質で変える？
+;ARG:0　カラーバーONOFF　1：表示
+;ARG:1　MAXのONOFF　1：表示
+;ARG:2　奴隷を並べる時に揃える　1：揃える
+;ARG:3　ピンク表示　1：ON
+
+@PRINT_MILKTANK(ARG:0,ARG:1,ARG:2,ARG:3)
+#DIMS MILKWORD
+
+;母乳体質でないか成長途中の子なら帰る
+SIF !MARK:母乳体质 || CSTR:状态／主人公的孩子 == "成长中"
+	RETURN
+
+;永久魔力母乳の場合ARG:1とARG:3対応部分が自動でON
+SIF ARG:3 || MARK:绝顶魔力回复淫纹
+	SETCOLOR 0xFF70FF
+MILKWORD = 【
+
+;濃度表示
+SELECTCASE ABL:母乳浓度
+CASE 1
+	MILKWORD += "浓厚"
+CASE 2
+	MILKWORD += "上质"
+CASE 3
+	MILKWORD += "丰润"
+CASE 4
+	MILKWORD += "特浓"
+CASE 5
+	MILKWORD += "极品"
+ENDSELECT
+
+;魔力母乳か　絶頂回復か
+SIF MARK:绝顶魔力回复淫纹
+	MILKWORD += "永久"
+SIF MARK:魔力母乳体质
+	MILKWORD += "魔力"
+MILKWORD += "母乳】"
+IF ARG:2
+	PRINTFORM %MILKWORD,16,LEFT%
+ELSE
+	PRINTFORM %MILKWORD%
+ENDIF
+RESETCOLOR
+
+;調整
+IF MARK:绝顶魔力回复淫纹
+	PRINT  
+
+	;カラーバー分スペース
+	IF ARG:2
+		IF !ABL:母乳浓度
+			PRINT 　　　　　　　　　
+		ELSE
+			PRINT 　　　　　　　
+		ENDIF
+	ENDIF
+	RETURN
+ENDIF
+
+LOCALS:0 = %TOSTR(BASE:母乳生产力,"#,0")%
+LOCALS:1 = %TOSTR(MAXBASE:母乳生产力,"#,0")%
+
+;絶頂魔力回復淫紋ならここに来ないので大丈夫
+IF ARG:1
+	PRINTFORM %LOCALS:0,7%／%LOCALS:1,7%%MILK_COUNTING()% 
+ELSE
+	PRINTFORM %LOCALS:0,7%%MILK_COUNTING()% 
+ENDIF
+
+;カラーバー
+IF MARK:母乳体质 && MAXBASE:母乳生产力 && ARG:0
+	CALL PRINT_COLORBAR(BASE:母乳生产力,MAXBASE:母乳生产力,8,BARCOLORSET("白"),RESULT:1)
+	PRINT  
+ENDIF
+
+

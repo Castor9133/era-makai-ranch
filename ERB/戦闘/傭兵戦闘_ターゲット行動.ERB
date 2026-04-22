@@ -1,0 +1,114 @@
+﻿
+;戦闘ターゲット行動
+@TARGET_ACTION_COMMON
+
+;仲間がいれば逃げ判断が可能　魔物のほうが強く仲間が壊滅寸前
+IF BASE:同伴战斗力1 > 0 && MAXBASE:同伴战斗力1 < TFLAG:兼职战斗力／最大值 && BASE:同伴战斗力1 < MAXBASE:同伴战斗力1 *20 /100
+	CALL UNIT_ESCAPE_BATTLE
+	RETURN
+ENDIF
+
+;そのうちジョブごとに作りたい
+;非戦闘職だとプライド高い場合へなちょこ攻撃、仲間いるので逃げない場合応援
+IF CFLAG:非战斗职业
+	CALL TARGET_NODAMAGE_ACTION
+	RETURN
+ENDIF
+
+;回数残ってる+5ターン目以降またはHP20%以下で大技
+IF BASE:大技次数 && (TURN > 4 || BASE:战斗力 < MAXBASE:战斗力 *20 /100)
+	CALL TARGET_SPECIAL_ATTACK
+	RETURN
+ENDIF
+
+;回数残ってる+HP40%以下か仲間HP40%以下で回復
+IF BASE:回复次数
+	IF BASE:战斗力 < MAXBASE:战斗力 *40 /100
+		CALL TARGET_SPECIAL_HEAL_SELF
+		RETURN
+	ELSEIF BASE:同伴战斗力1 < MAXBASE:同伴战斗力1 *40 /100 && BASE:同伴战斗力1 > 0
+		CALL TARGET_SPECIAL_HEAL_GROUP
+		RETURN
+	ENDIF
+ENDIF
+
+;全部なければ通常攻撃
+CALL TARGET_ATTACK
+
+
+
+;ダメージなし行動
+@TARGET_NODAMAGE_ACTION
+
+IF TALENT:自尊心高 || TALENT:高傲
+	CALL KOJO_PRINT("战斗","非战斗职业攻击")
+	PRINTFORML %CALLNAME%袭击！
+	IF BATTLE_CHARA >= 0
+		PRINTFORML …杀气腾腾的攻击，%CALLNAME:BATTLE_CHARA%一点伤害都未受到。
+	ELSE
+		PRINTL ……杀气腾腾的攻击，%PRINT_MONSTER()%一点伤害都未受到。
+	ENDIF
+
+;応援しようとしたけど全滅してる
+ELSEIF CFLAG:同伴规模 && !BASE:同伴战斗力1
+	CALL KOJO_PRINT("战斗","同伴全灭")
+	PRINTFORML 同伴们全军覆没，再没有能保护%CALLNAME%的人了…
+
+ELSE
+	CALL KOJO_PRINT("战斗","支援")
+	PRINTFORML %CALLNAME%在后面为同伴加油。
+ENDIF
+
+
+
+;ターゲット通常攻撃
+@TARGET_ATTACK
+
+;攻撃ダメージ計算
+CALL TARGET_ATTACK_DAMAGE_CALC
+
+;本人ランクからクリティカル判定計算
+CALL CRITICAL_CALC_TARGET
+CALL KOJO_PRINT("战斗","攻击")
+PRINTFORM %CALLNAME%袭击！ 
+
+;ATTACK_RATEからクリティカル判定
+CALL CRITICAL_CHECK_ATTACK
+PRINTFORML %PRINT_MONSTER()%造成了%VALUE_DIGIT(DAMAGE)%伤害！ 
+TFLAG:兼职战斗力 = LIMIT(TFLAG:兼职战斗力 -DAMAGE,0,TFLAG:兼职战斗力／最大值)
+
+;攻撃判定で色変えしてるのでリセット
+RESETCOLOR
+
+
+
+;仲間攻撃
+@TARGET_GROUP_ATTACK
+
+;仲間の規模=攻撃回数　2回以上は0.8倍補正
+PRINTFORM 同伴们的攻击！ 
+FOR LOCAL,0,CFLAG:同伴规模
+	;ダメージ計算
+	CALL GROUP_ATTACK_DAMAGE_CALC
+	
+	;2回目以降追撃
+	SIF LOCAL
+		PRINT 追击！ 
+	
+	;仲間のクリティカル判定計算
+	CALL CRITICAL_CALC_GROUP
+	
+	;ATTACK_RATEからクリティカル判定
+	CALL CRITICAL_CHECK_ATTACK
+	PRINTFORML %PRINT_MONSTER()%造成了%VALUE_DIGIT(DAMAGE)%伤害！ 
+	TFLAG:兼职战斗力 = LIMIT(TFLAG:兼职战斗力 -DAMAGE,0,TFLAG:兼职战斗力／最大值)
+	RESETCOLOR
+	
+	;倒したらループ終了
+	SIF !TFLAG:兼职战斗力
+		RETURN
+NEXT
+PRINTW
+
+
+

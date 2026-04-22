@@ -1,0 +1,76 @@
+﻿
+;魔物の攻撃
+@MONSTER_ATTACK
+
+;フラグをリセット
+TFLAG:损坏口上显示 = 0
+PRINTFORM %PRINT_MONSTER()%的攻击！ 
+FOR LOCAL,0,TFLAG:兼职攻击次数
+	;ダメージ計算
+	CALL MONSTER_ATTACK_DAMAGE_CALC
+	
+	;仲間がいる場合肩代わり
+	IF BASE:同伴战斗力1
+		CALL MONSTER_ATTACK_GROUP(LOCAL)
+	ELSE
+		;ターゲットを逃した場合ここで終了
+		SIF TFLAG:牺牲逃跑
+			RETURN
+		CALL MONSTER_ATTACK_TARGET(LOCAL)
+	ENDIF
+	
+	;倒したらループ終了
+	SIF !BASE:战斗力
+		RETURN
+NEXT
+PRINTW
+
+
+
+;相手の仲間に攻撃
+;ARG→攻撃回数
+@MONSTER_ATTACK_GROUP(ARG)
+
+SIF ARG
+	PRINT 追击！ 
+
+;仲間のクリティカル判定計算
+CALL CRITICAL_CALC_GROUP
+
+;ATTACK_RATEから防御判定
+CALL CRITICAL_CHECK_DEFFENSE
+PRINTFORML %CALLNAME%的伙伴受到%VALUE_DIGIT(DAMAGE)%伤害！ 
+
+;防御判定で色変えしてるのでリセット
+RESETCOLOR
+BASE:同伴战斗力1 = LIMIT(BASE:同伴战斗力1 -DAMAGE,0,MAXBASE:同伴战斗力1)
+
+;護衛を倒したらメッセージ
+IF !BASE:同伴战斗力1
+	PRINTFORML %CALLNAME%的同伴全灭了！
+	CALL KOJO_PRINT("战斗","同伴全灭")
+ENDIF
+
+
+
+;ターゲットに攻撃
+;ARG→攻撃回数
+@MONSTER_ATTACK_TARGET(ARG)
+
+SIF ARG
+	PRINT 追击！ 
+
+;本人ランクからクリティカル判定計算
+CALL CRITICAL_CALC_TARGET
+CALL CRITICAL_CHECK_DEFFENSE
+PRINTFORML %CALLNAME%受到%VALUE_DIGIT(DAMAGE)%伤害！ 
+RESETCOLOR
+BASE:战斗力 = LIMIT(BASE:战斗力 -DAMAGE,0,MAXBASE:战斗力)
+SIF !TFLAG:损坏口上显示
+	CALL KOJO_PRINT("战斗","被击中")
+TFLAG:损坏口上显示 = 1
+
+;攻撃受けるたびに疲労度蓄積
+BASE:疲劳度 += 1
+
+

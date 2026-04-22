@@ -1,0 +1,76 @@
+﻿
+;デフォルトに戻す・EXモードに変更
+@NEWGAME_PLAYER_DATA_EXMODE
+
+PRINTFORML 可以更改%CALLNAME%的成人／儿童状态和性别。
+CALL PRINTL_WORD_COLOR,@"如果是女性主角，则会加入百合修正；如果是儿童，则会加入母性增加修正，从而改变游戏性。","黄"
+CALL PRINTL_WORD_COLOR,@"除【成年男性主角】外，其他皆为【EX模式】，并在难度表示中添加「EX_」。","黄"
+CALL PRINTL_WORD_COLOR,@"在【EX模式】时，身高与外表年龄的变化范围扩大，种族名称也可更改。","黄"
+PRINTL
+PRINTL 选择除取消外的选项将会把主角设定恢复为默认，并加入修正。
+PRINTL ※除【成年男性主角】外的角色均为附加设定，口上与叙述文不一定对应。
+PRINTL
+PRINTL [ 0] 【大人オトコ主人公】（默认）
+PRINTL [ 1] 【大人女主人公】
+PRINTL [ 2] 【ショタ主人公】【小型种族主人公】
+PRINTL [ 3] 【ロリ主人公】
+PRINTL
+PRINTL [99] 取消
+BINPUT
+SELECTCASE RESULT
+CASE 0
+	;キャラリセット関数を呼ぶ
+	CALL NEWGAME_CHARA_RESET(0)
+	CALL NEWGAME_PLAYER_FLAG_SET
+	FLAG:EX模式 = 0
+CASE 1
+	;キャラリセット関数→大人女あなた用変更
+	CALL NEWGAME_CHARA_RESET(0)
+	TALENT:男性 = 0
+	
+	;身長は高身長～大柄の間
+	CFLAG:身高 = HEIGHT_MAX_标准 +(HEIGHT_MAX_高挑 -HEIGHT_MAX_标准) /2
+	ABL:胸围大小 = 5
+	CSTR:乳房弹性 = 蓬松的
+	CSTR:第一人称 = 私
+	EQUIP:胸罩 = 1
+	EQUIP:内裤 = 1
+	EQUIP:男式内裤 = 0
+	CALL CSV_CHARA_ADD_FIX(1)
+	
+	;口調も戻しておく
+	SAVESTR:主人公语气 = 区分使用
+	FLAG:EX模式 = 1
+
+CASE 2
+	CALL NEWGAME_CHARA_RESET(0)
+	
+	;身長は小柄～低身長の間
+	CFLAG:身高 = HEIGHT_MAX_儿童体型 +(HEIGHT_MAX_矮小 -HEIGHT_MAX_儿童体型) /2
+	CFLAG:外表年龄 = 13
+	CSTR:第一人称 = 我
+	CSTR:阴毛 = 产毛
+	CALL NEWGAME_PLAYER_FLAG_SET
+	FLAG:EX模式 = 1
+
+CASE 3
+	CALL NEWGAME_CHARA_RESET(0)
+	TALENT:男性 = 0
+	
+	;身長はショタあなたより少し低く
+	CFLAG:身高 = HEIGHT_MAX_儿童体型 +(HEIGHT_MAX_矮小 -HEIGHT_MAX_儿童体型) /3
+	CFLAG:外表年龄 = 12
+	ABL:胸围大小 = 0
+	CSTR:乳房弹性 = 紧紧的
+	CSTR:第一人称 = 我
+	CSTR:阴毛 = 产毛
+	EQUIP:胸罩 = 1
+	EQUIP:内裤 = 1
+	EQUIP:男式内裤 = 0
+	CALL CSV_CHARA_ADD_FIX(1)
+	SAVESTR:主人公语气 = 区分使用
+	FLAG:EX模式 = 1
+ENDSELECT
+
+
+

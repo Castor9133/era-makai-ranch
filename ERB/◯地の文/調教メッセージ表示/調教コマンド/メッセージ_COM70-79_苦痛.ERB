@@ -1,0 +1,76 @@
+﻿
+@COM70_MESSAGE
+;スパンキング
+
+CALL TRAIN_INSERT_MESSAGE
+SIF PREVCOM == 70
+	PRINT 痛感消退的间隙不再，继续
+PRINTFORML %CALLNAME%的臀部被猛力拍打了…
+
+
+
+@COM71_MESSAGE
+;皮鞭抽打（TFLAG:皮鞭部位 0乳房 1乳头 2阴蒂 3肛门 4后背 5臀）
+
+CALL TRAIN_INSERT_MESSAGE
+SIF PREVCOM == 71
+	PRINT 鞭痕未消，
+SELECTCASE TFLAG:皮鞭部位
+CASE 0
+	PRINTFORML %CALLNAME:0%的皮鞭抽在%SAVESTR:标识／乳房%与乳周，%CALLNAME%在痛与羞耻中绷紧胸廓…
+CASE 1
+	PRINTFORML 鞭梢精准落在乳头，尖锐的刺痛让%CALLNAME%全身一颤…
+CASE 2
+	PRINTFORML 皮鞭掠过%SAVESTR:标识／阴蒂%，%CALLNAME%大腿根不住发抖…
+CASE 3
+	PRINTFORML 鞭影落在%SAVESTR:标识／肛门%周缘，%CALLNAME%在屈辱中收紧后穴…
+CASE 4
+	SELECTCASE RAND:4
+	CASE 0
+		PRINTFORML 皮鞭落在%CALLNAME%后背上，%CALLNAME%疼得发抖，带着哭腔求饶：「…别打了…后背、好疼……求您……」
+	CASE 1
+		PRINTFORML 鞭痕从肩胛一路烙到腰际，%CALLNAME%把脸埋进臂弯，断断续续地哀求：「饶了我…不要再抽了……っ」
+	CASE 2
+		PRINTFORML 脊背火辣辣地肿起红棱，%CALLNAME%声音发颤：「对不起…我会听话的…请停下……」
+	CASEELSE
+		PRINTFORML 皮鞭抽在%CALLNAME%后背上，%CALLNAME%弓起身子，在剧痛中挤出求饶：「…好痛…我、我受不了了……」
+	ENDSELECT
+CASE 5
+	SELECTCASE RAND:4
+	CASE 0
+		PRINTFORML 鞭梢抽在臀肉上闷响炸开，%CALLNAME%腿一软几乎跪倒，哭着求饶：「屁股…不要打了…求您住手……」
+	CASE 1
+		PRINTFORML 臀尖肿起一道道棱痕，%CALLNAME%扭着腰想躲，带着鼻音哀求：「别打那里…好羞耻…求您……っ」
+	CASE 2
+		PRINTFORML 每一下都让臀肉颤栗，%CALLNAME%把求饶混在喘息里：「饶了我吧…我什么都听…别再鞭了……」
+	CASEELSE
+		PRINTFORML 鞭影落在臀峰上，%CALLNAME%腰肢发软，带着哭腔：「…好痛…对不起…请别打了……」
+	ENDSELECT
+CASEELSE
+	SELECTCASE RAND:5
+	CASE 0
+		PRINTFORML %CALLNAME:0%挥起皮鞭，抽过%CALLNAME%的背、臀与大腿，留下一道道红痕…
+	CASE 1
+		PRINTFORML 皮鞭掠过%CALLNAME%的侧腹与乳房下缘，%CALLNAME%因刺痛而绷紧身体…
+	CASE 2
+		PRINTFORML 鞭梢点在%CALLNAME%的阴阜与臀缝之间，疼痛与羞耻一同炸开…
+	CASE 3
+		PRINTFORML %CALLNAME%从肩头到臀尖挨了一轮鞭笞，全身都在发抖…
+	CASEELSE
+		PRINTFORML 皮鞭如雨点般落在%CALLNAME%身上，分不清是哪里更痛…
+	ENDSELECT
+ENDSELECT
+
+
+
+@COM72_MESSAGE
+;装备皮鞭
+
+IF TFLAG:皮鞭装备
+	PRINTFORML %CALLNAME:0%将皮鞭在手中缠紧、试了试手感——随时可以抽下。
+ELSE
+	PRINTFORML %CALLNAME:0%把皮鞭收好，暂时不打算动用。
+ENDIF
+
+
+

@@ -1,0 +1,132 @@
+﻿
+;搾ったミルクの行き先
+@LACTATION_MILK_COLLECT_DEVICE
+
+IF TFLAG:搾乳器
+	CALL LACTATION_MILKING_MACHINE
+ELSEIF TFLAG:搾乳触手
+	CALL LACTATION_MILKING_TENTACLE
+ELSEIF TFLAG:吸奶
+	CALL LACTATION_MILKING_SUCKLING
+ELSEIF TFLAG:烹调搾乳
+	CALL LACTATION_MILKING_COOKING
+ELSE
+	;口上用に勝手に噴いた場合のSOURCEを1にしておく（利便性）
+	SOURCE:母乳漏出 = 1
+ENDIF
+
+
+
+;搾乳器での搾乳ミルク溜め
+@LACTATION_MILKING_MACHINE
+
+;抽出中なら出荷予定ではなく抽出分へ
+IF TFLAG:抽出中
+	EX:抽出母乳 += NOWEX:喷乳
+ELSE
+	;魔力母乳と素の母乳で分け　ないことになった
+	CFLAG:预计出货母乳量 += NOWEX:喷乳
+	EX:搾乳器母乳 += NOWEX:喷乳
+ENDIF
+
+
+
+;触手搾乳
+@LACTATION_MILKING_TENTACLE
+
+EX:触手搾乳母乳 += NOWEX:喷乳
+SIF !PLAYER
+	CFLAG:被主人公吸走的母乳合计 += NOWEX:喷乳
+
+;飲んだ分/5の体力回復
+FIX = 100 +ABL:母乳浓度 *50
+HEAL = NOWEX:喷乳 *FIX /500
+SOURCE:调教者体力回复 += HEAL
+
+
+
+;直飲み
+@LACTATION_MILKING_SUCKLING
+
+;調教外責めの場合十分飲んだら搾乳器にする
+;PLAYER > 0なら奴隷同士
+IF PLAYER > 0
+	IF !TFLAG:调教中 && TFLAG:吸食母乳 > CFLAG:PLAYER:身高 && !TFLAG:日程外Ｈ
+		CFLAG:预计出货母乳量 += NOWEX:喷乳
+		EX:搾乳器母乳 += NOWEX:喷乳
+		RETURN
+	ENDIF
+ENDIF
+NOWEX:直饮母乳 += NOWEX:喷乳
+EX:直饮母乳 += NOWEX:喷乳
+TFLAG:吸食母乳 += NOWEX:喷乳
+SIF !PLAYER
+	CFLAG:被主人公吸走的母乳合计 += NOWEX:喷乳
+SIF PLAYER > 0 && CSTR:PLAYER:状态／主人公的孩子 == "成长中"
+	CALL LACTATION_MILKING_SUCKLING_C
+;飲んだ分/5の体力回復
+FIX = 100 +ABL:母乳浓度 *50
+HEAL = NOWEX:喷乳 *FIX /500
+SOURCE:调教者体力回复 += HEAL
+
+
+
+;料理搾乳
+@LACTATION_MILKING_COOKING
+
+EX:料理用母乳 += NOWEX:喷乳
+
+
+;成長中の娘が直飲み
+@LACTATION_MILKING_SUCKLING_C
+
+;霊力増加
+FIX:1 = NOWEX:喷乳 *2
+FIX = 100
+SIF GETBIT(＃个人有效／能量吸收效率＃) && GETBIT(＃有效／能量吸取效率＃)
+	FIX += (ITEM:能量吸取效率 *ENERGY_DRAIN_FIX)
+SIF GETBIT(＃个人有效／浓厚乳汁吸取＃) && GETBIT(＃有效／浓厚乳汁吸取＃) && ITEM:浓厚乳汁吸取
+	FIX += (ABL:母乳浓度 *DENCE_MILK_FIX)
+FIX:1 *= FIX
+FIX:1 /= 100
+SIF TFLAG:多器官活性药物使用中
+	FIX:1 *= MAX(3,MAXBASE:灵力 *(ABL:母乳浓度 *2 +1) /90000)
+SIF CFLAG:PLAYER:母亲ID == CFLAG:ID
+	FIX:1 *= 2
+FIX:1 = LIMIT(FIX:1,0,MAXBASE:灵力)
+
+IF MAXBASE:PLAYER:灵力 /4 > MAXBASE:灵力
+	FIX:1 /= 4
+ELSEIF MAXBASE:PLAYER:灵力 > MAXBASE:灵力
+	FIX:1 /= 2
+ENDIF
+SIF MAXBASE:PLAYER:灵力 < BASE:PLAYER:灵力 + FIX:1
+	MAXBASE:PLAYER:灵力 = BASE:PLAYER:灵力 + FIX:1
+BASE:PLAYER:灵力 = LIMIT(BASE:PLAYER:灵力 + FIX:1,0,MAXBASE:PLAYER:灵力)
+
+;魔力増加
+FIX:1 = NOWEX:喷乳
+FIX = 100
+SIF GETBIT(＃个人有效／魔力吸收效率＃) && GETBIT(＃有效／魔力吸收效率＃)
+	FIX += (ITEM:魔力吸收效率 *MAGIC_DRAIN_FIX)
+SIF GETBIT(＃个人有效／浓厚乳汁吸取＃) && GETBIT(＃有效／浓厚乳汁吸取＃) && ITEM:浓厚乳汁吸取
+	FIX += (ABL:母乳浓度 *DENCE_MILK_FIX)
+FIX:1 *= FIX
+FIX:1 /= 100
+SIF TFLAG:多器官活性药物使用中
+	FIX:1 *= MAX(3,MAXBASE:魔力 *(ABL:母乳浓度 +1) /20000)
+SIF CFLAG:PLAYER:母亲ID == CFLAG:ID
+	FIX:1 *= 2
+FIX:1 = LIMIT(FIX:1,0,MAXBASE:魔力)
+
+FIX:2 = FIX:1
+IF MAXBASE:PLAYER:魔力 /4 > MAXBASE:魔力
+	FIX:1 /= 4
+ELSEIF MAXBASE:PLAYER:魔力 > MAXBASE:魔力
+	FIX:1 /= 2
+ENDIF
+MAXBASE:PLAYER:魔力 += FIX:1
+BASE:PLAYER:魔力 = LIMIT(BASE:PLAYER:魔力 + FIX:2,0,MAXBASE:PLAYER:魔力)
+
+
+

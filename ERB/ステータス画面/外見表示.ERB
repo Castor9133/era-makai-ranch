@@ -1,0 +1,102 @@
+﻿
+;外見表示
+@PRINT_EXTERIOR
+
+PRINTFORM 身高：%PRINT_HEIGHT()%【%CSTR:体型%】
+SIF CSTR:肤色 != "标准"
+	PRINTFORM 【%CSTR:肤色%】
+IF GETBIT(＃状态隐藏／阴毛＃) && !GETBIT(＃重新调整／身体特征＃) && FLAG:角色化妆隐蔽有效
+	CALL PRINT_WORD_COLOR("【阴毛尚不明】","灰")
+ELSE
+	SELECTCASE CSTR:阴毛
+	CASE "标准",""
+	CASE "白虎","刚毛"
+		PRINTFORM <%CSTR:阴毛%> 
+	CASEELSE
+		PRINTFORM <阴毛：%CSTR:阴毛%> 
+	ENDSELECT
+ENDIF
+PRINTL
+
+;元々の外見を表示するかを広域変数制御にした
+IF !ORIGINAL_STATUS
+	CALL PRINT_HAIR_STYLE
+	CALL PRINT_EYE_COLOR
+ELSE
+	CALL PRINT_ORIGINAL_HAIR_STYLE
+	CALL PRINT_ORIGINAL_EYE_COLOR
+ENDIF
+PRINTL
+
+
+
+;あなた用
+@PRINT_EXTERIOR_PLAYER
+
+PRINTFORM 身高：%PRINT_HEIGHT()%【%CSTR:体型%】
+SIF TALENT:两角
+	PRINT 【两角】
+SIF CSTR:肤色 != "标准"
+	PRINTFORM 【%CSTR:肤色%】
+SELECTCASE CSTR:阴毛
+CASE "标准",""
+CASE "白虎","刚毛"
+	PRINTFORM <%CSTR:阴毛%> 
+CASEELSE
+	PRINTFORM <阴毛：%CSTR:阴毛%> 
+ENDSELECT
+PRINTL
+CALL PRINT_HAIR_STYLE
+CALL PRINT_EYE_COLOR
+IF TALENT:男性
+	CALL PRINT_NIPPLE_COLOR
+ELSE
+	PRINTL
+ENDIF
+PRINTL
+
+
+
+;髪色を色付き表示
+@PRINT_HAIR_STYLE
+
+SIF CFLAG:颜色编码／发
+	SETCOLOR CFLAG:颜色编码／发
+PRINTFORM 【%CSTR:发色%%CSTR:头发特征%%CSTR:发型%】
+RESETCOLOR
+
+
+
+;目の色を色付き表示
+;ARG→カラコン時の簡易版
+@PRINT_EYE_COLOR(ARG)
+
+SIF !ARG
+	PRINT 瞳色：
+SIF CFLAG:颜色编码／右目
+	SETCOLOR CFLAG:颜色编码／右目
+PRINTFORM %CSTR:右瞳色%
+
+;左が黒の時に対応
+SIF CSTR:左瞳色 != ""
+	RESETCOLOR
+SIF CFLAG:颜色编码／左目
+	SETCOLOR CFLAG:颜色编码／左目
+SIF CSTR:左瞳色 != ""
+	PRINTFORM ／%CSTR:左瞳色%
+RESETCOLOR
+
+IF CSTR:瞳孔形状 != ""
+	SIF CFLAG:颜色编码／右目
+		SETCOLOR CFLAG:颜色编码／右目
+	;左右にしようかと思ったけど見づらいだけなのでやめた
+	PRINTFORM 【%CSTR:瞳孔形状%】
+ENDIF
+;目の特徴を追加
+SIF CSTR:眼睛特征 != ""
+	PRINTFORM 【%CSTR:眼睛特征%】
+RESETCOLOR
+
+
+
+

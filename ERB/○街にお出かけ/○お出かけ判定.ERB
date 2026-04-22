@@ -1,0 +1,152 @@
+﻿
+;お出かけ前の判定
+@SHOPPING_MOVE_SELECT
+#DIM DYNAMIC SET
+
+;股間出てるとダメ(女性は乳首も)
+TARGET = 0
+CALL AJUST_STRIP_FLAG
+IF TFLAG:Ｖ露出 || TFLAG:Ａ露出 || TFLAG:Ｃ露出 || (TFLAG:Ｎ露出 && !TALENT:男性)
+	PRINTFORMW 现在的%CALLNAME%打扮无法进入街道。
+	RETURN 1
+ENDIF
+
+;お出かけ条件確認、移動方法選んでたらおわり
+SIF TIME <= 0 || FLAG:事务工作量 >= 20 || FLAG:已外出
+	RETURN
+
+;優先決定コンフィグを見る
+CALL SHOPPING_MOVE(FLAG:外出方式默认值)
+SIF FLAG:已外出
+	RETURN
+
+DEFAULT_SET = SET
+CALL MANYL(3)
+PRINTL 选择怎么去街上。
+
+;牧場情報からも来るので関数化
+CALL SHOPPING_MOVE_LIST("外出")
+PRINT [90] 设置为默认值
+CALL PRINT_CHECKBOX(SET,1)
+PRINTL [99] 取消
+BINPUT
+INPUT_NUM = RESULT
+SELECTCASE INPUT_NUM
+CASE 1 TO 20
+	CALL SHOPPING_MOVE(INPUT_NUM)
+	
+	;デフォルトセット
+	SIF DEFAULT_SET
+		FLAG:外出方式默认值 = INPUT_NUM
+	RETURN
+CASE 90
+	INVERTBIT SET,0
+CASE 99
+	RETURN
+ENDSELECT
+RESTART
+
+
+
+;移動手段表示
+;ペットはなつき度必要にするつもりだったけど今特に必要なのいない
+;ARGS→元関数　設定時は現在の状況とか無視しとく
+@SHOPPING_MOVE_LIST(ARGS)
+
+;ITEM:堕天馬→100　選択肢を1から始めるので-1
+ITEM_REF = 100 -1
+PRINTL
+FOR LOCAL,1,11
+	ANIMAL = %ITEMNAME:(ITEM_REF +LOCAL)%
+	SIF ANIMAL == ""
+		CONTINUE
+	IF !ITEM:ANIMAL
+		CALL PRINTL_WORD_COLOR,@"　　 %ANIMAL%","灰"
+		CONTINUE
+	ENDIF
+	PRINTFORML [{LOCAL,2}] %PET_NAME_REF(ANIMAL)%
+NEXT
+
+;魔術
+IF ITEM:个人用传送门
+	IF BASE:魔力 < MAGIC_USE_MP:GETNUM(ITEM,"个人用传送门") && ARGS == "外出"
+		CALL PRINTL_WORD_COLOR("　　 ＜个人用传送门＞所需魔力不足","灰")
+	ELSE
+		PRINTFORML [20] ＜个人用传送门＞的使用（往返需要%VALUE_DIGIT(MAGIC_USE_MP:GETNUM(ITEM,"个人用传送门"))%MP必要）
+		SIF ARGS == "外出"
+			PRINTFORML 　　 现在MP：%VALUE_DIGIT(BASE:魔力)% 
+	ENDIF
+ELSE
+	CALL PRINTL_WORD_COLOR("　　 ＜个人用传送门＞","灰")
+ENDIF
+PRINTL
+
+
+
+;移動
+;ARG→移動手段
+@SHOPPING_MOVE(ARG)
+
+;対応番号以外は何もしないので直接ここでいい
+SELECTCASE ARG
+CASE 1
+	CALL SHOPPING_MOVE_HORSE
+CASE 2
+	CALL SHOPPING_MOVE_DOG
+CASE 3
+	CALL SHOPPING_MOVE_HAMSTER
+CASE 20
+	CALL SHOPPING_MOVE_MAGIC
+ENDSELECT
+
+
+
+;ｳﾏﾁｬﾝ
+@SHOPPING_MOVE_HORSE
+
+;一応なんだけど馬の名前が空欄ならおわり
+PET_NAME = %PET_NAME_REF("堕落天马")%
+SIF PET_NAME == ""
+	RETURN
+PRINTFORMW %CALLNAME%乘%PET_NAME%向城市跑去。
+
+;外出済みフラグに外出手段として入れる
+FLAG:已外出 = 1
+
+
+
+;ｲﾇﾁｬﾝ
+@SHOPPING_MOVE_DOG
+
+PET_NAME = %PET_NAME_REF("双头犬")%
+SIF PET_NAME == ""
+	RETURN
+PRINTFORMW %CALLNAME%让%PET_NAME%拉着货车，往街上去了。
+FLAG:已外出 = 2
+
+
+
+;ﾊﾑﾁｬﾝ
+@SHOPPING_MOVE_HAMSTER
+
+PET_NAME = %PET_NAME_REF("魔界仓鼠")%
+SIF PET_NAME == ""
+	RETURN
+PRINTFORMW %CALLNAME%让%PET_NAME%拉着货车，往街上去了。
+FLAG:已外出 = 3
+
+
+
+;ﾃﾝｲﾁｬﾝ
+@SHOPPING_MOVE_MAGIC
+
+USE_MP = MAGIC_USE_MP:GETNUM(ITEM,"个人用传送门")
+SIF !ITEM:个人用传送门 || BASE:魔力 < USE_MP
+	RETURN
+BASE:魔力 = LIMIT(BASE:魔力 -USE_MP,0,BASE:魔力)
+PRINTFORMW %CALLNAME%は＜个人用传送门＞を使って街へと向かった。（%VALUE_DIGIT(USE_MP)%MP使用）
+FLAG:已外出 = 20
+
+
+
+

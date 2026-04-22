@@ -1,0 +1,45 @@
+﻿
+;攻撃回数計算
+@ATTACK_TIMES_CALC
+
+CFLAG:BATTLE_CHARA:攻击次数 = 1
+
+;レベル100以上／200以上／戦闘適性90%以上で攻撃回数を+1
+SIF BASE:BATTLE_CHARA:等级 >= 100
+	CFLAG:BATTLE_CHARA:攻击次数 ++
+SIF BASE:BATTLE_CHARA:等级 >= 200
+	CFLAG:BATTLE_CHARA:攻击次数 ++
+SIF BASE:BATTLE_CHARA:战斗适性 >= 90
+	CFLAG:BATTLE_CHARA:攻击次数 ++
+
+
+
+;プレイヤー攻撃
+@MASTER_BATTLE_MASTER_ATTACK
+
+PRINTFORM %CALLNAME:BATTLE_CHARA%的攻击！ 
+
+;攻撃回数の分攻撃する
+FOR LOCAL,0,CFLAG:BATTLE_CHARA:攻击次数
+	;ダメージ計算
+	CALL PLAYER_ATTACK_DAMAGE_CALC
+	
+	;仲間がいる場合肩代わり
+	;MONSTERの関数使いまわしで問題なかった
+	IF BASE:同伴战斗力1
+		CALL MONSTER_ATTACK_GROUP(LOCAL)
+	ELSE
+		;ターゲットを逃した場合ここで終了
+		SIF TFLAG:牺牲逃跑
+			RETURN
+		CALL MONSTER_ATTACK_TARGET(LOCAL)
+	ENDIF
+	
+	;倒したらループ終了
+	SIF !BASE:战斗力
+		RETURN
+NEXT
+PRINTW
+
+
+

@@ -1,0 +1,71 @@
+﻿
+;衣服の修理
+@VISIT_REPAIR_CLOTHE
+
+PRINTFORML 你想帮%CALLNAME%修理破损的%＃穿着衣服／名称＃%吗？（将使用1块衣服修复布）
+CALL ASK_YN
+SIF RESULT
+	RETURN
+ITEM:衣服修理布 --
+CLEARBIT EQUIP:(EQUIP:装备中ID／衣服),1
+CLEARBIT EQUIP:(EQUIP:装备中ID／衣服),2
+PRINTFORML 已经帮%CALLNAME%修复了破损的%＃穿着衣服／名称＃%。
+CALL KOJO_PRINT("访问","衣服修理")
+PRINTW
+
+
+
+;栄養ドリンク
+@VISIT_TAKE_ENERGY_DRINK
+
+;最大体力の20%か400の多いほうが回復量になる
+HEAL = MAX(400,MAXBASE:体力 *20 /100)
+PRINTFORML 让%CALLNAME%喝了营养饮料。
+PRINTFORML %CALLNAME%体力有所回复！
+
+;アイテム使用時回復関数
+CALL ITEM_USE_HEAL(HEAL)
+CFLAG:当日制限／营养饮料 ++
+ITEM:营养饮料 --
+PRINTW
+
+
+
+;ハーブティー
+@VISIT_DRINK_HERBAL_TEA
+
+;精神力、理性を10%回復＆乳牛堕ちを20%減少
+;1日1回は通常、それ以降は1/5にする
+PRINTFORML 让%CALLNAME%喝了花草茶。
+PRINTFORML %CALLNAME%似乎平静了一些。
+
+;理性・精神力回復
+;MAXなら回復処理しないようになる処理が共通関数内にある
+;【崩壊】【洗脳】だと回復しなくなった
+HEAL = 1000
+SIF CFLAG:当天限用／花草茶
+	HEAL /= 5
+SIF BASE:理性
+	CALL MIND_BASE_DIRECT_PLUS("理性",HEAL)
+CALL MIND_BASE_DIRECT_PLUS("精神力",HEAL)
+
+;乳牛堕ち減少
+HEAL = 2000
+SIF CFLAG:当天限用／花草茶
+	HEAL /= 5
+SIF !CFLAG:乳牛
+	CALL MIND_BASE_DIRECT_MINUS("乳牛堕落",HEAL)
+CFLAG:时刻限制／花草茶 ++
+CFLAG:当天限用／花草茶 ++
+ITEM:花草茶 --
+PRINTW >
+SOURCE:精神参数增减已完成 = 0
+
+
+
+
+
+
+
+
+

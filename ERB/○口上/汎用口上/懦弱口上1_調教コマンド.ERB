@@ -1,0 +1,193 @@
+; ======================================
+; 泛用口上・调教命令分离文件（性格：懦弱）
+; 入口：由 `懦弱口上1.ERB` 的 `@KOJO_GENERAL_懦弱1_TRAIN` 转发调用
+; ======================================
+
+@KOJO_GENERAL_懦弱口上1_TRAIN(ARGS:0,ARGS:1,ARGS:2,ARGS:3)
+
+; 这里直接包含原母版的 TRAIN 全部内容
+
+SELECTCASE ARGS:2
+CASE "执行"
+	SELECTCASE ARGS:1
+	CASE "揉胸","育乳按摩","浓厚母乳按摩","乳罐按摩","胸爱抚","拧乳头"
+		IF !EXP:(SELECTCOM+1000)
+			IF ＃陷落状态／恋慕以上＃
+				CALL MESSAGE_BOX,@"「第一次……被这样摸胸……♥ ……心跳好快……」"
+				CALL MESSAGE_BOX,@"「……胸……给%MASTER_CALL()%……♥」"
+			ELSE
+				CALL MESSAGE_BOX,@"「不要……别碰那里……%SELF_CALL()%会叫出来的……」"
+				CALL MESSAGE_BOX,@"「……对不起……别捏……」"
+			ENDIF
+			RETURN
+		ENDIF
+		IF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……嗯……♥ 手……好暖……%MASTER_CALL()%……」"
+			CALL MESSAGE_BOX,@"「……再摸……也可以……♥ ……%SELF_CALL()%……不动……」"
+		ELSEIF ＃陷落状态／屈服以上＃
+			CALL MESSAGE_BOX,@"「……摸吧……%SELF_CALL()%不躲了……」"
+			CALL MESSAGE_BOX,@"「……随、随便怎样……」"
+		ELSE
+			CALL MESSAGE_BOX,@"「轻、轻一点……求你了……」"
+			CALL MESSAGE_BOX,@"「……对不起……别太重……」"
+		ENDIF
+
+	CASE "Ｃ爱抚","Ｃ舔舐"
+		IF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「那里……不行……♥ 会、会抖……别看……」"
+			CALL MESSAGE_BOX,@"「……%SELF_CALL()%……不知道……该夹还是该张开……♥」"
+		ELSE
+			CALL MESSAGE_BOX,@"「不要碰……%SELF_CALL()%会夹紧腿的……」"
+			CALL MESSAGE_BOX,@"「……对不起……别碰那里……」"
+		ENDIF
+
+	CASE "接吻","舔舐脸","舔舐耳","舔舐腋"
+		IF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……亲的话……♥ %SELF_CALL()%……闭上眼睛……」"
+			CALL MESSAGE_BOX,@"「……%MASTER_CALL()%……靠近的话……%SELF_CALL()%……就、就软了……♥」"
+		ELSE
+			CALL MESSAGE_BOX,@"「呜……味道……靠太近了……」"
+			CALL MESSAGE_BOX,@"「……对不起……别舔……」"
+		ENDIF
+
+	CASE "口交","触手口交"
+		IF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「%SELF_CALL()%会……好好含的……♥ 牙齿碰到了……就说……」"
+			CALL MESSAGE_BOX,@"「……喉咙……给%MASTER_CALL()%用……♥ ……%SELF_CALL()%……会乖……♥」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……舔、舔这里就可以了吗……好羞耻……」"
+			CALL MESSAGE_BOX,@"「……对不起……%SELF_CALL()%……会尽量含……」"
+		ENDIF
+
+	CASE "深喉","触手深喉"
+		IF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「喉咙……会努力的……♥ 咳……眼泪……忍不住……」"
+			CALL MESSAGE_BOX,@"「……深一点……也可以……♥ ……%SELF_CALL()%……顺从……♥」"
+		ELSE
+			CALL MESSAGE_BOX,@"「呜咕……太深了……%SELF_CALL()%会尽量……不吐出来……」"
+			CALL MESSAGE_BOX,@"「……对不起……喉咙……好难受……」"
+		ENDIF
+
+	CASE "手淫","授乳手交"
+		IF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……这样动……可以吗……♥ %MASTER_CALL()%……舒服吗……」"
+			CALL MESSAGE_BOX,@"「……手……全是%MASTER_CALL()%的……♥ ……%SELF_CALL()%……好开心……♥」"
+		ELSE
+			CALL MESSAGE_BOX,@"「%SELF_CALL()%会……用手……做得不好的话……请说……」"
+			CALL MESSAGE_BOX,@"「……对不起……%SELF_CALL()%……慢慢学……」"
+		ENDIF
+
+	CASE "素股"
+		IF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「摩擦……好烫……♥ ……腿在抖……」"
+			CALL MESSAGE_BOX,@"「……腰……自己动了……♥ ……不知道……该怎么办……♥」"
+		ELSE
+			CALL MESSAGE_BOX,@"「别、别磨那里……%SELF_CALL()%会夹住的……」"
+			CALL MESSAGE_BOX,@"「……对不起……别、别太快……」"
+		ENDIF
+
+	CASE "足交"
+		IF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「用脚……侍奉……%SELF_CALL()%……会努力……♥」"
+			CALL MESSAGE_BOX,@"「……力道……这样可以吗……♥ ……%SELF_CALL()%……听指挥……♥」"
+		ELSEIF ＃陷落状态／屈服以上＃
+			CALL MESSAGE_BOX,@"「……脚……可以吗……%SELF_CALL()%……会照做……」"
+			CALL MESSAGE_BOX,@"「……不知道……做得好不好……」"
+		ELSE
+			CALL MESSAGE_BOX,@"「脚……那种事……好奇怪……」"
+			CALL MESSAGE_BOX,@"「……对不起……%SELF_CALL()%……试试看……」"
+		ENDIF
+
+	CASE "肛塞"
+		CALL MESSAGE_BOX,@"「后面……要放进……那种……%SELF_CALL()%……会深呼吸……」"
+		CALL MESSAGE_BOX,@"「……好怕……但……会听话……」"
+
+	CASE "尿道塞"
+		CALL MESSAGE_BOX,@"「那里……请……温柔一点……%SELF_CALL()%……不敢动……」"
+		CALL MESSAGE_BOX,@"「……细……好可怕……」"
+
+	CASE "正常位","后背位","对面坐位","背面坐位","骑乘位","对面立位","背面立位","强制骑乘位","背面骑乘位"
+		IF !EXP:(SELECTCOM+1000)
+			CALL MESSAGE_BOX,@"「第一次……用下面……接%MASTER_CALL()%……%SELF_CALL()%在发抖……」"
+			CALL MESSAGE_BOX,@"「……对不起……好怕……」"
+			RETURN
+		ENDIF
+		IF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……进来……♥ 慢慢的……里面……好满……」"
+			CALL MESSAGE_BOX,@"「……%SELF_CALL()%……只会张开……听%MASTER_CALL()%的……♥」"
+		ELSEIF ＃陷落状态／屈服以上＃
+			CALL MESSAGE_BOX,@"「……插进来……了……♥ ……%SELF_CALL()%会张开腿的……」"
+			CALL MESSAGE_BOX,@"「……随、随便怎样……♥」"
+		ELSE
+			CALL MESSAGE_BOX,@"「痛……轻一点……求你了……」"
+			CALL MESSAGE_BOX,@"「……对不起……」"
+		ENDIF
+
+	CASE "Ａ正常位","Ａ后背位","Ａ对面坐位","Ａ背面坐位","Ａ骑乘位","Ａ对面立位","Ａ背面立位","强制Ａ骑乘位","Ａ背面骑乘位"
+		IF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「后面……好奇怪……♥ ……声音……忍不住……」"
+			CALL MESSAGE_BOX,@"「……屁股……给%MASTER_CALL()%……♥ ……%SELF_CALL()%……乖不乖……♥」"
+		ELSE
+			CALL MESSAGE_BOX,@"「那里……不要……好害怕……」"
+			CALL MESSAGE_BOX,@"「……对不起……轻一点……」"
+		ENDIF
+
+	CASE "打屁股","皮鞭抽打"
+		CALL MESSAGE_BOX,@"「是%SELF_CALL()%不好……请、请轻一点……呜……！」"
+		CALL MESSAGE_BOX,@"「……%SELF_CALL()%……会改……会听话……！」"
+
+	CASEELSE
+		CALL MESSAGE_BOX,@"「……要做……%ARGS:1%……吗……%SELF_CALL()%会听话的……」"
+		CALL MESSAGE_BOX,@"「……不知道……该怎么做……但会照做……」"
+	ENDSELECT
+
+CASE "继续"
+	SELECTCASE ARGS:1
+	CASE "足交"
+		IF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……脚……还在动……♥ ……%MASTER_CALL()%……还要吗……♥」"
+			CALL MESSAGE_BOX,@"「……黏糊糊的……♥ ……%SELF_CALL()%……顺从地……蹭……♥」"
+		ELSEIF ＃陷落状态／屈服以上＃
+			CALL MESSAGE_BOX,@"「……继续……用脚……%SELF_CALL()%……知道了……」"
+			CALL MESSAGE_BOX,@"「……会……照你说的……」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……脚……好酸……」"
+			CALL MESSAGE_BOX,@"「……对不起……还要……吗……」"
+		ENDIF
+	CASE "手淫","授乳手交"
+		IF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……手里……好烫……♥」"
+			CALL MESSAGE_BOX,@"「……%SELF_CALL()%……不乱动……♥」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……还在……摸……」"
+			CALL MESSAGE_BOX,@"「……对不起……」"
+		ENDIF
+	CASE "素股"
+		IF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……磨着……♥ ……腰……软了……♥」"
+			CALL MESSAGE_BOX,@"「……不知道……该不该动……♥」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……别、别一直磨……」"
+			CALL MESSAGE_BOX,@"「……对不起……」"
+		ENDIF
+	CASEELSE
+		CALL MESSAGE_BOX,@"「……还在……继续……%SELF_CALL()%……忍着……」"
+	ENDSELECT
+
+CASE "移除"
+	SELECTCASE ARGS:1
+	CASE "肛塞"
+		CALL MESSAGE_BOX,@"「……拔出来了……%SELF_CALL()%……松一口气……」"
+		CALL MESSAGE_BOX,@"「……终于……轻一点了……」"
+	CASE "尿道塞"
+		CALL MESSAGE_BOX,@"「……呜……稍微……轻松了……」"
+		CALL MESSAGE_BOX,@"「……谢谢……拿掉……」"
+	CASEELSE
+		CALL MESSAGE_BOX,@"「……拿掉了……吗……谢谢……%SELF_CALL()%……暂时松一口气……」"
+		CALL MESSAGE_BOX,@"「……轻松一点了……」"
+	ENDSELECT
+
+CASEELSE
+ENDSELECT
+RETURN
+

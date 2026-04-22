@@ -1,0 +1,79 @@
+; ======================================
+; 泛用口上・调教命令（性格：人妻）
+; ======================================
+
+@KOJO_GENERAL_人妻口上1_TRAIN(ARGS:0,ARGS:1,ARGS:2,ARGS:3)
+
+SELECTCASE ARGS:2
+CASE "执行"
+	SELECTCASE ARGS:1
+	CASE "揉胸","育乳按摩","浓厚母乳按摩","乳罐按摩","胸爱抚","拧乳头"
+		IF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「嗯……♥ 就这样，慢慢来……对……♥」"
+			CALL MESSAGE_BOX,@"「你喜欢这样吗？我会照你喜欢的力道……♥」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……别太用力，会疼的……」"
+		ENDIF
+
+	CASE "接吻","舔舐脸","舔舐耳","舔舐腋"
+		IF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……过来。嗯……这样会舒服些……♥」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……不可以……太亲密了……」"
+		ENDIF
+
+	CASE "口交","触手口交"
+		IF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「嗯……别急……我会好好照顾你……♥」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……这种事……不对……」"
+		ENDIF
+
+	CASE "手淫","授乳手交"
+		IF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……交给我。你只要放松……♥」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……用手就好了吗……？」"
+		ENDIF
+
+	CASE "足交"
+		IF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……用脚也可以。别急，我会慢慢让你舒服……♥」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……用脚……？你呀……」"
+		ENDIF
+
+	CASE "正常位","后背位","对面坐位","背面坐位","骑乘位","对面立位","背面立位","强制骑乘位","背面骑乘位"
+		IF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……慢一点。对……就是这样……♥」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……住手……」"
+		ENDIF
+
+	CASE "肛塞"
+		CALL MESSAGE_BOX,@"「……后面要放进去吗……？好，慢一点……」"
+
+	CASE "尿道塞"
+		CALL MESSAGE_BOX,@"「……那里很敏感……别急，我会忍着……」"
+
+	CASEELSE
+		CALL MESSAGE_BOX,@"「……好。按你说的来……」"
+	ENDSELECT
+
+CASE "继续"
+	CALL MESSAGE_BOX,@"「……对，继续。呼吸别乱……♥」"
+
+CASE "移除"
+	SELECTCASE ARGS:1
+	CASE "肛塞"
+		CALL MESSAGE_BOX,@"「……取下了。呼……先缓一缓……」"
+	CASE "尿道塞"
+		CALL MESSAGE_BOX,@"「……谢谢……稍微轻松些了……」"
+	CASEELSE
+		CALL MESSAGE_BOX,@"「……好了，结束了。你还好吗？」"
+	ENDSELECT
+
+CASEELSE
+ENDSELECT
+RETURN
+

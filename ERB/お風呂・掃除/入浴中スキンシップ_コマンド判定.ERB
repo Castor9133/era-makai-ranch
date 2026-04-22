@@ -1,0 +1,39 @@
+﻿
+;入浴中スキンシップのコマンド判定
+@BATHLOOM_COMMAND_CHECK
+
+PRINTL [ 0] 摸摸脑袋
+PRINTL [ 1] 接吻
+IF CSTR:状态／主人公的孩子 == "成长中"
+	CALL PRINTL_WORD_COLOR("无法对成长中的女儿下手。","灰")
+ELSE
+	PRINTFORML [ 2] 揉捏%SAVESTR:标识／乳房%
+ENDIF
+PRINTL [ 3] 给你洗身体
+IF !PLAYER_PENIS
+	;処女結界破壊は基本調教だけ（キャンセル処理がめんどい）
+ELSEIF CSTR:状态／主人公的孩子 == "成长中"
+	CALL PRINTL_WORD_COLOR("无法对成长中的女儿下手。","灰")
+ELSEIF TALENT:处女结界
+	CALL PRINTL_WORD_COLOR("　因【处女结界】不能插入","灰")
+ELSEIF !BASE:PLAYER:精力
+	CALL PRINTL_WORD_COLOR,@"　%CALLNAME:PLAYER%的精力不足。","灰"
+ELSE
+	PRINTL [ 4] 插入
+ENDIF
+PRINTL
+
+;虚脱か反抗だとダメ
+IF CFLAG:虚脱
+	CALL PRINTL_WORD_COLOR("　因【虚脱】不能奉仕","灰")
+ELSEIF !＃陷落状态／拒绝以上＃
+	CALL PRINTL_WORD_COLOR("　因【反抗】不能奉仕","灰")
+ELSE
+	PRINTL [10] 给我洗身体
+ENDIF
+IF CSTR:状态／主人公的孩子 == "成长中"
+	CALL PRINTL_WORD_COLOR("无法对成长中的女儿下手。","灰")
+ELSE
+	PRINTL [11] 吸欧派
+ENDIF
+

@@ -1,0 +1,150 @@
+﻿
+;母乳直飲みによりあなたの魔力を5000以上にする
+@MILESTONE_CHECK_820
+
+SIF MAXBASE:0:魔力 >= 5000
+	RETURN 1
+
+
+;＜ネクロノミコン＞入手
+@MILESTONE_REWARD_820
+
+ITEM:死灵之书 += 1
+PRINTL 喝下魔力母乳后，自己体内充满了魔力。
+PRINTL 马诺说她已经不再使用的＜死灵书＞是她学生时代用过的。
+PRINTL 人类恢复得不太快，但魔界的生物几天就能恢复，所以可以毫不吝啬地使用。
+CALL PRINTL_WORD_COLOR,@"获得了＜死灵书＞。","浅蓝色"
+PRINTL 可以通过【开发·学习】→【魔法学习】使用魔法AP来学习魔法。
+
+
+
+;魔術＜搾乳エナジードレイン＞取得
+@MILESTONE_CHECK_821
+
+SIF ITEM:搾乳能量吸收
+	RETURN 1
+
+
+;＜触手生物生態図鑑＞入手・【触手魔術】習得解放・触手AP+1
+@MILESTONE_REWARD_821
+
+ITEM:触手生物生态图鉴 += 1
+MONEY:触手AP += 1
+MONEY:触手AP累计值 += 1
+PRINTL 我学习了＜挤乳能量吸取＞，这是一种能夺取对方灵力的魔法。
+PRINTL 正好尤金来到了牧场，说如果能学习魔法的话可以用在某些地方，并给了我＜触手生物生态图鉴＞。
+PRINTL 书中记录了魔界中栖息的各种触手生物，以及为人类改良的品种。
+PRINTL 我可能可以学习到新的魔法。
+CALL PRINTL_WORD_COLOR,@"获得了＜触手生物生态图鉴＞。","浅蓝色"
+CALL PRINT_WORD_COLOR,@"【触手AP+1】","浅蓝色"
+PRINTL 【开发·学习】→【触手魔法学习】可以使用触手AP来学习魔法。
+PRINTL 在调教中使用触手可以增加<触手AP>，并学习新的魔法。
+
+
+
+;搾乳エナジードレインであなたの霊力を5000以上にする
+@MILESTONE_CHECK_822
+
+SIF MAXBASE:0:灵力 >= 5000
+	RETURN 1
+
+
+;＜小型霊力抽出装置＞・＜家庭用魔力貯蔵器＞入手
+@MILESTONE_REWARD_822
+
+ITEM:小型灵力抽出装置 += 1
+ITEM:家用魔力储存器 += 1
+PRINTL 使用能量吸取，实际从人类身上夺取了能量。
+CALL RESIDENT_KOJO,@"尤金","……明白了！哦！嘿！这真是相当有趣！"
+CALL RESIDENT_KOJO,@"尤金","我想试着能不能应用一下！可以让我抽血吗！？"
+PRINTL
+PRINTLC [ 0] 好的
+PRINTLC [ 1] 打针好可怕
+INPUT
+SIF RESULT
+	CALL RESIDENT_KOJO,@"尤金","你是成年人，忍耐一下吧……"
+CALL RESIDENT_KOJO,@"尤金","……好，谢谢！感觉有技术革新的气息…！"
+PRINTL
+PRINTW ～后日～
+CALL RESIDENT_KOJO,@"尤金","所以通过解析和应用，做出了＜小型灵力提取装置＞。"
+CALL RESIDENT_KOJO,@"尤金","用这个挤奴隶的母乳，应该可以像你的能量吸取一样提取灵力！"
+CALL RESIDENT_KOJO,@"尤金","还有副作用，如果奴隶有魔力的话，也可以吸取魔力！"
+CALL RESIDENT_KOJO,@"尤金","为了确认能否有效吸取魔力，我也放置了＜家庭用魔力储存器＞。"
+CALL RESIDENT_KOJO,@"尤金","吸取的部分会自动分解和储存，所以能再试试就太好了。"
+CALL PRINTL_WORD_COLOR,@"获得了＜小型灵力抽出装置＞。","浅蓝色"
+CALL PRINTL_WORD_COLOR,@"获得了＜家庭用魔力储存器＞。","浅蓝色"
+PRINTL 在调教中，可以对【母乳体质】的奴隶装上【小型灵力抽出装置】，以抽取并储存灵力和魔力。
+CALL MAGIC_STORAGE
+
+
+
+;＜小型霊力抽出装置＞で霊力を貯蔵する
+@MILESTONE_CHECK_823
+
+SIF MONEY:储存灵力
+	RETURN 1
+
+
+;＜霊力抽出装置＞入手・スケジュール【抽出】解放・システム【抽出魔力での経費削減】解放
+@MILESTONE_REWARD_823
+
+ITEM:灵力抽出装置 += 1
+PRINTL 使用＜小型灵力抽出装置＞，成功储存了灵力。
+PRINTL 向尤金报告后，她兴奋地开始写报告，并道谢离开了。
+PRINTL
+PRINTW ～后日～
+CALL RESIDENT_KOJO,@"尤金","所以做出了大型的＜灵力提取装置＞。"
+CALL RESIDENT_KOJO,@"主人公","＞哇，好大。"
+CALL RESIDENT_KOJO,@"尤金","这个只需把奴隶放进去放着，就能提取灵力！"
+CALL RESIDENT_KOJO,@"尤金","……不过，魔力消耗还是挺大的。"
+CALL RESIDENT_KOJO,@"尤金","这样的话，把这个部件装到储存器上就能用储存的魔力来维持了。"
+CALL RESIDENT_KOJO,@"尤金","可以ON・OFF，所以随便用吧。"
+CALL PRINTL_WORD_COLOR,@"获得了＜灵力抽出装置＞。","浅蓝色"
+CALL PRINTL_WORD_COLOR,@"【日程】→【抽取】已解锁。","浅蓝色"
+CALL PRINTL_WORD_COLOR,@"【通过抽取魔力进行成本削减】已解锁。","浅蓝色"
+PRINTL 【各种信息·管理】→【将电池用于成本削减】可以切换ON/OFF。
+
+
+
+;霊力を5万貯蔵する
+@MILESTONE_CHECK_824
+
+SIF MONEY:储存灵力 >= 50000
+	RETURN 1
+
+
+;施設【魔王軍研究所】解放
+@MILESTONE_REWARD_824
+
+PRINTL 灵力储存得相当不错。尤金也很兴奋。
+PRINTL 听说自己在魔王城总部也为研究做出了相当的贡献。
+PRINTL 【魔王军研究所】包括分支在内，原则上禁止非相关人员进入，
+PRINTL 据说已经几乎被视为相关人员，可以自由进出。
+PRINTL 如果把储存的灵力和魔力带到设备齐全的研究所，似乎可以制作各种方便的东西。
+CALL PRINTL_WORD_COLOR,@"【街去】→【魔王军研究所】已解锁。","浅蓝色"
+
+
+
+;魔力を＜家庭用魔力貯蔵器＞の上限まで貯蔵する
+@MILESTONE_CHECK_825
+
+SIF MONEY:储存魔力 >= MAGIC_TANK_HOMEUSE
+	RETURN 1
+
+
+;＜業務用魔力貯蔵器＞入手
+@MILESTONE_REWARD_825
+
+ITEM:商用魔力储存器 += 1
+PRINTL 魔力抽取的效果很好，家庭用的储存器已达上限。
+PRINTL 因为道具导致研究停滞是个问题，尤金用研究所的经费购买了＜事务用魔力储存器＞。
+PRINTL 我想用经费给一个普通人的东西是否合适，但
+PRINTL 从谈话的流向来看，研究所的人似乎都认为我也是相关人员。
+CALL PRINTL_WORD_COLOR,@"获得了＜事务用魔力储存器＞。","浅蓝色"
+CALL MAGIC_STORAGE
+PRINTL
+PRINTL 如果想要更高级的＜大容量魔力储存器＞，请去家居中心购买。
+
+
+
+

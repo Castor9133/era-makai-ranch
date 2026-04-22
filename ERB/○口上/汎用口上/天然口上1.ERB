@@ -1,0 +1,166 @@
+; ======================================
+; 泛用口上（性格：天然）
+;
+;口上識別名：天然1
+;口上作者：（汉化扩展）
+;许可证：CC BY-NC
+; ======================================
+
+@KOJO_GENERAL_INDEX_天然1(ARGS:0,ARGS:1,ARGS:2,ARGS:3)
+
+IF TFLAG:Ｍ装备
+	CALL KOJO_GENERAL_MOUTH_SHACKLE_1(ARGS:0,ARGS:1,ARGS:2,ARGS:3)
+	RETURN
+ELSEIF CFLAG:崩坏 && !CFLAG:洗脑
+	IF GROUPMATCH(ARGS:0,"例文")
+	ELSEIF GROUPMATCH(ARGS:1,"洗脑触手","崩坏")
+	ELSE
+		IF NOWEX:总绝顶
+			CALL MESSAGE_BOX,@"「……咦？脑袋空空的……♥ ……这是正常反应吗……♥」"
+			CALL MESSAGE_BOX,@"「……我好像……坏掉了……但好舒服……♥」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……刚才是不是……说了很奇怪的话……？」"
+		ENDIF
+		RETURN
+	ENDIF
+ENDIF
+
+SELECTCASE ARGS:0
+CASE "例文"
+	CALL MESSAGE_BOX,@"「【天然1】已设置。\n慢半拍、会错意、认真说傻话；越认真越好笑。」"
+
+CASE "调教命令"
+	CALL KOJO_GENERAL_天然1_TRAIN(ARGS:0,ARGS:1,ARGS:2,ARGS:3)
+
+CASE "绝顶"
+	IF ＃陷落状态／恋慕以上＃
+		CALL MESSAGE_BOX,@"「啊……♥ 这就是……到达了……对吧……♥」"
+		CALL MESSAGE_BOX,@"「……我会先深呼吸……然后……啊、啊……♥」"
+	ELSE
+		CALL MESSAGE_BOX,@"「诶？要去了？……现在吗？……啊……♥」"
+	ENDIF
+	SIF NOWEX:Ａ绝顶
+		IF TALENT:Ａ名器 || TALENT:肛门嗜好 || ABL:Ａ感觉 >= 3
+			CALL MESSAGE_BOX,@"「诶……？　%ANAL_CALL()%……！？　痛……可是……肚子深处……酥酥的……好怪……♥」"
+			CALL MESSAGE_BOX,@"「……这是……正常的吗……？　啊……♥」"
+		ELSE
+			CALL MESSAGE_BOX,@"「痛……！？　屁股……不要……要裂开了……！」"
+			CALL MESSAGE_BOX,@"「……好痛……只有痛……」"
+		ENDIF
+	SIF NOWEX:Ｕ绝顶
+		IF TALENT:尿道敏感 || EX:尿道调教经验 >= 15
+			CALL MESSAGE_BOX,@"「诶……？　这里……又刺又麻……是尿意吗……♥」"
+			CALL MESSAGE_BOX,@"「……好奇怪……可是……停不下来……♥」"
+		ELSE
+			CALL MESSAGE_BOX,@"「好痛……像针扎在尿道里……！」"
+			CALL MESSAGE_BOX,@"「……只有痛……这正常吗……」"
+		ENDIF
+
+CASE "射精"
+	IF SOURCE:膣内射精经验
+		IF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「里面热热的……♥ 需要我……夹紧不漏出来吗……？」"
+			CALL MESSAGE_BOX,@"「……我会记住这次的温度……下次更乖……♥」"
+		ELSE
+			CALL MESSAGE_BOX,@"「诶？射进来了……？那、那要怎么办……」"
+		ENDIF
+	ELSEIF SOURCE:尻穴射精经验
+		IF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「后面也热热的……♥ 这、这也是……步骤之一吗……？」"
+			CALL MESSAGE_BOX,@"「……我要把这个触感……也记下来……♥」"
+		ELSE
+			CALL MESSAGE_BOX,@"「诶？后面也……？不、不对吧……？」"
+		ENDIF
+	ELSEIF SOURCE:精饮经验
+		IF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……咽下去了……♥ 味道……像是奖励……」"
+		ELSE
+			CALL MESSAGE_BOX,@"「咳……咳……我刚才是不是……吞下去了……？」"
+		ENDIF
+	ELSEIF TEQUIP:手淫
+		IF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「手上变得滑滑的……这是……完成信号吗……？」"
+			CALL MESSAGE_BOX,@"「……清理步骤……我会认真做……」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……好黏……这要怎么洗掉……」"
+		ENDIF
+	ELSEIF SOURCE:股间射精
+		CALL MESSAGE_BOX,@"「股间……变得黏黏的……我需要……擦拭步骤……」"
+		CALL MESSAGE_BOX,@"「……这算是……完成了吗……？」"
+	ELSEIF SOURCE:乳房射精
+		CALL MESSAGE_BOX,@"「胸口……被弄脏了……要先擦干净……然后……换衣服……」"
+	ELSEIF SOURCE:颜面射精
+		CALL MESSAGE_BOX,@"「脸上……？嗯……我会先擦掉……眼睛别进去了……」"
+	ENDIF
+
+CASE "搾乳"
+	IF SOURCE:母乳漏出
+		CALL MESSAGE_BOX,@"「……咦？自己漏出来了……这是……正常的吗……」"
+		RETURN
+	ENDIF
+	CALL MESSAGE_BOX,@"「胸部被挤压……嗯……我会记录感受……」"
+	CALL MESSAGE_BOX,@"「……力度有点大……但我还能配合……」"
+
+CASE "抽出"
+	CALL MESSAGE_BOX,@"「……力气像被抽走了……我先休息一下……可以吗……」"
+	CALL MESSAGE_BOX,@"「……站不稳是正常现象吗……？不是吗……」"
+
+CASE "阴茎称呼变更"
+	CALL MESSAGE_BOX,@"「称呼要变更……明白。我会按新名称呼叫……」"
+
+CASE "膣称呼变更"
+	CALL MESSAGE_BOX,@"「那里也要改称呼……好的，我记下来了……」"
+
+CASE "肛门称呼变更"
+	CALL MESSAGE_BOX,@"「后面也要……改称呼……好的……」"
+
+CASE "吸欧派"
+	SELECTCASE ARGS:1
+	CASE "开始"
+		CALL MESSAGE_BOX,@"「开始步骤：吸……嗯……这样对吗……？」"
+	CASE "结束"
+		CALL MESSAGE_BOX,@"「结束步骤：停止……胸口还在发热……」"
+	ENDSELECT
+
+CASE "访问"
+	SELECTCASE ARGS:1
+	CASE "入口"
+		CALL MESSAGE_BOX,@"「我进来咯……要先敲门吗？我刚才是不是忘了……」"
+	CASEELSE
+	ENDSELECT
+
+CASE "事件"
+	CALL MESSAGE_BOX,@"「发生事件……我应该先做什么……？先听你说……」"
+
+CASE "肉体改造"
+	CALL MESSAGE_BOX,@"「身体要改造……理解。改造后我会重新学习使用方式……」"
+
+CASE "战斗"
+	SELECTCASE ARGS:1
+	CASE "攻击"
+		CALL MESSAGE_BOX,@"「攻击步骤开始……我上了……」"
+	CASE "被击中"
+		CALL MESSAGE_BOX,@"「受击确认……嗯……有点疼……」"
+	CASEELSE
+	ENDSELECT
+
+CASE "日程"
+	SELECTCASE ARGS:1
+	CASE "调教"
+		SELECTCASE ARGS:2
+		CASE "开始调教"
+			CALL MESSAGE_BOX,@"「今天的练习项目是……%ARGS:1%……？诶，不是吗……」"
+		CASE "调教结束"
+			CALL MESSAGE_BOX,@"「结束了吗？那我把步骤……记在心里……」"
+		ENDSELECT
+	CASEELSE
+	ENDSELECT
+
+CASEELSE
+ENDSELECT
+RETURN
+
+@KOJO_GENERAL_天然1_TRAIN(ARGS:0,ARGS:1,ARGS:2,ARGS:3)
+CALL KOJO_GENERAL_天然口上1_TRAIN(ARGS:0,ARGS:1,ARGS:2,ARGS:3)
+RETURN
+

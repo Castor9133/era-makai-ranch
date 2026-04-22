@@ -1,0 +1,163 @@
+; ======================================
+; 泛用口上（性格：人妻）
+;
+;口上識別名：人妻1
+;口上作者：（汉化扩展）
+;许可证：CC BY-NC
+; ======================================
+
+@KOJO_GENERAL_INDEX_人妻1(ARGS:0,ARGS:1,ARGS:2,ARGS:3)
+
+IF TFLAG:Ｍ装备
+	CALL KOJO_GENERAL_MOUTH_SHACKLE_1(ARGS:0,ARGS:1,ARGS:2,ARGS:3)
+	RETURN
+ELSEIF CFLAG:崩坏 && !CFLAG:洗脑
+	IF GROUPMATCH(ARGS:0,"例文")
+	ELSEIF GROUPMATCH(ARGS:1,"洗脑触手","崩坏")
+	ELSE
+		IF NOWEX:总绝顶
+			CALL MESSAGE_BOX,@"「……不行……♥ 已经回不去了……♥」"
+			CALL MESSAGE_BOX,@"「……别看……我这么贪心的样子……♥」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……呼……我刚才……又失态了吗……」"
+		ENDIF
+		RETURN
+	ENDIF
+ENDIF
+
+SELECTCASE ARGS:0
+CASE "例文"
+	CALL MESSAGE_BOX,@"「【人妻1】已设置。\n温柔照料、背德自觉强；陷落后会主动照顾你更舒服。」"
+
+CASE "调教命令"
+	CALL KOJO_GENERAL_人妻1_TRAIN(ARGS:0,ARGS:1,ARGS:2,ARGS:3)
+
+CASE "绝顶"
+	IF ＃陷落状态／恋慕以上＃
+		CALL MESSAGE_BOX,@"「啊……♥ 不行……要去了……♥ ……你抱紧点……」"
+		CALL MESSAGE_BOX,@"「……乖，别紧张……跟着我呼吸……♥」"
+	ELSE
+		CALL MESSAGE_BOX,@"「……不、不可以……♥」"
+	ENDIF
+	SIF NOWEX:Ａ绝顶
+		IF TALENT:Ａ名器 || TALENT:肛门嗜好 || ABL:Ａ感觉 >= 3
+			CALL MESSAGE_BOX,@"「……啊……！？　%ANAL_CALL()%……痛……可是……深处……像年轻时那种……不该有的……♥」"
+			CALL MESSAGE_BOX,@"「……别笑我……这种年纪还……♥」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……痛……！？　%ANAL_CALL()%……轻一点……！」"
+			CALL MESSAGE_BOX,@"「……只有痛……别弄了……」"
+		ENDIF
+	SIF NOWEX:Ｕ绝顶
+		IF TALENT:尿道敏感 || EX:尿道调教经验 >= 15
+			CALL MESSAGE_BOX,@"「……那处竟……像年轻时乱来的麻……别笑我……♥」"
+			CALL MESSAGE_BOX,@"「……除了刺……还有……羞人的舒服……♥」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……好痛……只有胀和急……别弄了……」"
+			CALL MESSAGE_BOX,@"「……这种年纪……还要受这种罪……」"
+		ENDIF
+
+CASE "射精"
+	IF SOURCE:膣内射精经验
+		IF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……里面……满了……♥ ……别担心，我会处理好……♥」"
+			CALL MESSAGE_BOX,@"「……先别动……我帮你……慢慢来……♥」"
+		ELSE
+			CALL MESSAGE_BOX,@"「不、不要在里面……」"
+		ENDIF
+	ELSEIF SOURCE:尻穴射精经验
+		IF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……后面也……满了……♥ ……真是的……」"
+			CALL MESSAGE_BOX,@"「……别急，先别动……我会帮你缓下来……♥」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……那里不行……」"
+		ENDIF
+	ELSEIF SOURCE:精饮经验
+		IF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……咽下去了……♥ ……乖，别紧张，我在……」"
+		ELSE
+			CALL MESSAGE_BOX,@"「咳……咳……别这样……」"
+		ENDIF
+	ELSEIF TEQUIP:手淫
+		IF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……都弄在手上了……没关系，我帮你擦干净……♥」"
+			CALL MESSAGE_BOX,@"「……先别动……我来收拾……」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……我会处理干净……」"
+		ENDIF
+	ENDIF
+
+CASE "搾乳"
+	IF SOURCE:母乳漏出
+		CALL MESSAGE_BOX,@"「……自己漏出来了……♥ ……真是的……」"
+		RETURN
+	ENDIF
+	IF ＃陷落状态／恋慕以上＃
+		CALL MESSAGE_BOX,@"「嗯……♥ 慢一点……对……就这样……♥」"
+		CALL MESSAGE_BOX,@"「你喜欢这样的话……我会配合……♥」"
+	ELSE
+		CALL MESSAGE_BOX,@"「……别太用力，会疼的……」"
+	ENDIF
+
+CASE "抽出"
+	CALL MESSAGE_BOX,@"「……腿软了……来，靠着我……」"
+	CALL MESSAGE_BOX,@"「……先坐一会儿，别逞强……」"
+
+CASE "阴茎称呼变更"
+	CALL MESSAGE_BOX,@"「……要我这样叫？好，我记住了……」"
+
+CASE "膣称呼变更"
+	CALL MESSAGE_BOX,@"「……那里也要改叫法……？嗯……我会照你喜欢的来……」"
+
+CASE "肛门称呼变更"
+	CALL MESSAGE_BOX,@"「……后面也要……？你呀……真是的……」"
+
+CASE "吸欧派"
+	SELECTCASE ARGS:1
+	CASE "开始"
+		CALL MESSAGE_BOX,@"「来，慢慢吸……别急……♥」"
+	CASE "结束"
+		CALL MESSAGE_BOX,@"「……好了，结束了。胸口还在发热……♥」"
+	ENDSELECT
+
+CASE "访问"
+	SELECTCASE ARGS:1
+	CASE "入口"
+		CALL MESSAGE_BOX,@"「我进来了。你现在需要我，对吗？」"
+	CASEELSE
+	ENDSELECT
+
+CASE "事件"
+	CALL MESSAGE_BOX,@"「别急，先告诉我发生了什么。我会陪你一起处理。」"
+
+CASE "肉体改造"
+	CALL MESSAGE_BOX,@"「……身体会变样啊。别怕，我会帮你适应……」"
+
+CASE "战斗"
+	SELECTCASE ARGS:1
+	CASE "攻击"
+		CALL MESSAGE_BOX,@"「我上了。你跟紧我。」"
+	CASE "被击中"
+		CALL MESSAGE_BOX,@"「……没事。你先稳住呼吸。」"
+	CASEELSE
+	ENDSELECT
+
+CASE "日程"
+	SELECTCASE ARGS:1
+	CASE "调教"
+		SELECTCASE ARGS:2
+		CASE "开始调教"
+			CALL MESSAGE_BOX,@"「……先放松，好吗？我会看着你，不让你难受……」"
+		CASE "调教结束"
+			CALL MESSAGE_BOX,@"「辛苦了。来，慢慢呼吸……先喝点水……」"
+		ENDSELECT
+	CASEELSE
+	ENDSELECT
+
+CASEELSE
+ENDSELECT
+RETURN
+
+@KOJO_GENERAL_人妻1_TRAIN(ARGS:0,ARGS:1,ARGS:2,ARGS:3)
+CALL KOJO_GENERAL_人妻口上1_TRAIN(ARGS:0,ARGS:1,ARGS:2,ARGS:3)
+RETURN
+

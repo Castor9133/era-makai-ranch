@@ -1,0 +1,182 @@
+﻿
+;ステータス画面表示設定
+@STATUS_CONFIG
+
+CLEARLINE LINECOUNT
+PRINTL 设置状态屏幕显示的显示设置。
+DRAWLINE
+FLAG_REF = 2070
+PRINTLC [ 0] 角色名称栏宽度
+PRINTFORML ：{FLAG:角色名称栏宽度,2}
+PRINTLC [ 1] ％的小数点显示
+CALL PRINT_ONOFF(FLAG:％的小数点显示,1)
+PRINTLC [ 2] 身高小数点显示
+CALL PRINT_ONOFF(FLAG:身高小数点显示,1)
+PRINTLC [ 3] 素质
+SELECTCASE FLAG:选择画面显示形式／素质
+CASE 0
+	PRINTL ：批量显示
+CASE 1
+	PRINTL ：按类别查看
+CASE 2
+	PRINTL ：隐藏
+ENDSELECT
+PRINTLC [ 4] 刻印
+SELECTCASE FLAG:选择画面显示形式／刻印
+CASE 0
+	PRINTL ：全部显示
+CASE 1
+	PRINTL ：仅显示上位刻印
+CASE 2
+	PRINTL ：隐藏
+ENDSELECT
+PRINTLC [ 5] 隶属时围绕显示对齐
+SELECTCASE FLAG:隶属时环绕显示形式
+CASE 0
+	PRINT ：表情符号显示　→
+CASE 1
+	PRINT ：普通文字显示→
+ENDSELECT
+CALL PRINT_SERVITUDE_HEART
+PRINTL
+PRINTLC [ 6] 捕获・陷落日的显示形式
+PRINTFORML ：\@ (FLAG:捕获・陷落日的显示形式) ? 累计天数 # 年数／季节／日期 \@
+
+PRINTL
+PRINTL 　《 性经验表示 》
+PRINTL ※即使关闭，后台仍会发生经验增加
+PRINTLC [10] Ｖ性交
+CALL PRINT_ONOFF(GETBIT(＃经验显示／Ｖ性交＃),1)
+PRINTLC [11] Ａ性交
+CALL PRINT_ONOFF(GETBIT(＃经验显示／Ａ性交＃),1)
+PRINTLC [12] Ｍ性爱
+CALL PRINT_ONOFF(GETBIT(＃经验显示／Ｍ性交＃),1)
+PRINTLC [13] 接吻
+CALL PRINT_ONOFF(GETBIT(＃经验显示／接吻＃),1)
+PRINTLC [14] 乳交
+CALL PRINT_ONOFF(GETBIT(＃经验显示／乳交＃),1)
+PRINTLC [15] 授乳
+CALL PRINT_ONOFF(GETBIT(＃经验显示／授乳＃),1)
+PRINTLC [16] 出产
+CALL PRINT_ONOFF(GETBIT(＃经验显示／出产＃),1)
+
+CALL PRINTL_ALIGN(-5)
+CALL ON_OFF_BUTTON_FOOTER
+BINPUT
+PRINTL
+SELECTCASE RESULT
+CASE 82
+	PRINTL 对于配置设置中被切换为ON/OFF的项目，设置[ON]会将其反转，而不给出解释
+	CALL ASK_ONOFF
+	FLAG:跳过ON／OFF项目的详细信息并反转 = RESULT
+CASE 98
+	PRINTL 回复默认状态屏幕显示设置？
+	CALL ASK_YN
+	SIF !RESULT
+		CALL DEFAULT_STATUS_CONFIG
+CASE 99
+	RETURN
+CASEELSE
+	CALL CHANGE_STATUS_CONFIG(RESULT)
+ENDSELECT
+RESTART
+
+
+
+;設定変更
+;ARG→INPUT
+@CHANGE_STATUS_CONFIG(ARG)
+
+;10までは元CONFIG使いまわせる
+IF ARG < 10
+	CALL CHANGE_STATUS_CONFIG_NAME(ARG)
+ELSE
+	CALL CHANGE_STATUS_CONFIG_NUM(ARG)
+ENDIF
+
+
+
+;FLAG_NAMEでの変更
+@CHANGE_STATUS_CONFIG_NAME(ARG)
+
+FLAG_NUM = ARG +FLAG_REF
+FLAG_NAME = %FLAGNAME:FLAG_NUM%
+CALL CHANGE_CONFIG_INVERTBIT
+SIF RESULT
+	RETURN
+SELECTCASE FLAG_NAME
+CASE "角色名称栏宽度"
+	PRINTL 指定角色名称栏的宽度。（全角1字符＝2）
+	PRINTL 如果主要调整窗口的横宽，请同时调整此项。
+	PRINTL （如果减少，列表中可能会出现偏差）
+	PRINTL
+	PRINTL [16] 全角8字符（默认）
+	PRINTL 或者输入0～30的数值。
+	INPUT
+	SIF RESULT >= 0 && RESULT <= 30
+		FLAG:FLAG_NUM = RESULT
+	
+CASE "％的小数点显示"
+	PRINTL 主要在显示精神参数时，设定是否显示小数点。
+	PRINTL
+	PRINTL [ 0] 隐藏（默认）
+	PRINTL [ 1] 显示
+	BINPUT
+	FLAG:FLAG_NUM = RESULT
+
+CASE "身高小数点显示"
+	PRINTL 设置是否显示身高（cm）的小数点
+	PRINTL
+	PRINTL [ 0] 隐藏
+	PRINTL [ 1] 显示（默认）
+	BINPUT
+	FLAG:FLAG_NUM = RESULT
+
+CASE "选择画面显示形式／素质"
+	PRINTL 设定角色选择画面中的素质表示。
+	PRINTL 它总是按类别显示，例如在详细状态屏幕上。
+	PRINTL
+	PRINTL [ 0] 一起显示（默认）
+	PRINTL [ 1] 按类别查看
+	PRINTL [ 2] 隐藏
+	BINPUT
+	FLAG:FLAG_NUM = RESULT
+
+CASE "选择画面显示形式／刻印"
+	PRINTL 设定角色选择画面中的刻印显示。
+	PRINTL
+	PRINTL [ 0] 全部显示（默认）
+	PRINTL [ 1] 仅显示上位刻印
+	PRINTL [ 2] 隐藏
+	BINPUT
+	FLAG:FLAG_NUM = RESULT
+
+CASE "隶属时环绕显示形式"
+	PRINTL 设置【隶属】状态下奴隶的文字围挡。
+	PRINTL ・绘画文字显示　→丰富的表达方式
+	PRINTL ・普通文字表示→略显淡白，但与其他状态的奴隶排列时会抑制微妙的偏差
+	PRINTL
+	PRINTL [ 0] 绘画文字显示（默认）
+	PRINTL [ 1] 普通文字显示
+	BINPUT
+	FLAG:FLAG_NUM = RESULT
+
+CASE "捕获・陷落日的显示形式"
+	PRINTL 设定捕获・陷落日的显示形式。
+	PRINTL
+	PRINTL [ 0] 年数／季节／日期（默认）
+	PRINTL [ 1] 累计天数
+	BINPUT
+	FLAG:FLAG_NUM = RESULT
+ENDSELECT
+
+
+
+;番号変更
+@CHANGE_STATUS_CONFIG_NUM(ARG)
+
+;ひっくり返すだけ
+;+10で来てる
+INVERTBIT FLAG:性经验显示BIT,ARG -10
+
+

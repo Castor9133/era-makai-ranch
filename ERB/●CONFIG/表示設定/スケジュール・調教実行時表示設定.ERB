@@ -1,0 +1,168 @@
+﻿
+;スケジュール・調教実行時表示設定
+@SCHEDULE_CONFIG
+
+CLEARLINE LINECOUNT
+PRINTL 进行日程・调教实行时的显示设定。
+DRAWLINE
+FLAG_REF = 2060
+
+PRINTLC [ 0] 电池消耗显示
+CALL PRINT_ONOFF(FLAG:电池消耗显示,1)
+PRINTLC [ 1] 日程全员详细显示
+CALL PRINT_ONOFF(FLAG:日程全员详细显示,1)
+PRINTLC [ 2] 日程搾乳换行符
+CALL PRINT_ONOFF(FLAG:日程搾乳换行符,1)
+PRINTLC [ 3] 日程回复显示格式
+SELECTCASE FLAG:休息回复显示格式
+CASE 0
+	PRINTL ：一直隐藏
+CASE 1
+	PRINTL ：如果有多个，则显示第一个
+CASE 2
+	PRINTL ：全部显示
+CASE 3
+	PRINTL ：全部详细显示（即使是基本不显示的日程也显示）
+ENDSELECT
+PRINTLC [ 4] 心境改变时显示
+CALL PRINT_ONOFF(FLAG:心境改变时显示,1)
+PRINTLC [ 5] 搾乳触手讯息挑逗
+CALL PRINT_ONOFF(FLAG:搾乳触手挑逗,1)
+
+PRINTL
+PRINTL 　《 参数影响因素显示 》
+PRINTLC [10] 影响因素显示／事务经验值
+CALL PRINT_ONOFF(GETBIT(＃影响因素显示／事务经验值＃),1)
+PRINTLC [11] 影响因素显示／性经验值
+CALL PRINT_ONOFF(GETBIT(＃影响因素显示／性经验值＃),1)
+PRINTLC [12] 影响元素显示／回复量
+CALL PRINT_ONOFF(GETBIT(＃影响因素显示／回复量＃),1)
+PRINTLC [13] 影响元素显示／亲和度
+CALL PRINT_ONOFF(GETBIT(＃影响因素显示／亲和度＃),1)
+
+PRINTL
+PRINTL 　《 参数达到上限后显示 》
+PRINTLC [20] 事务经验值
+CALL PRINT_ONOFF(GETBIT(＃上限到达后显示／事务经验值＃),1)
+PRINTLC [21] 性经验值
+CALL PRINT_ONOFF(GETBIT(＃上限到达后显示／性经验值＃),1)
+PRINTLC [22] 好感度
+CALL PRINT_ONOFF(GETBIT(＃上限到达后显示／好感度＃),1)
+PRINTLC [23] 乳牛堕落
+CALL PRINT_ONOFF(GETBIT(＃上限到达后显示／乳牛堕落＃),1)
+
+CALL PRINTL_ALIGN(-5)
+CALL ON_OFF_BUTTON_FOOTER
+BINPUT
+PRINTL
+SELECTCASE RESULT
+CASE 82
+	PRINTL 对于配置设置中被切换为ON/OFF的项目，设置[ON]会将其反转，而不给出解释
+	CALL ASK_ONOFF
+	FLAG:跳过ON／OFF项目的详细信息并反转 = RESULT
+CASE 98
+	PRINTL 把日程·调教实行时显示设定回复为默认值吗？
+	CALL ASK_YN
+	SIF !RESULT
+		CALL DEFAULT_SCHEDULE_CONFIG
+CASE 99
+	RETURN
+CASEELSE
+	CALL CHANGE_SCHEDULE_CONFIG(RESULT)
+ENDSELECT
+RESTART
+
+
+
+;設定変更
+;ARG→INPUT
+@CHANGE_SCHEDULE_CONFIG(ARG)
+
+IF ARG < 10
+	CALL CHANGE_SCHEDULE_CONFIG_NAME(ARG)
+ELSE
+	CALL CHANGE_SCHEDULE_CONFIG_NUM(ARG)
+ENDIF
+
+
+;FLAG_NAMEでの変更
+@CHANGE_SCHEDULE_CONFIG_NAME(ARG)
+
+FLAG_NUM = ARG +FLAG_REF
+FLAG_NAME = %FLAGNAME:FLAG_NUM%
+CALL CHANGE_CONFIG_INVERTBIT
+SIF RESULT
+	RETURN
+SELECTCASE FLAG_NAME
+CASE "电池消耗显示"
+	PRINTL 显示或设定行动结束时各种触手的魔力消耗，魔动调教中器具的电池消耗。
+	PRINTL
+	PRINTL [ 0] 隐藏
+	PRINTL [ 1] 显示（默认）
+	BINPUT
+	FLAG:FLAG_NUM = RESULT
+	
+CASE "日程全员详细显示"
+	;ここはほんとにテンポがものすごい差があるので飛ばさない
+	PRINTL 在日程运行时，设置是否每次都显示首次选择或挑选的一个奴隶的详细信息。
+	PRINTL 在牛舍里没有效果。
+	CALL PRINTL_WORD_COLOR("如果开启此选项，当拥有大量奴隶时，游戏进度可能会变得非常缓慢…","黄")
+	PRINTL
+	PRINTL [ 0] 拾取显示（默认）
+	PRINTL [ 1] 查看每个人的详细信息
+	BINPUT
+	FLAG:FLAG_NUM = RESULT
+	
+CASE "日程搾乳换行符"
+	PRINTFORML 设定日程一起搾乳时每个角色是否换行。
+	PRINTL
+	PRINTL [ 0] 不换行
+	PRINTL [ 1] 换行（默认）
+	BINPUT
+	FLAG:FLAG_NUM = RESULT
+	
+CASE "休息回复显示格式"
+	PRINTL 在日程等发生体力・魔力・精神力回复时，设定是否显示回复量。
+	PRINTL
+	PRINTL [ 0] 总是隐藏
+	PRINTL [ 1] 如果有多个，则显示第一个（默认）
+	PRINTL [ 2] 全部显示
+	PRINTL [ 3] 全部详细显示（即使是基本不显示的日程也显示）
+	BINPUT
+	FLAG:FLAG_NUM = RESULT
+	
+CASE "心境改变时显示"
+	PRINTFORML 设置是否在奴隶心境发生变化时显示。
+	PRINTL
+	PRINTL [ 0] 隐藏（默认）
+	PRINTL [ 1] 显示
+	BINPUT
+	FLAG:FLAG_NUM = RESULT
+	
+CASE "搾乳触手挑逗"
+	PRINTL 在调教中使用各种＜搾乳触手＞时，设置是否在挑逗的部分停止消息。
+	PRINTL
+	PRINTL [ 0] 一起显示（默认）
+	PRINTL [ 1] 暂停
+	BINPUT
+	FLAG:FLAG_NUM = RESULT
+ENDSELECT
+
+
+
+;番号変更
+@CHANGE_SCHEDULE_CONFIG_NUM(ARG)
+
+;10～19or20～29
+SELECTCASE ARG
+CASE 10 TO 19
+	INVERTBIT FLAG:参数影响要素显示BIT,ARG -10
+CASE 20 TO 29
+	INVERTBIT FLAG:参数上限到达后显示BIT,ARG -20
+ENDSELECT
+
+
+
+
+
+

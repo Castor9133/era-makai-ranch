@@ -1,0 +1,124 @@
+﻿
+;外見・おっぱいの変更シャッフル
+;ARGS→CHANGE_STATE
+@SELF_CHARA_MAKE_APPEARAINCE_INPUT_SHUFFLE(ARGS)
+
+;INPUT_NUMにより変更箇所選択
+SELECTCASE ARGS
+CASE "身高"
+	;CSTR表記内になる　候補入れてってやるとさすがに面倒なんよ
+	CALL RANDOM_SLAVE_HEIGHT
+	
+CASE "体型"
+	CALL RANDOM_SLAVE_SHAPE
+CASE "肤色"
+	CALL RANDOM_SLAVE_SKIN_COLOR
+CASE "发色"
+	CALL RANDOM_SLAVE_HAIR_COLOR
+CASE "发型一键调整"
+	CALL RANDOM_SLAVE_HAIR
+	
+CASE "颜色编码／发"
+	;手動のみ
+
+CASE "头发特征"
+	CALL RANDOM_SLAVE_HAIR_FEATURE
+CASE "发型"
+	CALL RANDOM_SLAVE_HAIR_STYLE
+CASE "外表年龄"
+	CALL RANDOM_SLAVE_VISUAL_AGE
+CASE "阴毛"
+	CALL RANDOM_SLAVE_UNDERHAIR
+CASE "右瞳色"
+	;右だけはややこしいので普通に
+	CALL RANDOM_SLAVE_EYE_COLOR
+
+CASE "颜色编码／右目"
+	
+CASE "左瞳色"
+	;オッドアイ確定シャッフルに置換
+	CALL RANDOM_SLAVE_EYE_COLOR(1)
+
+CASE "颜色编码／左目"
+
+CASE "瞳孔形状"
+	CALL RANDOM_SLAVE_PUPIL
+CASE "眼睛特征"
+	CALL RANDOM_SLAVE_EYE_FEATURE
+
+;2ページ目
+CASE "胸围大小"
+	CALL RANDOM_SLAVE_BUST
+CASE "乳房弹性"
+	CALL RANDOM_SLAVE_BUST_FEELING
+CASE "乳头颜色"
+	CALL RANDOM_SLAVE_NIPPLE_COLOR
+CASE "颜色编码／乳头"
+	
+CASE "Ｂ敏感度"
+	ABL:Ｂ敏感度 = 7 +RAND:7
+	ABL:Ｂ敏感度 *= 10
+	
+	;サイズ補正はいいや
+	CALL NIPPLE_SENSITIVE_FIX
+	
+CASE "Ｎ敏感度"
+	ABL:Ｎ敏感度 = 7 +RAND:7
+	ABL:Ｎ敏感度 *= 10
+	CALL NIPPLE_SENSITIVE_FIX
+
+CASE "陷没乳头"
+	;ON/OFFに関してはシャッフルも何もない
+	INVERTBIT TALENT:陷没乳头,0
+
+CASE "母乳体质"
+	INVERTBIT MARK:母乳体质,0
+	IF MARK:母乳体质
+		IF TALENT:处女
+			EXP:出产 = 0
+			TALENT:先天母乳体质 = 1
+		ELSE
+			PRINTL 选择来自[出产经验]还是[先天母乳体质]。
+			PRINTLC [ 0] 有出产经验
+			PRINTLC [ 1] 先天母乳体质
+			INPUT
+			IF !RESULT
+				EXP:出产 = 1
+				TALENT:先天母乳体质 = 0
+			ELSE
+				EXP:出产 = 0
+				TALENT:先天母乳体质 = 1
+			ENDIF
+		ENDIF
+	ELSE
+		EXP:出产 = 0
+		TALENT:先天母乳体质 = 0
+	ENDIF
+
+CASE "母乳容量修正值"
+	CFLAG:母乳容量修正值 = 90 +RAND:5 *5
+
+CASE "母乳价格奖励"
+	CFLAG:母乳价格奖励 = 0 +RAND:5 *5
+
+CASE "极上乳压"
+	INVERTBIT TALENT:极上乳压,0
+
+CASE "胸围大小+1"
+	SIF ABL:胸围大小 >= BUSTSIZE_超乳 -1
+		RETURN
+	ABL:胸围大小 ++
+	CALL BUSTSIZE_TALENT_SET
+	SIF ABL:胸围大小 < BUSTSIZE_巨乳
+		TALENT:极上乳压 = 0
+
+CASE "胸围大小-1"
+	SIF !ABL:胸围大小
+		RETURN
+	ABL:胸围大小 --
+	CALL BUSTSIZE_TALENT_SET
+	SIF ABL:胸围大小 < BUSTSIZE_巨乳
+		TALENT:极上乳压 = 0
+ENDSELECT
+
+

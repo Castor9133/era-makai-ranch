@@ -1,0 +1,210 @@
+﻿
+;1ページ
+@SELF_CHARA_MAKE_SENSITIVE_1
+
+PRINTL 　《 敏感度・性癖 》
+CALL HALFLINE
+PRINTLC [ 0] Ａ敏感度
+PRINTFORML ：{ABL:Ａ敏感度,3}\%
+PRINTLC [ 1] Ｂ敏感度
+PRINTFORML ：{ABL:Ｂ敏感度,3}\%
+PRINTLC [ 2] Ｃ敏感度
+PRINTFORML ：{ABL:Ｃ敏感度,3}\%
+PRINTLC [ 3] Ｖ敏感度
+PRINTFORML ：{ABL:Ｖ敏感度,3}\%
+PRINTLC [ 4] Ｎ敏感度
+PRINTFORML ：{ABL:Ｎ敏感度,3}\%
+PRINTL
+PRINTLC [10] 母性
+PRINTFORML ：Lv{ABL:母性,2}
+PRINTLC [11] 技巧
+PRINTFORML ：Lv{ABL:技巧,2}
+PRINTLC [12] 奉仕精神
+PRINTFORML ：Lv{ABL:奉仕精神,2}
+PRINTLC [13] 受虐癖
+PRINTFORML ：Lv{ABL:受虐癖,2}
+PRINTLC [14] 百合癖
+PRINTFORML ：Lv{ABL:百合癖,2}
+
+
+
+@SELF_CHARA_MAKE_SENSITIVE_2
+
+PRINTL 　《 性素质 》
+CALL HALFLINE
+PRINTL 　《 调教相关素质（部分） 》
+PRINTLC [ 0] 【母性本能】
+CALL PRINT_ONOFF(TALENT:母性本能,1)
+PRINTLC [ 1] 【隶属愿望】
+CALL PRINT_ONOFF(TALENT:隶属愿望,1)
+PRINTLC [ 2] 【抖Ｓ】
+CALL PRINT_ONOFF(TALENT:抖Ｓ,1)
+PRINTLC [ 3] 【性知识贫乏】
+CALL PRINT_ONOFF(TALENT:性知识贫乏,1)
+PRINTLC [ 4] 【幼稚】
+CALL PRINT_ONOFF(TALENT:幼稚,1)
+PRINTLC [ 5] 【猫舌】
+CALL PRINT_ONOFF(TALENT:猫舌,1)
+PRINTLC [ 6] 【锯齿】
+CALL PRINT_ONOFF(TALENT:锯齿,1)
+PRINTL
+PRINTL 　《 淫乱素质 》
+PRINTLC [10] 【名器】
+CALL PRINT_ONOFF(TALENT:名器,1)
+PRINTLC [11] 【Ａ名器】
+CALL PRINT_ONOFF(TALENT:Ａ名器,1)
+PRINTLC [12] 【口穴】
+CALL PRINT_ONOFF(TALENT:口穴,1)
+IF ABL:胸围大小 >= BUSTSIZE_巨乳
+	PRINTLC [13] 【极上乳压】
+	CALL PRINT_ONOFF(TALENT:极上乳压,1)
+ELSE
+	CALL PRINTL_WORD_COLOR,@"<13> 【极上乳压】…【巨乳】以上限定","灰"
+ENDIF
+
+
+
+@SELF_CHARA_MAKE_SENSITIVE_3
+
+PRINTL 　《 性经验 》
+CALL HALFLINE
+PRINTLC [ 0] 性经验
+PRINTFORML 【%CSTR:性经验%】
+PRINTLC [ 1] 【处女结界】
+CALL PRINT_ONOFF(TALENT:处女结界,1)
+IF TALENT:处女结界
+	CALL PRINTL_WORD_COLOR("　处女","浅蓝色")
+	CALL PRINTL_WORD_COLOR("　Ａ处女","浅蓝色")
+ELSE
+	PRINTLC [ 2] Ｖ处女
+	CALL PRINT_ONOFF(TALENT:处女,1)
+	PRINTLC [ 3] Ａ处女
+	CALL PRINT_ONOFF(TALENT:Ａ处女,1)
+ENDIF
+PRINTLC [ 4] Ｍ处女
+CALL PRINT_ONOFF(TALENT:Ｍ处女,1)
+PRINTLC [ 5] 乳交处女
+CALL PRINT_ONOFF(TALENT:无乳交经验,1)
+PRINTLC [ 6] 无接吻经验
+CALL PRINT_ONOFF(TALENT:无接吻经验,1)
+IF MARK:母乳体质
+	PRINTLC [ 7] 无授乳经验
+	CALL PRINT_ONOFF(TALENT:无授乳经验,1)
+ELSE
+	CALL PRINTL_WORD_COLOR("　无授乳经验","灰")
+ENDIF
+PRINTL
+
+
+
+@SELF_CHARA_MAKE_SENSITIVE_4
+
+PRINTL 　《 初经验・经验人数 》
+CALL HALFLINE
+
+;シャッフルだと不可
+IF SELF_CHARA_MAKE_RANDOM
+	CALL PRINT_VIRGIN_DETAIL
+	CALL PRINTL_WORD_COLOR("不可洗牌","黄")
+	RETURN
+ENDIF
+
+PRINTL 　《 初次经验对象 》
+IF TALENT:处女
+	CALL PRINTL_WORD_COLOR("　Ｖ初经验对象","灰")
+ELSE
+	PRINTLC [ 0] Ｖ初经验对象
+	PRINT ：
+	SIF CSTR:初经验／Ｖ == ""
+		PRINT （未知）
+	PRINTFORML %CSTR:初经验／Ｖ%
+ENDIF
+IF TALENT:Ａ处女
+	CALL PRINTL_WORD_COLOR("　Ａ第一次经验的对象","灰")
+ELSE
+	PRINTLC [ 1] Ａ第一次经验的对象
+	PRINT ：
+	SIF CSTR:初经验／Ａ == ""
+		PRINT （未知）
+	PRINTFORML %CSTR:初经验／Ａ%
+ENDIF
+IF TALENT:Ｍ处女
+	CALL PRINTL_WORD_COLOR("　Ｍ初经验对象","灰")
+ELSE
+	PRINTLC [ 2] 初次口交经验对象
+	PRINT ：
+	SIF CSTR:初经验／Ｍ性交 == ""
+		PRINT （未知）
+	PRINTFORML %CSTR:初经验／Ｍ性交%
+ENDIF
+IF TALENT:无乳交经验
+	CALL PRINTL_WORD_COLOR("　初次体验乳交的对象","灰")
+ELSE
+	PRINTLC [ 3] 初次体验乳交的对象
+	PRINT ：
+	SIF CSTR:初经验／乳交 == ""
+		PRINT （未知）
+	PRINTFORML %CSTR:初经验／乳交%
+ENDIF
+IF TALENT:无接吻经验
+	CALL PRINTL_WORD_COLOR("　初次接吻对象","灰")
+ELSE
+	PRINTLC [ 4] 初次接吻对象
+	PRINT ：
+	SIF CSTR:初经验／接吻 == ""
+		PRINT （未知）
+	PRINTFORML %CSTR:初经验／接吻%
+ENDIF
+IF TALENT:无授乳经验
+	CALL PRINTL_WORD_COLOR("　授乳初经验对象","灰")
+ELSE
+	PRINTLC [ 5] 授乳初经验对象
+	PRINT ：
+	SIF CSTR:初经验／授乳 == ""
+		PRINT （未知）
+	PRINTFORML %CSTR:初经验／授乳%
+ENDIF
+PRINTL [ 6] 批量设定可设定的初经验对象
+PRINTL
+PRINTL 　《 经验人数 》
+IF TALENT:处女
+	CALL PRINTL_WORD_COLOR("　Ｖ经验人数","灰")
+ELSE
+	PRINTLC [10] Ｖ经验人数
+	PRINTFORML ：{EXP:地上经验人数／人类／Ｖ性交}
+ENDIF
+IF TALENT:Ａ处女
+	CALL PRINTL_WORD_COLOR("　Ａ经验人数","灰")
+ELSE
+	PRINTLC [11] Ａ经验人数
+	PRINTFORML ：{EXP:地上经验人数／人类／Ａ性交}
+ENDIF
+IF TALENT:Ｍ处女
+	CALL PRINTL_WORD_COLOR("　Ｍ经验人数","灰")
+ELSE
+	PRINTLC [12] Ｍ经验人数
+	PRINTFORML ：{EXP:地上经验人数／人类／Ｍ性交}
+ENDIF
+IF TALENT:无乳交经验
+	CALL PRINTL_WORD_COLOR("　乳交经验人数","灰")
+ELSE
+	PRINTLC [13] 乳交经验人数
+	PRINTFORML ：{EXP:地上经验人数／人类／乳交}
+ENDIF
+IF TALENT:无接吻经验
+	CALL PRINTL_WORD_COLOR("　接吻人数","灰")
+ELSE
+	PRINTLC [14] 接吻人数
+	PRINTFORML ：{EXP:地上经验人数／人类／接吻}
+ENDIF
+IF TALENT:无授乳经验
+	CALL PRINTL_WORD_COLOR("　授乳经验人数","灰")
+ELSE
+	PRINTLC [15] 授乳经验人数
+	PRINTFORML ：{EXP:地上经验人数／人类／授乳}
+ENDIF
+PRINTL [16] 批量设置可配置经验人数
+
+
+
+

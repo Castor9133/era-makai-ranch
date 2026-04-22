@@ -1,0 +1,89 @@
+﻿
+;追跡中のキャラの様子
+@MAIN_CHASE_SLAVE
+
+;夕方のみ発生する
+SIF TIME != 2
+	RETURN
+FOR TARGET_COUNT,0,CHARANUM
+	TARGET = TARGET_COUNT
+	SIF CFLAG:追踪对象 == 1
+		CALL CHASE_SLAVE_SEARCH
+NEXT
+
+
+
+;ニンゲンの様子および傭兵の探索
+@CHASE_SLAVE_SEARCH
+
+;追跡者がいる場合→バイトと戦闘
+IF CFLAG:追踪者
+	CALL CHASE_SLAVE_MONSTER
+
+;追跡者がいない場合→疲労度20以下、戦闘力80%以上なら探索
+ELSEIF BASE:疲劳度 <= 20 && BASE:战斗力 >= MAXBASE:战斗力 *8 /10
+	CALL CHASE_SLAVE_EXPLORE
+
+;疲れてる場合休憩
+ELSE
+	CALL CHASE_SLAVE_REST
+ENDIF
+SIF !SOURCE:目的变更
+	PRINTW
+
+
+
+;仲間がいたら「たち」と返す
+@PRINT_EXIST_GROUP
+#FUNCTIONS
+
+SIF BASE:同伴战斗力1
+	RETURNF "们"
+
+
+
+;探索　現状フレーバー的な意味しかないけど
+@CHASE_SLAVE_EXPLORE
+
+CALL KOJO_PRINT("日程","探索魔界")
+PRINTFORM %CALLNAME%%PRINT_EXIST_GROUP()%一边警戒一边探索着魔界… 
+
+;疲労度がちょっと上がる
+DAMAGE = RAND:3 +1
+PRINTFORML 疲劳度+{DAMAGE} 
+BASE:疲劳度 = LIMIT(BASE:疲劳度 +DAMAGE,0,MAXBASE:疲劳度)
+
+
+
+;戦闘力・疲労を回復
+@CHASE_SLAVE_REST
+
+;戦闘力を10%くらい回復　仲間は5%
+CALL KOJO_PRINT("日程","探索魔界","睡眠")
+PRINTFORM %CALLNAME%%PRINT_EXIST_GROUP()%似乎休息了。
+IF BASE:战斗力 < MAXBASE:战斗力
+	HEAL = MAXBASE:战斗力 /10
+	CALL RANDOM_FIX(HEAL,10,"戦闘力回復量")
+	HEAL += FIX
+	PRINTFORM 战斗力+{HEAL} 
+	BASE:战斗力 = LIMIT(BASE:战斗力 +HEAL,0,MAXBASE:战斗力)
+ENDIF
+IF BASE:同伴战斗力1 < MAXBASE:同伴战斗力1 && BASE:同伴战斗力1
+	HEAL = MAXBASE:同伴战斗力1 /20
+	CALL RANDOM_FIX(HEAL,10,"仲間戦闘力回復量")
+	HEAL += FIX
+	PRINTFORM 同伴战斗力+{HEAL} 
+	BASE:同伴战斗力1 = LIMIT(BASE:同伴战斗力1 +HEAL,0,MAXBASE:同伴战斗力1)
+ENDIF
+
+;疲労度を現在の10%減少(MAX5)
+;当日戦闘済みフラグがあると回復しない
+IF BASE:疲劳度 > 9 && !CFLAG:当日战斗完毕
+	HEAL = LIMIT(BASE:疲劳度 /10,1,5)
+	PRINTFORM 疲劳度-{HEAL} 
+	BASE:疲劳度 = LIMIT(BASE:疲劳度 -HEAL,0,MAXBASE:疲劳度)
+ENDIF
+PRINTL
+
+
+

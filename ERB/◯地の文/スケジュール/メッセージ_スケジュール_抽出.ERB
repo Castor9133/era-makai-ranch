@@ -1,0 +1,54 @@
+﻿
+;抽出待機の地の文
+@STANDBY_SLAVE_DRAIN_MESSAGE
+
+;基本あなたが動かしに来るよ
+;乳首を見られたことがないなら口上
+SIF !EXP:被看见乳头
+	CALL KOJO_PRINT("调教命令","脱衣","主人公")
+CALL KOJO_PRINT("日程","抽出","执行前",KOJO_TYPE)
+
+;抽出継続の場合→だいぶあっさりでいいか
+IF CFLAG:继续抽出
+	PRINTFORML 重新启动了拘束着%CALLNAME%的灵力抽出装置…
+	RETURN
+ENDIF
+
+IF CFLAG:崩坏
+	PRINTFORML 将筋疲力尽一动也不动的%CALLNAME%拘束在灵力抽出装置上…
+ELSEIF CFLAG:乳牛
+	PRINTFORML 即使在%CALLNAME%被灵力抽出装置拘束的过程中，也无法抑制发情。
+	PRINTFORML 看起来就算被抽取灵力，也会让%CALLNAME%产生快感…
+ELSEIF CFLAG:洗脑 || ＃陷落状态／恋慕以上＃
+	PRINTFORML %CALLNAME%兴高采烈地拘束被灵力抽出装置装置上…
+ELSEIF ＃陷落状态／拒绝以上＃
+	PRINTFORML %CALLNAME%老老实实地被拘束到灵力抽出装置上…
+ELSE
+	PRINTFORML 使用灵力抽出装置中设置的拘束工具，将抵抗的%CALLNAME%的身体捆住了…
+ENDIF
+
+
+
+;抽出開始
+;ARGS→LACTATION_TOOL
+@SLAVE_DRAIN_RUN_MESSAGE(ARGS)
+
+SIF CFLAG:继续抽出
+	RETURN
+PRINTFORML 启动设备后，设备会对无法动弹的%CALLNAME%的身体进行扫描。
+PRINTFORML 随着灯的颜色变化，蜿蜒移动的机械手臂会伸展出几条；
+PRINTFORML 紧紧地将%CALLNAME%的%SLANG_B()%固定住，将搾乳器吸附到尖端…
+PRINTFORM 机械臂搓揉挤压着%SLANG_B()%中的%SLANG_MILK()%
+
+;読みにくかった
+IF BASE:灵力 && (BASE:魔力 && MARK:魔力母乳体质)
+	PRINT 灵力与魔力
+ELSEIF BASE:灵力
+	PRINT 灵力
+ELSEIF BASE:魔力 && MARK:魔力母乳体质
+	PRINT 魔力
+ENDIF
+PRINTL 被抽出…
+PRINTW
+
+

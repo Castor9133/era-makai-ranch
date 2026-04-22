@@ -1,0 +1,102 @@
+﻿
+;EXP増加
+;ARGS→経験
+@EXP_UP(ARGS)
+#DIM ABL_FIX
+#DIMS EXP_CALL
+
+;作業ABL最大値を最大10でFIXへ
+ABL_FIX = LIMIT(FLAG:工作ABL最大值,0,10)
+SELECTCASE ARGS
+CASE "事务","奶农","清洁","料理","药学"
+	CALL EXP_UP_CALC(ABL_FIX,ARGS)
+	EXP_CALL = %ARGS%经验
+	EXP:EXP_CALL = LIMIT(EXP:EXP_CALL +EXPUP,0,EXP_MAX)
+	SIF EXP:EXP_CALL < EXP_MAX || GETBIT(＃上限到达后显示／事务经验值＃)
+		CALL PRINT_EXP_UP(ARGS)
+	
+;性経験値：今レズっ気だけ
+CASE "百合调教经验"
+	;CALL LESBIAN_EXP_UP_CALC
+	EXP:ARGS = LIMIT(EXP:ARGS +EXPUP,0,EXP_MAX)
+	SIF EXP:ARGS < EXP_MAX || GETBIT(＃上限到达后显示／性经验值＃)
+		PRINTFORM %ARGS%+{EXPUP} 
+ENDSELECT
+
+
+
+;増加量計算
+;ARG→ABL_FIX
+@EXP_UP_CALC(ARG,ARGS)
+
+;ABLが2以上高いキャラが一緒に作業しているなら経験値大幅増加
+IF ARG > ABL:ARGS +1
+	EXPUP = (ARG -ABL:ARGS) *1000
+ELSE
+	EXPUP = 1000
+ENDIF
+
+;LV5までは(100 -15*現在ABL)%のEXPが入る　5以降は(1/現在ABL)のEXP
+IF ABL:ARGS <= 5
+	EXPUP *= (100 -15 *ABL:ARGS)
+	EXPUP /= 100
+ELSE
+	EXPUP /= ABL:ARGS
+ENDIF
+
+;料理のとき基礎値3倍+皿数1につき+20%
+IF ARGS == "料理"
+	FIX = 80 +DISH_QUANTITY *20
+	EXPUP = EXPUP *3 *FIX
+	EXPUP /= 100
+ENDIF
+
+;素質で+-20%
+SIF TALENT:学得快
+	TIMES EXPUP,1.20
+SIF TALENT:学得慢
+	TIMES EXPUP,0.80
+
+;料理と掃除はマイナス素質あると1/10、3以上にならない
+IF ARGS == "料理" && TALENT:不擅长料理
+	EXPUP /= 10
+	SIF ABL:ARGS >= 3
+		EXPUP = 0
+ELSEIF ARGS == "清洁" && TALENT:不擅长清洁
+	EXPUP /= 10
+	SIF ABL:ARGS >= 3
+		EXPUP = 0
+ENDIF
+
+;作業系EXP入手量コンフィグ
+CALL DIFFICULTY_CONFIG_APPLY("事务EXP获得量")
+
+;実行回数有効（今は掃除）のとき倍率かけて/2
+SIF ARGS == "清洁" && CFLAG:日程执行次数
+	EXPUP = EXPUP *CFLAG:日程执行次数 /2
+
+;5%補正
+CALL RANDOM_FIX(EXPUP,5,ARGS)
+EXPUP += FIX
+
+
+
+;EXP増加量表示
+@PRINT_EXP_UP(ARGS)
+
+PRINTFORM %ARGS%经验+{EXPUP} 
+SIF !GETBIT(＃影响因素显示／事务经验值＃)
+	RETURN
+SIF TALENT:学得快
+	PRINT 【学得快】
+SIF TALENT:学得慢
+	PRINT 【学得慢】
+SIF ARGS == "料理" && TALENT:不擅长料理
+	PRINT 【不擅长料理】
+SIF ARGS == "清洁" && TALENT:不擅长清洁
+	PRINT 【不擅长清洁】
+
+
+
+
+

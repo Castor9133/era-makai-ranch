@@ -1,0 +1,84 @@
+; ======================================
+; 泛用口上・调教命令（性格：知心）
+; ======================================
+
+@KOJO_GENERAL_知心口上1_TRAIN(ARGS:0,ARGS:1,ARGS:2,ARGS:3)
+
+SELECTCASE ARGS:2
+CASE "执行"
+	SELECTCASE ARGS:1
+	CASE "接吻","舔舐脸","舔舐耳","舔舐腋"
+		IF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……对，就这样。你想更深一点，对吗……♥」"
+			CALL MESSAGE_BOX,@"「别躲……我会很温柔。嗯……呼吸跟上。」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……别怕。我会慢一点。」"
+		ENDIF
+
+	CASE "口交","触手口交"
+		IF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「我知道你想要更快……但先别急。我会先让你更舒服……♥」"
+			CALL MESSAGE_BOX,@"「……嗯。你眯眼了，是想更深一点……我懂……♥」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……放松。只要你不难受，我就会继续。」"
+		ENDIF
+
+	CASE "手淫","授乳手交"
+		IF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「别忍着。你现在想要的是这个节奏……对吧……♥」"
+			CALL MESSAGE_BOX,@"「看你肩膀的力道就知道……我会放轻一点。」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……我会照顾你的反应。哪里不舒服就点头。」"
+		ENDIF
+
+	CASE "足交"
+		IF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……用脚也可以。你现在更敏感，我会更轻……♥」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……我会小心，不会让你不适。」"
+		ENDIF
+
+	CASE "正常位","后背位","对面坐位","背面坐位","骑乘位","对面立位","背面立位","强制骑乘位","背面骑乘位"
+		IF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……嗯，进来。先停一下……对，适应了再动……♥」"
+			CALL MESSAGE_BOX,@"「看你的眼神……我知道你想要更深……我会引导你。」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……慢一点。先让我确认你不会疼。」"
+		ENDIF
+
+	CASE "肛塞"
+		IF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……要装肛塞，对吗？我会先让你放松，再慢慢来。」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……慢一点。先确认你不会不适。」"
+		ENDIF
+
+	CASE "尿道塞"
+		IF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……这是更敏感的地方。我会控制节奏，你只要看着我。」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……我会很慢。你有一点不舒服就立刻停。」"
+		ENDIF
+
+	CASEELSE
+		CALL MESSAGE_BOX,@"「好。%ARGS:1%……我会按你舒服的方式带着你。」"
+	ENDSELECT
+
+CASE "继续"
+	CALL MESSAGE_BOX,@"「继续。呼吸、腰、手……我都会帮你调整。」"
+	CALL MESSAGE_BOX,@"「别勉强。你一个眼神，我就会换到你想要的方式。」"
+
+CASE "移除"
+	SELECTCASE ARGS:1
+	CASE "肛塞"
+		CALL MESSAGE_BOX,@"「……好了，肛塞取下了。先别急着动，呼吸跟着我。」"
+	CASE "尿道塞"
+		CALL MESSAGE_BOX,@"「……取下了。嗯，放松……我会看着你，直到不适消下去。」"
+	CASEELSE
+		CALL MESSAGE_BOX,@"「……好了，先缓一缓。你现在需要的是放松。」"
+	ENDSELECT
+
+CASEELSE
+ENDSELECT
+RETURN
+

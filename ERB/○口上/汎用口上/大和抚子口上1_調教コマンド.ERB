@@ -1,0 +1,113 @@
+; ======================================
+; 泛用口上・调教命令（性格：大和抚子）
+; ======================================
+
+@KOJO_GENERAL_大和抚子口上1_TRAIN(ARGS:0,ARGS:1,ARGS:2,ARGS:3)
+
+SELECTCASE ARGS:2
+CASE "执行"
+	SELECTCASE ARGS:1
+	CASE "揉胸","育乳按摩","浓厚母乳按摩","乳罐按摩","胸爱抚","拧乳头"
+		IF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「请、请轻些……♥ ……是，这样就好……♥」"
+			CALL MESSAGE_BOX,@"「……胸口发热……%MASTER_CALL()%的手……很温柔……♥」"
+		ELSEIF ＃陷落状态／屈服以上＃
+			CALL MESSAGE_BOX,@"「……请别太粗鲁……这、这样会……♥」"
+		ELSE
+			CALL MESSAGE_BOX,@"「请住手……那里……不成体统……」"
+		ENDIF
+
+	CASE "接吻","舔舐脸","舔舐耳","舔舐腋"
+		IF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……失礼了……我会……闭上眼睛……♥」"
+			CALL MESSAGE_BOX,@"「……请靠近些……我想更清楚地感受您……♥」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……请别这样……太近了……」"
+		ENDIF
+
+	CASE "口交","触手口交"
+		IF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……我会好好含住……若不舒服，请您示意……♥」"
+			CALL MESSAGE_BOX,@"「……请交给我……我会温柔侍奉……♥」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……要我……用嘴……？ 这、这太……」"
+		ENDIF
+
+	CASE "深喉","触手深喉"
+		IF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……咳……没事……我还能……♥」"
+			CALL MESSAGE_BOX,@"「……请慢些……我会跟上……♥」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……呜……太深了……」"
+		ENDIF
+
+	CASE "手淫","授乳手交"
+		IF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……这样可以吗……♥ ……会更舒服吗……♥」"
+			CALL MESSAGE_BOX,@"「……请别忍着……都交给我……♥」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……用手……是么……我明白了……」"
+		ENDIF
+
+	CASE "足交"
+		IF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「用脚……侍奉……失礼了……♥」"
+			CALL MESSAGE_BOX,@"「……力度我会留意……请您放松……♥」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……用脚……竟要如此……」"
+		ENDIF
+
+	CASE "正常位","后背位","对面坐位","背面坐位","骑乘位","对面立位","背面立位","强制骑乘位","背面骑乘位"
+		IF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……请进来……♥ 我会……好好接住……♥」"
+			CALL MESSAGE_BOX,@"「……若您舒服……我就……很满足……♥」"
+		ELSEIF ＃陷落状态／屈服以上＃
+			CALL MESSAGE_BOX,@"「……别、别太快……」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……不、不要……请住手……」"
+		ENDIF
+
+	CASE "Ａ正常位","Ａ后背位","Ａ对面坐位","Ａ背面坐位","Ａ骑乘位","Ａ对面立位","Ａ背面立位","强制Ａ骑乘位","Ａ背面骑乘位"
+		IF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……后面也……若您想要……我会配合……♥」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……请别……那、那里……」"
+		ENDIF
+
+	CASE "肛塞"
+		CALL MESSAGE_BOX,@"「……后面要放入么……请、请慢些……」"
+
+	CASE "尿道塞"
+		CALL MESSAGE_BOX,@"「……那里……请您务必温柔……」"
+
+	CASE "打屁股","皮鞭抽打"
+		CALL MESSAGE_BOX,@"「……请别太重……我会……忍住……」"
+
+	CASEELSE
+		CALL MESSAGE_BOX,@"「……是。若这是您的命令……我会配合。」"
+	ENDSELECT
+
+CASE "继续"
+	SELECTCASE ARGS:1
+	CASE "足交"
+		CALL MESSAGE_BOX,@"「……脚心发热……但我还能继续……♥」"
+	CASE "手淫","授乳手交"
+		CALL MESSAGE_BOX,@"「……在我手里……跳得很厉害……♥」"
+	CASEELSE
+		CALL MESSAGE_BOX,@"「……我明白……继续……」"
+	ENDSELECT
+
+CASE "移除"
+	SELECTCASE ARGS:1
+	CASE "肛塞"
+		CALL MESSAGE_BOX,@"「……取下了么……呼……多谢……」"
+	CASE "尿道塞"
+		CALL MESSAGE_BOX,@"「……谢谢……稍微轻松些了……」"
+	CASEELSE
+		CALL MESSAGE_BOX,@"「……结束了么……辛苦您了……」"
+	ENDSELECT
+
+CASEELSE
+ENDSELECT
+RETURN
+

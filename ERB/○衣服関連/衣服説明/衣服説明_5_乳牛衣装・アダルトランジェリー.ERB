@@ -1,0 +1,110 @@
+﻿
+;乳牛衣装・アダルトランジェリー
+@ITEM_DETAIL_CLOTHE_ADULT_LINGERIE
+
+SELECTCASE ITEMNAME:SELECT_ITEM
+CASE "乳牛比基尼"
+	CALL LINGERIE_DETAIL_COMMON("上下","","附带条件")
+	PRINTL 黑白斑点花纹的比基尼。
+	PRINTL 无论是在地上还是在魔界，奶牛身上都有着黑白相间的斑驳花纹。
+	PRINTL 除了内衣的作用之外，它还具有表达「你今后要作为受人搾乳的乳牛生活」的意思。
+
+CASE "乳牛微型比基尼"
+	CALL LINGERIE_DETAIL_COMMON("上下","Ｂ露出","极小")
+	PRINTFORML 黑白斑点花纹的比基尼，布料面积太小，根本遮不住%SAVESTR:标识／乳房%。
+	PRINTFORML 与其被剥去一切，倒不如以人类的形象，保持%SAVESTR:标识／母乳%的状态，成为性的对象的吸引点。
+
+CASE "牛柄洞口比基尼"
+	CALL LINGERIE_DETAIL_COMMON("上下","全露出","附带条件")
+	PRINTL 白黑色斑点图案的比基尼，但有洞，无法遮住乳头和私处。
+	PRINTFORML 适合挤奶家畜的产品，穿着乳牛风格的衣物即可挤出%SAVESTR:标识／母乳%。
+
+CASE "乳牛高筒袜"
+	CALL ACCESSORY_DETAIL_COMMON("腿")
+	PRINTL 穿在腿上的带有黑白斑驳花纹的长袜。
+	PRINTL 即使是短的，也希望看起来还算符合要求，因此固定为「高筒袜」。
+
+CASE "乳牛长手套"
+	CALL ACCESSORY_DETAIL_COMMON("腕")
+	PRINTL 覆盖肘部的长手套，上面有黑白斑驳的花纹，戴在手上。
+	PRINTL 仅仅遮住双手或者可能看起来不像模样，所以选择了「长」作为固定款式。
+
+CASE "乳牛耳饰"
+	CALL ACCESSORY_DETAIL_COMMON("头")
+	PRINTL 模仿乳牛的耳朵和角，看起来像的发带。
+	PRINTL 比起其他任何饰品，「你从今天开始就是乳牛」的感觉更强烈，这一点是公认的。
+	PRINTL 牛角族也可以戴上。目前没有差别。
+
+CASE "牛铃"
+	CALL ACCESSORY_DETAIL_COMMON("颈")
+	PRINTL 这是用于牲畜放牧的道具，戴在它们的脖子上，以便知道它们的住处…这是适用于人类尺寸的版本。
+	PRINTL 据说，每次移动时都会发出叮叮声，以提醒人们自己是家畜（需要引用来源）。
+
+CASE "奶牛女仆发箍"
+	CALL ACCESSORY_DETAIL_COMMON("头")
+	PRINTL 模仿奶牛制作的带有耳朵和角的女仆发箍。
+	PRINTFORML 给主人献上%SAVESTR:标识／母乳%是女仆的职责，
+	PRINTL 对于本来是女仆的女性来说是屈辱至极的饰品。
+	PRINTL 牛角族也可以戴上。目前没有差别。
+
+CASE "牛纹弹弓比基尼"
+	CALL LINGERIE_DETAIL_COMMON("上下","Ｂ露出")
+	PRINTL 上下套装的白黑色斑点图案泳衣，但布面积极少，上面只能遮住乳头。
+	PRINTL 如果需要的话，可以是白黑的绳子。
+
+
+;アダルトランジェリー
+CASE "乳头露出胸罩"
+	CALL LINGERIE_DETAIL_COMMON("上面","Ｎ露出","","膨乳时破损")
+	PRINTFORML 它应该是女性的内衣，可以拥抱和托住%SAVESTR:标识／乳房%，但是…
+	PRINTL 关键部分的乳头没有布遮挡，是一种色情内衣。
+
+CASE "乳贴"
+	CALL LINGERIE_DETAIL_COMMON("上面","Ｂ露出","密封")
+	PRINTL 贴在乳头上，以仅隐藏乳头的内衣…或者更确切地说，是一个贴纸
+	PRINTFORML 当然，%SAVESTR:标识／乳房%本身完全无法隐藏。
+
+CASE "乳头牌"
+	CALL LINGERIE_DETAIL_COMMON("上面","Ｂ露出","密封")
+	PRINTL 用于贴在乳头上以遮掩的符。
+	PRINTL 虽然我认为只是个符，但将其称为「用来遮住乳头」似乎会更让人安心，且没有抵触感。
+
+CASE "眼罩胸罩"
+	CALL LINGERIE_DETAIL_COMMON("上面","Ｂ露出","极小","膨乳时破损")
+	PRINTL 像眼罩一样用布遮住乳头的内衣。
+	PRINTL 隐藏的部分非常少，而且松开绳子就会脱掉。
+
+CASE "局部露出内裤"
+	CALL LINGERIE_DETAIL_COMMON("下面","私处露出","")
+	PRINTL 本来应该是女性的保护私处的内衣，但是…，
+	PRINTL 由于私处部分没有布料，因此是一种一丝不挡的情趣内衣。
+
+CASE "私处贴纸"
+	CALL LINGERIE_DETAIL_COMMON("下面","Ａ露出","密封")
+	PRINTL 贴在私处关键部位以遮掩的，更像是贴纸而不是内衣。
+	PRINTL 只要撕下来就能很容易地插入。
+	PRINTL 虽然在和服或巫女服的内衣上犹豫不决，但在这个世界里决定穿上褌和贴在前面的内衣。
+
+CASE "胯部牌"
+	CALL LINGERIE_DETAIL_COMMON("下面","Ａ露出","密封")
+	PRINTL 用于贴在私处以遮掩的重要部位的符。
+	PRINTL 虽然我认为只是个符，但将其称为「用于保护私处」似乎会更让人安心，且没有抵触感。
+
+CASE "微型比基尼"
+	CALL LINGERIE_DETAIL_COMMON("上下","Ｂ露出","极小")
+	PRINTL 这是一套上下配套的泳衣，虽然可以作为内衣使用，但是布面积非常少，上面只能遮住乳头。
+	PRINTL 稍微动一下就能看到乳头，所以可能不适合游泳。
+
+CASE "吊袜带"
+	CALL ACCESSORY_DETAIL_COMMON("腿")
+	PRINTL 这是用4条绑带固定丝袜的袜带。
+	PRINTL 因此，尽管称为「吊袜带」，但被视为腿饰
+	PRINTL 且包括丝袜在内。
+
+CASE "绳"
+	CALL LINGERIE_DETAIL_COMMON("上下","Ｂ露出")
+	PRINTL 上下配套的内衣？所以，上面只能隐藏乳头。
+	PRINTL 毕竟是绳子。
+
+ENDSELECT
+

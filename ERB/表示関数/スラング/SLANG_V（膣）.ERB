@@ -1,0 +1,124 @@
+﻿;**********************************************************
+;Vagina(ヴァギナ)の淫語
+;**********************************************************
+@SLANG_V(ARG)
+#DIM WORD_LIMIT
+#FUNCTIONS
+
+;初期化
+EXIST = 0
+WORD_LIMIT = 0
+SLANGWORD=
+
+SIF GETBIT(FLAG:黑话前缀／膣,0) && CFLAG:身高 < FLAG:黑话／儿童标准上限身高数值 && RAND:100 < 80
+	SLANGWORD += "未熟"
+IF GETBIT(FLAG:黑话前缀／膣,1) && MARK:淫壶 && RAND:100 < 20
+	SLANGWORD += "淫荡的"
+	WORD_LIMIT ++
+ENDIF
+IF GETBIT(FLAG:黑话前缀／膣,2) && MARK:淫壶 && RAND:100 < 50
+	SLANGWORD += "淫乱"
+	WORD_LIMIT ++
+ENDIF
+
+IF GETBIT(FLAG:黑话替换／膣,9)
+	EXIST ++
+	SIF RAND:100 < 50
+		RETURNF SAVESTR:标识／膣
+ENDIF
+IF GETBIT(FLAG:黑话替换／膣,6) && MARK:淫壶
+	EXIST ++
+	IF RAND:100 < 30
+		SLANGWORD += "阴茎套"
+		RETURNF SLANGWORD
+	ENDIF
+ENDIF
+IF GETBIT(FLAG:黑话替换／膣,5) && MARK:淫壶
+	EXIST ++
+	IF RAND:100 < 30
+		SLANGWORD += "鸡巴套"
+		RETURNF SLANGWORD
+	ENDIF
+ENDIF
+IF GETBIT(FLAG:黑话替换／膣,4) && MARK:榨精淫穴
+	EXIST ++
+	IF RAND:100 < 30
+		SLANGWORD += "榨精淫穴"
+		RETURNF SLANGWORD
+	ENDIF
+ENDIF
+IF GETBIT(FLAG:黑话替换／膣,3) && TALENT:名器
+	EXIST ++
+	IF RAND:100 < 30
+		;スラング置換仕切り直し
+		SLANGWORD =
+		SIF GETBIT(FLAG:黑话前缀／膣,2) && MARK:淫壶 && RAND:100 < 80
+			SLANGWORD += "淫乱"
+		SLANGWORD += "名器"
+		RETURNF SLANGWORD
+	ENDIF
+ENDIF
+IF GETBIT(FLAG:黑话替换／膣,2) && CFLAG:身高 < FLAG:黑话／儿童标准上限身高数值
+	EXIST ++
+	IF RAND:100 < 30
+		SLANGWORD =
+		SIF GETBIT(FLAG:黑话前缀／膣,2) && MARK:淫壶 && RAND:100 < 80
+			SLANGWORD += "淫乱"
+		SLANGWORD += "萝莉私处"
+		RETURNF SLANGWORD
+	ENDIF
+ENDIF
+IF GETBIT(FLAG:黑话替换／膣,1) && CFLAG:身高 < FLAG:黑话／儿童标准上限身高数值
+	EXIST ++
+	IF RAND:100 < 30
+		SLANGWORD += "柔软私处"
+		RETURNF SLANGWORD
+	ENDIF
+ENDIF
+SIF GETBIT(FLAG:黑话替换／膣,0) && EXIST
+	RESTART
+
+IF GETBIT(FLAG:黑话标识／膣,0) && RAND:100 < 50
+	SLANGWORD += "膣穴"
+	RETURNF SLANGWORD
+ELSEIF GETBIT(FLAG:黑话标识／膣,1) && RAND:100 < 30
+	SLANGWORD += "阴孔"
+	RETURNF SLANGWORD
+ELSEIF GETBIT(FLAG:黑话标识／膣,3) && RAND:100 < 70
+	SLANGWORD += "小穴"
+	RETURNF SLANGWORD
+ELSEIF GETBIT(FLAG:黑话标识／膣,2) && RAND:100 < 30
+	SLANGWORD += "肉壶"
+	RETURNF SLANGWORD
+ELSEIF GETBIT(FLAG:黑话标识／膣,4) && RAND:100 < 30
+	SLANGWORD += "阴道"
+	RETURNF SLANGWORD
+ELSEIF GETBIT(FLAG:黑话标识／膣,5) && RAND:100 < 30
+	SLANGWORD += "女性器"
+	RETURNF SLANGWORD
+ELSEIF GETBIT(FLAG:黑话标识／膣,6)
+	IF !WORD_LIMIT
+		SLANGWORD += "下边的口"
+		RETURNF SLANGWORD
+	ELSEIF RAND:100 < 50
+		SLANGWORD =
+		SLANGWORD += "下边的口"
+		RETURNF SLANGWORD
+	ENDIF
+ENDIF
+RESTART
+
+
+;*************【淫語覚書（未登録）】***********************
+;肉洞
+;肉壁
+;肉筒
+;膣筒
+;産道
+;蜜壺
+;肉オナホ
+;
+;*************【淫語覚書（未登録）】***********************
+
+
+

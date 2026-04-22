@@ -1,0 +1,82 @@
+﻿;**********************************************************
+;Hip(ヒップ)の淫語
+;**********************************************************
+@SLANG_H(ARG)
+#FUNCTIONS
+
+;初期化
+EXIST = 0
+SLANGWORD =
+
+IF GETBIT(FLAG:黑话前缀／尻,1) && GROUPMATCH(CSTR:体型,"丰腴","丰满","性感") && RAND:100 < 10 && !EXIST
+	;くどすぎないようにEXISTで次を止める
+	SLANGWORD += "饱满的"
+	EXIST ++
+ENDIF
+IF GETBIT(FLAG:黑话前缀／尻,2) && GROUPMATCH(CSTR:体型,"丰腴","丰满","性感") && RAND:100 < 10 && !EXIST
+	SLANGWORD += "肉感的"
+	EXIST ++
+ENDIF
+IF GETBIT(FLAG:黑话前缀／尻,3) && GROUPMATCH(CSTR:体型,"丰腴","丰满") && RAND:100 < 10 && !EXIST
+	SLANGWORD += "丰硕的"
+	EXIST ++
+ENDIF
+IF GETBIT(FLAG:黑话前缀／尻,0) && GROUPMATCH(CSTR:体型,"丰腴","丰满","性感") && RAND:100 < 30 && !EXIST
+	SLANGWORD += "丰满的"
+	EXIST ++
+ENDIF
+IF GETBIT(FLAG:黑话前缀／尻,4) && GROUPMATCH(CSTR:体型,"瘦弱") && RAND:100 < 15 && !EXIST
+	SLANGWORD += "瘦削的"
+	EXIST ++
+ENDIF
+IF GETBIT(FLAG:黑话前缀／尻,5) && GROUPMATCH(CSTR:体型,"苗条") && RAND:100 < 15 && !EXIST
+	SLANGWORD += "紧绷的"
+	EXIST ++
+ENDIF
+EXIST = 0
+
+SIF GETBIT(FLAG:黑话前缀／尻,6) && GROUPMATCH(CSTR:体型,"丰腴","丰满") && RAND:100 < 15 && !EXIST
+	SLANGWORD += "安产型的"
+
+IF GETBIT(FLAG:黑话前缀／尻,9) && !GROUPMATCH(CSTR:体型,"瘦弱") && RAND:100 < 10 && !EXIST
+	SLANGWORD += "弹力十足的"
+	EXIST ++
+ENDIF
+IF GETBIT(FLAG:黑话前缀／尻,7) && GROUPMATCH(CSTR:体型,"丰腴","丰满","性感") && RAND:100 < 20 && !EXIST
+	SLANGWORD += "大的"
+	EXIST ++
+ENDIF
+IF GETBIT(FLAG:黑话前缀／尻,8) && GROUPMATCH(CSTR:体型,"瘦弱","苗条") && RAND:100 < 20 && !EXIST
+	SLANGWORD += "小的"
+	EXIST ++
+ENDIF
+EXIST = 0
+
+IF !GROUPMATCH(CSTR:体型,"瘦弱")
+	IF GETBIT(FLAG:黑话前缀／尻,10) && RAND:100 < 20
+		SLANGWORD += "生机勃勃的"
+	ELSEIF GETBIT(FLAG:黑话前缀／尻,11) && RAND:100 < 20
+		SLANGWORD += "柔软的"
+	ELSEIF GETBIT(FLAG:黑话前缀／尻,12) && RAND:100 < 20
+		SLANGWORD += "形状的好"
+	ENDIF
+ENDIF
+
+IF GETBIT(FLAG:黑话标识／尻,0) && RAND:100 < 50
+	SLANGWORD += "尻"
+	RETURNF SLANGWORD
+ELSEIF GETBIT(FLAG:黑话标识／尻,1) && RAND:100 < 30
+	SLANGWORD += "桃臀"
+	RETURNF SLANGWORD
+ELSEIF GETBIT(FLAG:黑话标识／尻,2) && RAND:100 < 30
+	SLANGWORD += "屁股"
+	RETURNF SLANGWORD
+ELSEIF GETBIT(FLAG:黑话标识／尻,3) && RAND:100 < 30
+	SLANGWORD += "臀部"
+	RETURNF SLANGWORD
+ELSEIF GETBIT(FLAG:黑话标识／尻,4)
+	SLANGWORD += "屁股"
+	RETURNF SLANGWORD
+ENDIF
+RESTART
+

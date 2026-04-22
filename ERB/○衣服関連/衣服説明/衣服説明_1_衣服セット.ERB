@@ -1,0 +1,63 @@
+﻿
+;衣服セット
+;ARGS→どのメニューから来たか
+@ITEM_DETAIL_CLOTHE_CLOTHESET(ARGS)
+
+PRINT 内容：
+CALL EQUIP_CLOTHE_SET_COMMON("一套显示")
+PRINTL
+
+;買い物の時だけ割引表示
+SIF ARGS == "购物"
+	CALL PRINTL_WORD_COLOR("捆绑价格享受9折","黄")
+SELECTCASE ITEMNAME:SELECT_ITEM
+CASE "工作服套装"
+	PRINTL 工装与女性内衣的一套。
+
+CASE "背带裤套装"
+	PRINTL 工装裤和日常使用的布衣、女性内衣的一套。
+
+CASE "巫女服套装"
+	PRINTL 巫女服及其搭配的女性内衣的一套。
+
+CASE "修女服装套装"
+	PRINTL 修女服和女性内衣、搭配的面纱的一套。
+
+CASE "乳牛服装套装"
+	PRINTL 适合挤奶家畜的乳牛风格的内衣和饰品的一套。
+	PRINTFORML 乳牛的工作是被挤%SAVESTR:标识／母乳%，所以衣服没有成套。
+
+CASE "微型比基尼乳牛服装套装"
+	PRINTL 适合挤奶家畜的内衣和饰品的一套，仅仅能够勉强遮住乳头。
+
+CASE "开孔奶牛服装套装"
+	PRINTL 适合挤奶家畜的内衣和饰品的一套，重要部位完全暴露。
+
+CASE "女仆服套装"
+	PRINTL 女仆装和相应的饰品、女性内衣的一套。
+
+CASE "授乳女仆服装套装"
+	PRINTFORML 为了在主人想要的时候随时可以奉献%SAVESTR:标识／母乳%，特意设计了带有哺乳开口的女仆装和文胸，
+	PRINTL 女仆装搭配的饰品、乳牛风格的饰品和女性内衣的一套。
+
+CASE "兔女郎装套装"
+	PRINTL 异世界的服装兔女郎装和相应饰品的一套。
+	PRINTL 虽然是无法穿戴内衣的服装，但可以使用贴纸类型的内衣，所以使用了它。
+
+CASE "反向兔女郎套装"
+	PRINTL 异世界的反向兔女郎装和相应饰品的一套。
+	PRINTL 是出于温情还是为了煽动羞耻心，心形的乳贴和前贴是一套。
+
+CASE "礼服套装"
+	PRINTL 华丽的裙子与相配的女性内衣、饰品的一套。
+
+CASE "夏季连衣裙套装"
+	PRINTL 充满夏日气息的连衣裙与草帽，以及女性内衣的一套。
+
+CASE "哥特萝莉时尚套装"
+	PRINTL 与异世界的华丽服装相配的大量饰品和女性内衣的一套。
+
+ENDSELECT
+
+
+

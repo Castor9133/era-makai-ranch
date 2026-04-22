@@ -1,0 +1,383 @@
+﻿
+;処女表示詳細
+;ARG→1なら改行
+@PRINT_VIRGIN_DETAIL(ARG)
+
+SIF !FLAG:正在化妆角色
+	PRINT 在地上
+PRINTFORML 性经验：【%CSTR:性经验%】
+CALL PRINT_VIRGIN_DETAIL_V
+CALL PRINT_VIRGIN_DETAIL_A
+CALL PRINT_VIRGIN_DETAIL_M
+CALL PRINT_VIRGIN_DETAIL_PAIZURI
+CALL PRINT_VIRGIN_DETAIL_KISS
+CALL PRINT_VIRGIN_DETAIL_MILK
+CALL PRINT_VIRGIN_DETAIL_BIRTH
+RESETCOLOR
+SIF ARG
+	PRINTL
+
+
+
+;Ｖ
+@PRINT_VIRGIN_DETAIL_V
+
+SIF !GETBIT(＃经验显示／Ｖ性交＃)
+	RETURN
+IF TALENT:处女结界
+	CALL PRINTL_WORD_COLOR("【处女结界】","浅蓝色")
+	RETURN
+ENDIF
+IF TALENT:处女
+	CALL PRINT_WORD_COLOR("【处女】","浅蓝色")
+ELSE
+	CALL PRINT_WORD_COLOR("【非处女】","桃")
+	PRINT 　初次体验：
+	VARGIN_PERSON = %CSTR:初经验／Ｖ%
+	SIF CSTR:初经验／Ｖ == ""
+		VARGIN_PERSON = 未知
+	PRINTFORM %VARGIN_PERSON,16,LEFT%　
+	
+	;経験人数を追加
+	IF !EXP:地上经验人数／人类／Ｖ性交 && !EXP:地上经验人数／魔族／Ｖ性交 && EXP:经验次数／主人公／Ｖ性交 && !EXP:经验次数／异形／Ｖ性交
+		PRINTFORM 经验人数：只有%CALLNAME:0%・{EXP:经验次数／主人公／Ｖ性交}下
+	ELSE
+		PRINTFORM 经验人数：地上{EXP:地上经验人数／人类／Ｖ性交}人
+		SIF EXP:地上经验人数／魔族／Ｖ性交
+			PRINTFORM +魔界{EXP:地上经验人数／魔族／Ｖ性交}人
+		SIF EXP:经验次数／主人公／Ｖ性交
+			PRINTFORM +%CALLNAME:0%{EXP:经验次数／主人公／Ｖ性交}回
+		SIF EXP:经验次数／异形／Ｖ性交
+			PRINTFORM +异形{EXP:经验次数／异形／Ｖ性交}回
+	ENDIF
+ENDIF
+PRINTL
+
+
+
+;Ａ
+@PRINT_VIRGIN_DETAIL_A
+
+SIF !GETBIT(＃经验显示／Ａ性交＃)
+	RETURN
+IF TALENT:Ａ处女
+	CALL PRINT_WORD_COLOR("【Ａ处女】","浅蓝色")
+ELSE
+	CALL PRINT_WORD_COLOR("【Ａ非处女】","桃")
+	PRINT 初次体验：
+	VARGIN_PERSON = %CSTR:初经验／Ａ%
+	SIF CSTR:初经验／Ａ == ""
+		VARGIN_PERSON = 未知
+	PRINTFORM %VARGIN_PERSON,16,LEFT%　
+	IF !EXP:地上经验人数／人类／Ａ性交 && !EXP:地上经验人数／魔族／Ａ性交 && EXP:经验次数／主人公／Ａ性交 && !EXP:经验次数／异形／Ａ性交
+		PRINTFORM 经验人数：%CALLNAME:0%・{EXP:经验次数／主人公／Ａ性交}下
+	ELSE
+		PRINTFORM 经验人数：地上{EXP:地上经验人数／人类／Ａ性交}人
+		SIF EXP:地上经验人数／魔族／Ａ性交
+			PRINTFORM +魔界{EXP:地上经验人数／魔族／Ａ性交}人
+		SIF EXP:经验次数／主人公／Ａ性交
+			PRINTFORM +%CALLNAME:0%{EXP:经验次数／主人公／Ａ性交}回
+		SIF EXP:经验次数／异形／Ａ性交
+			PRINTFORM +异形{EXP:经验次数／异形／Ａ性交}回
+	ENDIF
+ENDIF
+PRINTL
+
+
+
+;Ｍ
+@PRINT_VIRGIN_DETAIL_M
+
+SIF !GETBIT(＃经验显示／Ｍ性交＃)
+	RETURN
+IF TALENT:Ｍ处女
+	CALL PRINT_WORD_COLOR("【Ｍ处女】","浅蓝色")
+ELSE
+	PRINT 　　　初Ｍ性交：
+	VARGIN_PERSON = %CSTR:初经验／Ｍ性交%
+	SIF CSTR:初经验／Ｍ性交 == ""
+		VARGIN_PERSON = 未知
+	PRINTFORM %VARGIN_PERSON,16,LEFT%　
+	IF !EXP:地上经验人数／人类／Ｍ性交 && !EXP:地上经验人数／魔族／Ｍ性交 && EXP:经验次数／主人公／Ｍ性交 && !EXP:经验次数／异形／Ｍ性交
+		PRINTFORM 经验人数：%CALLNAME:0%・{EXP:经验次数／主人公／Ｍ性交}下
+	ELSE
+		PRINTFORM 经验人数：地上{EXP:地上经验人数／人类／Ｍ性交}人
+		SIF EXP:地上经验人数／魔族／Ｍ性交
+			PRINTFORM +魔界{EXP:地上经验人数／魔族／Ｍ性交}人
+		SIF EXP:经验次数／主人公／Ｍ性交
+			PRINTFORM +%CALLNAME:0%{EXP:经验次数／主人公／Ｍ性交}回
+		SIF EXP:经验次数／异形／Ｍ性交
+			PRINTFORM +异形{EXP:经验次数／异形／Ｍ性交}回
+	ENDIF
+ENDIF
+PRINTL
+
+
+
+;パイズリ
+@PRINT_VIRGIN_DETAIL_PAIZURI
+
+SIF !GETBIT(＃经验显示／乳交＃)
+	RETURN
+IF TALENT:无乳交经验
+	CALL PRINT_WORD_COLOR("【乳交处女】","浅蓝色")
+ELSE
+	PRINT 　　乳交初经验：
+	VARGIN_PERSON = %CSTR:初经验／乳交%
+	SIF CSTR:初经验／乳交 == ""
+		VARGIN_PERSON = 未知
+	PRINTFORM %VARGIN_PERSON,16,LEFT%　
+	IF !EXP:地上经验人数／人类／乳交 && !EXP:地上经验人数／魔族／乳交 && EXP:经验次数／主人公／乳交 && !EXP:经验次数／异形／乳交
+		PRINTFORM 经验人数：%CALLNAME:0%・{EXP:经验次数／主人公／乳交}下
+	ELSE
+		PRINTFORM 经验人数：地上{EXP:地上经验人数／人类／乳交}人
+		SIF EXP:地上经验人数／魔族／乳交
+			PRINTFORM +魔界{EXP:地上经验人数／魔族／乳交}人
+		SIF EXP:经验次数／主人公／乳交
+			PRINTFORM +%CALLNAME:0%{EXP:经验次数／主人公／乳交}回
+		SIF EXP:经验次数／异形／乳交
+			PRINTFORM +异形{EXP:经验次数／异形／乳交}回
+	ENDIF
+ENDIF
+PRINTL
+
+
+
+;キス
+@PRINT_VIRGIN_DETAIL_KISS
+
+SIF !GETBIT(＃经验显示／接吻＃)
+	RETURN
+IF TALENT:无接吻经验
+	CALL PRINT_WORD_COLOR("【没有接吻经验】","浅蓝色")
+ELSE
+	PRINT 　　　　　　初吻：
+	VARGIN_PERSON = %CSTR:初经验／接吻%
+	SIF CSTR:初经验／接吻 == ""
+		VARGIN_PERSON = 未知
+	PRINTFORM %VARGIN_PERSON,16,LEFT%　
+	IF !EXP:地上经验人数／人类／接吻 && !EXP:地上经验人数／魔族／接吻 && EXP:经验次数／主人公／接吻 && !EXP:经验次数／异形／接吻
+		PRINTFORM 经验人数：只有%CALLNAME:0%・{EXP:经验次数／主人公／接吻}下
+	ELSE
+		PRINTFORM 经验人数：地上{EXP:地上经验人数／人类／接吻}人
+		SIF EXP:地上经验人数／魔族／接吻
+			PRINTFORM +魔界{EXP:地上经验人数／魔族／接吻}人
+		SIF EXP:经验次数／主人公／接吻
+			PRINTFORM +%CALLNAME:0%{EXP:经验次数／主人公／接吻}回
+		SIF EXP:经验次数／异形／接吻
+			PRINTFORM +异形{EXP:经验次数／异形／接吻}回
+	ENDIF
+ENDIF
+PRINTL
+
+
+
+;授乳
+@PRINT_VIRGIN_DETAIL_MILK
+
+SIF !GETBIT(＃经验显示／授乳＃)
+	RETURN
+SIF !MARK:母乳体质
+	RETURN
+CALL PRINT_WORD_COLOR("【母乳体质】","桃")
+IF TALENT:无授乳经验
+	CALL PRINT_WORD_COLOR("【没有授乳经验】","浅蓝色")
+ELSE
+	PRINT 初次授乳：
+	VARGIN_PERSON = %CSTR:初经验／授乳%
+	SIF CSTR:初经验／授乳 == ""
+		VARGIN_PERSON = 未知
+	PRINTFORM %VARGIN_PERSON,16,LEFT%　
+	IF !EXP:地上经验人数／人类／授乳 && !EXP:地上经验人数／魔族／授乳 && EXP:经验次数／主人公／授乳 && !EXP:经验次数／异形／授乳
+		PRINTFORM 经验人数：只有%CALLNAME:0%・{EXP:经验次数／主人公／授乳}下
+	ELSE
+		PRINTFORM 经验人数：地上{EXP:地上经验人数／人类／授乳}人
+		SIF EXP:地上经验人数／魔族／授乳
+			PRINTFORM +魔界{EXP:地上经验人数／魔族／授乳}人
+		SIF EXP:经验次数／主人公／授乳
+			PRINTFORM +%CALLNAME:0%{EXP:经验次数／主人公／授乳}回
+		SIF EXP:经验次数／异形／授乳
+			PRINTFORM +异形{EXP:经验次数／异形／授乳}回
+	ENDIF
+ENDIF
+PRINTL
+
+
+;出産
+@PRINT_VIRGIN_DETAIL_BIRTH
+
+SIF !GETBIT(＃经验显示／出产＃)
+	RETURN
+SIF !EXP:出产
+	RETURN
+
+;デフォでEXP:出産がある場合用の処理
+SIF EXP:出产 && 0 == EXP:地上经验次数／人类／出产 + EXP:地上经验次数／魔族／出产 + EXP:经验次数／主人公／出产 + EXP:经验次数／异形／出产
+	EXP:地上经验次数／人类／出产 = EXP:出产
+
+PRINT 　　　　　　　初産：
+VARGIN_PERSON = %CSTR:初经验／出产%之子
+SIF CSTR:初经验／出产 == ""
+	VARGIN_PERSON = 未知
+PRINTFORM %VARGIN_PERSON,16,LEFT%　
+IF !EXP:地上经验次数／人类／出产 && !EXP:地上经验次数／魔族／出产 && EXP:经验次数／主人公／出产 && !EXP:经验次数／异形／出产
+	PRINTFORM 出产回数：%CALLNAME:0%的子女・{EXP:经验次数／主人公／出产}回
+ELSE
+	;他のに合わせて地上経験人数／ニンゲンand魔族としたかったけど出産した子の親(の人数)とかだと表現しづらかったので変更
+	PRINTFORM 出产次数：地上{EXP:地上经验次数／人类／出产}回
+	SIF EXP:地上经验次数／魔族／出产
+		PRINTFORM +魔界{EXP:地上经验次数／魔族／出产}回
+	SIF EXP:经验次数／主人公／出产
+		PRINTFORM +%CALLNAME:0%之子{EXP:经验次数／主人公／出产}回
+	SIF EXP:经验次数／异形／出产
+		PRINTFORM +异形的孩子{EXP:经验次数／异形／出产}回
+ENDIF
+PRINTL
+
+
+
+;簡易表示
+@PRINT_VIRGIN_SIMPLE(ARG)
+
+SETCOLOR 0x00FFFF
+IF TALENT:处女结界
+	PRINT 【处女结界】
+ELSEIF TALENT:处女
+	PRINT 【处女】
+ENDIF
+SIF TALENT:Ａ处女 && GETBIT(＃经验显示／Ａ性交＃)
+	PRINT 【Ａ处女】
+RESETCOLOR
+SIF !ARG
+	PRINTL
+
+
+
+;あなた用
+@PRINT_VIRGIN_PLAYER
+
+CALL PRINT_VIRGIN_PLAYER_V
+CALL PRINT_VIRGIN_PLAYER_A
+CALL PRINT_VIRGIN_PLAYER_M
+CALL PRINT_VIRGIN_PLAYER_PAIZURI
+CALL PRINT_VIRGIN_PLAYER_KISS
+CALL PRINT_VIRGIN_PLAYER_MILK
+PRINTL
+
+
+
+;前
+@PRINT_VIRGIN_PLAYER_V
+
+SIF !GETBIT(＃经验显示／Ｖ性交＃)
+	RETURN
+IF TALENT:童贞
+	CALL PRINT_WORD_COLOR("【处男】","浅蓝色")
+ELSE
+	CALL PRINT_WORD_COLOR("【非童贞】","桃")
+	PRINT 　初次体验：
+	VARGIN_PERSON = %CSTR:初经验／Ｖ%
+	SIF CSTR:初经验／Ｖ == ""
+		VARGIN_PERSON = 未知
+	PRINTFORM %VARGIN_PERSON,16,LEFT%　
+	PRINTFORM 经验人数：{FLAG:主人公经验人数／Ｖ}人
+ENDIF
+PRINTL
+
+
+
+;後ろ
+@PRINT_VIRGIN_PLAYER_A
+
+SIF !GETBIT(＃经验显示／Ａ性交＃)
+	RETURN
+IF TALENT:Ａ童贞
+	CALL PRINT_WORD_COLOR("【Ａ处男】","浅蓝色")
+ELSE
+	CALL PRINT_WORD_COLOR("【Ａ非处男】","桃")
+	PRINT 初次体验：
+	VARGIN_PERSON = %CSTR:初经验／Ａ%
+	SIF CSTR:初经验／Ａ == ""
+		VARGIN_PERSON = 未知
+	PRINTFORM %VARGIN_PERSON,16,LEFT%　
+	PRINTFORM 经验人数：{FLAG:主人公经验人数／Ａ}人
+ENDIF
+PRINTL
+
+
+
+;Ｍ
+@PRINT_VIRGIN_PLAYER_M
+
+SIF !GETBIT(＃经验显示／Ｍ性交＃)
+	RETURN
+IF TALENT:Ｍ童贞
+	CALL PRINT_WORD_COLOR("【没有Ｍ性交经验】","浅蓝色")
+ELSE
+	PRINT 　　　初Ｍ性交：
+	VARGIN_PERSON = %CSTR:初经验／Ｍ性交%
+	SIF CSTR:初经验／Ｍ性交 == ""
+		VARGIN_PERSON = 未知
+	PRINTFORM %VARGIN_PERSON,16,LEFT%　
+	PRINTFORM 经验人数：{FLAG:主人公经验人数／Ｍ}人
+ENDIF
+PRINTL
+
+
+
+;パイズリ
+@PRINT_VIRGIN_PLAYER_PAIZURI
+
+SIF !GETBIT(＃经验显示／乳交＃)
+	RETURN
+IF TALENT:无乳交经验
+	CALL PRINT_WORD_COLOR("【没有乳交经验】","浅蓝色")
+ELSE
+	PRINT 　　乳交初经验：
+	VARGIN_PERSON = %CSTR:初经验／乳交%
+	SIF CSTR:初经验／乳交 == ""
+		VARGIN_PERSON = 未知
+	PRINTFORM %VARGIN_PERSON,16,LEFT%　
+	PRINTFORM 经验人数：{FLAG:主人公经验人数／乳交}人
+ENDIF
+PRINTL
+
+
+
+;キス
+@PRINT_VIRGIN_PLAYER_KISS
+
+SIF !GETBIT(＃经验显示／接吻＃)
+	RETURN
+IF TALENT:无接吻经验
+	CALL PRINT_WORD_COLOR("【没有接吻经验】","浅蓝色")
+ELSE
+	PRINT 　　　　　　初吻：
+	VARGIN_PERSON = %CSTR:初经验／接吻%
+	SIF CSTR:初经验／接吻 == ""
+		VARGIN_PERSON = 未知
+	PRINTFORM %VARGIN_PERSON,16,LEFT%　
+	PRINTFORM 经验人数：{FLAG:主人公经验人数／接吻}人
+ENDIF
+PRINTL
+
+
+
+;授乳
+@PRINT_VIRGIN_PLAYER_MILK
+
+SIF !GETBIT(＃经验显示／授乳＃)
+	RETURN
+IF TALENT:无授乳经验
+	CALL PRINT_WORD_COLOR("【没有人类吸奶经验】","浅蓝色")
+ELSE
+	PRINT 　　　　　　初次授乳：
+	VARGIN_PERSON = %CSTR:初经验／授乳%
+	SIF CSTR:初经验／授乳 == ""
+		VARGIN_PERSON = 未知
+	PRINTFORM %VARGIN_PERSON,16,LEFT%　
+	PRINTFORM 经验人数：{FLAG:主人公经验人数／授乳}人
+ENDIF
+PRINTL
+
+

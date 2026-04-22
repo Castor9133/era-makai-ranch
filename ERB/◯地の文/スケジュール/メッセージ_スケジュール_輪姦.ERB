@@ -1,0 +1,36 @@
+﻿
+;輪姦開始地の文
+@RINKAN_SLAVE_BEGIN_MESSAGE
+
+;処女結界あるかどうかで変わってくる
+IF TALENT:处女结界
+	IF !CFLAG:轮奸次数
+		PRINTFORML 哥布林们把手凑近%CALLNAME%露出的的双腿之间…
+		PRINTFORML 但是由于【处女结界】的效果不能触碰%CALLNAME%的私处！
+		
+		;乳が小さいと物好きだけ寄り付く　この要素いる？　いるんじゃない？
+		PRINTFORML 哥布林们耸了耸肩，但其中一只却像泄愤一样插入到没完全湿透的%SLANG_A()%中…
+		PRINTFORML 看到%CALLNAME%咿咿的反应，其他哥布林也都喘着粗气…
+		PRINTFORML 周围的哥布林开始玩弄%CALLNAME%的%SLANG_C()%，
+		IF ABL:胸围大小 < BUSTSIZE_普乳
+			PRINTFORML 但是有一部分喜欢胸部的人开始舔起%CALLNAME%的%SLANG_B()%…
+		ELSE
+			PRINTFORML 但还是开始随心所欲地吮吸%CALLNAME%的%SLANG_B()%…
+		ENDIF
+	ELSE
+		PRINTFORML 被捕获的%CALLNAME%的纯洁虽然被处女结界保护着，
+		PRINTFORML 一边被插入%SLANG_A()%，一边不断被玩弄%SLANG_C()%和%SLANG_B()%… 
+	ENDIF
+ELSE
+	IF !CFLAG:轮奸次数
+		PRINTFORML 哥布林们把%SAVESTR:标识／阴茎%插入到没完全湿透的%CALLNAME%的%SLANG_V()%中…
+		PRINTFORML 就像嘲笑忍耐痛苦的%CALLNAME%一样，随心所欲地吮吸%SLANG_B()%，
+		PRINTFORML 被随意玩弄着乳头和%SAVESTR:标识／阴蒂%，连%SAVESTR:标识／肛门%也被侵犯，被当作肉便器处理…
+	ELSE
+		PRINTFORML 被俘获的%CALLNAME%继续被哥布林们侵犯… 
+	ENDIF
+ENDIF
+
+
+
+

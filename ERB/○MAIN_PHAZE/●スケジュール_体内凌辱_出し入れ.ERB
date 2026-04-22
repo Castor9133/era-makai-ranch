@@ -1,0 +1,152 @@
+﻿
+;体内凌辱　3段階必要
+;吐き出す判定
+@MASTER_REMOVE
+
+CATTLE_COUNT = CMATCH(CSTR:日程,"释放准备")
+SIF !CATTLE_COUNT
+	RETURN
+PRINTL 　　　《 从体内解放出来 》
+CALL MASTER_REMOVE_MESSAGE
+WAIT_ON = 0
+FOR TARGET_COUNT,1,CHARANUM
+	TARGET = TARGET_COUNT
+	SIF CSTR:日程 != "释放准备"
+		CONTINUE
+	CALL KOJO_PRINT("日程","体内凌辱","解放")
+	SIF MESSAGE_COUNT
+		WAIT_ON ++
+	
+	;この後行動はしないので何でもいいっちゃいい
+	CSTR:日程 = 解放
+	
+	;空にしておく
+	CSTR:住处 =
+	CFLAG:行动完毕 = 1
+	
+	;裸を見られる
+	CALL NUDE_EXP_SET
+	SIF CFLAG:虚脱
+		CALL MASTER_REMOVE_COLLAPSE_MESSAGE
+NEXT
+IF WAIT_ON
+	PRINTW
+ELSE
+	PRINTL
+ENDIF
+DRAWLINE
+
+
+
+;取り込み判定
+@MASTER_VORE_MOVE
+
+CATTLE_COUNT = CMATCH(CSTR:日程,"体内凌辱准备")
+SIF !CATTLE_COUNT
+	RETURN
+PRINTL 　　　《 理解 》
+WAIT_ON = 0
+CALL RANDOM_CHARA_SCHEDULE_COMMON("体内凌辱准备")
+SIF WAIT_ON
+	PRINTW
+DRAWLINE
+CALL RESET_TRAIN_PALAM
+
+
+
+;体内取り込み入り口
+;ARG→メッセージのシンプル版
+@MASTER_VORE_MOVE_ENTRANCE(ARG)
+
+SIF CSTR:状态／主人公的孩子 == "成长后"
+	CALL CHILD_REBELLION(1)
+IF !EXP:执行次数／体内凌辱
+	KOJO_TYPE = 初次
+ELSE
+	KOJO_TYPE = 普通
+ENDIF
+IF !ARG
+	CALL MASTER_VORE_MOVE_MESSAGE
+ELSE
+	CALL MASTER_VORE_MOVE_MESSAGE_SIMPLE
+ENDIF
+
+;WAIT_ONを+しておいて脱衣が入った場合は0にリセットし無駄WAITをなくす
+WAIT_ON ++
+
+;強制脱衣　鎧は取っておく、アクセサリーは無視
+EQUIP:装备中ID／铠 = 0
+CALL MASTER_VORE_MOVE_STRIP_CLOTHE
+CALL MASTER_VORE_MOVE_STRIP_LINGERIE
+CSTR:日程 = 体内凌辱
+CSTR:住处 = 体内
+CALL RESET_SLAVE_ROOM("体内凌辱")
+
+
+
+;衣服吐き出すか破れにするか
+@MASTER_VORE_MOVE_STRIP_CLOTHE
+
+SIF !EQUIP:装备中ID／衣服
+	RETURN
+PRINTFORML 您想吐出%CALLNAME%的%＃穿着衣服／名称＃%吗？
+PRINTLC [ 0] 吐出来
+PRINTLC [ 1] 用衣服消化液溶解
+IF ＃穿着衣服／胸部撕裂＃ && ＃穿着衣服／私处撕裂＃
+	PRINTL [ 2] 保持原样（撕裂状态）
+ELSEIF (＃穿着衣服／胸部撕裂＃ || ＃穿着衣服／乳房露出＃) && (＃穿着衣服／私处撕裂＃ || ＃穿着衣服／私处露出＃)
+	PRINTL [ 2] 保持原样（露出衣服）
+ELSE
+	PRINTL [ 2] 只熔化碍事的部分
+ENDIF
+BINPUT
+SELECTCASE RESULT
+CASE 0
+	PRINTFORML 吐出%CALLNAME%的%＃穿着衣服／名称＃%。
+	EQUIP:装备中ID／衣服 = 0
+CASE 1
+	PRINTFORML 洒上衣服消化液，把%CALLNAME%的%＃穿着衣服／名称＃%溶化了。
+	EQUIP:(EQUIP:装备中ID／衣服) = 0
+	EQUIP:装备中ID／衣服 = 0
+CASE 2
+	IF !(＃穿着衣服／胸部撕裂＃ || ＃穿着衣服／乳房露出＃)
+		PRINTFORML 在%CALLNAME%的%＃穿着衣服／名称＃%的胸前浇上衣物消化液，
+		PRINTFORML 留着形状露出了%SLANG_B()%…
+		SETBIT EQUIP:(EQUIP:装备中ID／衣服),1
+	ENDIF
+	IF !(＃穿着衣服／私处撕裂＃ || ＃穿着衣服／私处露出＃)
+		PRINTFORML 在%CALLNAME%的%＃穿着衣服／名称＃%的私处泼入衣物消化液，
+		PRINTFORML 留着形状露出了%SLANG_V()%…
+		SETBIT EQUIP:(EQUIP:装备中ID／衣服),2
+	ENDIF
+ENDSELECT
+PRINTW
+WAIT_ON = 0
+
+
+
+;下着
+@MASTER_VORE_MOVE_STRIP_LINGERIE
+
+SIF !EQUIP:装备中ID／内衣上装 && !EQUIP:装备中ID／内衣下装
+	RETURN
+PRINTFORML 您想要吐出%CALLNAME%的%EQUIP_LINGERIE()%吗？
+PRINTLC [ 0] 吐出来
+PRINTL [ 1] 用衣服消化液溶解
+BINPUT
+SELECTCASE RESULT
+CASE 0
+	PRINTFORML 已吐出%CALLNAME%的%EQUIP_LINGERIE()%。
+	EQUIP:装备中ID／内衣上装 = 0
+	EQUIP:装备中ID／内衣下装 = 0
+CASE 1
+	PRINTFORML 洒上衣服消化液，溶解了%CALLNAME%的%EQUIP_LINGERIE()%。
+	EQUIP:(EQUIP:装备中ID／内衣上装) = 0
+	EQUIP:(EQUIP:装备中ID／内衣下装) = 0
+	EQUIP:装备中ID／内衣上装 = 0
+	EQUIP:装备中ID／内衣下装 = 0
+ENDSELECT
+PRINTW
+WAIT_ON = 0
+
+

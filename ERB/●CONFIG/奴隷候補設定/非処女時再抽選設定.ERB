@@ -1,0 +1,59 @@
+﻿
+;非処女時再抽選設定
+@NON_VIRGIN_REROLL_CONFIG
+
+CLEARLINE LINECOUNT
+PRINTL 在部分角色的性经验中选择了【非处女】【异常】【碧池】【肉便器】的情况下，
+PRINTL 设置再抽选的次数。（再抽选次数越多，越容易成为处女）
+DRAWLINE
+PRINTFORML [ 0] 贵族・王族：{FLAG:非处女时再抽选次数／高身份}下
+PRINTFORML [ 1] 　上位种族：{FLAG:非处女时再抽选次数／上位种族}下
+PRINTFORML [ 2] 　天界种族：{FLAG:非处女时再抽选次数／天界种族}下
+
+CALL PRINTL_ALIGN(-10)
+CALL DEFAULT_VOID_RETURN_BUTTON(1)
+BINPUT
+INPUT_NUM = RESULT
+PRINTL
+SIF !FLAG:可配置的候选奴隶
+	INPUT_NUM = 99
+SELECTCASE INPUT_NUM
+CASE 98
+	PRINTL 是否将非处女时再抽选次数恢复为默认值？
+	CALL ASK_YN
+	SIF !RESULT
+		CALL DEFAULT_VIRGIN_REROLL
+CASE 99
+	RETURN
+CASEELSE
+	CALL CHANGE_VIRGIN_REROLL_CONFIG(RESULT)
+ENDSELECT
+RESTART
+
+
+
+;設定変更
+;ARG→INPUT
+@CHANGE_VIRGIN_REROLL_CONFIG(ARG)
+
+;FLAG:非処女時再抽選回数／高身分→3050
+FLAG_REF = 3050
+FLAG_NUM = ARG +FLAG_REF
+
+;あんまCASEいらない
+PRINTL 设置非处女时进行再抽选的次数。
+PRINTL
+IF ARG == 1
+	;上位種族
+	PRINTL [ 1] 1次（默认）
+ELSE
+	;高身分・天界種族
+	PRINTL [ 3] 3次（默认）
+ENDIF
+PRINTL 或请输入0～99的数值。
+INPUT
+SIF RESULT >= 0 && RESULT < 100
+	FLAG:FLAG_NUM = RESULT
+
+
+

@@ -1,0 +1,88 @@
+﻿
+;種族特徴
+@PRINT_PORTRAIT_TRIBE
+
+CALL PRINT_PORTRAIT_TRIBE_EAR
+CALL PRINT_PORTRAIT_TRIBE_FORNT
+CALL PRINT_PORTRAIT_TRIBE_BEHIND
+
+
+
+;エルフ耳・ハーフリング耳
+@PRINT_PORTRAIT_TRIBE_EAR
+
+;コンフィグによりシスターヴェール時エルフ耳隠し追加
+;ハーフリングも耳制御に変更、こっちも耳隠す？
+SIF !TFLAG:临时脱衣／头 && ＃穿着头装备／名称＃ == "修女面纱" && FLAG:像素画／头装备隐藏耳朵
+	RETURN
+IF TALENT:精灵耳
+	SPRITECREATED @"%CSTR:颜色类别／肤色%_精灵耳"
+	SIF RESULT
+		PRT:8 = <nonbutton pos='%PY_2%'><img src='%CSTR:颜色类别／肤色%_精灵耳' height='%PY_3_4%' ypos = '%PY_FIX%'></nonbutton>
+ELSEIF TALENT:半身人耳
+	SPRITECREATED @"%CSTR:颜色类别／肤色%_半身人耳"
+	SIF RESULT
+		PRT:8 = <nonbutton pos='%PY_2%'><img src='%CSTR:颜色类别／肤色%_半身人耳' height='%PY_3_4%' ypos = '%PY_FIX%'></nonbutton>
+ENDIF
+
+
+
+;種族(前)
+@PRINT_PORTRAIT_TRIBE_FORNT
+
+SIF !TFLAG:临时脱衣／头 && ＃穿着头装备／名称＃ == "修女面纱" && FLAG:像素画／头装备隐藏耳朵
+	RETURN
+IF !TFLAG:临时脱衣／头 && ＃穿着头装备／名称＃ == "猫耳发箍"
+	RESULTS = %PRINT_PORTRAIT_CLOTHE_COLOR("头装备")%
+	CLOTHE_COLOR = %PRINT_PORTRAIT_CATEAR()%
+	SPRITECREATED @"%CLOTHE_COLOR%_猫耳族_前"
+	SIF RESULT
+		PRT:6 = <nonbutton pos='%PY_2%'><img src='%CLOTHE_COLOR%_猫耳族_前' height='%PY_3_4%' ypos = '%PY_FIX%'></nonbutton>
+ELSE
+	SPRITECREATED @"%CSTR:颜色类别／发色%_%CSTR:颜色类别／种族%_前"
+	IF RESULT
+		PRT:6 = <nonbutton pos='%PY_2%'><img src='%CSTR:颜色类别／发色%_%CSTR:颜色类别／种族%_前' height='%PY_3_4%' ypos = '%PY_FIX%'></nonbutton>
+	ELSE
+		SPRITECREATED @"%CSTR:颜色类别／肤色%_%CSTR:颜色类别／种族%_前"
+		IF RESULT
+			PRT:6 = <nonbutton pos='%PY_2%'><img src='%CSTR:颜色类别／肤色%_%CSTR:颜色类别／种族%_前' height='%PY_3_4%' ypos = '%PY_FIX%'></nonbutton>
+		ELSE
+			SPRITECREATED @"%CSTR:颜色类别／种族%_前"
+			SIF RESULT
+				PRT:6 = <nonbutton pos='%PY_2%'><img src='%CSTR:颜色类别／种族%_前' height='%PY_3_4%' ypos = '%PY_FIX%'></nonbutton>
+		ENDIF
+	ENDIF
+ENDIF
+
+
+
+;種族(後)
+@PRINT_PORTRAIT_TRIBE_BEHIND
+
+;背後OFFフラグがあれば飛ばす
+;仙人と天界系はちょっと下げたいなとおもったらちょうどよく分かれてた
+;翼人もちょっと下げたいなとなった
+;下げるかどうかCFLAG管理できるようにした
+SIF CFLAG:像素画设定／背后特征OFF
+	RETURN
+SPRITECREATED @"%CSTR:颜色类别／发色%_%CSTR:颜色类别／种族%_后"
+IF RESULT
+	;ここ短縮はできなさそう
+	IF CFLAG:身高 < FLAG:像素画／娇小适用上限数值 && CSTR:颜色类别／种族 == "翼人" && !CFLAG:像素画设定／背后高度调整
+		PRT:5 = <nonbutton pos='%PY_2%'><img src='%CSTR:颜色类别／发色%_%CSTR:颜色类别／种族%_后' height='%PY_3%' ypos = '%PY_1_2%'></nonbutton>
+	ELSE
+		PRT:5 = <nonbutton pos='%PY_2%'><img src='%CSTR:颜色类别／发色%_%CSTR:颜色类别／种族%_后' height='%PY_3%' ypos = '%PY_1%'></nonbutton>
+	ENDIF
+ELSE
+	SPRITECREATED @"%CSTR:颜色类别／种族%_后"
+	SIF !RESULT
+		RETURN
+	IF CFLAG:身高 < FLAG:像素画／娇小适用上限数值 && !CFLAG:像素画设定／背后高度调整
+		PRT:5 = <nonbutton pos='%PY_2%'><img src='%CSTR:颜色类别／种族%_后' height='%PY_3%' ypos = '%PY_1_2%'></nonbutton>
+	ELSE
+		PRT:5 = <nonbutton pos='%PY_2%'><img src='%CSTR:颜色类别／种族%_后' height='%PY_3%' ypos = '%PY_1%'></nonbutton>
+	ENDIF
+ENDIF
+
+
+

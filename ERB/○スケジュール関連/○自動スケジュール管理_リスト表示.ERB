@@ -1,0 +1,91 @@
+﻿
+;自動スケジュールのリスト
+@AUTO_SCHEDULE_LIST
+
+DRAWLINE
+PRINTL [ 10] 假日
+CALL AUTO_SCHEDULE_LIST_WORK
+CALL AUTO_SCHEDULE_LIST_TRAIN
+PRINTL
+
+;恋慕以上・従業員(またはあなた)ならカスタムを組めるようにする
+IF ((＃陷落状态／恋慕以上＃ || CSTR:状态／主人公的孩子 == "成长后") && CFLAG:日程设定可能／事务) || TALENT:业主
+	PRINTLC [400] 自定义Ａ
+	PRINTLC [401] 自定义Ｂ
+	PRINTL [402] 自定义Ｃ
+ENDIF
+
+
+
+;業務リスト
+@AUTO_SCHEDULE_LIST_WORK
+
+IF !CFLAG:日程设定可能／事务
+	CALL PRINTL_WORD_COLOR("　无法对工作作出指示","灰")
+	RETURN
+ENDIF
+PRINTFORMLC [100] 奶农／整天 <Lv{ABL:奶农,2}> 
+PRINTL [101] 奶农／朝夕 
+
+;事務は恋慕以上にした
+IF ＃陷落状态／恋慕以上＃ || CSTR:状态／主人公的孩子 == "成长后" || TALENT:业主
+	PRINTFORMLC [102] 事务／即消化 <Lv{ABL:事务,2}> 
+	PRINTL [103] 事务／积累后处理 
+ELSE
+	CALL PRINTL_WORD_COLOR("事务","灰")
+ENDIF
+
+CALL MILESTONE_UNLOCK_CHECK("调合","L")
+IF RESULT
+	PRINTFORMLC [104] 调合／整天 <Lv{ABL:药学,2}> 
+	PRINTL [105] 调合・奶农 
+ENDIF
+
+CALL MILESTONE_UNLOCK_CHECK("大浴场清洁","L")
+IF RESULT
+	PRINTFORMLC [106] 大浴场清洁→乳农 <Lv{ABL:清洁,2}> 
+	PRINTL [107] 大浴场清洁→自由 
+ENDIF
+IF !TARGET
+	CALL MILESTONE_UNLOCK_CHECK("自己战斗","L")
+	IF RESULT
+		PRINTLC [109] 战斗训练／整天 
+		PRINTLC [110] 战斗训练・奶农 
+		PRINTL [111] 战斗训练／从中午开始 
+	ENDIF
+ENDIF
+
+
+
+;調教リスト
+@AUTO_SCHEDULE_LIST_TRAIN
+
+IF !CFLAG:日程设定可能／调教
+	CALL PRINTL_WORD_COLOR("　无法设置调教设置","灰")
+	RETURN
+ENDIF
+IF MARK:母乳体质
+	PRINTLC [200] 搾乳／整天
+	PRINTL [201] 搾乳／朝夕
+	
+	IF !ITEM:灵力抽出装置
+		CALL PRINTL_WORD_COLOR("　日程抽取未解放","灰")
+	ELSEIF !BASE:灵力 && !MAXBASE:魔力
+		CALL PRINTL_WORD_COLOR("　无法抽出","灰")
+	ELSE
+		PRINTLC [202] 灵力抽出／整天
+		PRINTLC [203] 灵力抽出／朝夕
+		PRINTL [204] 搾乳→抽出
+	ENDIF
+	IF FLAG:触手出产合计 >= 10
+		PRINTLC [205] 触手刺激搾乳／整天
+		PRINTL [206] 触手刺激搾乳／朝夕
+	ELSE
+		CALL PRINTL_WORD_COLOR("出产触手数不足","灰")
+	ENDIF
+ELSE
+	CALL PRINTL_WORD_COLOR("搾乳・抽出","灰")
+ENDIF
+
+
+

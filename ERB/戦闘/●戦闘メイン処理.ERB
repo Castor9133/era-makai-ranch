@@ -1,0 +1,77 @@
+﻿
+;傭兵とニンゲンの戦闘
+;戦闘前処理
+@BATTLE_MAIN_BEFORE
+
+;BATTLE_CHARAを-1にして判定に使う
+BATTLE_CHARA = -1
+
+;とりあえず当日に戦闘したフラグON
+CFLAG:当日战斗完毕 = 1
+
+;降参フラグをOFF
+TFLAG:投降 = 0
+
+;戦闘開始前の口上・地の文と降参処理
+CALL BATTLE_BEFORE_ACTION
+
+;降参した場合そのまま敗北時処理へ
+IF TFLAG:投降
+	CALL TARGET_DEFEAT
+	RETURN
+ENDIF
+PRINTL 《 战斗开始 》
+FORCEWAIT
+
+;戦闘開始　1ターン目とする
+TURN = 1
+TFLAG:兼职战斗力 = TFLAG:兼职战斗力／最大值
+CALL MANYL(5)
+CALL BATTLE_MAIN
+
+
+
+;本処理
+@BATTLE_MAIN
+
+CALL BATTLE_STATUS
+
+;1ターン目は先制攻撃判定→不意打ちフラグだけ見るように変更
+IF TFLAG:突袭 && TURN == 1
+	CALL PRINTL_WORD_COLOR,@"%CALLNAME%%PRINT_EXIST_GROUP()%反应迟钝！","黄"
+	CALL PRINTL_WORD_COLOR,@"%PRINT_MONSTER()%进行先制攻击！","黄"
+	CALL MONSTER_ATTACK
+
+;仲間がターゲットだけを逃した場合仲間と傭兵の戦い
+ELSEIF TFLAG:牺牲逃跑
+	CALL TARGET_GROUP_ATTACK
+	SIF TFLAG:兼职战斗力
+		CALL MONSTER_ATTACK
+
+;それ以外はニンゲン→仲間→傭兵の順で行動
+ELSE
+	CALL TARGET_ACTION_COMMON
+	PRINTW
+	SIF TFLAG:兼职战斗力 && BASE:同伴战斗力1
+		CALL TARGET_GROUP_ATTACK
+	SIF TFLAG:兼职战斗力
+		CALL MONSTER_ATTACK
+ENDIF
+
+;傭兵ダウン、犠牲逃走かつ仲間ダウン、ターゲットダウンのどれかで終了
+IF !TFLAG:兼职战斗力
+	CALL TARGET_WIN
+	
+ELSEIF TFLAG:牺牲逃跑 && !BASE:同伴战斗力1
+	CALL TARGET_ESCAPE_DEFEAT
+	
+ELSEIF !BASE:战斗力
+	CALL TARGET_DEFEAT
+
+;戦闘継続
+ELSE
+	TURN ++
+	RESTART
+ENDIF
+TFLAG:牺牲逃跑 = 0
+

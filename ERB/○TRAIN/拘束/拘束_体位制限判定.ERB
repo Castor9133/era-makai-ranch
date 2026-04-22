@@ -1,0 +1,139 @@
+﻿
+;拘束体位制限判定
+;騎乗位→拘束中は強制のみ可能
+;Ｃ舐め→Ｃが見える状態ならまあ多分できるでしょう
+@TRAIN_BIND_FLAG_FIX
+
+;一旦リセット
+TFLAG:体位限制BIT = 0
+
+;拘束してなければおわり
+SIF !TFLAG:拘束BIT
+	RETURN
+
+IF GETBIT(＃拘束／站立柱＃)
+	SETBIT ＃体位制限／正常位＃
+	SETBIT ＃体位制限／后背位＃
+	SETBIT ＃体位制限／对面座位＃
+	SETBIT ＃体位制限／背面座位＃
+		;SETBIT ＃体位制限／対面立位＃
+	SETBIT ＃体位制限／背面立位＃
+	SETBIT ＃体位制限／肛门＃
+	
+	;パイズリ可能な身長差かおよびコンフィグ有効か見る
+	CALL PAIZURI_HEIGHT_CONFIG_JUDGE
+	SETBIT ＃体位制限／Ｍ插入＃
+		;SETBIT ＃体位制限／乳吸い＃
+		;SETBIT ＃体位制限／キス＃
+		;SETBIT ＃体位制限／素股＃
+
+ELSEIF GETBIT(＃拘束／坐立柱＃)
+	SETBIT ＃体位制限／正常位＃
+	SETBIT ＃体位制限／后背位＃
+	SETBIT ＃体位制限／背面座位＃
+	SETBIT ＃体位制限／对面立位＃
+	SETBIT ＃体位制限／背面立位＃
+	SETBIT ＃体位制限／肛门＃
+
+ELSEIF GETBIT(＃拘束／打桩机＃)
+	SETBIT ＃体位制限／后背位＃
+	SETBIT ＃体位制限／对面座位＃
+	SETBIT ＃体位制限／背面座位＃
+	SETBIT ＃体位制限／对面立位＃
+	SETBIT ＃体位制限／背面立位＃
+	SETBIT ＃体位制限／素股＃
+
+ELSEIF GETBIT(＃拘束／搾乳台＃)
+	SETBIT ＃体位制限／正常位＃
+	SETBIT ＃体位制限／后背位＃
+	SETBIT ＃体位制限／对面座位＃
+	SETBIT ＃体位制限／背面座位＃
+	SETBIT ＃体位制限／对面立位＃
+	SETBIT ＃体位制限／乳交＃
+
+ELSEIF GETBIT(＃拘束／十字架＃) || GETBIT(＃拘束／Ｘ字＃)
+	SETBIT ＃体位制限／正常位＃
+	SETBIT ＃体位制限／后背位＃
+	SETBIT ＃体位制限／对面座位＃
+	SETBIT ＃体位制限／背面座位＃
+	SETBIT ＃体位制限／背面立位＃
+	SETBIT ＃体位制限／肛门＃
+	CALL PAIZURI_HEIGHT_CONFIG_JUDGE
+	SETBIT ＃体位制限／Ｍ插入＃
+	SIF GETBIT(＃拘束／Ｘ字＃)
+		SETBIT ＃体位制限／素股＃
+
+ELSEIF GETBIT(＃拘束／吊挂＃)
+	SETBIT ＃体位制限／正常位＃
+	SETBIT ＃体位制限／后背位＃
+	SETBIT ＃体位制限／对面座位＃
+	SETBIT ＃体位制限／背面座位＃
+	SETBIT ＃体位制限／Ｍ插入＃
+	CALL PAIZURI_HEIGHT_CONFIG_JUDGE
+
+ELSEIF GETBIT(＃拘束／手铐屈脚＃)
+	SETBIT ＃体位制限／正常位＃
+	SETBIT ＃体位制限／对面座位＃
+	SETBIT ＃体位制限／背面座位＃
+	SETBIT ＃体位制限／对面立位＃
+	SETBIT ＃体位制限／背面立位＃
+	SETBIT ＃体位制限／乳交＃
+	SETBIT ＃体位制限／吸奶＃
+	SETBIT ＃体位制限／接吻＃
+
+ELSEIF GETBIT(＃拘束／束缚带＃)
+	SETBIT ＃体位制限／正常位＃
+	SETBIT ＃体位制限／后背位＃
+
+ELSEIF GETBIT(＃拘束／床上仰卧＃)
+	SETBIT ＃体位制限／后背位＃
+	SETBIT ＃体位制限／对面座位＃
+	SETBIT ＃体位制限／背面座位＃
+	SETBIT ＃体位制限／对面立位＃
+	SETBIT ＃体位制限／背面立位＃
+
+ELSEIF GETBIT(＃拘束／床上俯卧＃)
+	SETBIT ＃体位制限／正常位＃
+	SETBIT ＃体位制限／对面座位＃
+	SETBIT ＃体位制限／背面座位＃
+	SETBIT ＃体位制限／对面立位＃
+	SETBIT ＃体位制限／背面立位＃
+	SETBIT ＃体位制限／乳交＃
+	SETBIT ＃体位制限／吸奶＃
+	SETBIT ＃体位制限／Ｍ插入＃
+
+ELSEIF GETBIT(＃拘束／麻绳＃) || GETBIT(＃拘束／龟甲缚＃)
+	SETBIT ＃体位制限／对面立位＃
+	SETBIT ＃体位制限／背面立位＃
+
+ELSEIF GETBIT(＃束缚／触手＃)
+	;だいたい全部できる
+
+ELSEIF GETBIT(＃拘束／下半身填壁乳＃)
+	;挿入不可
+	SETBIT ＃体位制限／正常位＃
+	SETBIT ＃体位制限／后背位＃
+	SETBIT ＃体位制限／对面座位＃
+	SETBIT ＃体位制限／背面座位＃
+	SETBIT ＃体位制限／对面立位＃
+	SETBIT ＃体位制限／背面立位＃
+	SETBIT ＃体位制限／素股＃
+	CALL PAIZURI_HEIGHT_CONFIG_JUDGE
+
+ELSEIF GETBIT(＃拘束／三角木马＃)
+	;だいたい不可
+	SETBIT ＃体位制限／正常位＃
+	SETBIT ＃体位制限／后背位＃
+	SETBIT ＃体位制限／对面座位＃
+	SETBIT ＃体位制限／背面座位＃
+	SETBIT ＃体位制限／对面立位＃
+	SETBIT ＃体位制限／背面立位＃
+	SETBIT ＃体位制限／素股＃
+	SETBIT ＃体位制限／乳交＃
+	SETBIT ＃体位制限／Ｍ插入＃
+ENDIF
+
+
+
+
+

@@ -1,0 +1,39 @@
+﻿
+;基礎・プロフィールの変更シャッフル
+;ARGS→CHANGE_STATE
+@SELF_CHARA_MAKE_SENSITIVE_INPUT_SHUFFLE(ARGS)
+
+SELECTCASE ARGS
+CASE "Ａ敏感度","Ｂ敏感度","Ｃ敏感度","Ｖ敏感度","Ｎ敏感度"
+	ABL:ARGS = 7 +RAND:7
+	ABL:ARGS *= 10
+	CALL NIPPLE_SENSITIVE_FIX
+		
+CASE "母性","技巧","奉仕精神","受虐癖","百合癖"
+	ABL:ARGS = RAND:10
+
+
+;2ページ目
+CASE "母性本能","隶属愿望","抖Ｓ","幼稚","猫舌","锯齿","名器","Ａ名器","口穴","极上乳压"
+	INVERTBIT TALENT:ARGS,0
+
+CASE "性知识贫乏"
+	INVERTBIT TALENT:性知识贫乏,0
+	SIF TALENT:性知识贫乏
+		TALENT:性知识丰富 = 0
+
+
+;3ページ目
+CASE "性经验"
+	CALL RANDOM_SLAVE_VARGIN
+CASE "处女结界","处女","Ａ处女","Ｍ处女","无乳交经验","无接吻经验","无授乳经验"
+	INVERTBIT TALENT:ARGS,0
+	CALL SELECT_VIRGIN_RESET
+
+
+;4ページ目→無効
+ENDSELECT
+
+
+
+

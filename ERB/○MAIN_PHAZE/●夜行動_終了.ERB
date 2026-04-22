@@ -1,0 +1,146 @@
+﻿
+;1日終了の処理
+@ONE_DAY_END
+#DIM BP_MIN
+
+;夜に調教していた時用の処理
+CALL NIGHT_TRAIN_AFTER
+
+;体内凌辱中奴隷をちょっと回復
+CALL SLEEP_NIKUKABE
+
+;1日1回系フラグをリセット・母乳回復
+CALL RESET_DAY_FLAG
+
+;日付+1して週など計算
+DAY ++
+TIME = 0
+CALL DATE_CALC
+
+;妊娠日数経過
+CALL CHILDBIRTH_COUNT
+
+;成長期終わり判定
+CALL GROWTH_CHECK
+
+;風呂掃除フラグリセット
+FLAG:主人公的浴池清洁完毕 = 0
+
+;大浴場の掃除完了度-10
+FLAG:大浴场清洁完成度 = LIMIT(FLAG:大浴场清洁完成度 -10,0,100)
+
+;牛舎設備を1消費
+;ITEM:牛床マット→40
+FOR LOCAL,40,50
+	ITEM:LOCAL = LIMIT(ITEM:LOCAL -1,0,COWSHED_DEVICE_DAY_MAX)
+NEXT
+
+;たまに戦闘適性がちょっぴり鈍る
+;MAX値を保存しておいて70%未満にはならない
+IF RAND:100 < 30
+	BP_MIN = MAXBASE:0:战斗适性 *70
+	BP_MIN /= 100
+	SIF !BP_MIN
+		BP_MIN ++
+	BASE:0:战斗适性 = LIMIT(BASE:0:战斗适性 -1,BP_MIN,100)
+ENDIF
+
+;天気変更
+CALL RANDOM_WEATHER
+PRINTL 乳牛们似乎也睡着了。
+PRINTW 今天一天也辛苦了。
+
+;節目ならメッセージ
+CALL ANNIVERSARY_MESSAGE
+CALL MANYL(5)
+
+;起床+朝ごはん
+CALL MORNING_ACT
+
+;魔力枷のついた奴隷が抵抗する
+;体内凌辱中ならスキップ
+WAIT_ON = 0
+FOR TARGET_COUNT,1,CHARANUM
+	TARGET = TARGET_COUNT
+	IF EQUIP:魔力枷锁 && CSTR:日程 != "体内凌辱"
+		CALL RESIST_SHACKLE
+		WAIT_ON = 1
+	ENDIF
+NEXT
+SIF WAIT_ON
+	PRINTW
+
+;MAIN_TURNENDに戻るのでセーブとかは不要
+
+
+
+;夜に調教していた時用の処理
+@NIGHT_TRAIN_AFTER
+
+;調教していた場合メッセージと回復
+SIF CSTR:0:日程 != "调教"
+	RETURN
+
+FINDCHARA CFLAG:ID,CFLAG:0:调教对象ID
+SIF RESULT <= 0
+	RETURN
+TARGET = RESULT
+CALL RESUME_VORE_SEX_CONFIRM
+CALL NIGHT_TRAIN_AFTER_SLAVE
+TARGET = 0
+PRINTFORML %CALLNAME%也决定睡在自己的房间里…
+HEAL_PRINT_DONE = 0
+CALL SLEEP_HEAL_TRAIN_AFTER
+PRINTW
+
+
+
+;再度体内凌辱するか確認
+@RESUME_VORE_SEX_CONFIRM
+
+SIF !FLAG:体内凌辱暂时解除
+	RETURN
+IF !BASE:0:魔力
+	PRINTFORML 由于%CALLNAME:0%的魔力不足，决定放弃继续体内凌辱。
+	RETURN
+ENDIF
+PRINTFORML 又在体内凌辱%CALLNAME%？
+CALL ASK_YN
+IF !RESULT
+	PRINTFORML 将完成调教的%CALLNAME%再次关进%CALLNAME:0%体内…
+	CALL KOJO_PRINT("日程","调教","再次体内凌辱")
+	CSTR:日程 = 体内凌辱
+	CSTR:住处 = 体内
+	PRINTFORML 调教结束后，%CALLNAME:0%决定在自己的房间里睡觉。
+ELSE
+	PRINTFORML %CALLNAME%决定就这样放出去。
+ENDIF
+
+
+
+;夜調教後の奴隷メッセージ+回復
+@NIGHT_TRAIN_AFTER_SLAVE
+
+;もう1度しまったら飛ばす
+SIF CSTR:日程 == "体内凌辱"
+	RETURN
+
+;あとであなた部屋で一緒に寝るのも作りたい
+IF EQUIP:自室
+	IF !BASE:体力
+		PRINTFORML 抱着调教结束后筋疲力尽的%CALLNAME%，从调教房间放回%CALLNAME%房间的床上。
+	ELSE
+		PRINTFORML 把调教完的%CALLNAME%放回了自己的房间。
+	ENDIF
+	CALL KOJO_PRINT("日程","调教","晚上调教后回自室")
+ELSE
+	IF !BASE:体力
+		PRINTFORML 调教结束后把筋疲力尽的%CALLNAME%放在拘束用的床上走出调教房间。
+	ELSE
+		PRINTFORML 调教完的%CALLNAME%倒在调教房的拘束床上。
+	ENDIF
+ENDIF
+PRINTFORML %CALLNAME%好像睡着了。
+HEAL_PRINT_DONE = 0
+CALL SLEEP_HEAL_TRAIN_AFTER
+

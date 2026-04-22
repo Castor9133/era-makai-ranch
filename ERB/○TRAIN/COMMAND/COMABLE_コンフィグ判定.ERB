@@ -1,0 +1,30 @@
+﻿
+;挿入しながらの乳吸いに身長制限つけるかコンフィグ
+;RETURN1でNG
+@BUST_SUCK_HEIGHT_CONFIG_JUDGE
+;全体位・挿入併用で乳首愛撫可能にするため身長差制限は行わない（RESULT=0で通過）
+RETURN 0
+
+
+
+;挿入しながらのキス
+;RETURN1でNG
+@KISS_HEIGHT_CONFIG_JUDGE
+;全体位で接吻可能にするため挿入中の身長差制限は行わない（RESULT=0で通過）
+RETURN 0
+
+
+
+;立ち拘束時のパイズリ
+@PAIZURI_HEIGHT_CONFIG_JUDGE
+
+SIF !GETBIT(＃身高差限制／站立乳交＃)
+	RETURN
+
+;あなたより40cm以上身長が低いなら立ちパイズリ可能
+SIF CFLAG:PLAYER:身高 < CFLAG:身高 +400
+	SETBIT ＃体位制限／乳交＃
+
+
+
+

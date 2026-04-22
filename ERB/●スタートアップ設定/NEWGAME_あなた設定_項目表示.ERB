@@ -1,0 +1,172 @@
+﻿
+;基本　だいたいはここだけでいいと思う
+@NEWGAME_PLAYER_DATA_INDEX1
+#DIM COLOR
+
+;手動のみ変更可能
+PRINTL 【仅手动输入】
+IF !SELF_CHARA_MAKE_RANDOM
+	PRINTL [ 0] 重命名
+	PRINTL [ 1] 全名
+	PRINTFORML [ 2] 　　第一人称：%CSTR:第一人称%
+	PRINTFORML [ 3] 　　　语气：%SAVESTR:主人公语气%
+	PRINT [ 4] 口上颜色：
+ELSE
+	CALL PRINTL_WORD_COLOR,@"< 0> 重命名","灰"
+	CALL PRINTL_WORD_COLOR,@"< 1> 全名","灰"
+	PRINTFORML < 2> 第一人称：%CSTR:第一人称%
+	PRINTFORML < 3> 　语气：%SAVESTR:主人公语气%
+	PRINT < 4> 口上颜色：
+ENDIF
+
+;口上の部分は共通
+COLOR = CFLAG:颜色编码／口上
+IF COLOR
+	SETCOLOR COLOR
+	PRINTFORML %UNICODE(0x2586)%(R:{GETRED(COLOR)} G:{GETGREEN(COLOR)} B:{GETBLUE(COLOR)})
+	RESETCOLOR
+ELSE
+	PRINTL 未设置显示颜色。
+ENDIF
+IF !SELF_CHARA_MAKE_RANDOM
+	IF FLAG:EX模式
+		PRINTFORML [ 5] 　　　种族：%CSTR:种族%
+	ELSE
+		CALL PRINTL_WORD_COLOR,@"< 5> 　　　种族：仅限【EX模式】","灰"
+	ENDIF
+ELSE
+	CALL PRINTL_WORD_COLOR,@"< 5> 种族","灰"
+ENDIF
+PRINTL
+PRINT [10] 身高更改
+SIF SELF_CHARA_MAKE_RANDOM
+	PRINTFORM （【%CSTR:身高%】内重新调整）
+PRINTL
+PRINT [11] 【两角】
+CALL PRINT_ONOFF(TALENT:两角,1)
+PRINTL [12] 眼镜的佩戴与脱下
+PRINTL [13] 外表年龄
+
+;女あなたの場合
+SIF TALENT:男性
+	RETURN
+PRINTL
+PRINT [14] 胸围大小
+SIF SELF_CHARA_MAKE_RANDOM
+	PRINTFORM （【%PRINT_BUSTSIZE_TALENT()%】内重新调整）
+PRINTL
+PRINTL [15] 乳房弹性
+
+
+
+;外見追加エディット
+@NEWGAME_PLAYER_DATA_INDEX2
+
+PRINTLC [ 0] 发色
+PRINTLC [ 1] 头发特征
+PRINTL [ 2] 发型
+
+IF !SELF_CHARA_MAKE_RANDOM
+	CALL PRINTLC_WORD_COLOR,@"< 3> 批量更改：仅限随机","灰"
+	PRINTL [ 4] 头发颜色编码
+ELSE
+	PRINTLC [ 3] 发型批量更改
+	CALL PRINTL_WORD_COLOR,@"< 4> 发色编码：仅限手动","灰"
+ENDIF
+PRINTL [ 5] 体型
+PRINTL [ 6] 肤色
+PRINTL [ 7] 阴毛
+PRINTLC [ 8] 乳头颜色
+IF !SELF_CHARA_MAKE_RANDOM
+	PRINTL [ 9] 乳头颜色编码
+ELSE
+	CALL PRINTL_WORD_COLOR,@"< 9> 乳头颜色编码：仅限手动","灰"
+ENDIF
+PRINTL
+IF !SELF_CHARA_MAKE_RANDOM
+	PRINTLC [10] 右瞳色
+	PRINTL [11] 右瞳色编码
+	PRINTLC [12] 左瞳色
+	IF CSTR:左瞳色 != ""
+		PRINTL [13] 左瞳色编码
+	ELSE
+		CALL PRINTL_WORD_COLOR,@"　左瞳色编码","灰"
+	ENDIF
+ELSE
+	PRINTLC [10] 瞳色
+	CALL PRINTL_WORD_COLOR,@"<11> 眼睛颜色编码：仅限手动","灰"
+	PRINTL [12] 确定异色眼随机
+ENDIF
+PRINTLC [14] 瞳孔形状
+PRINTL [15] 眼睛特征
+
+
+
+;あなた性経験の追加エディット
+@NEWGAME_PLAYER_DATA_INDEX3
+
+;シャッフルだと不可
+IF SELF_CHARA_MAKE_RANDOM
+	CALL PRINTL_WORD_COLOR("不可洗牌","黄")
+	RETURN
+ENDIF
+
+PRINT [ 0] Ｖ经验
+CALL PRINT_ONOFF(!TALENT:童贞,1)
+IF !TALENT:童贞
+	PRINT [10] 第一次体验对象：
+	SIF CSTR:初经验／Ｖ == ""
+		PRINT 未知
+	PRINTFORM %CSTR:初经验／Ｖ%　
+	PRINTFORML [20] 经验人数：{FLAG:主人公经验人数／Ｖ}人
+ELSE
+	CALL PRINTL_WORD_COLOR("　初经验对象・经验人数","灰")
+ENDIF
+PRINT [ 1] Ａ经验
+CALL PRINT_ONOFF(!TALENT:Ａ童贞,1)
+IF !TALENT:Ａ童贞
+	PRINT [11] 第一次体验对象：
+	SIF CSTR:初经验／Ａ == ""
+		PRINT 未知
+	PRINTFORM %CSTR:初经验／Ａ%　
+	PRINTFORML [21] 经验人数：{FLAG:主人公经验人数／Ａ}人
+ELSE
+	CALL PRINTL_WORD_COLOR("　初经验对象・经验人数","灰")
+ENDIF
+PRINT [ 2] 口交经验
+CALL PRINT_ONOFF(!TALENT:Ｍ童贞,1)
+IF !TALENT:Ｍ童贞
+	PRINT [12] 第一次体验对象：
+	SIF CSTR:初经验／Ｍ性交 == ""
+		PRINT 未知
+	PRINTFORM %CSTR:初经验／Ｍ性交%　
+	PRINTFORML [22] 经验人数：{FLAG:主人公经验人数／Ｍ}人
+ELSE
+	CALL PRINTL_WORD_COLOR("　初经验对象・经验人数","灰")
+ENDIF
+PRINT [ 3] 乳交经验
+CALL PRINT_ONOFF(!TALENT:无乳交经验,1)
+IF !TALENT:无乳交经验
+	PRINT [13] 第一次体验对象：
+	SIF CSTR:初经验／乳交 == ""
+		PRINT 未知
+	PRINTFORM %CSTR:初经验／乳交%　
+	PRINTFORML [23] 经验人数：{FLAG:主人公经验人数／乳交}人
+ELSE
+	CALL PRINTL_WORD_COLOR("　初经验对象・经验人数","灰")
+ENDIF
+PRINT [ 4] 接吻经验
+CALL PRINT_ONOFF(!TALENT:无接吻经验,1)
+IF !TALENT:无接吻经验
+	PRINT [14] 第一次体验对象：
+	SIF CSTR:初经验／接吻 == ""
+		PRINT 未知
+	PRINTFORM %CSTR:初经验／接吻%　
+	PRINTFORML [24] 经验人数：{FLAG:主人公经验人数／接吻}人
+ELSE
+	CALL PRINTL_WORD_COLOR("　初经验对象・经验人数","灰")
+ENDIF
+
+
+
+

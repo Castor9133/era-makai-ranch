@@ -1,0 +1,210 @@
+﻿
+;魔界入りした時か処分寸前、オークション会場入りのメッセージ
+;水晶・植物・名声・奪還・事故・侵略・結界付き・競売所・上位種族・天界種族
+;0～3はPT可能性あり、4ぼっち、5は精鋭以上、6～ぼっち
+@INVASION_TARGET_CHARA
+
+SELECTCASE CFLAG:进入魔界的目的
+CASE 0
+	CALL KOJO_PRINT("进入魔界的","魔界水晶1")
+	PRINTFORML %CALLNAME%%PRINT_EXIST_GROUP()%来到魔界，是为了把【魔界水晶】带回去
+	IF GROUPMATCH(CSTR:身份,"贵族","王族")
+		PRINTFORML 并不是说特别缺钱…而是为了让家里认可自己的%CSTR:职业%，需要一些功劳。
+	ELSE
+		IF GROUPMATCH(CSTR:职业,"盗贼","角斗士")
+			PRINTFORML 总之就是为了赚钱而作为%CSTR:职业%生活着。听说是赚大钱的机会于是来到了魔界
+		ELSE
+			PRINTFORML 因为作为%CSTR:职业%需要一些钱，于是他想到了高风险高回报的筹款方案，到了魔界。
+		ENDIF
+	ENDIF
+	PRINTW
+	CALL KOJO_PRINT("进入魔界的","魔界水晶2")
+	PRINTFORML 但是，在双向大门附近，人类已经夺走了大部分的资源，等于什么都没有了。
+	PRINTFORML 因为在远处能看到像山一样的地形，去那里能找到吗？
+	PRINTFORML 这样想着的%CALLNAME%%PRINT_EXIST_GROUP()%向目的地走了过去，同时警戒着可能出现的魔界魔物…
+	PRINTW
+	;目的の変更
+	CALL PURPOSE_CHANGE("魔界水晶")
+
+CASE 1
+	CALL KOJO_PRINT("进入魔界的","魔界植物1")
+	PRINTFORML %CALLNAME%%PRINT_EXIST_GROUP()%来到魔界，是为了把【魔界植物】带回去
+	PRINTFORML 为了成为一名成功的%CSTR:职业%，就必须研究魔界的植物。
+	PRINTW
+	CALL KOJO_PRINT("进入魔界的","魔界植物2")
+	PRINTFORML 只是，即使向其他冒险者申请，他们要么不接受「进入魔界」的委托，要不就是要收取高额的报酬
+	PRINTFORML 没办法，%CALLNAME%决定亲自前往魔界…
+	PRINTFORML 双向大门的附近，人类已经夺走了大部分的资源，等于什么都没有了。
+	PRINTFORML 因为在远处能看到像山一样的地形，去那里能找到吗？
+	PRINTFORML 这样想着的%CALLNAME%%PRINT_EXIST_GROUP()%向目的地走了过去，同时警戒着可能出现的魔界魔物…
+	PRINTW
+	CALL PURPOSE_CHANGE("魔界植物")
+
+CASE 2
+	CALL KOJO_PRINT("进入魔界的","声望1")
+	PRINTFORML %CALLNAME%%PRINT_EXIST_GROUP()%来到魔界，是为了讨伐魔族【获取功绩】
+	PRINTFORML 对自己的力量过于自信%CALLNAME%%PRINT_EXIST_GROUP()%，对自己的待遇有些不满
+	PRINTFORML 于是，她认为只要攻入魔界讨伐几只魔族，周围的人也会认可自己。
+	PRINTW
+	CALL KOJO_PRINT("进入魔界的","声望2")
+	PRINTFORML 虽然周围的人一致反对，但是%CALLNAME%%PRINT_EXIST_GROUP()%却充耳不闻
+	PRINTFORML 欺侮弱者也不够体面。如果有好战的魔族存在，那应该是远处可见的巨大城堡。
+	PRINTFORML 这样想着的%CALLNAME%%PRINT_EXIST_GROUP()%，意识到强大的魔族不是那么常见的，一边警戒着一边前进着…
+	PRINTW
+	CALL PURPOSE_CHANGE("声望")
+
+CASE 3
+	CALL KOJO_PRINT("进入魔界的","夺回1")
+	PRINTFORML %CALLNAME%%PRINT_EXIST_GROUP()%来到魔界，是为了救回失踪的同伴
+	PRINTFORML 说是要去讨伐魔族而进入魔界的同伴，已经有1个月没有音信了。
+	PRINTW
+	CALL KOJO_PRINT("进入魔界的","夺回2")
+	PRINTFORML 老实说，已经遇害的可能性非常大。
+	IF BASE:同伴战斗力1
+		PRINTFORML 虽然去魔界前说过「如果我回不来了，也千万不要找我」
+		PRINTFORML 但我发现它不见了。是和自己的生命一样重要的伙伴。
+		PRINTFORML %CALLNAME%原本打算独自前往魔界，但是临走时运气很好的找到了同样想去魔界的同伴
+	ELSE
+		PRINTFORML 虽然去魔界前说过「如果我回不来了，千万不要救我」
+		PRINTFORML 但我发现它不见了。是和自己的生命一样重要的伙伴。
+		PRINTFORML 原来，即使只有一个%CALLNAME%，即使希望有多渺茫，他也会去的。孤独并不痛苦。
+	ENDIF
+	PRINTFORML 如果被抓起来的话，大概是远处可见的巨大城堡吧…
+	PRINTFORML 这样想着的%CALLNAME%%PRINT_EXIST_GROUP()%向目的地走了过去，同时警戒着可能出现的魔界魔物…
+	PRINTW
+	CALL PURPOSE_CHANGE("夺回")
+
+CASE 4
+	CALL KOJO_PRINT("进入魔界的","大门事故1")
+	PRINTFORML %CALLNAME%来到魔界的原因是发生了【大门事故】。
+	SELECTCASE CSTR:职业
+	CASE "女仆"
+		PRINTFORML 当主人使用他的魔术道具时，
+		PRINTFORML 要么是故障了，要么就是「这样的道具」…　打开了通往魔界的大门。
+		PRINTFORML 当她回复意识时，不仅在一个陌生的地方，而且周围没有任何人活动的迹象，更不用说主人了。
+	
+	CASE "修女","巫女"
+		PRINTFORML 支援些有能力对抗魔族的人也是%CSTR:职业%工作的一部分，
+		PRINTFORML 修理道具的时候，可能留下了什么不好的东西…　通往魔界的大门打开了。
+		PRINTFORML 当回复意识的时候，一个人被扔到了陌生的土地上，手边也没有武器。
+	
+	CASEELSE
+		PRINTFORML 因为对知识的好奇心而购入了附带的魔术道具，进行启动实验的时候
+		PRINTFORML 要么是故障了，要么就是「这样的道具」…　打开了通往魔界的大门。
+		PRINTFORML 当回复意识的时候，一个人被扔到了陌生的土地上，手边也没有武器。
+	
+	ENDSELECT
+	PRINTW
+	CALL KOJO_PRINT("进入魔界的","大门事故2")
+	PRINTFORML 虽然听说过「使用双向门的话可以回去」…
+	PRINTFORML 但在这个陌生的土地上，连方向都搞不清楚。
+	PRINTFORML 幸运的是这里在山上好像能找到食物，下去的话好像能走到城市。
+	CALL KOJO_PRINT("进入魔界的","大门事故3")
+	PRINTFORML …魔界的居民如何对待自己最大的问题，除此之外似乎没有其他手段
+	PRINTFORML %CALLNAME%决定孤注一掷地前往可能是魔界居民所居住的街道…
+	PRINTW
+	CALL PURPOSE_CHANGE("返回")
+
+CASE 5
+	CALL KOJO_PRINT("进入魔界的","讨伐1")
+	PRINTFORML %CALLNAME%%PRINT_EXIST_GROUP()%来到魔界是为了【讨伐魔族】
+	PRINTFORML 拥有无论如何也要在自己这一代，以人类的胜利来结束人类和魔族之间长时间的战斗的志向的人%PRINT_EXIST_GROUP()%。
+	SELECTCASE CFLAG:同伴规模
+	CASE 0
+		PRINTFORML 虽然只有%CALLNAME%1人，但是%CALLNAME%的实力足以一骑当千。
+	CASE 1,2
+		PRINTFORML 人数虽小，但却是以%CALLNAME%为中心的精锐部队。
+	CASE 3
+		PRINTFORML 以%CALLNAME%为中心，用大规模的部队进攻魔界。
+	ENDSELECT
+	PRINTW
+	CALL KOJO_PRINT("进入魔界的","讨伐2")
+	PRINTFORML 无论如何也要用自己%PRINT_EXIST_GROUP()%的手击倒魔王。
+	PRINTFORML 这样想的%CALLNAME%%PRINT_EXIST_GROUP()%的目的地，从一开始就只有一座远远可见的巨大城堡。
+	PRINTFORML 为了尽量避免消耗到这种程度，一边警戒着远处的巨大生物一边前进…
+	PRINTW
+	CALL PURPOSE_CHANGE("讨伐")
+
+CASE 6
+	CALL PURPOSE_CHANGE("逃跑")
+	CALL KOJO_PRINT("进入魔界的","即将处置1")
+	PRINTFORML %CALLNAME%来到魔界是为了救援没有回来的同伴。
+	PRINTFORML 但是却被魔族打败并被俘虏。
+	PRINTFORML 雌性在与雄性魔族的战斗中败北，通常只有成为肉便器的命运；
+	PRINTFORML 不过%CALLNAME%因为有【处女结界】的加护，所以暂时没有失去贞操的危机。
+	PRINTW
+	CALL KOJO_PRINT("进入魔界的","即将处置2")
+	PRINTFORML 只是，那样的话，明明是难得的美人，老实说却不知道怎么使用。
+	PRINTFORML 打败了她的魔族虽然可惜但放弃了，把她关在城里的监狱里。
+	PRINTFORML 如果就这样没有人领养的话%CALLNAME%终究会成为魔兽的饲料…
+	PRINTW
+
+CASE 7
+	CALL PURPOSE_CHANGE("逃跑")
+	CALL KOJO_PRINT("进入魔界的","拍卖1")
+	PRINTFORML 前几天在魔界被捕的人类集团中有一个%CALLNAME%。
+	IF CSTR:身份 == "王族"
+		PRINTFORML 从周围人的反应来看好像是王族，那样的话多少有些用途。
+	ELSE
+		PRINTFORML 这无论是攻入地上，还是在魔界防御都很少见的稀有种族。
+	ENDIF
+	PRINTFORML 捕捉到的魔族为如何使用%CALLNAME%而烦恼，最后送到拍卖行卖给喜欢的人。
+	PRINTW
+
+CASE 8,9
+	CALL KOJO_PRINT("进入魔界的","特殊种族1")
+	PRINTFORML %CALLNAME%来到魔界，是为了【讨伐魔族】。
+	PRINTFORML …虽说如此，但并不是说%CALLNAME%在军队里。
+	IF TALENT:天界种族
+		IF GROUPMATCH(CSTR:性格,"强势","傲慢")
+			PRINTFORML 带着帮助地上的人类对抗魔族的想法，从天而降的特意来到了魔界。
+		ELSE
+			PRINTFORML 因为太偏袒地上的人类，才萌生了自己要帮魔族打倒的念头。
+		ENDIF
+	ELSE
+		IF GROUPMATCH(CSTR:性格,"强势","傲慢","高尚")
+			PRINTFORML 比地上任何种族都优秀的自己，想要结束和魔族的战争。
+		ELSE
+			PRINTFORML 他认为，如果自己是比其他人类更强大的种族，即使攻入魔界也能战斗。
+		ENDIF
+	ENDIF
+	PRINTW
+	CALL KOJO_PRINT("进入魔界的","特殊种族2")
+	PRINTFORML 那样的话，目标果然是在远处看到的巨大的城堡吧。
+	PRINTFORML 为了尽量避免消耗到这种程度，一边警戒着远处的巨大生物一边前进…
+	PRINTW
+	IF TALENT:天界种族
+		CALL PURPOSE_CHANGE("帮助讨伐")
+	ELSE
+		CALL PURPOSE_CHANGE("讨伐")
+	ENDIF
+
+CASE 10
+	;異世界転移はいろいろあると思うのでここでは汎用の文章を書くよ
+	CALL KOJO_PRINT("进入魔界的","异世界转移1")
+	PRINTFORML %CALLNAME%%PRINT_EXIST_GROUP()%来到魔界的原因是【异世界转移】。
+	IF CFLAG:非战斗职业
+		PRINTFORML %CALLNAME%%PRINT_EXIST_GROUP()%原本生活在完全不同的世界，
+		PRINTFORML 当拿起自己房间里不知什么时候放着的不认识的道具的时候，刺眼的光芒充满了视野…
+		PRINTFORML 当回复意识的时候已经是陌生的土地…被称为【魔界】的地方。
+	ELSE
+		PRINTFORML %CALLNAME%%PRINT_EXIST_GROUP()%原本是在完全不同的世界里和完全不同的敌人战斗的，
+		PRINTFORML 战场上突然出现的陌生道具发出光芒…
+		PRINTFORML 当她回复意识的时候，她就在一个陌生的土地…被称为【魔界】的地方。
+	ENDIF
+	PRINTW
+	CALL KOJO_PRINT("进入魔界的","异世界转移2")
+	PRINTFORML 如果是这个世界的人的话，一定听说过「用双向门就能回去」。
+	PRINTFORML 但是，来自其他世界的%CALLNAME%%PRINT_EXIST_GROUP()%是不可能知道的。
+	PRINTFORML 到底以后该怎么办？
+	PRINTW
+	CALL KOJO_PRINT("进入魔界的","异世界转移3")
+	PRINTFORML 经过一段时间的思考，%CALLNAME%%PRINT_EXIST_GROUP()%决定去远处的街道看看。
+	PRINTFORML 如果这个世界和想象的一样的话，住在那条街上的恐怕是和自己不同的种族吧。
+	PRINTFORML 虽然不知道与对方是否语言相通，也不知道会被怎样对待，但比起继续留在这里
+	PRINTFORML 相信有可能找到回到原世界的线索…
+	CALL PURPOSE_CHANGE("异世界转移")
+	
+ENDSELECT
+
+

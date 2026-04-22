@@ -1,0 +1,64 @@
+﻿
+;業務、調教の可不可判定
+;TARGETはここ来る前に保護しておくこと
+;スケジュール実行かあなたが会いに行かないと変更されないのでそのへんで呼び出そう
+@SCHEDULE_POSSIBLE
+
+FOR TARGET_COUNT,0,CHARANUM
+	TARGET = TARGET_COUNT
+	CALL TARGET_SCHEDULE_POSSIBLE
+	CALL TARGET_SCHEDULE_POSSIBLE_TRAIN
+NEXT
+
+
+
+;業務可能フラグの個人判定
+@TARGET_SCHEDULE_POSSIBLE
+
+;まずリセット
+CFLAG:可以工作 = 0
+CFLAG:日程设定可能／事务 = 0
+
+;捕まえてなければNG　家畜→NG　幼子→NG　業務を頼める心境でないとNG（どれか1つでOK）
+;自室なしだと従業員扱いでないのでNG
+{
+SIF CFLAG:追踪对象 || CFLAG:家畜 || !EQUIP:自室 || CSTR:状态／主人公的孩子 == "成长中" 
+|| (!TALENT:业主 && !CFLAG:洗脑 && !＃陷落状态／屈服以上＃ && !CFLAG:乳牛)
+}
+	RETURN
+
+;ここまでOKなら設定は可能（自動スケジュールにできる）
+CFLAG:日程设定可能／事务 = 1
+
+;崩壊→NG　虚脱状態→NG　HP0→NG　体内凌辱中→NG
+SIF CFLAG:崩坏 || CFLAG:虚脱 || !BASE:体力 || CSTR:住处 == "体内"
+	RETURN
+
+;以上に引っかからなければOK
+CFLAG:可以工作 = 1
+
+
+
+;調教可能フラグの個人判定
+@TARGET_SCHEDULE_POSSIBLE_TRAIN
+
+;まずリセット
+CFLAG:可以调教 = 0
+CFLAG:日程设定可能／调教 = 0
+
+;捕まえてないならNG　あなたはNG
+SIF CFLAG:追踪对象 || TALENT:业主
+	RETURN
+
+;ここまでOKなら設定は可能
+CFLAG:日程设定可能／调教 = 1
+
+;体内凌辱中はNG
+SIF CSTR:住处 == "体内"
+	RETURN
+
+;他はOK
+CFLAG:可以调教 = 1
+
+
+

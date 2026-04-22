@@ -1,0 +1,43 @@
+﻿
+;掃除開始地の文
+@WORK_CLEANING_BEGIN_MESSAGE
+
+SIF !EXP:执行次数／清洁 && !TARGET
+	PRINTFORML %CALLNAME%被%CALLNAME:0%命令，开始清理办公室和浴室…
+PRINTFORML %CALLNAME%清理了办公室。
+CALL KOJO_PRINT("日程","清洁",KOJO_TYPE)
+
+
+
+;掃除上手さ表示
+@WORK_CLEANING_ABL_MESSAGE
+
+SIF !TARGET
+	RETURN
+IF !EXP:执行次数／清洁
+	IF ABL:清洁 >= 8
+		PRINTL 利用以前的经验，非常有效率的进行事务工作。
+	ELSEIF ABL:清洁 >= 4
+		PRINTL 看来很有条理。
+	ELSE
+		PRINTL …看起来进展不是很顺利。
+	ENDIF
+ELSE
+	IF ABL:清洁 >= 8
+		PRINTL 办公室正在迅速变得干净。
+	ELSEIF ABL:清洁 >= 4
+		PRINTL 进步得相当不错。
+	ELSE
+		PRINTL …看起来进展不是很顺利。
+	ENDIF
+ENDIF
+
+
+
+;完了
+@WORK_CLEANING_COMPLETE_MESSAGE
+
+PRINTFORML %CALLNAME%完成了办公室的清洁。
+
+
+

@@ -1,0 +1,266 @@
+﻿
+;一人称・二人称の蕩け・甘えを補正　ひらがなにするだけと言えばだけ
+;ARG→1なら蕩けが入ってるとき上書きしない
+@SWEET_PERSON_CALL_ALL(ARG)
+
+;あなたはあなたを呼ばない
+SIF !TARGET
+	RETURN
+CALL SWEET_PERSON_CALL_SELF(ARG)
+CALL SWEET_PERSON_CALL_MASTER(ARG)
+CALL SWEET_PERSON_CALL_MASTER_LOVE(ARG)
+
+
+
+;蕩け一人称設定
+;ARG→1なら蕩けが入ってるとき上書きしない
+@SWEET_PERSON_CALL_SELF(ARG)
+
+SIF CSTR:第一人称／沉沦 != "" && ARG
+	RETURN
+SELECTCASE CSTR:第一人称
+CASE "私"
+	CSTR:第一人称／沉沦 = 我
+CASE "我"
+	CSTR:第一人称／沉沦 = 我
+CASE "我"
+	CSTR:第一人称／沉沦 = 裂纹
+CASEELSE
+	CSTR:第一人称／沉沦 = %CSTR:第一人称%
+ENDSELECT
+
+
+
+;陥落前のあなた呼び方蕩け設定
+;ARG→1なら蕩けが入ってるとき上書きしない
+@SWEET_PERSON_CALL_MASTER(ARG)
+
+SIF CSTR:主人公的称呼／陷落前／沉沦 != "" && ARG
+	RETURN
+SELECTCASE CSTR:主人公的称呼／陷落前
+CASE "您"
+	CSTR:主人公的称呼／陷落前／沉沦 = 主人公
+CASE "您"
+	CSTR:主人公的称呼／陷落前／沉沦 = 你
+CASE "你"
+	CSTR:主人公的称呼／陷落前／沉沦 = 你
+CASE "你"
+	CSTR:主人公的称呼／陷落前／沉沦 = 你
+CASEELSE
+	CSTR:主人公的称呼／陷落前／沉沦 = %CSTR:主人公的称呼／陷落前%
+ENDSELECT
+
+
+
+;蕩け陥落後・甘え二人称設定
+;ARG→1なら蕩けが入ってるとき上書きしない
+@SWEET_PERSON_CALL_MASTER_LOVE(ARG)
+
+SIF CSTR:主人公的称呼／陷落后／沉沦 != "" && CSTR:主人公的称呼／依恋 != "" && ARG
+	RETURN
+SELECTCASE CSTR:主人公的称呼／陷落后
+CASE "主人大人","夫人","主人大人"
+	CSTR:主人公的称呼／陷落后／沉沦 = 主人大人
+	CSTR:主人公的称呼／依恋 = 主人大人啊
+	
+CASE "老板"
+	CSTR:主人公的称呼／陷落后／沉沦 = 主人
+	CSTR:主人公的称呼／依恋 = 主人
+	
+CASE "哥哥","哥哥"
+	CSTR:主人公的称呼／陷落后／沉沦 = 哥哥
+	CSTR:主人公的称呼／依恋 = 妈妈
+	
+CASE "兄长大人","男子汉","哥哥大人"
+	CSTR:主人公的称呼／陷落后／沉沦 = 哥哥大人
+	CSTR:主人公的称呼／依恋 = 哥哥大人啊
+	
+CASE "大哥","兄长"
+	CSTR:主人公的称呼／陷落后／沉沦 = 兄长
+	CSTR:主人公的称呼／依恋 = 兄长啊
+	
+CASE "父亲","父亲"
+	CSTR:主人公的称呼／陷落后／沉沦 = 父亲
+	CSTR:主人公的称呼／依恋 = 男孩子
+	
+CASE "爸爸"
+	CSTR:主人公的称呼／陷落后／沉沦 = 哗啦哗啦
+	CSTR:主人公的称呼／依恋 = 哗啦哗啦
+	
+CASE "老爷","主人公大人"
+	CSTR:主人公的称呼／陷落后／沉沦 = 主人公大人
+	CSTR:主人公的称呼／依恋 = 主人公大人啊
+	
+CASE "亲爱的"
+	CSTR:主人公的称呼／陷落后／沉沦 = 亲爱的
+	CSTR:主人公的称呼／依恋 = 达令
+	
+CASE "主人","主人大人","主人大人"
+	CSTR:主人公的称呼／陷落后／沉沦 = 主人大人
+	CSTR:主人公的称呼／依恋 = 主人大人啊
+	
+CASE "老爷大人","老公","老爷","大人先生","老公大人","老爷大人"
+	CSTR:主人公的称呼／陷落后／沉沦 = 老爷大人
+	CSTR:主人公的称呼／依恋 = 老爷大人啊
+	
+CASE "阁下","大田大人","主公大人"
+	CSTR:主人公的称呼／陷落后／沉沦 = 主公大人
+	CSTR:主人公的称呼／依恋 = 主公大人啊
+	
+CASE "兄上","兄上"
+	CSTR:主人公的称呼／陷落后／沉沦 = 兄上
+	CSTR:主人公的称呼／依恋 = 兄上
+	
+CASE "殿下","主人殿下"
+	CSTR:主人公的称呼／陷落后／沉沦 = 主人殿下
+	CSTR:主人公的称呼／依恋 = 殿下啊
+	
+CASE "阁下","阁下"
+	CSTR:主人公的称呼／陷落后／沉沦 = 阁下
+	CSTR:主人公的称呼／依恋 = 阁下啊
+	
+CASE "陛下","陛下"
+	CSTR:主人公的称呼／陷落后／沉沦 = 陛下
+	CSTR:主人公的称呼／依恋 = 陛下啊
+	
+CASEELSE
+	CSTR:主人公的称呼／陷落后／沉沦 = %CSTR:主人公的称呼／陷落后%
+	CSTR:主人公的称呼／依恋 = %CSTR:主人公的称呼／陷落后%
+ENDSELECT
+
+
+
+;性器の蕩け補正　やっぱりほぼひらがな
+;ARG→1なら蕩けが入ってるとき上書きしない
+@SWEET_GENITAL_CALL_ALL(ARG)
+
+SIF !TARGET
+	RETURN
+CALL SWEET_PENIS_CALL(ARG)
+CALL SWEET_VAGINA_CALL(ARG)
+CALL SWEET_ANAL_CALL(ARG)
+
+
+
+;ちんぽ
+;ARG→1なら蕩けが入ってるとき上書きしない
+@SWEET_PENIS_CALL(ARG)
+
+SIF CSTR:性器称呼／阴茎／沉沦 != "" && ARG
+	RETURN
+SELECTCASE CSTR:性器称呼／阴茎
+CASE "阴茎","（让人）怀孕的棒","肉棒","男人的"
+	CSTR:性器称呼／阴茎／沉沦 = 佩带
+	
+;ちんぽ呼び増やす　ひらがなでもそうはなんないかな部分が多くて
+CASE "鸡巴","男根","阴茎","男性器"
+	CSTR:性器称呼／阴茎／沉沦 = 阳具
+	
+;堕ちた後から選択可能系
+CASE "老二大人","勃起大人","坚挺","魔头"
+	CSTR:性器称呼／阴茎／沉沦 = 大鸡鸡大人
+
+CASEELSE
+	CSTR:性器称呼／阴茎／沉沦 = %CSTR:性器称呼／阴茎%
+	
+ENDSELECT
+
+;恋慕以上なら忠実に喋ってくれる
+SIF !＃陷落状态／隶属＃
+	RETURN
+SELECTCASE CSTR:性器称呼／阴茎
+CASE "（让人）怀孕的棒"
+	CSTR:性器称呼／阴茎／沉沦 = （让人）怀孕的棒
+CASE "肉棒","男人的"
+	CSTR:性器称呼／阴茎／沉沦 = 肉棒
+CASE "男人的"
+	CSTR:性器称呼／阴茎／沉沦 = 男人的
+CASE "男根"
+	CSTR:性器称呼／阴茎／沉沦 = 男根
+CASE "阴茎"
+	CSTR:性器称呼／阴茎／沉沦 = 阴茎
+CASE "男性器"
+	CSTR:性器称呼／阴茎／沉沦 = 男性器
+CASE "老二大人"
+	CSTR:性器称呼／阴茎／沉沦 = 老二大人
+CASE "勃起大人"
+	CSTR:性器称呼／阴茎／沉沦 = 勃起大人
+CASE "坚挺"
+	CSTR:性器称呼／阴茎／沉沦 = 坚挺
+CASE "魔头"
+	CSTR:性器称呼／阴茎／沉沦 = 间
+ENDSELECT
+
+
+
+;おまんこ
+;ARG→1なら蕩けが入ってるとき上書きしない
+@SWEET_VAGINA_CALL(ARG)
+
+SIF CSTR:性器称呼／膣／沉沦 != "" && ARG
+	RETURN
+SELECTCASE CSTR:性器称呼／膣
+CASE "曼科","女性器","鸡巴套","阴茎套","精液罐","淫乱的小穴"
+	CSTR:性器称呼／膣／沉沦 = 小穴
+CASE "膣穴","膣内","膣"
+	CSTR:性器称呼／膣／沉沦 = 阴道
+CASE "阴孔"
+	CSTR:性器称呼／膣／沉沦 = 阴孔
+CASE "肉壶"
+	CSTR:性器称呼／膣／沉沦 = 肉穴
+CASEELSE
+	CSTR:性器称呼／膣／沉沦 = %CSTR:性器称呼／膣%
+ENDSELECT
+
+SIF !＃陷落状态／隶属＃
+	RETURN
+SELECTCASE CSTR:性器称呼／膣
+CASE "女性器"
+	CSTR:性器称呼／膣／沉沦 = 女性器
+CASE "鸡巴套"
+	CSTR:性器称呼／膣／沉沦 = 鸡巴套
+CASE "阴茎套"
+	CSTR:性器称呼／膣／沉沦 = 阴茎套
+CASE "精液罐"
+	CSTR:性器称呼／膣／沉沦 = 精液罐
+CASE "淫乱的小穴"
+	CSTR:性器称呼／膣／沉沦 = 淫乱小穴
+ENDSELECT
+
+
+
+;アナル
+;ARG→1なら蕩けが入ってるとき上書きしない
+@SWEET_ANAL_CALL(ARG)
+
+SIF CSTR:性器称呼／肛门／沉沦 != "" && ARG
+	RETURN
+SELECTCASE CSTR:性器称呼／肛门
+CASE "屁眼","屁股眼儿","不洁之穴","屁股小穴"
+	CSTR:性器称呼／肛门／沉沦 = 屁股眼儿
+CASE "屁股","屁股"
+	CSTR:性器称呼／肛门／沉沦 = 屁股
+CASE "尻穴","肛门"
+	CSTR:性器称呼／肛门／沉沦 = 屁股穴
+CASE "肛门","后面的穴"
+	CSTR:性器称呼／肛门／沉沦 = 肛门
+CASEELSE
+	CSTR:性器称呼／肛门／沉沦 = %CSTR:性器称呼／肛门%
+ENDSELECT
+
+SIF !＃陷落状态／隶属＃
+	RETURN
+SELECTCASE CSTR:性器称呼／肛门
+CASE "不洁之穴"
+	CSTR:性器称呼／肛门／沉沦 = 不洁の穴
+CASE "肛门"
+	CSTR:性器称呼／肛门／沉沦 = 肛门
+CASE "后面的穴"
+	CSTR:性器称呼／肛门／沉沦 = 后面的穴
+CASE "屁股小穴"
+	CSTR:性器称呼／肛门／沉沦 = 屁股小穴
+ENDSELECT
+
+
+
+

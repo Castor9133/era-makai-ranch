@@ -1,0 +1,49 @@
+﻿
+;頭撫で（複雑になってもいいよう関数分け）
+@VISIT_STROKING_HEAD_MESSAGE
+
+PRINTFORML 抚摸着%CALLNAME%的头…
+CALL KOJO_PRINT("访问","摸头")
+IF CFLAG:崩坏
+	PRINTFORML %CALLNAME%的眼神空洞…
+	
+ELSEIF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／隶属＃
+	PRINTFORML %CALLNAME%似乎期待着什么，脸颊泛红，呼吸急促…
+	
+ELSEIF ＃陷落状态／恋慕以上＃ || GROUPMATCH(CSTR:状态／主人公的孩子,"成长中","成长后")
+	PRINTFORML %CALLNAME%眯起了幸福的眼睛…
+ELSEIF ＃陷落状态／陷落以上＃
+	PRINTFORML %CALLNAME%一脸温顺地被摸摸头…
+ELSEIF ＃陷落状态／屈服以上＃
+	PRINTFORML %CALLNAME%似乎很纠结，但被抚摸似乎也不错…
+ELSE
+	PRINTFORML %CALLNAME%似乎感到不悦…
+ENDIF
+
+
+
+;キス
+@VISIT_KISS_MESSAGE
+
+PRINTFORML 亲吻了%CALLNAME%…
+CALL KOJO_PRINT("访问","接吻")
+
+;後半
+@VISIT_KISS_AFTER_MESSAGE
+
+IF CFLAG:崩坏
+	PRINTFORML %CALLNAME%的眼神空洞…
+	
+ELSEIF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／隶属＃
+	PRINTFORML 与%CALLNAME%交缠的舌头和深情的接吻…
+ELSEIF ＃陷落状态／恋慕以上＃
+	PRINTFORML 即使%CALLNAME:0%分开嘴唇，%CALLNAME%还在寻求更多的吻…
+ELSEIF ＃陷落状态／陷落以上＃
+	PRINTFORML %CALLNAME%似乎并不讨厌…
+ELSE
+	PRINTFORML %CALLNAME%表露出不悦的情感…
+ENDIF
+
+
+
+

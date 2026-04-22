@@ -1,0 +1,56 @@
+﻿
+;異世界ランジェリー・アクセサリー
+@ITEM_DETAIL_CLOTHE_OTHER_WORLD_LINGERIE
+
+SELECTCASE ITEMNAME:SELECT_ITEM
+CASE "猫娘胸罩"
+	CALL LINGERIE_DETAIL_COMMON("上面","","乳沟穴","膨乳时破损")
+	PRINTFORML 包裹并托住%SAVESTR:标识／乳房%的女性内衣，
+	PRINTFORML %SAVESTR:标识／乳房%的乳沟部分被裁剪成猫脸的形状。
+	PRINTL 虽然是很可爱的设计，但是男人送这个礼物的目的多半只有「想穿上乳交」的程度。
+
+CASE "运动胸罩"
+	CALL LINGERIE_DETAIL_COMMON("上面","","","膨乳时破损")
+	PRINTFORML 包裹并托住%SAVESTR:标识／乳房%的女性内衣，
+	PRINTFORML 即使剧烈运动也能防止%SAVESTR:标识／乳房%晃动，没有卡扣，布料很厚实。
+
+CASE "条纹内裤"
+	CALL LINGERIE_DETAIL_COMMON("下面")
+	PRINTL 保护私处的女性内衣，条纹花纹的类型。
+
+CASE "丁字裤"
+	CALL LINGERIE_DETAIL_COMMON("下面","","极小")
+	PRINTL 这是一款女式保护私处的内衣，只要保护私处就可以了，只是后面的布料面积很小。
+	PRINTL 屁股完全漏出来了
+
+CASE "Ｃ字裤"
+	CALL LINGERIE_DETAIL_COMMON("下面","","密封")
+	PRINTL 女性内衣，只能遮住私处关键部位。
+	PRINTL 在布面积上几乎和私处贴纸一样。
+
+CASE "吊带衫"
+	CALL LINGERIE_DETAIL_COMMON("上面")
+	PRINTL 用肩带吊着的女性内衣。
+	
+CASE "连体紧身衣"
+	CALL LINGERIE_DETAIL_COMMON("上下")
+	PRINTFORML 从%SAVESTR:标识／乳房%到私处的一体女性用内衣。
+	PRINTL 因为一切都是相连的，所以很难穿，也很难脱下来。
+
+CASE "弹弓比基尼"
+	CALL LINGERIE_DETAIL_COMMON("上下","Ｂ露出")
+	PRINTL 一套上下两件式的泳装，但是布面积非常小，上半部分只能遮住乳头。
+	PRINTL 虽然比起单纯的细带好一些，但乍一看也几乎没什么区别。
+
+CASE "学校游泳衣"
+	CALL LINGERIE_DETAIL_COMMON("上下")
+	PRINTL 在异世界的教育机关进行游泳科目时穿的隐藏肚子的泳衣。
+	
+CASE "兔耳饰品"
+	CALL ACCESSORY_DETAIL_COMMON("头")
+	PRINTL 模仿兔子长耳朵的耳饰。
+	PRINTL 似乎常常在穿着兔女郎服时佩戴。
+	
+ENDSELECT
+
+

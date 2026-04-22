@@ -1,0 +1,76 @@
+﻿
+;各種マイルストーンのチェック
+;ニンゲンのミルクを出荷
+@MILESTONE_CHECK_800
+
+;母乳総出荷量が1以上で達成
+SIF FLAG:母乳出货总量
+	RETURN 1
+
+
+;マイルストーン達成時の報酬
+;魔術師奴隷の標的依頼（ベテラン傭兵への依頼料込み）・＜魔力枷＞入手
+@MILESTONE_REWARD_800
+
+PRINTFORML 出货的%SAVESTR:标识／母乳%好评如潮，想要更多搾取并出货。
+PRINTL 由于受到ユジン的介绍，魔族行会的熟人「テラ」提到要捕捉看起来魔力充沛的人类。
+PRINTL 进行角色创建。
+PRINTL [ 0] OK
+INPUT
+CALL CHARA_MAKE_FIXED_SLAVE_SORCEROUS
+
+;TARGETはそのまま
+COST = MERCENARY_REWORD:3
+CFLAG:追踪者 = 3
+CFLAG:追踪人数 = 1
+FLAG:佣兵兼职目标ID／老手 = CFLAG:ID
+ITEM:魔力枷锁 += 1
+PRINTL
+PRINTL 这个流程是[魔族行会]→设定追踪对象→雇佣佣兵兼职来捕捉。　形成这样的流程。
+PRINTL 由于这是一个需要一整天的繁重工作，所以只接受预付款。
+PRINTL
+PRINTL 我们雇了一个老兵雇佣军。
+CALL PRINTL_WORD_COLOR,@"这次的费用已报销，但实际上雇佣一位老手需要%VALUE_DIGIT(COST)%G。","黄"
+CALL PRINTL_WORD_COLOR,@"获得了1个＜魔力枷锁＞。","浅蓝色"
+
+
+
+;ミルク1万ml出荷
+@MILESTONE_CHECK_801
+
+SIF FLAG:母乳出货总量 >= 10000
+	RETURN 1
+
+
+;＜母乳濃厚化薬＞入手
+@MILESTONE_REWARD_801
+
+ITEM:母乳浓厚化药 += 3
+PRINTFORML 出货的%SAVESTR:标识／母乳%好评如潮，似乎有更多想要更高品质牛奶的需求。
+PRINTL ユジン带来了试制品的品质提升药品，待会儿试试。
+CALL PRINTL_WORD_COLOR,@"获得了3个＜母乳浓厚化药＞。","浅蓝色"
+PRINTL 在调教中可以使用【用药】。
+
+
+
+;【濃厚母乳】の出荷
+@MILESTONE_CHECK_802
+
+;精算関数でFLAGを入れてる
+SIF GETBIT(＃里程碑达成／浓厚母乳出货＃)
+	RETURN 1
+
+
+;＜膨乳薬＞入手
+@MILESTONE_REWARD_802
+
+ITEM:膨乳药 += 3
+PRINTFORML 出货的%SAVESTR:标识／母乳%好评如潮，似乎魔界农协也有更多想要流通的需求。
+PRINTFORML “从大乳中可以搾取很多%SAVESTR:标识／母乳%”的说法，ユジン带来了试制品的膨乳药品。
+PRINTL 如果有兴趣的话，待会儿试试。
+CALL PRINTL_WORD_COLOR,@"获得了3个＜膨乳药＞。","浅蓝色"
+PRINTL 在调教中可以使用【用药】。
+
+
+
+

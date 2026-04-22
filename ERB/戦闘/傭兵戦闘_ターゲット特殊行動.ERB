@@ -1,0 +1,67 @@
+﻿
+;大技
+@TARGET_SPECIAL_ATTACK
+
+CALL KOJO_PRINT("战斗","大招")
+CALL PRINTL_WORD_COLOR,@"%CALLNAME%放出大招！！","浅蓝色"
+BASE:大技次数 --
+
+;ルーキーの場合直感により回避される可能性あり
+IF CFLAG:追踪者 == 2 && RAND:100 < 50
+	CALL PRINTL_WORD_COLOR,@"%PRINT_MONSTER()%凭直觉迅速升空，%CALLNAME%的大招未能命中！","黄"
+	PRINTFORML 剩余大技次数：{BASE:大技次数} 
+	RETURN
+ENDIF
+CALL TARGET_ATTACK_DAMAGE_CALC
+
+;大技のダメージ増加：4ターン目以下なら2.5倍、5ターン目以降1.5倍
+IF TURN < 5
+	TIMES DAMAGE,2.50
+ELSE
+	TIMES DAMAGE,1.50
+ENDIF
+CALL CRITICAL_CALC_TARGET
+
+;大技はミスにならないようにするためATTACK_RATEを最大100に下げる
+ATTACK_RATE = LIMIT(ATTACK_RATE,0,100)
+CALL CRITICAL_CHECK_ATTACK
+PRINTFORML %PRINT_MONSTER()%造成了%VALUE_DIGIT(DAMAGE)%伤害！ 
+TFLAG:兼职战斗力 = LIMIT(TFLAG:兼职战斗力 -DAMAGE,0,TFLAG:兼职战斗力／最大值)
+
+;疲労度+10%
+BASE:疲劳度 = LIMIT(BASE:疲劳度 +10,0,MAXBASE:疲劳度)
+PRINTFORML 剩余大技次数：{BASE:大技次数} 疲劳度+10
+
+
+
+
+;仲間を回復する→50%
+@TARGET_SPECIAL_HEAL_GROUP
+
+CALL KOJO_PRINT("战斗","同伴回复")
+HEAL = MAXBASE:同伴战斗力1 *50 /100
+CALL RANDOM_FIX(HEAL,5,"仲間戦闘力回復量")
+HEAL += FIX
+CALL PRINTL_WORD_COLOR,@"%CALLNAME%帮助同伴们回复了！ 同伴战斗力+%VALUE_DIGIT(HEAL)% ","浅蓝色"
+BASE:同伴战斗力1 = LIMIT(BASE:同伴战斗力1 +HEAL,0,MAXBASE:同伴战斗力1)
+BASE:回复次数 --
+PRINTFORML 剩余回复次数：{BASE:回复次数} 
+
+
+
+;自分を回復する→50%
+@TARGET_SPECIAL_HEAL_SELF
+
+CALL KOJO_PRINT("战斗","自我回复")
+HEAL = MAXBASE:战斗力 *50 /100
+CALL RANDOM_FIX(HEAL,5,"戦闘力回復量")
+HEAL += FIX
+BASE:战斗力 += HEAL
+CALL PRINTL_WORD_COLOR,@"%CALLNAME%回复了自己！ 战斗力+%VALUE_DIGIT(HEAL)% ","浅蓝色"
+BASE:战斗力 = LIMIT(BASE:战斗力 +HEAL,0,MAXBASE:战斗力)
+BASE:回复次数 --
+PRINTFORML 剩余回复次数：{BASE:回复次数} 
+
+
+
+

@@ -1,0 +1,133 @@
+﻿
+;大浴場掃除
+@WORK_LARGE_BATHLOOM_CLEANING
+#DIM FIRST_WORKLOAD
+
+;掃除するキャラがいない、そもそも大浴場ない、掃除完了してる場合帰る
+WORKER = CMATCH(CSTR:日程,"大浴场清洁")
+SIF !WORKER || !ITEM:大浴场 || FLAG:大浴场清洁完成度 >= 100
+	RETURN
+PRINTL 　　　《 大浴场清洁 》
+FIRST_WORKLOAD = FLAG:大浴场清洁完成度
+CALL WORKER_ABL_SET("大浴场清洁")
+CALL RANDOM_CHARA_SCHEDULE_COMMON("大浴场清洁")
+
+;大浴場掃除はちょっと実験
+;少し体力消費+掃除完了度増加、を体力0・掃除完了・10回実行のいずれかまでループする
+;キャラごとの実行前ステータスを保存：全員
+FOR TARGET_COUNT,0,CHARANUM
+	TARGET = TARGET_COUNT
+	CALL WORK_LARGE_BATHLOOM_CLEANING_BEFORE_STATUS
+NEXT
+
+;FORの中にFOR入っちゃうけど仕方なし
+RUN_COUNT = 0
+FOR LOCAL,0,10
+	RUN_MEMBER = 0
+	FOR TARGET_COUNT,0,CHARANUM
+		TARGET = TARGET_COUNT
+		SIF CSTR:日程 != "大浴场清洁" || CFLAG:行动完毕
+			CONTINUE
+		CALL WORK_LARGE_BATHLOOM_CLEANING_RUN
+	NEXT
+	RUN_COUNT ++
+	
+	;実行人数0／掃除完了ならそこで終了
+	SIF !RUN_MEMBER || FLAG:大浴场清洁完成度 >= 100
+		BREAK
+NEXT
+FLAG:大浴场清洁完成度 = LIMIT(FLAG:大浴场清洁完成度,0,100)
+
+;終了時に完了度表示
+PRINTFORML 大浴场清洁完成度：{FIRST_WORKLOAD} → {FLAG:大浴场清洁完成度}\%
+SIF FLAG:大浴场清洁完成度 >= 100
+	CALL PRINTL_WORD_COLOR("大浴场打扫完毕！","浅蓝色")
+
+;最後に経験値増加など　スケジュール前後で体力が減っているキャラを判定
+;これで行動済みでもここの判定に入れる
+FOR TARGET_COUNT,0,CHARANUM
+	TARGET = TARGET_COUNT
+	SIF CFLAG:执行前状态／体力 == BASE:体力
+		CONTINUE
+	CALL WORK_LARGE_BATHLOOM_CLEANING_RESULT
+NEXT
+CALL SCHEDULE_ABL_MARK_BULK(0,"大浴场清洁")
+PRINTW
+DRAWLINE
+CALL RESET_TRAIN_PALAM
+
+
+
+;抽選したキャラの仕事風景表示
+;大浴場掃除はここでは表示のみ行う
+@WORK_LARGE_BATHLOOM_CLEANING_ENTRANCE
+
+IF !EXP:执行次数／大浴场清洁
+	KOJO_TYPE = 初次
+ELSE
+	KOJO_TYPE = 普通
+ENDIF
+CALL WORK_LARGE_BATHLOOM_CLEANING_BEGIN_MESSAGE
+CALL WORK_LARGE_BATHLOOM_CLEANING_ABL_MESSAGE
+FLAG:上次显示角色ID／大浴场清洁 = CFLAG:ID
+
+
+
+;実行前ステータス保存
+@WORK_LARGE_BATHLOOM_CLEANING_BEFORE_STATUS
+
+CFLAG:执行前状态／体力 = BASE:体力
+CFLAG:运行前状态／EXP = EXP:清洁经验
+CFLAG:执行前状态／精神 = BASE:乳牛堕落
+
+
+
+;実行内容
+@WORK_LARGE_BATHLOOM_CLEANING_RUN
+
+;体力尽きたら脱落
+IF !BASE:体力
+	;1回目かどうかの判定
+	IF !RUN_COUNT
+		PRINTFORML %CALLNAME%似乎是体力极限，瘫软地靠在浴缸里…
+	ELSE
+		PRINTFORML %CALLNAME%达到了体力的极限，筋疲力尽…
+	ENDIF
+	
+	;行動済みフラグで以降をスキップ
+	CFLAG:行动完毕 = 1
+	RETURN
+ENDIF
+
+;実行人数+1
+RUN_MEMBER ++
+
+;消費体力：200-掃除Lv×10（下限20）→全体×0.7
+COST = 200 -ABL:清洁 *10
+COST = LIMIT(COST,20,200)
+COST = COST * 7 / 10
+SIF COST < 15
+	COST = 15
+CALL HP_COST(COST,1)
+FLAG:大浴场清洁完成度 += ABL:清洁
+
+;実行回数をキャラごとに保存
+CFLAG:日程执行次数 ++
+
+
+
+;実行結果表示
+;キャラごとの実行回数でかける
+@WORK_LARGE_BATHLOOM_CLEANING_RESULT
+
+PRINTFORM %CALLNAME_DIGIT()% HP-{CFLAG:执行前状态／体力 -BASE:体力} 清洁量：{ABL:清洁 *CFLAG:日程执行次数,2} 
+CALL EXP_UP("清洁")
+CALL WORK_LOVE_UP
+CALL SCHEDULE_AFTER_CATTLE_MIND_MINUS
+CALL MIND_PALAM_AFTER_PRINT(1)
+EXP:执行次数／大浴场清洁 ++
+EXP:区间执行次数／大浴场清洁 ++
+CFLAG:行动完毕 = 1
+
+
+

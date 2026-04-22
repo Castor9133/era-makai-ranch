@@ -1,0 +1,69 @@
+﻿
+;**********************************************************
+;Clitoris(クリトリス)の淫語
+;**********************************************************
+@SLANG_C(ARG)
+#FUNCTIONS
+
+;初期化
+EXIST = 0
+SLANGWORD =
+
+SIF GETBIT(FLAG:黑话前缀／阴蒂,1) && CFLAG:身高 < FLAG:黑话／儿童标准上限身高数值 && RAND:100 < 20
+	SLANGWORD += "幼小"
+SIF GETBIT(FLAG:黑话前缀／阴蒂,0) && MARK:淫核 && RAND:100 < 80
+	SLANGWORD += "淫乱"
+
+IF GETBIT(FLAG:黑话替换／阴蒂,9)
+	EXIST ++
+	SIF RAND:100 < 50
+		RETURNF SAVESTR:标识／阴蒂
+ENDIF
+IF GETBIT(FLAG:黑话替换／阴蒂,1) && MARK:淫核
+	EXIST ++
+	IF RAND:100 < 20
+		SLANGWORD = 淫核
+		RETURNF SLANGWORD
+	ENDIF
+ENDIF
+SIF GETBIT(FLAG:黑话替换／阴蒂,0) && EXIST
+	RESTART
+
+IF GETBIT(FLAG:黑话标识／阴蒂,0) && RAND:100 < 50
+	SLANGWORD += "阴蒂"
+	RETURNF SLANGWORD
+ELSEIF GETBIT(FLAG:黑话标识／阴蒂,1) && RAND:100 < 30
+	SLANGWORD += "阴蒂"
+	RETURNF SLANGWORD
+ELSEIF GETBIT(FLAG:黑话标识／阴蒂,2) && RAND:100 < 30
+	SLANGWORD += "肉豆"
+	RETURNF SLANGWORD
+ELSEIF GETBIT(FLAG:黑话标识／阴蒂,3) && RAND:100 < 30
+	SLANGWORD += "豆子"
+	RETURNF SLANGWORD
+ELSEIF GETBIT(FLAG:黑话标识／阴蒂,4) && RAND:100 < 30
+	SLANGWORD += "肉芽"
+	RETURNF SLANGWORD
+ELSEIF GETBIT(FLAG:黑话标识／阴蒂,5) && RAND:100 < 30
+	SLANGWORD += "栗子"
+	RETURNF SLANGWORD
+ELSEIF GETBIT(FLAG:黑话标识／阴蒂,6) && RAND:100 < 30
+	SLANGWORD += "栗子酱"
+	RETURNF SLANGWORD
+ELSEIF GETBIT(FLAG:黑话标识／阴蒂,7)
+	SLANGWORD += "女芽"
+	RETURNF SLANGWORD
+ENDIF
+RESTART
+
+
+;*************【淫語覚書（未登録）】***********************
+;
+;肉豆
+;肉芽
+;陰核
+;
+;*************【淫語覚書（未登録）】***********************
+
+
+

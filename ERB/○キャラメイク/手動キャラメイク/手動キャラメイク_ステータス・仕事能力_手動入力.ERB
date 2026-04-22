@@ -1,0 +1,263 @@
+﻿
+;ステータス・仕事能力の変更手動入力
+;ARGS→CHANGE_STATE
+@SELF_CHARA_MAKE_STATUS_INPUT_MANUAL(ARGS)
+
+SELECTCASE ARGS
+CASE "等级"
+	PRINTL 请输入等级。（1～999）
+	PRINTL （※通常随机生成非常高的情况下也是Lv200左右）
+	INPUT
+	SIF RESULT <= 0 || RESULT >= 1000
+		RETURN
+	MAXBASE:等级 = RESULT
+	BASE:等级 = MAXBASE:等级
+	CFLAG:级别 = MAXBASE:等级 /10
+	SIF !CFLAG:灵力固定
+		CALL SLAVE_EP_CALC
+	SIF !CFLAG:魔力固定
+		CALL SLAVE_MP_CALC
+	CALL SLAVE_BATTLE_POWER_CALC(1)
+	
+CASE "非战斗职业"
+	PRINTL 设定为[非战斗职业]的话等级固定为1，不能和敌人战斗。
+	PRINTL （固定灵力·魔力的场合被重置）
+	PRINTLC [ 0] 【非战斗职业】关闭
+	PRINTLC [ 1] 【非战斗职业】开启
+	INPUT
+	IF RESULT
+		CFLAG:非战斗职业 = 1
+		MAXBASE:等级 = 1
+		BASE:等级 = MAXBASE:等级
+		CFLAG:级别 = 0
+		BASE:回复次数 = 0
+		BASE:大技次数 = 0
+		CFLAG:灵力固定 = 0
+		CFLAG:魔力固定 = 0
+		CALL SLAVE_EP_CALC
+		CALL SLAVE_MP_CALC
+		CALL SLAVE_BATTLE_POWER_CALC(1)
+	ELSE
+		CFLAG:非战斗职业 = 0
+	ENDIF
+	
+CASE "体力"
+	PRINTFORML 请输入体力（HP）。（100～{HP_MAX}，将四舍五入到50的单位）
+	PRINTL （※太低的话会影响工作的情况）
+	INPUT
+	SIF RESULT < 100 || RESULT >= 10000
+		RETURN
+	MAXBASE:体力 = RESULT
+	MAXBASE:体力 -= (MAXBASE:体力 %50)
+	BASE:体力 = MAXBASE:体力
+	
+CASE "气力"
+	PRINTFORML 请输入气力（SP）。（100～{HP_MAX}，将四舍五入到50的单位）
+	PRINTL （※太低的话会影响工作的情况）
+	INPUT
+	SIF RESULT < 100 || RESULT >= 10000
+		RETURN
+	MAXBASE:气力 = RESULT
+	MAXBASE:气力 -= (MAXBASE:气力 %50)
+	BASE:气力 = MAXBASE:气力
+
+CASE "灵力重新计算"
+	IF CFLAG:灵力固定
+		PRINTL 关闭[灵力固定]标志并重新计算？
+		CALL ASK_YN
+		SIF RESULT
+			RETURN
+	ENDIF
+	CFLAG:灵力固定 = 0
+	CALL SLAVE_EP_CALC
+
+CASE "灵力固定"
+	IF CFLAG:灵力固定
+		PRINTL 关闭[灵力固定]标志并重新计算？
+		CALL ASK_YN
+		SIF RESULT
+			RETURN
+		CFLAG:灵力固定 = 0
+		CALL SLAVE_EP_CALC
+		CALL SLAVE_BATTLE_POWER_CALC(1)
+	ELSE
+		PRINTL 打开[灵力固定]标志，直接输入灵力？
+		CALL ASK_YN
+		SIF RESULT
+			RETURN
+		CALL MANYL(3)
+		PRINTL 请输入灵力（EP）的值。（100以上）
+		INPUT
+		SIF RESULT < 100
+			RETURN
+		CFLAG:灵力固定 = 1
+		MAXBASE:灵力 = RESULT
+		BASE:灵力 = MAXBASE:灵力
+		CALL SLAVE_BATTLE_POWER_CALC(1)
+	ENDIF
+	
+CASE "魔力量"
+	PRINTL 输入魔力量与灵力的比例。（0～99）
+	PRINTL [非战斗职业]或者级别2以下并且魔力量是10以上的场合，有战斗力不加算（难被）的莫大的魔力。
+	INPUT
+	SIF RESULT < 0 || RESULT >= 100
+		RETURN
+	CFLAG:魔力量 = RESULT
+	CALL SLAVE_MP_CALC
+	CALL SLAVE_BATTLE_POWER_CALC(1)
+
+CASE "魔力重新计算"
+	IF CFLAG:魔力固定
+		PRINTL 关闭[魔力固定]标志并重新计算？
+		CALL ASK_YN
+		SIF RESULT
+			RETURN
+	ENDIF
+	CFLAG:魔力固定 = 0
+	CALL SLAVE_MP_CALC
+
+CASE "魔力固定"
+	IF CFLAG:魔力固定
+		PRINTL 关闭[魔力固定]标志并重新计算？
+		CALL ASK_YN
+		SIF RESULT
+			RETURN
+		CFLAG:魔力固定 = 0
+		CALL SLAVE_MP_CALC
+		CALL SLAVE_BATTLE_POWER_CALC(1)
+	ELSE
+		PRINTL 开启[魔力固定]标志，直接输入魔力？
+		CALL ASK_YN
+		SIF RESULT
+			RETURN
+		CALL MANYL(3)
+		PRINTL 请输入魔力（MP）的值。（0以上）
+		INPUT
+		SIF RESULT < 0
+			RETURN
+		CFLAG:魔力固定 = 1
+		MAXBASE:魔力 = RESULT
+		BASE:魔力 = MAXBASE:魔力
+		CALL SLAVE_BATTLE_POWER_CALC(1)
+	ENDIF
+
+CASE "魔力恢复率"
+	PRINTL 请输入就寝时恢复的魔力占最大值的比例。（0～100）
+	INPUT
+	SIF RESULT >= 0 && RESULT <= 100
+		MAXBASE:魔力恢复率 = RESULT
+		BASE:魔力恢复率 = MAXBASE:魔力恢复率
+
+CASE "战斗力重新计算"
+	CALL SLAVE_BATTLE_POWER_CALC(1)
+
+
+;2ページ目
+CASE "回复次数"
+	PRINTL 请输入回复技能可以使用的次数。（0～10）
+	INPUT
+	SIF RESULT >= 0 && RESULT <= 10
+		BASE:回复次数 = RESULT
+	
+CASE "大技次数"
+	PRINTL 请请输入可以使用大招的次数。（0～10）
+	INPUT
+	SIF RESULT >= 0 && RESULT <= 10
+		BASE:大技次数 = RESULT
+	
+CASE "同行同伴"
+	PRINTL 选择要同行的同伴的规模。
+	PRINTL [ 0] 无
+	PRINTL [ 1] 队伍
+	PRINTL [ 2] 精锐部队
+	PRINTL [ 3] 军队
+	BINPUT
+	CFLAG:同伴规模 = RESULT
+	CFLAG:同伴级别 = CFLAG:级别
+	CALL GROUP_BATTLE_POWER_CALC
+	
+CASE "同伴级别"
+	PRINTL 请输入同行伙伴的等级。（0～99）
+	INPUT
+	SIF RESULT < 0 || RESULT >= 100
+		RETURN
+	CFLAG:同伴级别 = RESULT
+	CALL GROUP_BATTLE_POWER_CALC
+
+CASE "同伴战斗力重新计算"
+	CALL GROUP_BATTLE_POWER_CALC
+
+
+;3ページ目
+CASE "奶农ABL"
+	PRINTL 请输入奶农Lv。（0～30)
+	INPUT
+	SIF RESULT >= 0 && RESULT <= 30
+		ABL:奶农 = RESULT
+		
+CASE "事务ABL"
+	PRINTL 请输入事务Lv。（0～30)
+	INPUT
+	SIF RESULT >= 0 && RESULT <= 30
+		ABL:事务 = RESULT
+		
+CASE "清洁ABL"
+	IF TALENT:不擅长清洁
+		PRINTW 【不擅长清洁】的情况下，初始清洁Lv为0固定。
+		RETURN
+	ENDIF
+	PRINTL 请输入清洁Lv。（0～30)
+	INPUT
+	SIF RESULT >= 0 && RESULT <= 30
+		ABL:清洁 = RESULT
+	
+CASE "料理ABL"
+	IF TALENT:不擅长料理
+		PRINTW 【不擅长料理】的情况下，初始料理Lv为0固定。
+		RETURN
+	ENDIF
+	PRINTL 请输入料理Lv。（0～30)
+	INPUT
+	SIF RESULT >= 0 && RESULT <= 30
+		ABL:料理 = RESULT
+		
+CASE "药学ABL"
+	PRINTL 请输入药学Lv。（0～30)
+	PRINTL （5以上可携带【调合知识】）
+	INPUT
+	SIF RESULT >= 0 && RESULT <= 30
+		ABL:药学 = RESULT
+	SIF ABL:药学 < 5
+		TALENT:调合知识 = 0
+		
+CASE "接客ABL"
+	IF TALENT:不擅长接客
+		PRINTW 【不擅长接客】的情况下，初始接客Lv为0固定。
+		RETURN
+	ENDIF
+	PRINTL 请输入接客Lv。（0～30)
+	INPUT
+	SIF RESULT >= 0 && RESULT <= 30
+		ABL:接客 = RESULT
+
+CASE "不擅长清洁"
+	INVERTBIT TALENT:不擅长清洁,0
+	
+	;ONにするにせよOFFにせよLv0
+	ABL:清洁 = 0
+	
+CASE "不擅长料理"
+	INVERTBIT TALENT:不擅长料理,0
+	ABL:料理 = 0
+	
+CASE "不擅长接客"
+	INVERTBIT TALENT:不擅长接客,0
+	ABL:接客 = 0
+	
+CASE "调合知识"
+	INVERTBIT TALENT:调合知识,0
+ENDSELECT
+
+
+
+

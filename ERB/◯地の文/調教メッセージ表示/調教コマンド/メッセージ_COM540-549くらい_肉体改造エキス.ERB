@@ -1,0 +1,155 @@
+﻿
+@COM544_MESSAGE
+;母乳体質化エキス
+
+PRINTFORML %CALLNAME:0%的身体上长出的触手缠绕到%CALLNAME%的%SLANG_B()%上，
+PRINTFORML 从一根触手前端伸出的针刺入%CALLNAME%的乳头后开始注入精华…
+PRINTFORML （魔力消费-%VALUE_DIGIT(MAGIC_USE_MP:GETNUM(ITEM,"母乳体质化精华"))%MP）
+CALL KOJO_PRINT("调教命令","注射","Ｎ")
+PRINTW
+PRINTL …精华的效果立竿见影…！
+
+
+
+@COM545_MESSAGE
+;魔力母乳体質化エキス
+
+PRINTFORML %CALLNAME:0%的身体上长出的触手缠绕到%CALLNAME%的%SLANG_B()%上，
+PRINTFORML 从一根触手前端伸出的针刺入%CALLNAME%的乳头后开始注入精华…
+PRINTFORML （魔力消费-%VALUE_DIGIT(MAGIC_USE_MP:GETNUM(ITEM,"魔力母乳体质化精华"))%MP）
+CALL KOJO_PRINT("调教命令","注射","Ｎ")
+PRINTW
+PRINTL …精华的效果立竿见影…！
+
+
+
+@COM546_MESSAGE
+;膨乳改造エキス
+
+PRINTFORML %CALLNAME:0%的身体上长出的触手缠绕到%CALLNAME%的脖颈上，
+PRINTFORML 从一根触手前端伸出的针刺入%CALLNAME%的脖颈后开始注入精华…
+PRINTFORML （魔力消费-%VALUE_DIGIT(MAGIC_USE_MP:GETNUM(ITEM,"膨乳改造精华"))%MP）
+CALL KOJO_PRINT("调教命令","注射","脖颈")
+PRINTW
+PRINTL …精华的效果立竿见影…！
+PRINTFORML %CALLNAME%的%SLANG_B()%逐渐变大！
+
+
+
+@COM547_MESSAGE
+;淫乳改造エキス
+
+PRINTFORML %CALLNAME:0%的身体上长出的触手缠绕到%CALLNAME%的%SLANG_B()%上，
+PRINTFORML 更有好几条注入触手蜂拥而至，刺入%SLANG_B()%开始注入精华…
+PRINTFORML （魔力消费-%VALUE_DIGIT(MAGIC_USE_MP:GETNUM(ITEM,"淫乳改造精华"))%MP）
+CALL KOJO_PRINT("调教命令","注射","Ｂ")
+PRINTW
+PRINTL …精华的效果立竿见影…！
+
+
+
+;追加でＢ感度増加
+;ARG→NO_BUSTUP
+;ARG:1→SENSITIVE_PLUS
+@COM547_BUST_SENSITIVE_UP_MESSAGE(ARG,ARG:1)
+
+;膨乳したなら「さらに」表示
+SIF ARG
+	PRINT 更
+PRINTFORM 由于精华的作用，%CALLNAME%%SLANG_B()%发热……
+CALL HEARTCB(0xD02830)
+PRINTL
+CALL KOJO_PRINT("肉体改造","Ｂ敏感度上升")
+CALL PRINTL_WORD_COLOR,@"【Ｂ敏感度{ABL:Ｂ敏感度 -ARG:1}→{ABL:Ｂ敏感度}\%】","桃"
+CALL NIPPLE_SENSITIVE_FIX
+PRINTW
+
+
+
+@COM548_MESSAGE
+;母乳濃厚化エキス
+
+PRINTFORML %CALLNAME:0%的身体上长出的触手缠绕到%CALLNAME%的%SLANG_B()%上，
+PRINTFORML 从一根触手前端伸出的针刺入%CALLNAME%的乳头后开始注入精华…
+PRINTFORML （魔力消费-%VALUE_DIGIT(MAGIC_USE_MP:GETNUM(ITEM,"母乳浓厚化精华"))%MP）
+CALL KOJO_PRINT("调教命令","注射","Ｎ")
+PRINTW
+PRINTL …精华的效果立竿见影…！
+PRINTFORML %CALLNAME%的%SLANG_N()%中喷涌而出的%SLANG_MILK()%浓度增加了…！
+CALL KOJO_PRINT("肉体改造","母乳浓厚化")
+PRINTW
+
+
+
+@COM820_MESSAGE
+;感度上昇粘液A
+
+PRINTFORML %CALLNAME:0%的身体里爬出大量触手接近%CALLNAME%的%SLANG_A()%，滴下了大量特制的粘液…
+PRINTFORML 像刷子一样的褶皱状触手摩擦着%SLANG_A()%确保粘液完全渗入…
+PRINTFORML （魔力消费-%VALUE_DIGIT(MAGIC_USE_MP:GETNUM(ITEM,"增敏粘液"))%MP）
+CALL KOJO_PRINT("调教命令","增敏粘液","Ａ")
+PRINTW
+PRINTFORML …%CALLNAME%的%SLANG_A()%疼痛起来，呼吸变得急促…！
+CALL KOJO_PRINT("肉体改造","Ａ敏感度上升")
+CALL PRINTL_WORD_COLOR,@"【Ａ敏感度+{ABL:Ａ敏感度 -SENSITIVE_BEFORE}→{ABL:Ａ敏感度}\%】","桃"
+PRINTW
+
+
+
+@COM821_MESSAGE
+;感度上昇粘液B
+
+PRINTFORML %CALLNAME:0%的身体里爬出大量触手接近%CALLNAME%的%SLANG_B()%，滴下了大量特制的粘液…
+PRINTFORML 像刷子一样的褶皱状触手摩擦着%SLANG_B()%确保粘液完全渗入…
+PRINTFORML （魔力消费-%VALUE_DIGIT(MAGIC_USE_MP:GETNUM(ITEM,"增敏粘液"))%MP）
+CALL KOJO_PRINT("调教命令","增敏粘液","Ｂ")
+PRINTW
+PRINTFORML …%CALLNAME%的%SLANG_B()%疼痛起来，呼吸变得急促…！
+CALL KOJO_PRINT("肉体改造","Ｂ敏感度上升")
+CALL PRINTL_WORD_COLOR,@"【Ｂ敏感度+{ABL:Ｂ敏感度 -SENSITIVE_BEFORE}→{ABL:Ｂ敏感度}\%】","桃"
+
+
+
+@COM822_MESSAGE
+;感度上昇粘液C
+
+PRINTFORML %CALLNAME:0%的身体里爬出大量触手接近%CALLNAME%的%SLANG_C()%，滴下了大量特制的粘液…
+PRINTFORML 像刷子一样的褶皱状触手摩擦着%SLANG_C()%确保粘液完全渗入…
+PRINTFORML （魔力消费-%VALUE_DIGIT(MAGIC_USE_MP:GETNUM(ITEM,"增敏粘液"))%MP）
+CALL KOJO_PRINT("调教命令","增敏粘液","Ｃ")
+PRINTW
+PRINTFORML …%CALLNAME%的%SLANG_C()%疼痛起来，呼吸变得急促…！
+CALL KOJO_PRINT("肉体改造","Ｃ敏感度上升")
+CALL PRINTL_WORD_COLOR,@"【Ｃ敏感度+{ABL:Ｃ敏感度 -SENSITIVE_BEFORE}→{ABL:Ｃ敏感度}\%】","桃"
+PRINTW
+
+
+
+@COM823_MESSAGE
+;感度上昇粘液V
+
+PRINTFORML %CALLNAME:0%的身体里爬出大量触手接近%CALLNAME%的%SLANG_V()%，滴下了大量特制的粘液…
+PRINTFORML 像刷子一样的褶皱状触手摩擦着%SLANG_V()%确保粘液完全渗入…
+PRINTFORML （魔力消费-%VALUE_DIGIT(MAGIC_USE_MP:GETNUM(ITEM,"增敏粘液"))%MP）
+CALL KOJO_PRINT("调教命令","增敏粘液","Ｖ")
+PRINTW
+PRINTFORML …%CALLNAME%的%SLANG_V()%疼痛起来，呼吸变得急促…！
+CALL KOJO_PRINT("肉体改造","Ｖ敏感度上升")
+CALL PRINTL_WORD_COLOR,@"【Ｖ敏感度+{ABL:Ｖ敏感度 -SENSITIVE_BEFORE}→{ABL:Ｖ敏感度}\%】","桃"
+PRINTW
+
+
+
+@COM824_MESSAGE
+;感度上昇粘液N
+
+PRINTFORML %CALLNAME:0%的身体里爬出大量触手接近%CALLNAME%的%SLANG_N()%，滴下了大量特制的粘液…
+PRINTFORML %CALLNAME:0%将触手变成刷子状，将%CALLNAME%的%SLANG_N()%涂满粘液…
+PRINTFORML （魔力消费-%VALUE_DIGIT(MAGIC_USE_MP:GETNUM(ITEM,"增敏粘液"))%MP）
+CALL KOJO_PRINT("调教命令","增敏粘液","Ｎ")
+PRINTW
+PRINTFORML …%CALLNAME%的%SLANG_N()%疼痛起来，呼吸变得急促…！
+CALL KOJO_PRINT("肉体改造","Ｎ敏感度上升")
+CALL PRINTL_WORD_COLOR,@"【Ｎ敏感度+{ABL:Ｎ敏感度 -SENSITIVE_BEFORE}→{ABL:Ｎ敏感度}\%】","桃"
+PRINTW
+

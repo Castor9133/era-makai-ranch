@@ -1,0 +1,68 @@
+﻿
+;性経験割合設定
+@TENDENCY_CONFIG_VARGIN
+
+;FLAG:候補割合／性経験／無垢→3130
+FLAG_REF = 3130
+STR_REF = 6590
+FLAG:(FLAG_REF +9) = SUMARRAY(FLAG,FLAG_REF,FLAG_REF +9)
+CLEARLINE LINECOUNT
+PRINTL 设定人类的性经验比例。
+CALL CONFIG_CHANGE_FLAG_CHECK
+CALL PRINT_TENDENCY_BUTTON
+CALL PRINTL_ALIGN(-10)
+CALL TENDENCY_CONFIG_FOOTER
+CALL TENDENCY_INPUT
+IF RESULT == 98
+	PRINTL 将性经验比例回复为默认值？
+	CALL ASK_YN
+	SIF !RESULT
+		CALL DEFAULT_TENDENCY_CONFIG_VARGIN
+ELSEIF RESULT == 99
+	RETURN
+ENDIF
+RESTART
+
+
+
+;性経験補足
+;ARG→INPUT
+@VARGIN_TENDENCY_TIPS(ARG)
+
+CALL HALFLINE
+SELECTCASE ARG
+CASE 0
+	PRINTL 【纯洁】：没有任何经验，性知识也没有。
+CASE 1
+	PRINTL 【生娘】：没有全部经验
+CASE 2
+	PRINTL 【处女】：只和一个人接吻过，其他什么也没做过。
+CASE 3
+	PRINTL 【姑且处女】：虽然前后还是处女，但是却有着接吻、口交（如果是巨乳的话，还有乳交）经验
+	PRINTL 前戏的经验人数3～0人
+	PRINTL 【母乳体质】的情况下，授乳经验人数为0～5人
+CASE 4
+	PRINTL 【非处女】：只和一个人有V和接吻（如果是巨乳的话，还有乳交）经验，没有A和口交经验
+	PRINTL 【母乳体质】的情况下，授乳经验人数也是1人
+	PRINTL
+	PRINTL 【处女结界】同时附加时，替换为【贞操死守】，V经验变为0。
+CASE 5
+	PRINTL 【变态】：所有行为都和1～5个人有过经验
+	PRINTL 【母乳体质】的情况下，授乳经验人数也是一样的
+	PRINTL 如果是【处女结界】的话，前后经验将强制为0
+CASE 6
+	PRINTL 【碧池】：非常喜欢Ｈ，有过所有性经验
+	PRINTL 各种经验人数大概5~30人左右
+	PRINTL 【母乳体质】的情况下，授乳经验人数也是5~30人
+	PRINTL 如果是【处女结界】的话，前后经验将强制为0
+	PRINTL 【贞操观念】被消除
+CASE 7
+	PRINTL 【肉便器】：因为好不容易从性奴隶状态中逃脱，所以所有的经历都有
+	PRINTL 各种经验人数大概50~300人左右
+	PRINTL 【母乳体质】的情况下，授乳经验人数为100～500人
+	PRINTL
+	PRINTL 【处女结界】同时附加时，替换为【性奴隶】，V经验变为0。
+ENDSELECT
+PRINTL
+
+

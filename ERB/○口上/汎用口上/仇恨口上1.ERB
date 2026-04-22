@@ -1,0 +1,172 @@
+; ======================================
+; 泛用口上（性格：仇恨）
+;
+;口上識別名：仇恨1
+;口上作者：（汉化扩展）
+;许可证：CC BY-NC
+; 说明：恋慕走路线A（越爽越恨的扭曲）
+; ======================================
+
+@KOJO_GENERAL_INDEX_仇恨1(ARGS:0,ARGS:1,ARGS:2,ARGS:3)
+
+IF TFLAG:Ｍ装备
+	CALL KOJO_GENERAL_MOUTH_SHACKLE_1(ARGS:0,ARGS:1,ARGS:2,ARGS:3)
+	RETURN
+ELSEIF CFLAG:崩坏 && !CFLAG:洗脑
+	IF GROUPMATCH(ARGS:0,"例文")
+	ELSEIF GROUPMATCH(ARGS:1,"洗脑触手","崩坏")
+	ELSE
+		IF NOWEX:总绝顶
+			CALL MESSAGE_BOX,@"「哈……哈……♥ 去死……♥ ……还要……♥」"
+			CALL MESSAGE_BOX,@"「……恨死你了……♥ ……别停……♥」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……滚……」"
+		ENDIF
+		RETURN
+	ENDIF
+ENDIF
+
+SELECTCASE ARGS:0
+CASE "例文"
+	CALL MESSAGE_BOX,@"「【仇恨1】已设置。\n怨毒、咬牙切齿；恋慕走扭曲路线：越爽越恨，越恨越想要。」"
+
+CASE "调教命令"
+	CALL KOJO_GENERAL_仇恨1_TRAIN(ARGS:0,ARGS:1,ARGS:2,ARGS:3)
+
+CASE "绝顶"
+	IF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／隶属＃
+		CALL MESSAGE_BOX,@"「啊……♥ ……我会照做……因为我恨你……♥」"
+		CALL MESSAGE_BOX,@"「……别以为你赢了……我只是……身体坏了……♥」"
+	ELSEIF ＃陷落状态／恋慕以上＃
+		CALL MESSAGE_BOX,@"「不许停……！……不对，停下……不许停！♥」"
+		CALL MESSAGE_BOX,@"「我明明恨你……为什么身体会……啊……♥」"
+	ELSEIF ＃陷落状态／屈服以上＃
+		CALL MESSAGE_BOX,@"「住手……！……呜……♥」"
+	ELSE
+		CALL MESSAGE_BOX,@"「别碰我……去死……！」"
+	ENDIF
+	SIF NOWEX:Ａ绝顶
+		IF TALENT:Ａ名器 || TALENT:肛门嗜好 || ABL:Ａ感觉 >= 3
+			CALL MESSAGE_BOX,@"「……！？　%ANAL_CALL()%……痛……！？　……可恶……深处……居然……发酥……♥」"
+			CALL MESSAGE_BOX,@"「……我恨你……身体却……去死……♥」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……痛……！？　%ANAL_CALL()%……滚……！」"
+			CALL MESSAGE_BOX,@"「……只有痛……去死……！」"
+		ENDIF
+	SIF NOWEX:Ｕ绝顶
+		IF TALENT:尿道敏感 || EX:尿道调教经验 >= 15
+			CALL MESSAGE_BOX,@"「……去死……可尿道那里……竟跟着颤……♥」"
+			CALL MESSAGE_BOX,@"「……我恨你……身体别抖……♥」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……只有痛……像针一样……滚……！」"
+			CALL MESSAGE_BOX,@"「……去死……别戳那里……」"
+		ENDIF
+
+CASE "射精"
+	IF SOURCE:膣内射精经验
+		IF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……射进来了吗……♥ ……恶心……但……别拔……♥」"
+			CALL MESSAGE_BOX,@"「……别看我……这种样子……我会杀了你……♥」"
+		ELSE
+			CALL MESSAGE_BOX,@"「不许在里面……！」"
+		ENDIF
+	ELSEIF SOURCE:尻穴射精经验
+		IF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……后面也……射进来……♥ ……卑鄙……但……别停……♥」"
+			CALL MESSAGE_BOX,@"「……这种屈辱……我会记一辈子……♥」"
+		ELSE
+			CALL MESSAGE_BOX,@"「住手……！」"
+		ENDIF
+	ELSEIF SOURCE:精饮经验
+		IF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……咽下去了……♥ ……恶心……但……身体却……♥」"
+			CALL MESSAGE_BOX,@"「……别用那种眼神看我……我恨你……♥」"
+		ELSE
+			CALL MESSAGE_BOX,@"「呕……咳……」"
+		ENDIF
+	ELSEIF TEQUIP:手淫
+		IF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……弄在我手上了……♥ ……恶心……但……再来……♥」"
+			CALL MESSAGE_BOX,@"「……别以为这是温柔……我只是……恨你……♥」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……别让我碰……」"
+		ENDIF
+	ENDIF
+
+CASE "搾乳"
+	IF SOURCE:母乳漏出
+		CALL MESSAGE_BOX,@"「……自己漏出来了……恶心……」"
+		RETURN
+	ENDIF
+	IF ＃陷落状态／恋慕以上＃
+		CALL MESSAGE_BOX,@"「……挤吧……我会记住这份屈辱……♥」"
+		CALL MESSAGE_BOX,@"「……别停……不对……停下……别停……♥」"
+	ELSE
+		CALL MESSAGE_BOX,@"「别碰那里！」"
+	ENDIF
+
+CASE "抽出"
+	CALL MESSAGE_BOX,@"「……腿软了……别碰我……」"
+	CALL MESSAGE_BOX,@"「……滚……让我缓一会儿……」"
+
+CASE "日程"
+	SELECTCASE ARGS:1
+	CASE "调教"
+		SELECTCASE ARGS:2
+		CASE "开始调教"
+			CALL MESSAGE_BOX,@"「……又来？去死……」"
+			CALL MESSAGE_BOX,@"「……别以为我会求你……」"
+		CASE "调教结束"
+			CALL MESSAGE_BOX,@"「……结束了？……哼……」"
+			CALL MESSAGE_BOX,@"「……别看我……」"
+		ENDSELECT
+	CASEELSE
+	ENDSELECT
+
+CASE "阴茎称呼变更"
+	CALL MESSAGE_BOX,@"「……要我叫那种恶心的称呼？做梦。」"
+
+CASE "膣称呼变更"
+	CALL MESSAGE_BOX,@"「……别让我说出口……」"
+
+CASE "肛门称呼变更"
+	CALL MESSAGE_BOX,@"「……闭嘴……」"
+
+CASE "吸欧派"
+	SELECTCASE ARGS:1
+	CASE "开始"
+		CALL MESSAGE_BOX,@"「……别咬……你这混账……」"
+	CASE "结束"
+		CALL MESSAGE_BOX,@"「……满意了？……去死。」"
+	ENDSELECT
+
+CASE "访问"
+	SELECTCASE ARGS:1
+	CASE "入口"
+		CALL MESSAGE_BOX,@"「……你叫我来干什么。」"
+	CASEELSE
+	ENDSELECT
+
+CASE "事件"
+	CALL MESSAGE_BOX,@"「……发生了什么？……关我什么事。」"
+
+CASE "肉体改造"
+	CALL MESSAGE_BOX,@"「……连身体也要改？……你最好别后悔。」"
+
+CASE "战斗"
+	SELECTCASE ARGS:1
+	CASE "攻击"
+		CALL MESSAGE_BOX,@"「……去死。」"
+	CASE "被击中"
+		CALL MESSAGE_BOX,@"「……啧……」"
+	CASEELSE
+	ENDSELECT
+
+CASEELSE
+ENDSELECT
+RETURN
+
+@KOJO_GENERAL_仇恨1_TRAIN(ARGS:0,ARGS:1,ARGS:2,ARGS:3)
+CALL KOJO_GENERAL_仇恨口上1_TRAIN(ARGS:0,ARGS:1,ARGS:2,ARGS:3)
+RETURN
+

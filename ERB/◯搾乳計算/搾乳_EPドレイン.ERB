@@ -1,0 +1,68 @@
+﻿
+;搾乳エナジードレイン
+@LACTATION_ENERGY_DRAIN
+
+;霊力0ならどの場合も搾るものないのでおわり
+SIF !BASE:灵力
+	RETURN
+
+;抽出中フラグあるなら通す
+;エナジードレインフラグで通す→エナジードレイン適用外フラグあればフラグがOFFになってる
+SIF !TFLAG:抽出中 && !TFLAG:能量吸收
+	RETURN
+
+;基礎：噴乳量*2
+SOURCE:灵力吸收量 = NOWEX:喷乳 *2
+
+;乳吸いor触手搾乳中+有効BIT状態なら濃度・レベルで増加
+IF TFLAG:吸奶 || TFLAG:搾乳触手
+	FIX = 100
+	SIF GETBIT(＃个人有效／能量吸收效率＃) && GETBIT(＃有效／能量吸取效率＃)
+		FIX += (ITEM:能量吸取效率 *ENERGY_DRAIN_FIX)
+	SIF GETBIT(＃个人有效／浓厚乳汁吸取＃) && GETBIT(＃有效／浓厚乳汁吸取＃) && ITEM:浓厚乳汁吸取
+		FIX += (ABL:母乳浓度 *DENCE_MILK_FIX)
+	SOURCE:灵力吸收量 *= FIX
+	SOURCE:灵力吸收量 /= 100
+ENDIF
+SIF TFLAG:多器官活性药物使用中
+	SOURCE:灵力吸收量 *= MAX(3,MAXBASE:灵力 *(ABL:母乳浓度 *2 +1) /90000)
+		;SIF GETBIT(＃拘束／触手＃) && ITEM:血中魔力強化媚液
+		;	SOURCE:霊力吸収量 *= 3
+SOURCE:灵力吸收量 = LIMIT(SOURCE:灵力吸收量,0,BASE:灵力)
+
+;抽出装置/ドレイン触手または直飲みの分岐
+IF TFLAG:搾乳触手 || TFLAG:吸奶
+	;あなたが吸収
+	CALL LACTATION_ENERGY_DRAIN_MASTER
+ELSE
+	;抽出装置に抽出
+	MONEY:储存灵力 += SOURCE:灵力吸收量
+ENDIF
+
+;抽出でも直接飲んでも吸収可能量が減るようにする
+BASE:灵力 -= SOURCE:灵力吸收量
+BASE:可吸收的灵力 = LIMIT(BASE:可吸收的灵力 -SOURCE:灵力吸收量,0,MAXBASE:灵力)
+
+
+
+;あなたか娘が吸収　吸収可能な分まで
+@LACTATION_ENERGY_DRAIN_MASTER
+
+SOURCE:玩家增加灵力量 = LIMIT(SOURCE:灵力吸收量,0,BASE:可吸收的灵力)
+
+;あなたと奴隷の最大霊力差により最大値の増加量減少
+;吸収可能霊力、現在地の増加量には影響なし
+;あなた＞奴隷→1/2、あなた霊力/4＞奴隷→1/4
+IF MAXBASE:PLAYER:灵力 /4 > MAXBASE:灵力
+	SOURCE:玩家增加灵力量 /= 4
+ELSEIF MAXBASE:PLAYER:灵力 > MAXBASE:灵力
+	SOURCE:玩家增加灵力量 /= 2
+ENDIF
+;娘の場合は満タンの場合のみ最大値UP
+SIF !PLAYER || MAXBASE:PLAYER:灵力 == BASE:PLAYER:灵力
+	MAXBASE:PLAYER:灵力 += SOURCE:玩家增加灵力量
+BASE:PLAYER:灵力 = LIMIT(BASE:PLAYER:灵力 +SOURCE:灵力吸收量,0,MAXBASE:PLAYER:灵力)
+
+
+
+

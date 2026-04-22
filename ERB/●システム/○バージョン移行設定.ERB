@@ -1,0 +1,145 @@
+﻿
+;バージョンをチェックして足りないフラグを追記する
+@VERSION_CHECK
+
+;フラグ互換性ないバージョンからは強制的にNG+に飛ばす
+;旧データの[セーブデータのバージョン]→FLAG:34
+;旧データで[魔王軍戦力]に使ったので数値がでかい！クソ！
+;じゃあもう10000あった気がするので10000以上でも行こう
+IF FLAG:保存数据的版本 < 1000 || FLAG:保存数据的版本 >= 10000
+	CALL PRINTW_WORD_COLOR,@"由于加载了旧版本的保存数据，将开始一部分状态继承的「强大新游戏」。","浅蓝色"
+	CALL NEWGAMEPLUS_BEFORE_FLAG_SET
+	RESETDATA
+	ADDCHARA 0
+	SIF GAMEBASE_DEFAULTCHARA >= 0
+		ADDCHARA GAMEBASE_DEFAULTCHARA
+	BEGIN FIRST
+	RETURN
+ENDIF
+
+PRINTW 重写部分标志，以便从较旧版本迁移。
+CALL MANYL(5)
+
+;メモ：フラグとかの番号は数字で呼ぶとバグが起きにくくてよい
+;こんなふうにアプデごとに追加すればだいぶ書き換えるまでは使えるかも
+;古いものは別関数に移してしまう
+SIF FLAG:保存数据的版本 < 1011
+	CALL OLD_UPDATE
+
+IF FLAG:保存数据的版本 < 1020
+	;ペットの好感度MAX値が設定されてない場合があるので設定
+	ITEM_REF = 100
+	BASE_REF = 60
+	FOR TARGET_COUNT,0,CHARANUM
+		TARGET = TARGET_COUNT
+		FOR LOCAL,0,20
+			SIF !ITEM:(ITEM_REF +LOCAL) || MAXBASE:(BASE_REF +LOCAL)
+				CONTINUE
+			MAXBASE:(BASE_REF +LOCAL) = 10000
+		
+			;あなたがペットなつき度0の場合があるので9000へ（下がらないはずなのでこれでいいはず）
+			SIF !TARGET && !BASE:(BASE_REF +LOCAL)
+				BASE:(BASE_REF +LOCAL) = 9000
+		NEXT
+	NEXT
+	FLAG:2 = 20
+	
+	PRINTL ver1.020
+	PRINTL 多个补丁导入
+	PRINTL 【洗脑】时＜花草茶＞的使用变更为不可。
+	PRINTL 「男孩子气的口上1」「恭敬的口上1」＜弹弓比基尼＞像素画导入。
+	PRINTL ＜牛纹弹弓比基尼＞被添加到乳牛角色扮演框架中。
+	PRINTL
+	PRINTL 整理角色的详细状态显示。
+	PRINTL 在牧场信息中添加并整理了目录。
+	PRINTL 还有一些小修正。
+ENDIF
+
+IF FLAG:保存数据的版本 < 1021
+	PRINTL ver1.021
+	PRINTL 对于因疼痛引起的快感减少，添加了1/4的最低保障。
+	PRINTL 由于尺寸差处理可能导致异常疼痛值，因此大幅降低了该值。
+ENDIF
+
+
+IF FLAG:保存数据的版本 < 1030
+	;調教選択肢をデフォルトに
+	FLAG:210 = 0b01010001111
+	
+	;調教前選択肢に「毎回選ぶ」がなくなった対応
+	FLAG:2400 = LIMIT(FLAG:2400 -1,0,10)
+	FLAG:2401 = LIMIT(FLAG:2401 -1,0,10)
+	
+	;Ｖ・Ａサイズ確認
+	SETBIT FLAG:2370,5
+	SETBIT FLAG:2370,6
+	
+	FOR TARGET_COUNT,0,CHARANUM
+		TARGET = TARGET_COUNT
+		
+		;一括リセット対応に番号変更
+		;CHANGE_PLAN使えばいいか
+		VARSET CHANGE_PLAN
+		FOR LOCAL,0,100
+			CHANGE_PLAN:LOCAL = TALENT:LOCAL
+		NEXT
+		
+		;自動処理から「毎回選ぶ」を消したので-1のとき0へ
+		SIF CFLAG:540 < 0
+			CFLAG:540 = 0
+		SIF CFLAG:541 < 0
+			CFLAG:541 = 0
+		
+		;56～66が変更してる
+		VARSET TALENT,0,56,70
+		TALENT:56 = CHANGE_PLAN:60
+		TALENT:57 = CHANGE_PLAN:66
+		
+		TALENT:70 = CHANGE_PLAN:56
+		TALENT:71 = CHANGE_PLAN:57
+		TALENT:72 = CHANGE_PLAN:58
+		TALENT:73 = CHANGE_PLAN:61
+		TALENT:74 = CHANGE_PLAN:62
+		TALENT:75 = CHANGE_PLAN:63
+		TALENT:76 = CHANGE_PLAN:64
+		TALENT:77 = CHANGE_PLAN:65
+	NEXT
+	PRINTL ver1.030
+	PRINTL 多个补丁导入
+	PRINTL 修正了挤奶绝顶经验源过多的问题。　对不起。
+	PRINTL
+	PRINTL 修改为在一屏幕上执行调教前的脱衣和拘束。+在此画面中也可以使用润滑液和媚药。
+	PRINTL （调教开始后正在施工中）
+	PRINTL 通过此更改，调教开始前的配置中不再有“每次选择”。
+	PRINTL
+	PRINTL 修改为根据刺激部位和使用工具的ON/OFF切换显示指令形式。
+	PRINTL 有些指令需要将2个或3个设为ON。
+	PRINTL （例如：正常位→Ｖ刺激・阴茎的两个设为ON时显示）
+	PRINTL
+	PRINTL 添加触手魔法＜触手分泌液增量＞。
+	PRINTL 添加能力＜丰饶＞＜浓厚母乳按摩＞＜乳罐按摩＞。
+	PRINTL 在获得上述能力后，调教中添加指令[育乳按摩][浓厚母乳按摩][乳罐按摩]。
+	PRINTL 其他bug修正和调整。
+	PRINTL ・部分TALENT编号已更改，请注意使用编号指定的情况。
+ENDIF
+
+
+
+
+
+PRINTL
+PRINTL 有关更新的详细信息，请参阅[更新历史记录.txt]。
+TARGET = -1
+FLAG:保存数据的版本 = GAMEBASE_VERSION
+DRAWLINE
+
+IF !ITEM:奴隶候补设定变更票
+	ITEM:奴隶候补设定变更票 ++
+	CALL PRINT_WORD_COLOR("＜奴隶候补设定变更票据＞","黄")
+	PRINTL 中所述修改相应参数的值。
+ENDIF
+PRINTLC [ 0] OK
+INPUT
+
+
+

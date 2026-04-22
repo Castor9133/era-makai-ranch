@@ -1,0 +1,118 @@
+﻿
+;マイルストーンでアンロックされているか判定する
+;ARGS→参照フラグ
+;ARGS:1→NGのときPRINTL,PRINTLC,ロック表示しない
+@MILESTONE_UNLOCK_CHECK(ARGS,ARGS:1)
+
+;全部強制オープンなら即RETURN1
+SIF FLAG:解锁要素强制开启
+	RETURN 1
+
+;入れ子
+CALL MILESTONE_UNLOCK_CHECK_PART(ARGS)
+
+;RETURN1ならここも
+SIF RESULT
+	RETURN 1
+
+;RETURN0ならここからロック表示
+SELECTCASE ARGS:1
+CASE "L"
+	CALL PRINTL_WORD_COLOR("　Lock","灰")
+CASE "LC"
+	CALL PRINTLC_WORD_COLOR("　Lock","灰")
+ENDSELECT
+
+
+
+@MILESTONE_UNLOCK_CHECK_PART(ARGS)
+
+;なるたけ「できるようになること」で呼ぼう
+SELECTCASE ARGS
+CASE "前往街道"
+	SIF FLAG:人类的牛奶出货
+		RETURN 1
+CASE "奴隶捕获"
+	SIF FLAG:让兼职雇佣兵抓来奴隶
+		RETURN 1
+CASE "料理值班"
+	SIF FLAG:购买＜系统化厨房＞
+		RETURN 1
+CASE "房间分配"
+	SIF FLAG:让除斯蕾以外的奴隶进入【屈服】状态
+		RETURN 1
+CASE "清洁值日"
+	SIF FLAG:清洁Lv5以上的奴隶的屈服
+		RETURN 1
+CASE "大浴场清洁"
+	SIF FLAG:＜大浴场＞的购买
+		RETURN 1
+CASE "商业合作"
+	SIF FLAG:畜牧业Lv5＋魔术＜个人用传送门＞
+		RETURN 1
+CASE "电池费用削减"
+	SIF FLAG:用＜小型灵力抽取装置＞储存灵力
+		RETURN 1
+CASE "调合"
+	SIF FLAG:【调合知识】拥有的奴隶的屈服
+		RETURN 1
+CASE "禁忌魔法"
+	SIF FLAG:军事Lv5＋你的魔力超过100万＋魔术＜个人用传送门＞＋资金50000（旅费）
+		RETURN 1
+CASE "自己战斗"
+	SIF FLAG:魔法＜传送＞习得
+		RETURN 1
+CASE "魔王军研究所"
+	SIF FLAG:储存5万灵力
+		RETURN 1
+CASE "不动产"
+	SIF FLAG:你和斯蕾之外，再迎接5名奴隶到牧场
+		RETURN 1
+CASE "纳税"
+	SIF FLAG:将一天的收入提高到纳税标准以上
+		RETURN 1
+	
+CASE "成人商店"
+	SIF FLAG:冈地街Lv1
+		RETURN 1
+CASE "家具店"
+	SIF FLAG:冈地街Lv3
+		RETURN 1
+CASE "衣物扩张"
+	SIF FLAG:冈地街Lv2
+		RETURN 1
+CASE "衣服复制品","饰品"
+	SIF FLAG:冈地街Lv4
+		RETURN 1
+CASE "成人装束"
+	SIF FLAG:冈地街Lv6
+		RETURN 1
+CASE "异世界衣服","难以再现的衣服"
+	SIF FLAG:冈地街Lv8
+		RETURN 1
+CASE "乳牛套装服装"
+	SIF FLAG:奶农业Lv2
+		RETURN 1
+	
+CASE "魔界奶牛设备"
+	SIF FLAG:奶农业Lv1
+		RETURN 1
+ENDSELECT
+
+
+
+;買い物用の一時関数込み
+@MILESTONE_UNLOCK_CHECK_CLOTHE_BUY(ARGS)
+
+CLOTHE_BUY_LIMIT = 0
+CALL MILESTONE_UNLOCK_CHECK(ARGS)
+SIF !RESULT
+	CLOTHE_BUY_LIMIT = 1
+
+
+
+
+
+
+
+

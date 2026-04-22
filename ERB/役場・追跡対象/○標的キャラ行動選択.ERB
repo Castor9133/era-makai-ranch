@@ -1,0 +1,55 @@
+﻿
+;ギルドから標的のステータス表示
+@TARGET_STATUS
+
+CALL GUILD_STATUS_DETAIL(2)
+
+;この画面から傭兵アルバイト雇用に進む
+IF CFLAG:追踪对象 == 1
+	IF CFLAG:追踪者
+		PRINTL [ 0] 让兼职雇佣兵回来 
+	ELSE
+		PRINTL [ 1] 雇用兼职雇佣兵？ 
+		
+		;テレポートがあれば自分で戦いに行く追加
+		IF !ITEM:传送
+			CALL PRINTL_WORD_COLOR,@"　如果已习得＜传送＞，%CALLNAME:0%可以出战。","灰"
+		ELSEIF CSTR:0:日程 == "行动完毕"
+			CALL PRINTL_WORD_COLOR,@"　%CALLNAME:0%已经行动了","灰"
+		ELSEIF BASE:0:魔力 < MAGIC_USE_MP:GETNUM(ITEM,"传送")
+			CALL PRINTL_WORD_COLOR,@"　为了出战，需要使用＜传送＞的魔力%VALUE_DIGIT(MAGIC_USE_MP:GETNUM(ITEM,"传送"))%MP是必需的。","灰"
+		ELSE
+			PRINTFORML [ 2] %CALLNAME:0%准备投入战斗
+		ENDIF
+	ENDIF
+ELSEIF CFLAG:追踪对象 == 2
+	PRINTL [ 3] 领取奴隶
+ELSEIF CFLAG:追踪对象 == 3
+	PRINTL 运输中 
+ENDIF
+PRINTL
+
+;もう捕まえた状態以外なら諦めることも可能
+SIF !GROUPMATCH(CFLAG:追踪对象,2,3)
+	PRINTL [ 8] 放弃追踪此人
+PRINTL [99] 取消
+BINPUT
+PRINTL
+SELECTCASE RESULT
+CASE 0
+	CALL DISMISSAL_MERCENARY
+CASE 1
+	CALL EMPLOYMENT_MERCENARY
+CASE 2
+	CALL MASTER_BATTLE_CONFIRM
+CASE 3
+	CALL SLAVE_RECEIVE_TOWN
+CASE 8
+	PRINTFORML 确实要放弃追踪%CALLNAME%吗？
+	CALL PRINTL_WORD_COLOR("如果我放弃了，我就不能再见面了。你确定你不介意吗？","黄")
+	CALL ASK_YN
+	SIF !RESULT
+		CALL TARGET_CHARA_DELETE
+ENDSELECT
+
+

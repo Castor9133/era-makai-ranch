@@ -1,0 +1,88 @@
+﻿
+;スケジュール予定の表示
+;ARGS→予定スケジュール
+;ARG→自動スケジュールと異なる場合に緑色にする
+@SCHEDULE_PLAN_PRINT(ARGS,ARG)
+#DIM TRAIN_TARGET
+
+SIF ARG
+	CALL SCHEDULE_PLAN_PRINT_COLOR
+SELECTCASE ARGS
+CASE "休息","等待","搾乳","抽出","行动完毕","空闲时间","自由","图书馆"
+	PRINTFORM %ARGS%
+CASE "奶农"
+	PRINTFORM 奶农：Lv{ABL:奶农,2}
+CASE "调教"
+	FINDCHARA CFLAG:ID,CFLAG:调教对象ID
+	SIF RESULT <= 0
+		RETURN
+	TRAIN_TARGET = RESULT
+	IF CSTR:状态／主人公的孩子 == "成长中"
+		PRINTFORM 从%CALLNAME:TRAIN_TARGET%授乳。
+	ELSE
+		PRINTFORM %CALLNAME:TRAIN_TARGET%的调教：技巧Lv{ABL:技巧,2}
+		SIF !TALENT:男性
+			PRINTFORM  百合Lv{ABL:百合癖,2}
+	ENDIF
+CASE "事务"
+	PRINTFORM 事务：Lv{ABL:事务,2}
+CASE "调剂"
+	PRINTFORM 调合：Lv{ABL:药学,2}
+CASE "大浴场清洁"
+	PRINTFORM 大浴场清洁：Lv{ABL:清洁,2}
+CASE "训练"
+	PRINTFORM 战斗训练：战斗适性{BASE:战斗适性,3}\%
+CASE "调教对象"
+	PRINT 调教
+CASE "体内凌辱"
+	PRINT 肉壁
+CASE "释放准备"
+	PRINT 解放
+CASE "体内凌辱准备"
+	PRINT 开始体内凌辱
+CASE "触手刺激搾乳"
+	PRINT 触搾
+
+CASEELSE
+	;牛舎にいる場合
+	IF CFLAG:牛舍号码
+		;昼かつスケジュールが0の場合だけ休憩
+		;FLAG:第1牛舎スケジュール→501
+		IF !FLAG:(491 +(CFLAG:牛舍号码) *10) && TIME == 1
+			PRINT 休息＜牛舍＞
+		ELSE
+			PRINT 搾乳＜牛舍＞
+		ENDIF
+	ELSE
+		PRINT 【たぶんバグです】
+	ENDIF
+ENDSELECT
+PRINT 　
+RESETCOLOR
+
+
+
+;スケジュール予定の色表示
+;　事務or大浴場掃除→酪農の場合は無効
+	;黄色にしようかと思ったけどなんか見づらかった
+@SCHEDULE_PLAN_PRINT_COLOR
+
+;予定と同じなら帰る
+SIF CSTR:日程 == CSTR:日程／予定
+	RETURN
+
+;調教予定の場合も帰る　誰かは見なくていい気がする
+SIF CSTR:日程 == "调教" && GROUPMATCH(CSTR:日程,"调教／对象A","调教／对象B","调教／对象C")
+	RETURN
+
+;スケジュール予定と今の予定が異なるなら色付け
+SETCOLOR 0x70FF00
+
+
+
+
+;違うけど酪農指定中+自動スケジュール予定が事務or大浴場掃除なら帰る
+;SIF ARGS == "酪農" && GROUPMATCH(AUTO_PLAN,"事務","大浴場掃除")
+;	RETURN
+
+

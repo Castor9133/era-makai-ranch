@@ -1,0 +1,123 @@
+﻿
+;システム・設定一覧
+@LIST_CONFIG_SYSTEM
+
+PRINTL --- 《 系统设定 》 ---
+ALIGNMENT LEFT
+DRAWLINE
+FLAG_REF = 2500
+FOR LOCAL,0,70
+	SIF FLAGNAME:(LOCAL +FLAG_REF) == ""
+		CONTINUE
+	CALL PRINT_CONFIG_SYSTEM(LOCAL)
+NEXT
+PRINTL
+PRINTL [70] 随机角色的状态隐藏设定
+PRINTL [71] 基于身高的游戏限制设定
+
+
+
+;ARG→LOCAL　FLAG_REFを足すことでフラグ番号
+@PRINT_CONFIG_SYSTEM(ARG)
+
+FLAG_NAME = %FLAGNAME:(ARG +FLAG_REF)%
+SELECTCASE FLAG_NAME
+CASE "膨乳暂停胸围大小","丰饶上限胸围大小"
+	PRINTFORM [{ARG,2}] %FLAG_NAME,32%:%PRINT_BUSTSIZE(FLAG:FLAG_NAME)%({FLAG:FLAG_NAME})
+
+CASE "晚餐入浴顺序"
+	PRINTFORM [{ARG,2}] %FLAG_NAME,32%：\@ (FLAG:FLAG_NAME) ? 洗澡→晚餐 # 晚餐→洗澡 \@
+
+CASEELSE
+	PRINTFORM [{ARG,2}] %FLAG_NAME,32%
+	CALL PRINT_ONOFF(FLAG:FLAG_NAME)
+ENDSELECT
+PRINTL
+
+
+
+;ARG→INPUT
+@CHANGE_CONFIG_SYSTEM(ARG)
+
+SELECTCASE ARG
+CASE 70	;ランダムキャラのステータス隠蔽設定
+	CALL HIDE_RANDOM_STATUS_CONFIG
+CASE 71	;身長によるプレイ制限設定
+	CALL HEIGHT_PLAY_LIMIT_CONFIG
+CASEELSE
+	CALL CHANGE_CONFIG_SYSTEM_NAME(ARG)
+ENDSELECT
+
+
+
+@CHANGE_CONFIG_SYSTEM_NAME(ARG)
+
+FLAG_NUM = ARG +FLAG_REF
+FLAG_NAME = %FLAGNAME:FLAG_NUM%
+CALL CHANGE_CONFIG_INVERTBIT
+SIF RESULT
+	RETURN
+SELECTCASE FLAG_NAME
+CASE "膨乳暂停胸围大小"
+	PRINTL 设定在膨乳时增加乳房尺寸时必须暂停的乳房尺寸。
+	PRINTL （从该值进一步手动进行膨乳时、继续进行具有膨乳效果的时间表时，将被忽略）
+	PRINTL
+	PRINTL [16] 【P】（默认）
+	CALL INPUT_BUST(1)
+	SIF RESULT > 0
+		FLAG:FLAG_NUM = RESULT
+
+CASE "丰饶上限胸围大小"
+	PRINTL 设定能力＜丰饶＞引起胸围增长时的最大值。
+	PRINTL
+	PRINTL [26] 【Z】（默认）
+	CALL INPUT_BUST(1)
+	SIF RESULT > 0
+		FLAG:FLAG_NUM = RESULT
+		
+CASE "由事件引起的日期经过"
+	PRINTL 在建筑委托或里程碑进展时，选择是否根据世界观增加经过的天数，
+	PRINTL 或者选择将天数直接作为玩家推进的时间。
+	PRINTL
+	PRINTLC [ 0] 不增加（默认）
+	PRINTLC [ 1] 增加
+	BINPUT
+	FLAG:FLAG_NUM = RESULT
+		
+CASE "主人公的触手也是主人公"
+	PRINTL 在[触手魔法]的调教插入·口交·触手搾乳等的时候
+	PRINTL 设定是作为「触手」记录在经验中还是作为「主人公」纪录。
+	PRINTL
+	PRINTLC [ 0] 记录为「触手」
+	PRINTLC [ 1] 以「你」记录（默认）
+	BINPUT
+	FLAG:FLAG_NUM = RESULT
+
+CASE "体内凌辱增加经验次数"
+	PRINTL [体内凌辱]执行时，增加你或异形调教的次数。
+	PRINTL （默认：ON）
+	PRINTL
+	CALL ASK_ONOFF
+	FLAG:FLAG_NUM = RESULT
+
+CASE "减半／母乳浓度EXP增加值"
+	PRINTL 将【母乳浓度】的EXP增量减半。
+	PRINTL （默认值：OFF）
+	PRINTL
+	CALL ASK_ONOFF
+	FLAG:FLAG_NUM = RESULT
+
+CASE "跳过ON／OFF项目的详细信息并反转"
+	PRINTL 对于配置设置中被切换为ON/OFF的项目，设置[ON]会将其反转，而不给出解释
+	CALL ASK_ONOFF
+	FLAG:跳过ON／OFF项目的详细信息并反转 = RESULT
+
+CASE "晚餐入浴顺序"
+	PRINTL 设定傍晚行动后的晚饭和洗澡的顺序。
+	PRINTL
+	PRINTL [ 0] 晚餐→洗澡（默认）
+	PRINTL [ 1] 洗澡→晚餐
+	BINPUT
+	FLAG:FLAG_NUM = RESULT
+ENDSELECT
+

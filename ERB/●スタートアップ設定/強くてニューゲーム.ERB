@@ -1,0 +1,270 @@
+﻿
+;NG+の有効度合いコンフィグ
+@NEWGAMEPLUS_CONFIG
+
+CLEARLINE LINECOUNT
+PRINTL 　《 主人公继承参数 》
+IF !GLOBAL:主角参数继承
+	CALL PRINTL_WORD_COLOR,@"主人公参数继承：OFF","灰"
+ELSE
+	PRINTFORML 　　灵力：%TOSTR(GLOBAL:继承灵力,"#,0")%EP
+	PRINTFORML 　　魔力：%TOSTR(GLOBAL:继承魔力,"#,0")%MP
+	PRINTFORML 　调教AP：%TOSTR(GLOBAL:继承调教AP,"#,0")%PT
+	PRINTFORML 　触手AP：%TOSTR(GLOBAL:继承触手AP,"#,0")%PT
+	PRINTFORML 战斗适性：%TOSTR(GLOBAL:继承战斗适性,"#,0")%\%
+ENDIF
+PRINTL
+PRINTL 　《 魔界Lv 》
+IF !GLOBAL:魔界等级继承
+	CALL PRINTL_WORD_COLOR,@"魔界等级继承：OFF","灰"
+ELSE
+	PRINTFORML 　　军事：{GLOBAL:继承魔界等级／军事,2}Lv
+	PRINTFORML 科学技术：{GLOBAL:继承魔界等级／科学技术,2}Lv
+	PRINTFORML 冈地街：{GLOBAL:继承魔界等级／冈地街,2}Lv
+	PRINTFORML 　奶农业：{GLOBAL:继承魔界等级／奶农业,2}Lv
+ENDIF
+PRINTL
+PRINTL 　《 奖励道具 》
+IF !GLOBAL:奖励道具继承
+	CALL PRINTL_WORD_COLOR,@"奖励道具继承：OFF","灰"
+ELSE
+	PRINTFORML 　　　＜膨乳药＞：{GLOBAL:奖励入手／膨乳药,2}个
+	PRINTFORML ＜母乳浓厚化药＞：{GLOBAL:奖励入手／母乳浓厚化药,2}个
+	PRINTFORML 　　＜渗透媚药＞：{GLOBAL:奖励入手／渗透媚药,2}个
+	PRINTFORML 　　　＜超乳药＞：{GLOBAL:奖励入手／超乳药,2}个
+ENDIF
+CALL PRINTL_ALIGN(-5)
+PRINTLC [ 0] 参数ON／OFF
+PRINTLC [ 1] 魔界等级ON／OFF
+PRINTL [ 2] 奖励物品ON／OFF
+PRINTL [99] 完成
+BINPUT
+SELECTCASE RESULT
+CASE 0
+	INVERTBIT GLOBAL:主角参数继承,0
+CASE 1
+	INVERTBIT GLOBAL:魔界等级继承,0
+CASE 2
+	INVERTBIT GLOBAL:奖励道具继承,0
+CASE 99
+	RETURN
+ENDSELECT
+RESTART
+
+
+
+;NG+前のGLOBALセット
+@NEWGAMEPLUS_BEFORE_FLAG_SET
+
+VARSET GLOBAL,0,100,200
+TARGET = 0
+
+;VER1.0以前で番号が違うんだ
+IF FLAG:保存数据的版本 < 1000 || FLAG:保存数据的版本 >= 10000
+	;BASE:霊力→1
+	GLOBAL:继承灵力 = MAXBASE:1
+	
+	;BASE:魔力→2
+	GLOBAL:继承魔力 = MAXBASE:2
+	
+	;CFLAG:戦闘適性→67
+	GLOBAL:继承战斗适性 = CFLAG:67
+	
+	;人数によるボーナス
+	FOR TARGET_COUNT,0,CHARANUM
+		TARGET = TARGET_COUNT
+		;隷属させた奴隷数+【搾乳家畜】の人数で調教AP
+		;CFLAG:隷属→190
+		;MARK:搾乳家畜→42
+		SIF CFLAG:190
+			GLOBAL:继承调教AP += 100
+		SIF MARK:42
+			GLOBAL:继承调教AP += 100
+		
+		;【触手の苗床】の人数で触手AP
+		;MARK:触手の苗床→57
+		SIF MARK:57
+			GLOBAL:继承触手AP += 100
+		
+		;乳牛堕ちさせた奴隷数で膨乳薬
+		;CFLAG:乳牛→195
+		SIF CFLAG:195
+			GLOBAL:奖励入手／膨乳药 ++
+		
+		;極上母乳の人数分で母乳濃厚化薬
+		;MARK:極上母乳→23
+		SIF MARK:23
+			GLOBAL:奖励入手／膨乳药 ++
+		
+		;感度合計1000以上の人数で浸透媚薬
+		;ABL:感度→10～14
+		SIF SUMARRAY(ABL,10,15) >= 1000
+			GLOBAL:奖励入手／渗透媚药 ++
+		
+		;【極上母乳】で【ミルクサーバー】で【みんなのママ】で【搾乳家畜】の人数超乳薬
+		;MARK:ミルクサーバー→32
+		;MARK:みんなのママ→37
+		SIF MARK:23 && MARK:32 && MARK:37 && MARK:42
+			GLOBAL:奖励入手／超乳药 ++
+	NEXT
+	
+	;魔界レベルの引き継ぎ
+	;FLAG:魔界レベル／軍事→270
+	GLOBAL:继承魔界等级／军事 = FLAG:270
+	GLOBAL:继承魔界等级／科学技术 = FLAG:271
+	GLOBAL:继承魔界等级／冈地街 = FLAG:272
+	GLOBAL:继承魔界等级／奶农业 = FLAG:273
+	
+	;周回数を数えてないと思うので1
+	FLAG:周回次数 = 1
+	
+ELSE
+	;BASE:霊力→2
+	GLOBAL:继承灵力 = MAXBASE:2
+	
+	;BASE:魔力→3
+	GLOBAL:继承魔力 = MAXBASE:3
+	
+	;BASE:戦闘適性→17
+	GLOBAL:继承战斗适性 = MAXBASE:17
+	
+	;人数によるボーナス
+	FOR TARGET_COUNT,0,CHARANUM
+		TARGET = TARGET_COUNT
+		;隷属させた奴隷数+【搾乳家畜】の人数で調教AP
+		;CFLAG:隷属→CSTRへ移動
+		;MARK:搾乳家畜→207
+		SIF ＃陷落状态／隶属＃
+			GLOBAL:继承调教AP += 100
+		SIF MARK:207
+			GLOBAL:继承调教AP += 100
+		
+		;【触手の苗床】の人数で触手AP
+		;MARK:触手の苗床→222
+		SIF MARK:222
+			GLOBAL:继承触手AP += 100
+		
+		;乳牛堕ちさせた奴隷数で膨乳薬
+		;CFLAG:乳牛→431
+		SIF CFLAG:431
+			GLOBAL:奖励入手／膨乳药 ++
+		
+		;極上母乳の人数分で母乳濃厚化薬
+		;MARK:極上母乳→14
+		SIF MARK:14
+			GLOBAL:奖励入手／膨乳药 ++
+		
+		;感度合計1000以上の人数で浸透媚薬
+		;ABL:感度→10～14
+		SIF SUMARRAY(ABL,10,15) >= 1000
+			GLOBAL:奖励入手／渗透媚药 ++
+		
+		;【極上母乳】で【ミルクサーバー】で【みんなのママ】で【搾乳家畜】の人数超乳薬
+		;MARK:ミルクサーバー→17
+		;MARK:みんなのママ→202
+		SIF MARK:14 && MARK:17 && MARK:202 && MARK:207
+			GLOBAL:奖励入手／超乳药 ++
+	NEXT
+	
+	;魔界レベルの引き継ぎ
+	;FLAG:魔界レベル／軍事→720
+	GLOBAL:继承魔界等级／军事 = FLAG:720
+	GLOBAL:继承魔界等级／科学技术 = FLAG:721
+	GLOBAL:继承魔界等级／冈地街 = FLAG:722
+	GLOBAL:继承魔界等级／奶农业 = FLAG:723
+ENDIF
+GLOBAL:主角参数继承 = 1
+GLOBAL:魔界等级继承 = 1
+GLOBAL:奖励道具继承 = 1
+GLOBAL:继承前周次数 = FLAG:周回次数
+SAVEGLOBAL
+
+CALL MANYL(5)
+PRINTFORML 上次数据周次数：{GLOBAL:继承前周次数}周
+PRINTL 　《 主人公继承参数 》
+PRINTFORML 　　灵力：%TOSTR(GLOBAL:继承灵力,"#,0")%EP
+PRINTFORML 　　魔力：%TOSTR(GLOBAL:继承魔力,"#,0")%MP
+PRINTL （根据魔力也会增加魔法AP）
+PRINTFORML 　调教AP：%TOSTR(GLOBAL:继承调教AP,"#,0")%PT
+PRINTFORML 　触手AP：%TOSTR(GLOBAL:继承触手AP,"#,0")%PT
+PRINTFORML 战斗适性：%TOSTR(GLOBAL:继承战斗适性,"#,0")%\%
+PRINTL
+PRINTL 　《 魔界Lv 》
+PRINTFORML 　　军事：{GLOBAL:继承魔界等级／军事,2}Lv
+PRINTFORML 科学技术：{GLOBAL:继承魔界等级／科学技术,2}Lv
+PRINTFORML 冈地街：{GLOBAL:继承魔界等级／冈地街,2}Lv
+PRINTFORML 　奶农业：{GLOBAL:继承魔界等级／奶农业,2}Lv
+PRINTL
+PRINTL 　《 奖励入手药品 》
+PRINTFORML 　　　＜膨乳药＞：{GLOBAL:奖励入手／膨乳药,2}个
+PRINTFORML ＜母乳浓厚化药＞：{GLOBAL:奖励入手／母乳浓厚化药,2}个
+PRINTFORML 　　＜渗透媚药＞：{GLOBAL:奖励入手／渗透媚药,2}个
+PRINTFORML 　　　＜超乳药＞：{GLOBAL:奖励入手／超乳药,2}个
+PRINTL
+PRINTL 以上项目将作为【强力新游戏】特典进行继承。
+PRINTW ※在游戏开始时配置中也可以设为OFF。
+
+
+
+;強くてニューゲームの引き継ぎステータス選択
+@NEWGAMEPLUS_BONUS
+
+;設定してない場合帰る
+SIF !GLOBAL:继承前周次数
+	RETURN
+TARGET = 0
+
+;それぞれで小分け
+CALL NEWGAMEPLUS_BONUS_STATUS
+CALL NEWGAMEPLUS_BONUS_MAKAILV
+CALL NEWGAMEPLUS_BONUS_ITEM
+
+
+
+;パラメータ
+@NEWGAMEPLUS_BONUS_STATUS
+
+SIF !GLOBAL:主角参数继承
+	RETURN
+MAXBASE:灵力 = MAX(MAXBASE:灵力,GLOBAL:继承灵力)
+BASE:灵力 = MAXBASE:灵力
+MAXBASE:魔力 = MAX(MAXBASE:魔力,GLOBAL:继承魔力)
+BASE:魔力 = MAXBASE:魔力
+MONEY:调教AP = GLOBAL:继承调教AP
+MONEY:触手AP = GLOBAL:继承触手AP
+
+;魔力から魔術APにする：1000MP→1AP
+MONEY:魔法AP = MAXBASE:魔力 /1000
+MAXBASE:战斗适性 = GLOBAL:继承战斗适性
+BASE:战斗适性 = MAXBASE:战斗适性
+CALL MASTER_POWERUP_EP
+CALL MASTER_POWERUP_MP
+BASE:体力 = MAXBASE:体力
+
+
+
+;魔界レベル
+@NEWGAMEPLUS_BONUS_MAKAILV
+
+SIF !GLOBAL:魔界等级继承
+	RETURN
+FLAG:魔界等级／军事 = GLOBAL:继承魔界等级／军事
+FLAG:魔界等级／科学技术 = GLOBAL:继承魔界等级／科学技术
+FLAG:魔界等级／冈地街 = GLOBAL:继承魔界等级／冈地街
+FLAG:魔界等级／奶农业 = GLOBAL:继承魔界等级／奶农业
+
+
+
+;アイテム
+@NEWGAMEPLUS_BONUS_ITEM
+
+SIF !GLOBAL:奖励道具继承
+	RETURN
+ITEM:膨乳药 += GLOBAL:奖励入手／膨乳药
+ITEM:母乳浓厚化药 += GLOBAL:奖励入手／母乳浓厚化药
+ITEM:渗透媚药 += GLOBAL:奖励入手／渗透媚药
+ITEM:超乳药 += GLOBAL:奖励入手／超乳药
+
+
+
+

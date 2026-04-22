@@ -1,0 +1,164 @@
+﻿
+@EQUIP_201_CONTINUE
+;バイブ
+
+LOSEBASE:体力 += 20
+LOSEBASE:气力 += 40
+SOURCE:Ｖ快感／器具 += 3000
+SOURCE:耻辱 += 3000
+SOURCE:屈辱 += 3000
+SOURCE:支配 += 1000
+SOURCE:电池消费量 += 10
+
+
+
+@EQUIP_202_CONTINUE
+;アナルバイブ
+
+LOSEBASE:体力 += 20
+LOSEBASE:气力 += 60
+SOURCE:Ａ快感／器具 += 3000
+SOURCE:耻辱 += 3000
+SOURCE:屈辱 += 5000
+SOURCE:支配 += 2000
+SOURCE:不洁 += 2000
+SOURCE:电池消费量 += 10
+
+
+
+@EQUIP_203_CONTINUE
+;乳首ローター
+
+LOSEBASE:气力 += 30
+SOURCE:Ｎ快感／器具 += 3000
+SOURCE:耻辱 += 2000
+SOURCE:屈辱 += 3000
+SOURCE:支配 += 2000
+SOURCE:电池消费量 += 10
+
+
+
+@EQUIP_204_CONTINUE
+;クリローター
+
+LOSEBASE:气力 += 30
+SOURCE:Ｃ快感／器具 += 3000
+SOURCE:耻辱 += 3000
+SOURCE:屈辱 += 1000
+SOURCE:支配 += 1000
+SOURCE:电池消费量 += 10
+
+
+
+@EQUIP_205_CONTINUE
+;乳首吸引器
+
+LOSEBASE:体力 += 20
+LOSEBASE:气力 += 60
+SOURCE:Ｎ快感／器具 += 2000
+SOURCE:Ｎ疼痛 += 3000
+SOURCE:耻辱 += 2000
+SOURCE:屈辱 += 4000
+SOURCE:支配 += 1000
+
+
+
+@EQUIP_206_CONTINUE
+;クリ吸引器
+
+LOSEBASE:体力 += 10
+LOSEBASE:气力 += 40
+SOURCE:Ｃ快感／器具 += 2000
+SOURCE:Ｃ疼痛 += 3000
+SOURCE:耻辱 += 2000
+SOURCE:屈辱 += 4000
+SOURCE:支配 += 1000
+
+
+
+@EQUIP_207_CONTINUE
+;アイマスク
+
+LOSEBASE:气力 += 10
+SOURCE:视觉恐惧 += 3000
+SOURCE:受虐狂 += 200
+SOURCE:屈辱 += 2000
+SOURCE:支配 += 2000
+
+
+
+@EQUIP_208_CONTINUE
+;口枷
+
+LOSEBASE:气力 += 20
+SOURCE:视觉恐惧 += 2000
+SOURCE:受虐狂 += 300
+SOURCE:屈辱 += 3000
+SOURCE:支配 += 3000
+
+
+
+@EQUIP_209_CONTINUE
+;ボールギャグ
+
+LOSEBASE:气力 += 20
+SOURCE:视觉恐惧 += 2000
+SOURCE:受虐狂 += 400
+SOURCE:屈辱 += 3500
+SOURCE:支配 += 3000
+
+
+
+@EQUIP_212_CONTINUE
+;強制開口器
+
+LOSEBASE:气力 += 10
+SOURCE:视觉恐惧 += 1000
+SOURCE:受虐狂 += 400
+SOURCE:屈辱 += 4000
+SOURCE:支配 += 3000
+
+
+
+@EQUIP_214_CONTINUE
+;肛塞
+
+LOSEBASE:气力 += 12
+SOURCE:Ａ快感／器具 += 1200
+SOURCE:耻辱 += 2000
+SOURCE:屈辱 += 3500
+SOURCE:支配 += 800
+
+
+
+@EQUIP_215_CONTINUE
+;尿道塞
+
+LOSEBASE:气力 += 15
+SOURCE:Ｃ疼痛 += 1500
+SOURCE:Ｃ快感／器具 += 800
+SOURCE:耻辱 += 2200
+SOURCE:屈辱 += 4000
+SIF TALENT:尿道敏感
+	TIMES SOURCE:Ｃ疼痛, 1.15
+SIF TALENT:尿道敏感
+	TIMES SOURCE:Ｃ快感／器具, 1.20
+
+;口交／Ｖ／Ａ侍奉中に尿道塞を弄る（陰部露出・クリ器具なし）
+IF TEQUIP:尿道塞 && TFLAG:Ｃ露出 && !TEQUIP:阴蒂跳蛋 && !TEQUIP:阴蒂吸引器
+	IF TEQUIP:口交 || GETBIT(＃Ｐ使用／Ｖ插入＃) || GETBIT(＃Ｐ使用／Ａ插入＃)
+		SOURCE:Ｃ疼痛 += 400
+		SOURCE:耻辱 += 600
+		EX:尿道调教经验 += 1
+		SIF TALENT:羞辱兴奋
+			TIMES SOURCE:耻辱, 1.06
+		SIF TALENT:尿道敏感
+			TIMES SOURCE:Ｃ疼痛, 1.08
+	ENDIF
+ENDIF
+
+;放尿解禁用：尿道塞装着中で時間が進むたびに加算（本回合 COM 実行後・SOURCE 済み）
+SIF SOURCE:已用时间 && TEQUIP:尿道塞
+	TFLAG:尿道塞调教经过回合 += 1
+
+

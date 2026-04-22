@@ -1,0 +1,62 @@
+﻿
+;配布奴隷の種族合わせ
+@CHARA_MAKE_FIXED_SLAVE_TRIBE_QUESTION
+#DIM TRIBE_RATIO
+#DIM TRIBE_NUM
+
+TRIBE_RATIO = 0
+TRIBE_NUM = 0
+PRINTFORML %CALLNAME%的种族【%CSTR:种族%】在游戏中设置的出现率为0。
+
+;それぞれの割合を比べて一番高い種族
+;同じだった場合は番号若いほう
+;FLAG:候補割合／一般種族／人間→2600
+FLAG_REF = 2600
+FOR LOCAL,2600,2620
+	IF TRIBE_RATIO < FLAG:LOCAL
+		TRIBE_NUM = LOCAL
+		TRIBE_RATIO = FLAG:LOCAL
+	ENDIF
+NEXT
+
+;STR:人間→6510
+TRIBE_NUM -= FLAG_REF
+TRIBE_NUM += 6510
+PRINTL
+PRINTFORML 是否将%CALLNAME%的种族更改为出现率最高的【%STR:TRIBE_NUM%】？
+PRINTFORMLC [ 0] 保留为【%CSTR:种族%】
+PRINTFORML [ 1] 变为【%STR:TRIBE_NUM%】
+INPUT
+IF RESULT
+	CSTR:种族 = %STR:TRIBE_NUM%
+	CALL CHARA_MAKE_FIXED_SLAVE_TRIBE_TALENT
+ENDIF
+
+
+
+;種族での素質合わせ
+@CHARA_MAKE_FIXED_SLAVE_TRIBE_TALENT
+
+;この部分だけは全部合わせる
+TALENT:动物耳朵 = 0
+TALENT:尾巴 = 0
+TALENT:两角 = 0
+SELECTCASE CSTR:种族
+CASE "犬耳族","猫耳族","兔耳族","狐耳族","狸耳族","妖狐"
+	TALENT:动物耳朵 = 1
+	TALENT:尾巴 = 1
+
+CASE "牛角族","羊角族"
+	TALENT:动物耳朵 = 1
+	TALENT:尾巴 = 1
+	TALENT:两角 = 1
+
+CASE "龙人"
+	TALENT:尾巴 = 1
+	TALENT:两角 = 1
+ENDSELECT
+PRINTW 已根据更改后的种族调整【动物耳】【尾巴】【双角】素质。
+
+
+
+

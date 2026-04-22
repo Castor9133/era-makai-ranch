@@ -1,0 +1,225 @@
+﻿
+;魔術説明
+;ARG→SELECT_ITEM
+@ITEM_DETAIL_MAGIC(ARG)
+
+;非対応IDか名称なしならそのまま帰る
+IF ARG < ITEM_ID_MIN || ARG >= ITEM_ID_MAX || ITEMNAME:ARG == ""
+	PRINTL  　《 将显示所选魔法的描述。 》
+	RETURN
+ENDIF
+
+;1限チェック
+CALL ITEM_GET_ONCE_CHECK(ARG)
+
+;アイテム名、価格を出す→ここでは基礎値
+IF FLAG:１个限定物品
+	PRINTFORML 　《 %ITEMNAME:ARG% 》%VALUE_DIGIT(ITEMPRICE:ARG)%AP
+ELSE
+	PRINTFORML 　《 %ITEMNAME:ARG% 》%VALUE_DIGIT(ITEMPRICE:ARG)%AP（基础值）：当前Lv{ITEM:ARG}
+ENDIF
+
+SELECTCASE ITEMNAME:ARG
+CASE "个人用传送门"
+	PRINTL ＜解锁＞
+	PRINTFORML 行动选择中：去街道→【个人用传送门】（1次%VALUE_DIGIT(MAGIC_USE_MP:ARG)%MP必要）
+	PRINTL
+	PRINTL ＜传送门＞像地球上的车站一样存在于街道上，魔界的人们用它在街道间移动，
+	PRINTL 如果可以使用这个魔法，就能瞬间移动到那个传送门。
+	PRINTL 虽然不适合一次运输大量的人或物，但非常方便。
+	PRINTL 即使没有传送门，也能飞到魔法使用者的家中，所以回家的时候也很安心。为什么能到达自家依然是个谜。
+	PRINTFORML %CALLNAME:0%可以在不变为[已行动]的情况下完成街上的事务。
+	
+CASE "传送"
+	PRINTL ＜解锁＞
+	PRINTFORML 镇公所：%CALLNAME:0%进行直接战斗（1次%VALUE_DIGIT(MAGIC_USE_MP:ARG)%MP必要）
+	PRINTFORML 　　　　让奴隶进行战斗（1次%VALUE_DIGIT(MAGIC_USE_MP:ARG *2)%MP必要）
+	PRINTL
+	PRINTL 根据一定的估算瞬间移动到该地点的魔法。
+	PRINTL 与＜个人用传送门＞不同，魔力消耗较大，但，
+	PRINTL 可以瞬间飞向视线内的目标，因此能够飞往没有传送门的地方，
+	PRINTL 一旦熟练后，似乎可以在战斗中作为偷袭敌人后方的绝招使用。
+	PRINTL
+	PRINTL 可以不依赖佣兵兼职的人们，自己去捕捉奴隶。
+	PRINTL 不过由于不进行「战斗训练」基本无法发力，
+	PRINTL 如果你没怎么训练，还是老老实实雇个兼职吧。
+	
+CASE "搾乳能量吸收"
+	PRINTL ＜被动＞＜可ON／OFF＞
+	PRINTFORML 游戏整体：当%CALLNAME:0%直接饮用奴隶的%SAVESTR:标识／母乳%，或触手榨乳时的灵力吸收效果
+	PRINTL
+	PRINTFORML 虽然道理不太清楚，但通过%SAVESTR:标识／母乳%直接饮用，%CALLNAME:0%能够夺取魔力的更强大力量。
+	PRINTFORML %SAVESTR:标识／母乳%直接饮用或触手榨乳时，吸收灵力，使%CALLNAME:0%变得更强大。
+	PRINTL 战斗力提升，身体变得更强壮，因此体力也增加。
+	PRINTFORML 即使魔力和%SAVESTR:标识／母乳%是空的，只要有灵力，虽然效率会稍差，但也可以将其转化并吸收为%SAVESTR:标识／母乳%
+	PRINTL
+	PRINTL 如果有不想被夺取灵力的奴隶，还可以从个人设置中选择「能量吸收不适用」。
+	IF FLAG:玩笑表示
+		PRINTL
+		PRINTL 简而言之，灵力可以近似理解为「经验值」，不出意外的话应该不会减少。
+		PRINTFORML 但这个灵力却可以被夺走，就像是一种提取装置或者是%CALLNAME:0%出了点问题一样。
+	ENDIF
+	
+CASE "浓厚乳汁吸取"
+	PRINTL ＜被动＞＜可ON／OFF＞
+	PRINTFORML 游戏全体：%CALLNAME:0%が奴隶の%SAVESTR:标识／母乳%直饮，触手榨乳时根据【母乳浓度】增加灵力・魔力的吸收量。
+	PRINTL
+	PRINTFORML 从人类的雌性那里直饮%SAVESTR:标识／母乳%，触手榨乳时%CALLNAME:0%吸收的灵力・魔力是
+	PRINTL 【母乳浓度】越高，吸收的量越多。
+	PRINTL 当想要从灵力・魔力多的奴隶身上吸取或者一次性大量回复时非常方便。
+	PRINTFORML 有效时，母乳浓度Lv1每级增加{DENCE_MILK_FIX}\%。
+	PRINTL
+	PRINTFORML 关闭时可以大量饮用浓厚美味的%SAVESTR:标识／魔力母乳%，请随意。
+	
+CASE "魔力注入"
+	PRINTL ＜解锁＞
+	PRINTL 调教中：插入派生指令【魔力注入】
+	PRINTL
+	PRINTFORML 从%CALLNAME:0%的阴茎将魔力精液注入奴隶。
+	PRINTL 被射精产生的愉悦效果当然是有的，如果奴隶有魔力的话注入的魔力值就会回复。
+	PRINTL
+	PRINTL 并且，如果奴隶处于【隶属】状态则可以委身于魔界的魔力；
+	PRINTFORML 当奴隶的魔力足够，或者大量注入魔力时，%CALLNAME:0%の最大魔力将以其最大魔力为上限增加。
+	PRINTL
+	PRINTL 即使是没有魔力的奴隶，在【隶属】状态下，通过不断注入大量魔力也可以让其拥有魔力。
+	IF FLAG:玩笑表示
+		PRINTL
+		PRINTFORML 注入魔力之后，然后吸吮那被转化的%SAVESTR:标识／魔力母乳%…
+		PRINTL 只有快感不断增加的无限循环让乳牛堕落吧！
+		PRINTFORML 作为储存魔力的用途，主要是为了创建【绝顶魔力回复淫纹】，以无限制地吸食%SAVESTR:标识／母乳%，不是吗？
+	ENDIF
+	
+CASE "简易催眠"
+	PRINTL ＜被动技能＞
+	;＜ON／OFF可能＞
+	PRINTFORML ＜前提＞
+	;PRINTFORML ゲーム全体：%CALLNAME:0%の最大魔力が奴隷の魔力の倍以上のとき無抵抗化
+	PRINTL
+	PRINTL 对反抗的奴隶施加简单的催眠，可以自由穿脱衣服或进行奉仕的魔法。
+	PRINTL 由于效果持续时间较短，因此无法仅靠此进行工作，
+	PRINTFORML %CALLNAME:0%の最大魔力如果没有达到奴隶魔力的两倍以上，会被抵抗而无效，
+	PRINTL 如失去处女的命令等，会被强烈的意志无效化，不能像语言所暗示的那样万能。
+	PRINTL
+	PRINTL 这是计划中的＜洗脑＞的前提魔法。
+	
+	
+CASE "母乳分泌催眠"
+	PRINTL ＜解锁＞
+	PRINTL 调教中：吸奶衍生指令【母乳分泌催眠】
+	PRINTL
+	PRINTFORML %CALLNAME:0%施加催眠，让自己认为是自己的宝宝，同时施加认为自己有过分娩经验的催眠
+	PRINTL 强行引出「我必须给宝宝喝奶」的思维
+	PRINTL 通过叠加肉体被精神牵引的催眠，即使没有分娩经验也能变为【母乳体质】的复合魔法。
+	PRINTL 
+	PRINTL 总而言之，无需药物和交配即可变为【母乳体质】。
+	
+CASE "初级攻击魔法"
+	PRINTL ＜解锁＞
+	PRINTL 战斗中：初级攻击魔法
+	PRINTL
+	PRINTL ＜火焰＞＜冰霜＞＜雷电＞等初步攻击魔法的组合。
+	PRINTL 并不是说在《死灵之书》中一并写下的，但
+	PRINTFORML %CALLNAME:0%可以一次性学习，因为学习的技巧完全相同。
+	PRINTL
+	PRINTL 并不是天才型，本来是「擅长属性容易形成想象，学习也容易」，但
+	PRINTL 因为过着没有魔法特训的生活，所以只是没有擅长属性的结果。
+	PRINTL 如果非要说的话，可能是土属性。
+	
+CASE "中级攻击魔法"
+	PRINTL ＜解锁＞
+	PRINTL 战斗中：中级攻击魔法
+	PRINTL
+	PRINTL ＜ファイラ＞＜ブリザラ＞＜サンダラ＞等中级攻击魔法的组合。
+	PRINTL 虽然认为有压倒性的实力初级就足够，但并非如此
+	PRINTL 由于威力的提升效果差，能使用的话还是用更高级的魔法比较好。
+	
+CASE "上级攻击魔法"
+	PRINTL ＜解锁＞
+	PRINTL 战斗中：上级攻击魔法
+	PRINTL
+	PRINTL ＜ファイガ＞＜ブリザガ＞＜サンダガ＞等上级攻击魔法的组合。
+	PRINTL 如果能使用这个实力，就可以说已经成为合格的魔法师了。
+	
+CASE "超越攻击魔法"
+	PRINTL ＜解锁＞
+	PRINTL 战斗中：超越攻击魔法
+	PRINTL
+	PRINTL ＜テンペスト＞＜アビス＞＜ヴォルケーノ＞等超越上级的攻击魔法的组合。
+	PRINTL 能使用这个级别的只有魔王军和人类中的极少数，战斗力相当于立即晋升为干部的水平。
+	SIF FLAG:玩笑表示
+		PRINTL 但这个游戏并没有这样的要素。
+	
+CASE "能量吸取效率"
+	PRINTL ＜被动＞＜可ON／OFF＞
+	PRINTL 游戏整体：搾乳能量吸收时灵力吸收率增加
+	PRINTL
+	PRINTFORML %CALLNAME:0%在饮用%SAVESTR:标识／母乳%并夺取奴隶灵力时，使用相同量的%SAVESTR:标识／母乳%会
+	PRINTL 进一步增加奪取灵力的能力。
+	PRINTFORML 有效时Lv1对应{ENERGY_DRAIN_FIX}\%增加
+	PRINTL
+	PRINTFORML OFF时在灵力转换状态下也能饮用更多的%SAVESTR:标识／母乳%，请随意选择。
+	
+CASE "魔力吸收效率"
+	PRINTL ＜被动＞＜可ON／OFF＞
+	PRINTL 游戏整体：乳吸・触手搾乳时的魔力吸收率增加
+	PRINTL
+	PRINTFORML %CALLNAME:0%饮用%SAVESTR:标识／魔力母乳%并夺取奴隶的魔力时，使用相同量的%SAVESTR:标识／母乳%
+	PRINTL 可以夺取更多的魔力。
+	PRINTFORML 有效时Lv1对应{MAGIC_DRAIN_FIX}\%增加
+	PRINTL
+	PRINTFORML OFF时可以饮用更多的%SAVESTR:标识／魔力母乳%，请随意选择。
+	
+CASE "淫纹赋予"
+	PRINTL ＜解锁＞
+	PRINTFORML 调教中：特殊魔法→命令【淫纹赋予】（一次需%VALUE_DIGIT(MAGIC_USE_MP:ARG)%MP）
+	PRINTL
+	PRINTL 被奴隶加上【淫纹】。
+	PRINTL 全身敏感度增加50%的叠加效果，欲望增加50%的叠加效果，
+	PRINTL 在可以奉仕的状态下，有不可能按照自己的意愿拒绝的效果。
+	IF FLAG:玩笑表示
+		PRINTL
+		PRINTL 是奴隶调教的经典中的经典呢。
+		PRINTL 抵抗魔法枷锁的时候或许会有效果。
+	ENDIF
+	
+CASE "绝顶魔力回复淫纹"
+	PRINTL ＜解锁＞
+	PRINTFORML 调教中：特殊魔法→命令【绝顶魔力回复淫纹赋予】（一次需%VALUE_DIGIT(MAGIC_USE_MP:ARG)%MP）
+	PRINTL
+	PRINTL 在绝顶状态下刻上一种使魔力在绝顶时回复的淫纹。
+	PRINTL 尽管会有人觉得这是一种有利的行为，但实际上，如果不是【魔力母乳体质】的话淫纹就不会固定下来，
+	PRINTFORML 魔力在无限回复的同时，该魔力会被转化为「全部都是」%SAVESTR:标识／母乳%，
+	PRINTFORML 其实只要搾乳，就无限制地溢出%SAVESTR:标识／魔力母乳%，
+	PRINTL 是使之成为适合牛奶机的【永久魔力母乳】体质，再也不能回到人类生活的极恶魔法。
+	PRINTL
+	PRINTL 因为是这样的大魔术，固定下来的几率很低。但这似乎是出于对停止人类的抵触情绪，
+	PRINTL 如果对施术者有深厚的感情，或者希望自己成为【乳牛】，定格的几率会更高。
+	PRINTL （基本上是从5%到【好感度】和【乳牛堕落】的总和的1/3的值定格几率增加）
+	PRINTL
+	PRINTFORML 此外，原本由于%SAVESTR:标识／乳房%大小而受到限制的母乳生产力的纹身获取限制也消失了。
+	IF FLAG:玩笑表示
+		PRINTL
+		PRINTL 这是非常直观的终极内容。
+		PRINTFORML 旦到达这一步，就可以毫无顾虑地无限制地吸取%SAVESTR:标识／母乳%，然后尽情地亲昵了。
+	ENDIF
+	
+CASE "痛苦快乐变换"
+	PRINTL ＜解锁＞
+	PRINTFORML 调教中：特殊魔法→指令【痛苦快乐转换】（每次需要%VALUE_DIGIT(MAGIC_USE_MP:ARG)%MP）。
+	PRINTL
+	PRINTL 在调教结束之前，消除奴隶本应承受的痛苦，取而代之的是快感。
+	PRINTL 在非敏感带的地方，淫欲会增加。
+	PRINTL 再使用可解除。
+	
+CASE "阴茎变化"
+	PRINTL ＜解锁＞
+	PRINTFORML 调教中：特殊魔法→命令【阴茎变化】（一次需%VALUE_DIGIT(MAGIC_USE_MP:ARG)%MP）
+	PRINTL
+	PRINTFORML %CALLNAME:0%可以改变%SAVESTR:标识／阴茎%的大小。
+	PRINTFORML 但基本上尺寸差小会让彼此感觉更好。
+	PRINTL
+	PRINTFORML 注意：如果%SAVESTR:标识／阴茎%的尺寸超过插入处一定大小，可能会造成剧烈疼痛，或使孔变得松弛，
+	PRINTFORML 如果满足条件，在调教画面中该处的尺寸显示将变为红色。
+ENDSELECT
+
+

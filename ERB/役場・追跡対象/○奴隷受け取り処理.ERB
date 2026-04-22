@@ -1,0 +1,88 @@
+﻿
+;奴隷を引き取る
+@SLAVE_RECEIVE_COMMON
+
+;TARGET指定されたまま
+CFLAG:捕获日 = DAY
+EQUIP:魔力枷锁 = 1
+
+;ゴブリン輪姦でなければ反抗ON　輪姦だと屈服してる可能性とかあるので
+SIF !CFLAG:轮奸次数
+	CSTR:陷落状态 = 反抗
+
+;追跡者リセット
+CALL MERCENARY_RESET
+
+;FLAG:外出済みで牧場で受け取ったか違うか判定できるよ→とりあえず保留
+CALL KOJO_PRINT("事件","领取奴隶")
+CALL SLAVE_RECEIVE_MESSAGE
+
+;TALENTで変化　ここ来る場合絶対1人は家畜になってる
+IF ＃陷落状态／拒绝以上＃
+	;輪姦によって反抗なしの場合は変化なし
+
+ELSEIF TALENT:正义感
+	PRINTFORML 来到牧场的%CALLNAME%看到女人类被当成奴隶，气得直发抖…
+	CALL PURPOSE_CHANGE("营救牧场妇女")
+ELSEIF TALENT:坚强 || TALENT:高傲 || TALENT:喜欢男性 < 0
+	CALL PURPOSE_CHANGE("惩罚")
+ELSE
+	CALL PURPOSE_CHANGE("逃离牧场")
+ENDIF
+
+IF GETBIT(＃搾乳器自动购入＃)
+	;ここでは-になることもある
+	MONEY -= ITEMPRICE:家畜用搾乳器
+
+	;一応アイテムも増加しとく
+	ITEM:家畜用搾乳器 ++
+	PRINTFORMW 以%VALUE_DIGIT(ITEMPRICE:家畜用搾乳器)%G购入家畜用搾乳器。
+	PRINTL
+ENDIF
+CALL TARGET_FLAG_RESET
+CALL SLAVE_RECEIVE_FLAG_SET
+
+;触手変化を持ってる+コンフィグONなら投薬画面へ
+IF ITEM:触手变化 && GETBIT(＃捕获时用药＃)
+	;一旦リセットかける
+	CALL RESET_TRAIN_PALAM
+
+	;一旦ここでスケジュール外をONにしないと外れちゃってた
+	TFLAG:日程外Ｈ = 1
+	PLAYER = MASTER
+	CALL MANYL(3)
+	CALL VISIT_DOSAGE
+	TFLAG:日程外Ｈ = 0
+ENDIF
+CALL SCHEDULE_RESET_TARGET
+
+;コンフィグONなら個人設定開く
+SIF GETBIT(＃捕获时设定画面＃)
+	CALL SLAVE_CONFIG
+
+;マイルストーン達成BITをON
+SETBIT ＃里程碑达成／奴隶捕获＃
+
+
+
+;輪姦されている奴隷を引き取る
+@SLAVE_RECEIVE_TOWN
+
+;ここに来る条件がゴブリン+捕獲中
+SIF CFLAG:追踪对象 != 2
+	RETURN
+PRINTFORML 将被捕获的%CALLNAME%作为奴隶接收。
+PRINTFORML 在接收期间，似乎被哥布林们轮奸了{CFLAG:轮奸次数}次。
+CALL SLAVE_RECEIVE_COMMON
+
+
+
+;デフォルトのキャラコンフィグをセット
+@SLAVE_RECEIVE_FLAG_SET
+
+CFLAG:晚餐许可 = FLAG:加入奴隶默认／晚餐许可
+CFLAG:入浴许可 = FLAG:加入奴隶默认／入浴许可
+CFLAG:能力有效个人BIT = FLAG:加入奴隶默认／能力有效个人BIT
+
+
+

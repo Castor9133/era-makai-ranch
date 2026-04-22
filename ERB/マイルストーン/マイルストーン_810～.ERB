@@ -1,0 +1,171 @@
+﻿
+;傭兵アルバイトに奴隷を捕まえてきてもらう
+@MILESTONE_CHECK_810
+
+SIF GETBIT(＃里程碑达成／奴隶捕获＃)
+	RETURN 1
+
+
+;施設【町役場】解放・＜魔力枷＞2コ入手
+@MILESTONE_REWARD_810
+
+ITEM:魔力枷锁 += 2
+PRINTL 雇佣兵兼职送来了捕捉到的奴隶。接下来要好好调教他成为一头优秀的“乳牛”。
+PRINTL 今后将委托捕捉在マッカイドウ发现的人类，似乎会像这次一样捕捉到。
+PRINTL 被告知后才意识到，マッカイドウ报上有一小栏“今日确认的人类信息”。
+PRINTL 他补充说，从下次开始需要依赖费，然后离开了牧场。
+CALL PRINTL_WORD_COLOR,@"获得了2个＜魔力枷锁＞。","浅蓝色"
+CALL PRINTL_WORD_COLOR,@"【前往街道】→【魔族行会】已解锁。","浅蓝色"
+PRINTL 现在可以查看“进入魔界的人类列表”。
+PRINTL 每天中午结算后，会显示可以进行追踪的人员，并可从【魔族行会】发起捕获请求。
+
+
+;スレイ以外の奴隷を【屈服】状態にする
+@MILESTONE_CHECK_811
+
+FOR TARGET_COUNT,1,CHARANUM
+	TARGET = TARGET_COUNT
+	
+	;スレイちゃんは捕獲日マイナスなので弾く
+	SIF CFLAG:捕获日 > 0 && ＃陷落状态／屈服以上＃
+		RETURN 1
+NEXT
+
+
+;システム【部屋割り変更】解放・＜裁縫道具セット＞入手
+@MILESTONE_REWARD_811
+
+ITEM:裁缝工具套装 += 1
+PRINTL 来收货的マノ看到曾经反抗的奴隶变得乖巧，给予了赞赏。
+PRINTL 如果有人员的话会更好，他提议如果想将其当作<员工>对待，可以给他们一个房间。
+PRINTL 也许可以让奴隶帮忙做牧场的工作。
+PRINTL 他还给了我一个＜缝纫工具套件＞，说到时候衣服破了可就麻烦了。
+PRINTL 他说＜衣物修补布＞要自己去家居中心买。
+CALL PRINTL_WORD_COLOR,@"获得了＜缝纫工具套件＞。","浅蓝色"
+PRINTL 【去见】→【修补破损的衣物】可以修缮穿着的衣服。（需要＜衣服补修布＞）
+CALL PRINTL_WORD_COLOR,@"【各种信息・管理】→【房间分配变更】已解锁。","浅蓝色"
+
+
+;【調合知識】所持した奴隷を屈服
+@MILESTONE_CHECK_812
+
+FOR TARGET_COUNT,1,CHARANUM
+	TARGET = TARGET_COUNT
+	SIF CFLAG:捕获日 > 0 && ＃陷落状态／屈服以上＃ && TALENT:调合知识
+		RETURN 1
+NEXT
+
+
+;スケジュール【調剤】解放
+@MILESTONE_REWARD_812
+
+PRINTL 在地面上使有一定药学知识的人类屈服成为奴隶。
+PRINTL 和ユジン交谈后，她带来了未使用的魔界药学基础书籍，
+PRINTL 听说现有的牧场设备也能制作一些药品。
+PRINTL 也许可以让奴隶调配药品。
+CALL PRINTL_WORD_COLOR,@"【日程】→【调剂】已解锁。","浅蓝色"
+
+
+
+;掃除Lv5以上の奴隷を屈服
+@MILESTONE_CHECK_813
+
+FOR TARGET_COUNT,1,CHARANUM
+	TARGET = TARGET_COUNT
+	SIF CFLAG:捕获日 > 0 && ＃陷落状态／屈服以上＃ && ABL:清洁 >= 5
+		RETURN 1
+NEXT
+
+
+;システム【掃除当番変更】解放
+@MILESTONE_REWARD_813
+
+PRINTL 使对清洁有一定了解的人类屈服成为奴隶。
+PRINTL 之前是两个人一起打扫，现在可以让其他奴隶负责清洁。
+CALL PRINTL_WORD_COLOR,@"【各种信息・管理】→【清洁当班变更】已解锁。","浅蓝色"
+
+
+
+;あなた・スレイの他に5匹の奴隷を牧場に迎える
+@MILESTONE_CHECK_814
+
+SLAVE_COUNT = 0
+FOR TARGET_COUNT,1,CHARANUM
+	TARGET = TARGET_COUNT
+	SIF !CFLAG:追踪对象
+		SLAVE_COUNT ++
+NEXT
+
+;スレイちゃん含めると6人
+SIF SLAVE_COUNT >= 6
+	RETURN 1
+
+
+;施設【不動産】解放
+@MILESTONE_REWARD_814
+
+PRINTL 牧场里的奴隶也越来越多，似乎应该考虑增加居住空间。
+PRINTL 如果在冈地街上委托的话，通过福多先生的不动产公司向马凯多建设申请会比较好。
+PRINTL 虽然价格相当高，但由于牛奶出货的收入比想象中增加，可以考虑一下。
+CALL PRINTL_WORD_COLOR,@"【前往街道】→【不动产】已解锁。","浅蓝色"
+
+
+
+;奴隷3人を【恋慕】にする
+@MILESTONE_CHECK_815
+
+SLAVE_COUNT = 0
+FOR TARGET_COUNT,1,CHARANUM
+	TARGET = TARGET_COUNT
+	SIF ＃陷落状态／恋慕以上＃
+		SLAVE_COUNT ++
+NEXT
+SIF SLAVE_COUNT >= 3
+	RETURN 1
+
+
+;＜スタイリング道具セット＞入手
+@MILESTONE_REWARD_815
+
+ITEM:发型工具套装 += 1
+PRINTL 奴隶对我变得顺从，甚至感受到爱意。这是个好趋势。
+PRINTL 马诺说：「虽然是人类，但毕竟是女孩子，所以要注意头发。」
+PRINTL 虽然拿到了工具，但我从未处理过他人的头发，
+PRINTL 但附带的厚厚说明书让我觉得总能应对过去。
+CALL PRINTL_WORD_COLOR,@"获得了＜造型工具套件＞。","浅蓝色"
+PRINTL 可以通过【去见】→【更改发型】来更改奴隶的发型。（更改发色需要＜染发剂＞）
+
+
+
+;奴隷を【乳牛堕ち】させる
+@MILESTONE_CHECK_816
+
+FOR TARGET_COUNT,1,CHARANUM
+	TARGET = TARGET_COUNT
+	SIF CFLAG:乳牛
+		RETURN 1
+NEXT
+
+
+;＜工具セット＞入手
+@MILESTONE_REWARD_816
+
+ITEM:工具套装 += 1
+PRINTL 奴隶堕落于挤乳快感，宣称自己是「乳牛」。我做得很好。
+PRINTL 我在想有没有适合可爱的「乳牛」的工具，突然想起仓库里有一整套工具在沉睡。
+PRINTL 我祖父偶尔会用这些为魔界的乳牛制作相应的工具。
+PRINTL 我也许可以尝试制作一些东西。
+CALL PRINTL_WORD_COLOR,@"获得了＜工具套件＞。","浅蓝色"
+PRINTL 可以通过【开发·学习】→【新型挤奶器的开发】制造高级挤奶器。
+
+
+
+
+
+
+
+
+
+
+
+

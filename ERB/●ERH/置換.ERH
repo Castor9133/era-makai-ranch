@@ -1,0 +1,94 @@
+﻿
+;()まみれで可読性がお排泄物になるため置換する
+;BIT管理に使ったり
+
+;装備中衣服の状態
+#DEFINE ＃穿着衣服／所持＃ 			GETBIT(EQUIP:(EQUIP:装备中ID／衣服),0)
+#DEFINE ＃穿着衣服／胸部撕裂＃ 		GETBIT(EQUIP:(EQUIP:装备中ID／衣服),1)
+#DEFINE ＃穿着衣服／私处撕裂＃ 		GETBIT(EQUIP:(EQUIP:装备中ID／衣服),2)
+#DEFINE ＃穿着衣服／侧乳露出＃ 		GETBIT(EQUIP:(EQUIP:装备中ID／衣服),3)
+#DEFINE ＃穿着衣服／乳沟穴＃ 		GETBIT(EQUIP:(EQUIP:装备中ID／衣服),4)
+#DEFINE ＃穿着衣服／乳沟露出＃ 		GETBIT(EQUIP:(EQUIP:装备中ID／衣服),5)
+#DEFINE ＃穿着衣服／乳暖簾＃ 		GETBIT(EQUIP:(EQUIP:装备中ID／衣服),6)
+#DEFINE ＃穿着衣服／围裙＃ 		GETBIT(EQUIP:(EQUIP:装备中ID／衣服),7)
+#DEFINE ＃穿着衣服／乳房露出＃ 		GETBIT(EQUIP:(EQUIP:装备中ID／衣服),8)
+#DEFINE ＃穿着衣服／私处露出＃ 		GETBIT(EQUIP:(EQUIP:装备中ID／衣服),9)
+#DEFINE ＃穿戴服装／授乳开口＃ 	GETBIT(EQUIP:(EQUIP:装备中ID／衣服),10)
+#DEFINE ＃穿着衣服／下乳露出＃ 		GETBIT(EQUIP:(EQUIP:装备中ID／衣服),11)
+
+#DEFINE ＃穿着衣服／名称＃ 		ITEMNAME:(EQUIP:装备中ID／衣服)
+#DEFINE ＃穿着内衣上装／名称＃ 	ITEMNAME:(EQUIP:装备中ID／内衣上装)
+#DEFINE ＃穿着内衣下装／名称＃ 	ITEMNAME:(EQUIP:装备中ID／内衣下装)
+#DEFINE ＃穿着外衣／名称＃ 		ITEMNAME:(EQUIP:装备中ID／外衣)
+#DEFINE ＃穿着头装备／名称＃ 	ITEMNAME:(EQUIP:装备中ID／头)
+
+#DEFINE ＃穿着衣服／颜色＃ 			CSTR:(EQUIP:装备中ID／衣服)
+#DEFINE ＃穿着内衣上装／颜色＃ 		CSTR:(EQUIP:装备中ID／内衣上装)
+#DEFINE ＃穿着内衣下装／颜色＃ 		CSTR:(EQUIP:装备中ID／内衣下装)
+#DEFINE ＃穿着眼装备／颜色＃ 		CSTR:(EQUIP:装备中ID／眼)
+#DEFINE ＃穿着头装备／颜色＃ 		CSTR:(EQUIP:装备中ID／头)
+#DEFINE ＃穿着腕装备／颜色＃ 		CSTR:(EQUIP:装备中ID／腕)
+#DEFINE ＃穿着腿装备／颜色＃ 		CSTR:(EQUIP:装备中ID／腿)
+#DEFINE ＃穿着颈装备／颜色＃ 		CSTR:(EQUIP:装备中ID／颈)
+#DEFINE ＃穿着外衣／颜色＃ 			CSTR:(EQUIP:装备中ID／外衣)
+#DEFINE ＃穿着铠／颜色＃ 			CSTR:(EQUIP:装备中ID／铠)
+
+;選択した衣服の状態
+#DEFINE ＃选择衣服／所持＃ 			GETBIT(EQUIP:ARG,0)
+#DEFINE ＃选择衣服／胸部撕裂＃ 		GETBIT(EQUIP:ARG,1)
+#DEFINE ＃选择衣服／私处撕裂＃ 		GETBIT(EQUIP:ARG,2)
+#DEFINE ＃选择衣服／侧乳露出＃ 		GETBIT(EQUIP:ARG,3)
+#DEFINE ＃选择衣服／乳沟穴＃ 		GETBIT(EQUIP:ARG,4)
+#DEFINE ＃选择衣服／乳沟露出＃	 	GETBIT(EQUIP:ARG,5)
+#DEFINE ＃选择衣服／乳暖簾＃ 		GETBIT(EQUIP:ARG,6)
+#DEFINE ＃选择衣服／前掛け＃ 		GETBIT(EQUIP:ARG,7)
+#DEFINE ＃选择衣服／乳房露出＃ 		GETBIT(EQUIP:ARG,8)
+#DEFINE ＃选择衣服／私处露出＃ 		GETBIT(EQUIP:ARG,9)
+#DEFINE ＃选择服装／授乳开口＃ 	GETBIT(EQUIP:ARG,10)
+
+#DEFINE ＃選択衣服／名称＃ 		ITEMNAME:ARG
+#DEFINE ＃選択下着上／名称＃ 	ITEMNAME:ARG
+#DEFINE ＃選択下着下／名称＃ 	ITEMNAME:ARG
+#DEFINE ＃選択上着／名称＃ 		ITEMNAME:ARG
+
+
+;天気
+#DEFINE ＃恶劣天气＃				"雨","大雨","强风","暴雨","大雪","暴风雪"
+
+
+;仕事スケジュールまとめて
+#DEFINE ＃事务日程＃	"奶农","事务","调剂","调教","大浴场清洁"
+#DEFINE ＃調教スケジュール＃	"搾乳","抽出","体内凌辱"
+
+
+;膨乳時に破損するブラ
+{
+#DEFINE ＃膨胀乳房破损胸罩＃	"胸罩","前钩胸罩","授乳开口胸罩","乳头露出胸罩",
+"眼罩胸罩","猫娘胸罩","运动胸罩","紧身胸衣"
+}
+
+;破損する衣服
+{
+#DEFINE ＃膨胀乳房破损衣服＃	"连衣裙","长袍","修道服","战斗修女服","比基尼盔甲",
+"天界长袍","运动短裤套装","衬衫和牛仔裤","囚衣","哥特萝莉装","兔女郎装","水手服","旗袍",
+"越南长袄","西装外套制服"
+}
+
+
+;反抗・拒絶・屈服・陥落・恋慕・隷属を並べなくていいように
+#DEFINE ＃陷落状态／拒绝以上＃		GROUPMATCH(CSTR:陷落状态,"拒绝","屈服","陷落","恋慕","隶属")
+#DEFINE ＃陷落状态／屈服以上＃		GROUPMATCH(CSTR:陷落状态,"屈服","陷落","恋慕","隶属")
+#DEFINE ＃陷落状态／陷落以上＃		GROUPMATCH(CSTR:陷落状态,"陷落","恋慕","隶属")
+#DEFINE ＃陷落状态／恋慕以上＃		GROUPMATCH(CSTR:陷落状态,"恋慕","隶属")
+
+;一応揃え
+#DEFINE ＃陷落状态／隶属＃			GROUPMATCH(CSTR:陷落状态,"隶属")
+
+
+
+
+
+
+
+
+

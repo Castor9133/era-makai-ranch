@@ -1,0 +1,49 @@
+﻿
+;魔力量判定
+@RANDOM_LIST_MAGIC_POWER(ARG)
+
+;上位種族、ランクでの魔力を廃止
+SELECTCASE LIST_TRIBE:ARG
+CASE "精灵","暗精灵","半精灵"
+	FLAG_NAME = 种族设定／%LIST_TRIBE:ARG%
+	TRIBE_FLAG_C = 体质反映率／%LIST_TRIBE:ARG%
+	SIF GETBIT(FLAG:FLAG_NAME,5) && (RAND:100 < FLAG:TRIBE_FLAG_C)
+		LIST_MAGIC_POWER:ARG += 2
+CASE "仙人"
+	LIST_MAGIC_POWER:ARG += 5
+CASE "半吸血鬼","天使","天人"
+	LIST_MAGIC_POWER:ARG += 7
+CASE "妖狐","吸血鬼","女神"
+	;魔力倍増オプションはあとで
+	LIST_MAGIC_POWER:ARG += 10
+ENDSELECT
+
+;ランダム性入れてみよう
+SELECTCASE LIST_JOB:ARG
+CASE "炼金术师"
+	SIF RAND:100 < 30
+		LIST_MAGIC_POWER:ARG += 2
+CASE "阴阳师","魔法战士"
+	LIST_MAGIC_POWER:ARG += 2
+CASE "战斗修女","退魔巫女"
+	SIF RAND:100 < 80
+		LIST_MAGIC_POWER:ARG += 3
+CASE "圣母"
+	LIST_MAGIC_POWER:ARG += 3
+	SIF RAND:100 < 20
+		LIST_MAGIC_POWER:ARG += 7
+CASE "姫骑士"
+	LIST_MAGIC_POWER:ARG += 3
+CASE "牧师","黑魔法师","白魔法师","咒术师","死灵术士","召唤师"
+	LIST_MAGIC_POWER:ARG += (3 +RAND:3)
+CASE "圣骑士","黑暗骑士"
+	LIST_MAGIC_POWER:ARG += RAND:6
+CASE "女巫","勇者","圣骑士","暗黑骑士"
+	LIST_MAGIC_POWER:ARG += 6
+CASE "时魔导士","主教"
+	LIST_MAGIC_POWER:ARG += 8
+CASE "魔法少女","贤者","萨满","枢机主教","大魔导师","姫巫女"
+	LIST_MAGIC_POWER:ARG += 10
+ENDSELECT
+
+

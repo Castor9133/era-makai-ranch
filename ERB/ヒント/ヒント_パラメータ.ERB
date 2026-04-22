@@ -1,0 +1,194 @@
+﻿
+;パラメータ目次
+@HINT_PALAMETER
+
+CLEARLINE LINECOUNT
+PRINTL 请选择要查看其说明的项目。
+DRAWLINE
+BR = 0
+STR_REF = 9100
+CALL HINT_BUTTON_LIST
+DRAWLINE
+CALL HINT_DETAIL_PALAMETER
+CALL PRINTL_ALIGN(5)
+DRAWLINE
+PRINTL [99] 返回
+INPUT
+PRINTL
+SELECTCASE RESULT
+CASE 0 TO 29
+	SELECT_TIPS = RESULT
+CASE 99
+	RETURN
+ENDSELECT
+RESTART
+
+
+
+;パラメータの解説
+@HINT_DETAIL_PALAMETER
+
+STR_NUM = STR_REF +SELECT_TIPS
+
+;対応IDでないなら汎用出して帰る
+IF SELECT_TIPS < 0 || SELECT_TIPS >= 30 || STR:STR_NUM == ""
+	CALL NOT_SELECT_HINT_COMMON
+	RETURN
+ENDIF
+
+;項目名
+PRINTFORML 　《 %STR:STR_NUM% 》
+SELECTCASE STR:STR_NUM
+CASE "体力"
+	PRINTL 这是角色的体力或生命值。
+	PRINTL 倾向于【灵力】较多的角色具有较大的最大值。
+	PRINTL 当体力降至0时，将无法执行各种事务、奉仕。
+	PRINTL 如果在调教过程中您的体力降至0，那么调教将在那时结束。
+	CALL PRINTL_WORD_COLOR("・在这个变种中，即使奴隶的体力降至0，也不会导致死亡。","黄")
+	PRINTL
+	PRINTL 《 消耗行动 》
+	PRINTL ・各种日程事务　・各种日程调教
+	PRINTFORML ・执行调教命令　・被调教　・被榨%SAVESTR:标识／母乳%　・射精
+	PRINTL
+	PRINTL 《 回复行动 》
+	PRINTL 日程【自由】【待机】　・就寝　・使用【营养饮料】（固定值回复）
+	PRINTFORML ・喝奴隶的%SAVESTR:标识／母乳%
+	PRINTL
+	PRINTL 《 上限值增加行为 》
+	PRINTL 主人公：通过＜能量吸取＞吸取的灵力总量来增加
+	PRINTL 奴隶：通过主人公注入的＜灵力注入＞的累计量来增加
+	
+CASE "灵力"
+	PRINTL 这是角色的战斗力，或者说是RPG中的经验值。
+	PRINTL 根据灵力计算【等级】。
+	PRINTL 这是通过战斗训练和实战经验成长的参数，只有在忽略训练或身体衰弱等因素时，才会减少。
+	PRINTL 不减少的「应」参数。
+	PRINTL
+	PRINTL 《 减少行动 》
+	PRINTL ・由<（小型）灵力抽出装置>搾乳　・被主人公＜能量吸取＞
+	PRINTL ・只有主人公：执行＜注入灵力＞
+	PRINTL
+	PRINTL 《 回复行动 》
+	PRINTL ・被＜灵力注入＞
+	PRINTL ・只有主人公：从奴隶身上执行＜能量吸取＞
+	PRINTL ・仅限【魔界种族】：就寝（回复10%）
+	PRINTL
+	PRINTL 《 上限值增加行为 》
+	PRINTL 主人公：通过＜能量吸取＞吸取的灵力总量，如果奴隶有​【可吸收的灵力】则增加
+	PRINTL 奴隶：在以下条件全部满足时，通过你注入的＜灵力注入＞增加
+	PRINTL ①曾经抽干过灵力　②当前灵力是最大值　③【隶属】状态　④最大灵力低于主人公
+	
+CASE "魔力"
+	PRINTL 这是角色的魔法力或MP。
+	PRINTL 人类通常基于【等级】、职业和种族计算【魔力量】。
+	PRINTL 有些人类不考虑等级，拥有非常高的魔法力。
+	PRINTL
+	PRINTL 《 减少行动 》
+	PRINTL ・在【魔力母乳体质】的状态下被搾乳
+	PRINTL ・只有主人公：施放和维持各种魔法的费用　・进行＜魔力注入＞　・相关物品的开发成本
+	PRINTL
+	PRINTL 《 回复行动 》
+	PRINTFORML ・被施以＜魔力注入＞　・喝其他奴隶的%SAVESTR:标识／魔力母乳%
+	PRINTL ・就寝（【魔界种族】：回复20%）　其他：回复10%）
+	PRINTL ・只有主人公：＜魔力补给装置＞的使用
+	PRINTL
+	PRINTL 《 上限值增加行为 》
+	PRINTFORML 主人公：吸取奴隶的%SAVESTR:标识／魔力母乳%时，如果奴隶有【可吸收的魔力】则增加
+	PRINTL 奴隶：当你施以＜魔力注入＞时，如果满足以下条件，则增加
+	PRINTL ①当前魔力已经达到80%以上　②【隶属】状态　③最大魔力低于主人公
+	PRINTFORML 【隶属】状态的奴隶，如果注入了累计%VALUE_DIGIT(MP_OCCUR_VALUE)%的巨大魔力
+	CALL PRINT_WORD_COLOR("「将魔法力灌注到没有魔法力的奴隶身上」","黄")
+	PRINTL 这也是可能的。
+	
+CASE "可吸收的灵力"
+	CALL PART_HINT_EP_DRAIN_LIMIT
+	
+CASE "可吸收的魔力"
+	CALL PART_HINT_MP_DRAIN_LIMIT
+	
+CASE "等级"
+	PRINTL 是RPG式的强度指标。以【灵力】为基础计算。
+	PRINTL 奴隶的等级基于其当前的灵力，而您的等级则基于最大值。
+	PRINTL 当主人公消耗灵力时不会降低您的等级。
+	PRINTL
+	PRINTL 《 减少行动 》
+	PRINTL ・由<（小型）灵力抽出装置>搾乳　・被主人公＜能量吸取＞
+	PRINTL
+	PRINTL 《 增加行动 》
+	PRINTL ・当满足灵力上限条件时，进行＜灵力注入＞
+	PRINTL ・只有主人公：从奴隶身上执行＜能量吸取＞
+	PRINTL
+	PRINTL 《 等级影响 》
+	PRINTL ＜魔力枷＞的抵抗值→当前等级×100MP，每50级倍率提升+1
+	
+CASE "战斗力"
+	PRINTL 这是战斗中的强度，基于【灵力】【魔力】计算。
+	PRINTL 由于魔力高可能意味着可以使用防护魔法等，所以采用了简单的计算方式。
+	PRINTL 如果由于【庞大魔力】而拥有与级别不匹配的魔力，只有最大魔力的1/10会反映在战斗力中。
+	PRINTL 【非战斗职业】的人类的初始值为10。
+	PRINTL
+	PRINTL 当雇佣兵或其他人类进行战斗时，将战斗力相互削减，先降为0的一方将被判定为失败。
+	PRINTL 人类消耗的战斗力在夜间行动后将会回复10%。
+	PRINTL
+	PRINTL 当您或奴隶参与战斗时，除了灵力和魔力外，还会根据【战斗适性】的值进行修正。
+	
+CASE "同伴战斗力"
+	PRINTL 如果奴隶候选的人类与同伴一同来到魔界，则显示同伴的总战斗力。
+	PRINTL 如果是基于【同伴级别】的角色，则等级是由此计算得出→该等级对应的大致灵力。
+	PRINTL
+	PRINTL 当同伴战斗力大于1时，即存在同伴时，将首先受到同伴战斗力的伤害。
+	PRINTL 当同伴战斗力降为0时，同伴将变为不可战斗状态，不再回复。
+	PRINTL 消耗的同伴战斗力在夜间行动后会回复5%。
+
+CASE "战斗适性"
+	PRINTL 这表示您或奴隶在战斗中能发挥多大的能力。
+	PRINTL 如果您或奴隶在没有雇佣兵的情况下参与战斗，那么战斗适性的值将决定将多少灵力和魔力转化为战斗力。
+	PRINTL
+	PRINTL 《 增加行动 》
+	PRINTL 执行日程【战斗训练】（仅限主人公）
+	PRINTL
+	PRINTL 《 减少行动 》
+	PRINTL 睡眠时有30%的概率-1%
+	
+CASE "胸围大小"
+	CALL PART_HINT_BUSTSIZE
+	
+CASE "胸围大小补充"
+	CALL PART_HINT_BUSTSIZE2
+	
+CASE "奶农"
+	PRINTL 提高牧场工作效率的能力。
+	PRINTL 在执行【奶农】日程时，根据奶农等级增加【乳牛健康度】。
+	
+CASE "事务"
+	PRINTL 提高事务工作和文件整理效率的能力。
+	PRINTL 在执行【事务】日程时，根据事务等级减少【事务工作量】。
+	
+CASE "清洁"
+	PRINTL 有效执行事务工作和文件整理的能力。
+	PRINTL 在执行【大浴场清洁】日程时，根据清洁等级减轻体力消耗，
+	PRINTL 如果已建造＜大浴场＞，则清洁等级越高，清洁完成越快。
+	PRINTL
+	PRINTL （以下是计划中的实现）
+	PRINTL 在执行【扫除】日程时，根据清洁等级增加【清洁度】。
+	
+CASE "料理"
+	PRINTL （计划中的实现）
+	PRINTL 具备熟练烹饪技能的能力。
+	PRINTL 在被指定为【料理当值】时，根据烹饪等级增加体力回复量，
+	PRINTL 在【咖啡店】中的【厨房担当】时，根据烹饪等级获得额外的​【顾客满意度】和【人气】奖励。
+	
+CASE "药学"
+	PRINTL 高效进行有关药品的知识和调剂的能力。
+	PRINTL 在执行【调剂】日程时，根据药学等级增加​【调合进度】。
+	
+CASE "接客"
+	PRINTL （计划中的实现）
+	PRINTL 处理大量客户的能力，同时满足客户需求的能力。
+	PRINTL 根据接客Lv，始终获得【人气】增加的奖励
+	PRINTL 在【咖啡店】担任各种职务时，根据接客Lv获得【顾客满意度】奖励。
+	PRINTL
+	PRINTL 即使接客Lv低，也存在需求，但能否处理好客户则是另一问题。
+ENDSELECT
+
+

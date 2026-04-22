@@ -1,0 +1,85 @@
+﻿
+;ヘアスタイル
+@PRINT_PORTRAIT_HAIR
+#DIMS HEAR_PATTERN_F
+#DIMS HEAR_PATTERN_B
+
+;前髪→貫通対策追加
+HEAR_PATTERN_F = %CSTR:颜色类别／发特征%
+HEAR_PATTERN_B = %CSTR:颜色类别／发型%
+IF !TFLAG:临时脱衣／头 && ITEMNAME:(EQUIP:装备中ID／头) == "修女面纱"
+	SELECTCASE CSTR:颜色类别／发特征
+	CASE "翻翘"
+		HEAR_PATTERN_F = 普通
+	ENDSELECT
+	SELECTCASE CSTR:颜色类别／发型
+	CASE "单马尾","双马尾","侧双马尾","披肩双马尾","公主头","及腰长发","纵卷发","发髻","侧发髻","双环结发","蓬松刘海","侧马尾","王冠编发","三马尾"
+		HEAR_PATTERN_B = 中长发
+	ENDSELECT
+ENDIF
+SPRITECREATED @"%CSTR:颜色类别／发色%_%HEAR_PATTERN_F%"
+IF RESULT
+	PRT:2 = <nonbutton pos='%PY_2%'><img src='%CSTR:颜色类别／发色%_%HEAR_PATTERN_F%' height='%PY_3_2%' ypos = '%PY_FIX%'></nonbutton>
+ELSE
+	PRT:2 = <nonbutton pos='%PY_2%'><img src='%CSTR:颜色类别／发色%_普通' height='%PY_3_2%' ypos = '%PY_FIX%'></nonbutton>
+ENDIF
+
+;後髪
+SPRITECREATED @"%CSTR:颜色类别／发色%_%HEAR_PATTERN_F%%HEAR_PATTERN_B%"
+IF RESULT
+	PRT:3 = <nonbutton pos='%PY_2%'><img src='%CSTR:颜色类别／发色%_%HEAR_PATTERN_F%%HEAR_PATTERN_B%' height='%PY_3%' ypos = '%PY_FIX%'></nonbutton>
+ELSE
+	PRT:3 = <nonbutton pos='%PY_2%'><img src='%CSTR:颜色类别／发色%_%HEAR_PATTERN_B%' height='%PY_3%' ypos = '%PY_FIX%'></nonbutton>
+ENDIF
+
+
+
+;顔　目の特徴を追加、パターンを上書き
+@PRINT_PORTRAIT_FACE
+#DIMS EYE_PATTERN
+
+EYE_PATTERN =
+IF CSTR:眼睛特征 != ""
+	IF CSTR:眼睛特征 == "垂眼"
+		EYE_PATTERN = 弱势
+	ELSEIF CSTR:眼睛特征 == "吊眼"
+		EYE_PATTERN = 强势
+	ELSEIF CSTR:眼睛特征 == "半眼"
+		EYE_PATTERN = 無口
+	ELSEIF CSTR:眼睛特征 == "眯眯眼"
+		EYE_PATTERN = 乐天
+		;EYE_PATTERN = 糸目
+	ENDIF
+ENDIF
+IF EYE_PATTERN == ""
+	IF GROUPMATCH(CSTR:颜色类别／性格,"强势","弱势","傲慢","一本正经","老实","乐天","不懂世故","高尚","清纯","好色","温厚","無口")
+		EYE_PATTERN = %CSTR:颜色类别／性格%
+	ELSE
+		EYE_PATTERN = 一本正经
+	ENDIF
+ENDIF
+
+IF CSTR:颜色类别／左瞳色 == "" 
+	PRT:4 = <nonbutton pos='%PY_2%'><img src='%CSTR:颜色类别／右瞳色%_%EYE_PATTERN%_右' height='%PY_3_3%' ypos = '%PY_FIX%'><img src='%CSTR:颜色类别／右瞳色%_%EYE_PATTERN%_左' height='%PY_3_3%' ypos = '%PY_FIX%'></nonbutton>
+ELSE
+	PRT:4 = <nonbutton pos='%PY_2%'><img src='%CSTR:颜色类别／右瞳色%_%EYE_PATTERN%_右' height='%PY_3_3%' ypos = '%PY_FIX%'><img src='%CSTR:颜色类别／左瞳色%_%EYE_PATTERN%_左' height='%PY_3_3%' ypos = '%PY_FIX%'></nonbutton>
+ENDIF
+
+;口
+IF GROUPMATCH(CSTR:颜色类别／性格,"强势","弱势","一本正经","老实","高尚","清纯","温厚","無口")
+	SPRITECREATED @"口_关闭"
+	SIF RESULT
+		PRT:9 = <nonbutton pos='%PY_2%'><img src='口_关闭' height='%PY_3_3%' ypos = '%PY_FIX%'></nonbutton>
+ELSE
+	SPRITECREATED @"口_打开"
+	SIF RESULT
+		PRT:9 = <nonbutton pos='%PY_2%'><img src='口_打开' height='%PY_3_3%' ypos = '%PY_FIX%'></nonbutton>
+ENDIF
+
+
+
+
+
+
+
+

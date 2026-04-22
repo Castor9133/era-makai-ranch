@@ -1,0 +1,101 @@
+﻿
+;狙うメスの特徴を決める
+@CHARA_MAKE_SLAVE
+#DIM DYNAMIC PAGE
+
+PAGE_MAX = 2
+SIF PAGE < 1
+	PAGE = 1
+
+;候補のパーソナルデータからランダムで埋めてキャラ追加、それを複製
+;CHARANUM-1をTARGETにして変更、変更箇所に応じて貢献PTを消費する
+;処理を全て終えたらリスト最後をCHARADEL、LIST_STATUSを0にする
+;デフォルトに戻すときはカスタムしたキャラを消して現在タゲを複製
+;キャンセルする場合もLIST_STATUSは0にしよう　リセマラが出来てしまう
+;セーブロードすればリセマラできるけどまあそこまでやりたいならどうぞでいいような
+
+;ランダムする場合だけここON
+FLAG:角色化妆隐蔽有效 = 1
+CLEARLINE LINECOUNT
+PRINTL 目标人类的详细数据是这样的。
+CALL HALFLINE
+CALL CHARA_MAKE_SLAVE_DATA(PAGE)
+CALL PRINTL_ALIGN(2)
+PRINTLC [ 0] 重新调整画面
+PRINTFORMLC [ 1] 页面变更 <PAGE{PAGE,2}／{PAGE_MAX}>
+PRINTFORML [ 2] 口上设置　当前使用口上：%CSTR:使用口上%
+DRAWLINE
+PRINTLC [90] 取消
+PRINTLC [91] dat数据输出
+
+;決定ボタン出すか無効か
+CALL SLAVE_AUCTION_PRICE_CALC
+IF MONEY:贡献PT < FLAG:使用贡献PT && !FLAG:贡献pt零消费
+	CALL PRINTL_WORD_COLOR,@"　贡献PT不足","黄"
+ELSEIF CFLAG:拍卖价格 > MONEY
+	CALL PRINTL_WORD_COLOR,@"　资金不足","黄"
+
+;一応
+ELSEIF CALLNAME == ""
+	CALL PRINTL_WORD_COLOR,@"　请设置名称","黄"
+ELSE
+	PRINTL [99] 目标决定
+ENDIF
+SIF !FLAG:贡献pt零消费
+	PRINTFORM 使用贡献pt：%VALUE_DIGIT(FLAG:使用贡献PT)%（%VALUE_DIGIT(MONEY:贡献PT)%pt所持）　
+SIF CFLAG:拍卖价格
+	PRINTFORML 拍卖价格：%VALUE_DIGIT(CFLAG:拍卖价格)%G（%VALUE_DIGIT(MONEY)%G所持）
+SIF !LINEISEMPTY()
+	PRINTL
+BINPUT
+SELECTCASE RESULT
+CASE 0
+	CALL CHARA_MAKE_SLAVE_SHUFFLE_INDEX
+CASE 1
+	PAGE ++
+	SIF PAGE > PAGE_MAX
+		PAGE = 1
+CASE 2
+	CALL KOJO_SETTING
+CASE 90
+	PRINTL 将放弃角色制作并取消。候选列表也将消失，可以吗？
+	CALL ASK_YN
+	IF !RESULT
+		;キャラを消す　全部終えたあとの処理も含めて2回消す
+		DELCHARA TARGET
+		FLAG:正在化妆角色 = 0
+		FLAG:角色化妆隐蔽有效 = 0
+		RETURN
+	ENDIF
+CASE 91
+	;キャラメイク中のdat出力
+	CALL CHARA_MAKE_OUTPUT_DATA
+CASE 99
+	SIF MONEY:贡献PT < FLAG:使用贡献PT && !FLAG:贡献pt零消费
+		RESTART
+	SIF CFLAG:进入魔界的目的 == 7 && MONEY < CFLAG:拍卖价格
+		RESTART
+	IF !CFLAG:口上表示 && FLAG:口上表示
+		CALL PRINTL_WORD_COLOR,@"没有设置口上，可以吗？","黄"
+		CALL ASK_YN
+		SIF RESULT
+			RESTART
+	ENDIF
+	
+	;貢献pt消費
+	SIF !FLAG:贡献pt零消费
+		MONEY:贡献PT -= FLAG:使用贡献PT
+	
+	;競売時の購入処理
+	SIF CFLAG:进入魔界的目的 == 7
+		MONEY -= CFLAG:拍卖价格
+	
+	;終了時処理
+	CALL CHARA_MAKE_END_CALC
+	CALL CHARA_MAKE_END_FLAGSET
+	RETURN
+ENDSELECT
+RESTART
+
+
+

@@ -1,0 +1,55 @@
+﻿
+;現在の居場所とスケジュール
+;ARG→2回改行
+@PRINT_NOW_PLACE_PLAN(ARG)
+
+;分割する　分けた先では改行挟まない
+CALL PRINT_NOW_PLACE
+CALL PRINT_NOW_PLAN
+PRINTL
+
+;ARG入ってたらここで改行
+SIF ARG
+	PRINTL
+
+
+
+;居場所
+;ARG→改行
+;ARG:1→表示簡易化
+@PRINT_NOW_PLACE(ARG,ARG:1)
+
+SIF !ARG:1
+	PRINT 　住处：
+SELECTCASE CSTR:住处
+CASE "奴隶寮"
+	CALL PRINT_DORMITORY_NUM
+CASE "体内"
+	PRINTFORM %CALLNAME:0%的体内
+CASE "牛舍"
+	PRINTFORM %COWSHED_NAME:(CFLAG:牛舍号码)%
+CASEELSE
+	PRINTFORM %CSTR:住处%
+ENDSELECT
+SIF ARG
+	PRINTL
+
+
+
+;スケジュール
+;ARG→改行
+@PRINT_NOW_PLAN(ARG)
+
+;未捕獲なら飛ばす
+SIF CSTR:住处 == "牧场外"
+	RETURN
+PRINT 　当前的预定→
+CALL SCHEDULE_PLAN_PRINT(CSTR:日程)
+SIF CFLAG:继续抽出
+	PRINT 《 继续抽出 》
+SIF ARG
+	PRINTL
+
+
+
+

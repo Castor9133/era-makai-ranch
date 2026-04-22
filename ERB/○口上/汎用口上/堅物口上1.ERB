@@ -1,0 +1,657 @@
+﻿
+; 坚物口上：在生真面目口上基础上改写，偏女骑士气质。
+
+; ======================================
+;欢迎众口上作者投稿，故保留作者栏与许可证说明。
+
+;堅物口上
+;口上識別名：堅物1
+;写好口上后请在 Str.csv 6100 段附近登记识别名。
+;口上作者：７５６番
+;本口上内容遵循 CC BY-NC（非商用可自由改造）。
+;（creativecommons.org/licenses/by-nc/4.0/deed.ja）
+
+;加笔者：polt
+;有加笔请在此注明。
+; ======================================
+
+@KOJO_GENERAL_INDEX_堅物1(ARGS:0,ARGS:1,ARGS:2,ARGS:3)
+
+IF TFLAG:Ｍ装备
+	CALL KOJO_GENERAL_MOUTH_SHACKLE_1(ARGS:0,ARGS:1,ARGS:2,ARGS:3)
+	RETURN
+ELSEIF CFLAG:崩坏 && !CFLAG:洗脑
+	IF GROUPMATCH(ARGS:0,"例文")
+	ELSEIF GROUPMATCH(ARGS:1,"洗脑触手","崩坏")
+	
+	ELSE
+		IF NOWEX:总绝顶
+			CALL MESSAGE_BOX,@"「啊啊啊…♥ 嗯嗯嗯…♥♥」"
+			CALL MESSAGE_BOX,@"「哈啊…♥ 啊啊…♥」"
+		ELSE
+			CALL MESSAGE_BOX,@"「唔唔…唔，唔…」"
+			CALL MESSAGE_BOX,@"「…唔，不要…」"
+		ENDIF
+		RETURN
+	ENDIF
+ENDIF
+
+
+SELECTCASE ARGS:0
+CASE "例文"
+	CALL MESSAGE_BOX,@"「已设置【通用正经口上1】。将以这种方式显示」\n「有对应于素质【羞涩】的差异之类的」"
+	
+CASE "调教命令"
+	CALL KOJO_GENERAL_堅物1_TRAIN(ARGS:0,ARGS:1,ARGS:2,ARGS:3)
+	
+CASE "绝顶"
+	CALL MESSAGE_BOX,@"「嘿…♥ 别…不要♥ 要喷了呜…♥」"
+	
+	SIF NOWEX:Ｂ绝顶
+		CALL MESSAGE_BOX,@"「用胸部…喷出去…♥ 要喷了呜呜…♥」"
+	
+	SIF NOWEX:总绝顶 >= 20
+		CALL MESSAGE_BOX,@"「啊啊啊♥ 喷出来了♥ 喷了♥喷啊呜呜…♥♥」"
+	SIF NOWEX:Ａ绝顶
+		IF TALENT:Ａ名器 || TALENT:肛门嗜好 || ABL:Ａ感觉 >= 3
+			CALL MESSAGE_BOX,@"「……%ANAL_CALL()%……！？　好痛……可是……深处……一抽一抽……停不下来……♥」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……屁股……好痛……！？　……别、别弄了……要裂开了……！」"
+		ENDIF
+	SIF NOWEX:Ｕ绝顶
+		IF TALENT:尿道敏感 || EX:尿道调教经验 >= 15
+			CALL MESSAGE_BOX,@"「……不适……这种地方……竟会一抽一抽……♥」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……只有刺痛……要坏了……别弄……」"
+		ENDIF
+	
+CASE "射精"
+	IF SOURCE:膣内射精经验
+		IF ABL:膣内射精中毒 >= 10
+			CALL MESSAGE_BOX,@"「嘿啊啊啊♥♥ 射在里面了♥♥ %MASTER_CALL()%的精液真好啊…♥♥♥」"
+		ELSE
+			IF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／隶属＃
+				CALL MESSAGE_BOX,@"「哦哦哦♥ 嗯嗯…♥♥ %MASTER_CALL()%的种子来了♥♥」"
+				SIF NOWEX:Ｖ绝顶
+					CALL MESSAGE_BOX,@"「哦哦哦…♥ 授精♥ 授精来了♥ 噢喔喔哦…♥♥」"
+					
+			ELSEIF ＃陷落状态／恋慕以上＃
+				CALL MESSAGE_BOX,@"「嘿啊啊啊…♥ %MASTER_CALL()%的精液，流到%VAGINA_CALL()%里了…♥」"
+				SIF NOWEX:Ｖ绝顶
+					CALL MESSAGE_BOX,@"「啊啊啊♥ 中出来了♥ %MASTER_CALL()%的精液来了啊♥」"
+					
+			ELSEIF ＃陷落状态／陷落以上＃
+				CALL MESSAGE_BOX,@"「嘿…♥ %SELF_CALL()%啊♥ 不要，不要啊…♥」"
+				SIF NOWEX:Ｖ绝顶
+					CALL MESSAGE_BOX,@"「要喷了！ %MASTER_CALL()%的啊♥ 在里面射了，要来了啊啊啊♥」"
+					
+			ELSEIF ＃陷落状态／屈服以上＃
+				CALL MESSAGE_BOX,@"「不要，不要啊…被这家伙射进来什么的…不要啊…！」"
+				SIF NOWEX:Ｖ绝顶
+					CALL MESSAGE_BOX,@"「噢呀♥  这样，被屈服了，%SELF_CALL()%也…♥ 呐呀♥」"
+					
+			ELSE
+				CALL MESSAGE_BOX,@"「住手，魔界之人…！ 不要，不要啊啊啊啊！！！」"
+				SIF NOWEX:Ｖ绝顶
+					CALL MESSAGE_BOX,@"「不，不要啊！ 不想要被这家伙…射出来啊啊啊！！」"
+					
+			ENDIF
+		ENDIF
+	
+	ELSEIF SOURCE:尻穴射精经验
+	
+	ELSEIF SOURCE:乳内射精经验
+	
+	ELSEIF SOURCE:精饮经验
+	
+	ELSEIF SOURCE:股间射精
+		IF !TFLAG:背后
+		
+		ELSE
+		
+		ENDIF
+	
+	ELSEIF SOURCE:乳房射精
+	
+	ELSEIF SOURCE:颜面射精
+	
+	ELSEIF TEQUIP:手淫
+	
+	ENDIF
+
+CASE "搾乳"
+	IF SOURCE:母乳漏出
+		IF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／隶属＃
+			CALL MESSAGE_BOX,@"「啊哈哈…♥ 不行，胸部要白白浪费掉了呜…♥」"
+		ELSEIF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「啊，%MASTER_CALL()%…♥ 胸部露出来了哦…♥」"
+		ELSEIF ＃陷落状态／屈服以上＃
+			CALL MESSAGE_BOX,@"「不、不行啊…母乳还是流出来了…♥」"
+		ELSE
+			CALL MESSAGE_BOX,@"「嘿呀…不行了，胸部自己就在流母乳了…♥」"
+		ENDIF
+		RETURN
+	ENDIF
+	IF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／隶属＃
+		CALL MESSAGE_BOX,@"「%SELF_CALL()%的奶水要出来啦啦♥♥ 噗噗噗的喔啦啦啦♥♥♥」"
+		SIF TFLAG:搾乳刺激
+			CALL MESSAGE_BOX,@"「挤奶好喜欢♥ 女奴%CALLNAME%的胸部啊♥ 榨吧榨吧给我吧呀…♥♥」"
+		SIF TFLAG:搾乳器 && GETBIT(＃Ｐ使用／Ｖ插入＃) && NOWEX:Ｖ绝顶 && NOWEX:Ｎ绝顶
+			CALL MESSAGE_BOX,@"「啊啊啊♥ %VAGINA_CALL()%被侵犯着高潮♥ 同时被挤奶，又要高潮了啊啊♥♥♥」"
+		IF TFLAG:搾乳触手
+			CALL MESSAGE_BOX,@"「嗯咿噢♥ 喔喔♥ %SELF_CALL()%的奶水♥♥ 被触手啵啵啵地吸进去，咕咕地喝掉了呢♥♥♥」"
+			CALL MESSAGE_BOX,@"「咕咕地好呢…♥ %SELF_CALL()%的奶水♥ 咕咕地被吸进去了呢呢呢♥」"
+			SIF NOWEX:Ｎ绝顶
+				CALL MESSAGE_BOX,@"「咕咕地♥ %SELF_CALL()%的胸部被挤奶，喷出高潮了啊啊♥  射了呢呢呢♥♥」"
+		ENDIF
+		SIF SOURCE:魔力吸收量
+			CALL MESSAGE_BOX,@"「哦喔♥ 喔喔喔♥ %SELF_CALL()%的魔力♥ 全部变成奶水了♥ 全部被榨掉啦啦啦♥♥」"
+		IF TFLAG:吸奶
+			CALL MESSAGE_BOX,@"「%MASTER_CALL()%在吸着%SELF_CALL()%这样的胸部，好好吸着呢呢♥」"
+			SIF NOWEX:Ｎ绝顶
+				CALL MESSAGE_BOX,@"「%MASTER_CALL()%♥  %SELF_CALL()%的奴隶奶水，尽管喝得多点吧呀呀♥♥」"
+		ENDIF
+		
+	ELSEIF ＃陷落状态／恋慕以上＃
+		SIF NOWEX:Ｎ绝顶 && TFLAG:搾乳刺激
+			CALL MESSAGE_BOX,@"「好喜欢这个♥ %MASTER_CALL()%的挤奶责罚好喜欢啊♥ 这样一来，%SELF_CALL()%♥ 很快就要高潮了呢♥♥」"
+		IF !PLAYER
+			CALL MESSAGE_BOX,@"「被%MASTER_CALL()%挤奶啦啦♥ 全部都被挤出来了呢呢♥」"
+			SIF GETBIT(＃Ｐ使用／Ｖ插入＃) && NOWEX:Ｖ绝顶
+				CALL MESSAGE_BOX,@"「和%MASTER_CALL()%做爱的同时，被挤奶♥」 真是幸福啊♥♥"
+		ENDIF
+		IF TFLAG:搾乳触手
+			CALL MESSAGE_BOX,@"「%MASTER_CALL()%的触手啦♥ %MASTER_CALL()%的触手会把%SELF_CALL()%的奶水全部吸干呢呢呢♥」"
+			SIF NOWEX:Ｎ绝顶
+				CALL MESSAGE_BOX,@"「%SWEET_MASTER_CALL()%♥ 被%MASTER_CALL()%的触手吸着胸部，喷出高潮了呢呢♥ 真是太棒了♥」"
+		ENDIF
+		SIF SOURCE:魔力吸收量
+			CALL MESSAGE_BOX,@"「%SELF_CALL()%的魔力被%MASTER_CALL()%吸干了呢呢♥」"
+		IF TFLAG:吸奶
+			CALL MESSAGE_BOX,@"「%MASTER_CALL()%♥ 怎么样，%SELF_CALL()%的乳汁好喝吗…？♥♥」"
+			SIF NOWEX:Ｎ绝顶
+				CALL MESSAGE_BOX,@"「%SWEET_MASTER_CALL()%♥ 被%MASTER_CALL()%吸着胸部，喷出高潮了♥ 喷了呜呜～♥♥」"
+		ENDIF
+			
+	ELSEIF ＃陷落状态／屈服以上＃
+		CALL MESSAGE_BOX,@"「嗯……♥ 从胸部流出了奶水…♥」"
+		SIF NOWEX:Ｎ绝顶 && TFLAG:搾乳刺激
+			CALL MESSAGE_BOX,@"「啊♥ 啊啊啊♥ 被挤奶，不禁高潮了呜呜…♥♥」"
+		IF TFLAG:搾乳器 || TFLAG:搾乳触手
+			CALL MESSAGE_BOX,@"「哈…嗯嗯…♥ %SELF_CALL()%的胸部，被机械挤压着…呜♥」"
+			SIF GETBIT(＃Ｐ使用／Ｖ插入＃) && NOWEX:Ｖ绝顶
+				CALL MESSAGE_BOX,@"「%SELF_CALL()%的%VAGINA_CALL()%被侵犯着，同时挤出奶水，不禁高潮了呜呜♥」"
+		ENDIF
+		IF TFLAG:搾乳触手
+			CALL MESSAGE_BOX,@"「啊啊啊♥ 触手啊…吸啊…%SELF_CALL()%的奶水…别停…呜♥」"
+			SIF NOWEX:Ｎ绝顶
+				CALL MESSAGE_BOX,@"「触手啊…吸着胸部…不禁高潮了呜♥ %SELF_CALL()%，被逼到高潮了呜呜♥」"
+		ENDIF
+		SIF SOURCE:魔力吸收量
+			CALL MESSAGE_BOX,@"「嗯啊啊…%SELF_CALL()%的魔力，被%MASTER_CALL()%夺取了呢呢呢…♥」"
+		IF TFLAG:吸奶
+			CALL MESSAGE_BOX,@"「嗯…%MASTER_CALL()%…已经足够了吧…？♥」"
+			SIF NOWEX:Ｎ绝顶
+				CALL MESSAGE_BOX,@"「啊，不行啦！ 被吸着胸部，不禁高潮了呜…高潮了呜呜～♥」"
+		ENDIF
+		
+	ELSE
+		CALL MESSAGE_BOX,@"「呜呜… 母乳流出来了呜呜…」"
+		SIF NOWEX:Ｎ绝顶 && TFLAG:搾乳刺激
+			CALL MESSAGE_BOX,@"「不要，停下啊！ 被挤奶，不禁高潮，太羞耻了啦啦…！♥」"
+		IF TFLAG:搾乳器 || TFLAG:搾乳触手
+			CALL MESSAGE_BOX,@"「不要啊啊%SELF_CALL()%的胸部…别挤了啦啦啦…♥」"
+			SIF GETBIT(＃Ｐ使用／Ｖ插入＃) && NOWEX:Ｖ绝顶
+				CALL MESSAGE_BOX,@"「嘿咿呀♥ 这样啊啊♥ 被魔族之物侵犯，还流出母乳啊啊…♥」"
+		ENDIF
+		IF TFLAG:搾乳触手
+			CALL MESSAGE_BOX,@"「嘿啊啊…触手啊啊，吸着母乳，太可怕了啊啊…」"
+			SIF NOWEX:Ｎ绝顶
+				CALL MESSAGE_BOX,@"「不行啊啊，不行啊啊，触手啊啊♥ 随意吸取，不禁高潮了呜…♥」"
+		ENDIF
+		SIF SOURCE:魔力吸收量
+			CALL MESSAGE_BOX,@"「别，别啊啊，不要吸取%SELF_CALL()%的魔力啊啊…♥」"
+		IF TFLAG:吸奶
+			CALL MESSAGE_BOX,@"这个…%SELF_CALL()%的母乳可不是为你而产的啊啊…♥」"
+			SIF NOWEX:Ｎ绝顶
+				CALL MESSAGE_BOX,@"「呜呜…不行啦啦♥ 胸部被随意吸取，不禁高潮了呜呜…！♥」"
+		ENDIF
+			
+	ENDIF
+	IF ABL:搾乳中毒 >= 10
+		CALL MESSAGE_BOX,@"「哦哦♥ 啊啊啊♥ %SELF_CALL()%的奶汁哦哦呜呜♥ 啊啊啊～～…♥♥」"
+		CALL MESSAGE_BOX,@"「哦哦啊啊！？♥♥ 被吸干奶头的感觉啊啊呜呜♥ 哦哦哦～～…呜♥♥」"
+		CALL MESSAGE_BOX,@"「%SELF_CALL()%的奶被吸干啦啦呜♥ 奶汁流出啦啦啦♥ 真是太好啦呜呜哦哦♥♥」"
+	ENDIF
+
+CASE "抽出"
+	IF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／隶属＃
+		CALL MESSAGE_BOX,@"「嗯哦啊啊♥ 被夺取力量的感觉好舒服啊啊♥ 变成奶汁流出来，好舒服啊啊呜呜♥♥」"
+		CALL MESSAGE_BOX,@"「嗯哦啊啊♥ 从奶头吸取♥ %SELF_CALL()%的奶汁啦啦呜呜♥」"
+		SIF NOWEX:Ｎ绝顶
+			CALL MESSAGE_BOX,@"「哦哦啊啊啊♥♥ 奶头高潮了啦啦♥ 被吸取力量然后高潮啦啦♥♥」"
+	ELSEIF ＃陷落状态／恋慕以上＃
+		IF SOURCE:玩家增加灵力量
+			CALL MESSAGE_BOX,@"「奶汁中夺取%SELF_CALL()%的力量…♥ 成为%MASTER_CALL()%的东西啦啦♥」"
+			SIF NOWEX:Ｎ绝顶
+				CALL MESSAGE_BOX,@"「奶头高潮啦啦♥ %MASTER_CALL()%♥♥ 再多一点啊啊♥ 弄%SELF_CALL()%淫荡的奶头啦啦♥」"
+		ENDIF
+		CALL MESSAGE_BOX,@"「啊啊啊…奶汁中被吸取%SELF_CALL()%的力量啊…呜♥」"
+	ELSEIF ＃陷落状态／屈服以上＃
+		CALL MESSAGE_BOX,@"「奶汁中被夺取%SELF_CALL()%的力量…全都变成奶汁啦啦啦♥」"
+		CALL MESSAGE_BOX,@"「呜呀啊…奶汁中%SELF_CALL()%的力量，流出来啦啦♥」"
+		SIF NOWEX:Ｎ绝顶
+			CALL MESSAGE_BOX,@"「不、不行啦啦…奶头高潮了，%SELF_CALL()%的奶汁流出来了呜♥」"
+	ELSE
+		CALL MESSAGE_BOX,@"「不行啊啊…胸部中%SELF_CALL()%的力量被夺走了…！♥」"
+		CALL MESSAGE_BOX,@"「为什么，连%SELF_CALL()%的力量都和母乳一起被夺走了呜♥」"
+		SIF NOWEX:Ｎ绝顶
+			CALL MESSAGE_BOX,@"「不行啦啦，高潮了♥ %SELF_CALL()%的力量也流出来了，不行，不行啊啊…！♥」"
+	ENDIF
+
+CASE "日程"
+	SELECTCASE ARGS:1
+	CASE "奶农"
+		SELECTCASE ARGS:2
+		CASE "初次"
+			IF CFLAG:乳牛
+				CALL MESSAGE_BOX,@"「%SELF_CALL()%也会和%MASTER_CALL()%这样…♥ 不行，必须工作…♥」"
+			ELSEIF ＃陷落状态／隶属＃ || CFLAG:洗脑
+				CALL MESSAGE_BOX,@"「为了%MASTER_CALL()%的牧场，必须履行任务…」"
+			ELSEIF ＃陷落状态／恋慕以上＃
+				CALL MESSAGE_BOX,@"（…%MASTER_CALL()%依赖着%SELF_CALL()%，必须努力…♥）"
+			ELSE
+				CALL MESSAGE_BOX,@"\d（一边确认步骤，一边机械地进行工作…）"
+			ENDIF
+			
+		CASE "普通"
+			IF ABL:奶农 >= 5
+				IF CFLAG:乳牛
+					CALL MESSAGE_BOX,@"「呼… 少许习惯了一点…但用这个身体做力气活确实辛苦啊…」"
+				ELSEIF ＃陷落状态／隶属＃ || CFLAG:洗脑
+					CALL MESSAGE_BOX,@"「…好，今天也没有问题。为了%MASTER_CALL()%，加油吧」"
+				ELSEIF ＃陷落状态／恋慕以上＃
+					CALL MESSAGE_BOX,@"（如果能做得好，%MASTER_CALL()%会夸奖我吗…♥）"
+				ELSE
+					CALL MESSAGE_BOX,@"\d（虽然面带烦躁表情，身体好像已经记住了，干净利落地完成工作…）"
+				ENDIF
+			ELSE
+				IF CFLAG:乳牛
+					CALL MESSAGE_BOX,@"「呼～… %MASTER_CALL()%也曾经这么辛苦过吗…？」"
+				ELSEIF ＃陷落状态／隶属＃ || CFLAG:洗脑
+					CALL MESSAGE_BOX,@"「为了%MASTER_CALL()%，一定要精神饱满地成长啊？」"
+				ELSEIF ＃陷落状态／恋慕以上＃
+					CALL MESSAGE_BOX,@"（一切结束后，%MASTER_CALL()%会夸奖我吗…♥）"
+				ELSE
+					CALL MESSAGE_BOX,@"\d（仅仅机械地完成工作…）"
+				ENDIF
+			ENDIF
+		ENDSELECT
+	
+	CASE "调教"
+		SELECTCASE ARGS:2
+		CASE "开始调教"
+			IF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／隶属＃
+				CALL MESSAGE_BOX,@"「%SWEET_MASTER_CALL()%…♥ 等待着你呢♥ 随时都可以开始哦…♥」"
+			ELSEIF ＃陷落状态／恋慕以上＃
+				CALL MESSAGE_BOX,@"「啊啊，%MASTER_CALL()%…是为了见%SELF_CALL()%而来的吗…？♥」"
+			ELSEIF ＃陷落状态／陷落以上＃
+				CALL MESSAGE_BOX,@"「…！ 啊、啊啊…%MASTER_CALL()%啊…♥」"
+			ELSEIF ＃陷落状态／屈服以上＃
+				CALL MESSAGE_BOX,@"「…嘘，又…%SELF_CALL()%还会对我这样吗…」"
+			ELSE
+				CALL MESSAGE_BOX,@"\d（%CALLNAME%以反抗的眼神瞪视着这边。）"
+			ENDIF
+		CASE "调教结束"
+		
+		ENDSELECT
+	
+	ENDSELECT
+	
+CASE "吸欧派"
+	SELECTCASE ARGS:1
+	CASE "开始"
+		IF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／隶属＃
+			IF BASE:母乳容量
+				CALL MESSAGE_BOX,@"「啊啊♥ %MASTER_CALL()%♥ 尽管尽情地喝吧，可以随便地喝光我…♥♥」"
+				CALL MESSAGE_BOX,@"「%MASTER_CALL()%♥ %SELF_CALL()%的乳房♥ 请尽管喝光…♥」"
+				CALL MESSAGE_BOX,@"「%SWEET_MASTER_CALL()%…♥ %SELF_CALL()%的乳汁你会喝光吗…♥」"
+			ELSE
+				CALL MESSAGE_BOX,@"「啊啊…♥ 如果是被%MASTER_CALL()%吸，我想我会制造更多的奶汁的…♥」"
+				CALL MESSAGE_BOX,@"「%SWEET_MASTER_CALL()%…♥ %SELF_CALL()%的乳汁，你还会榨取吗…♥」"
+				CALL MESSAGE_BOX,@"「%SWEET_MASTER_CALL()%♥ 你还会继续榨取我的奶汁吗…♥ 太高兴了♥」"
+			ENDIF
+		ELSEIF ＃陷落状态／恋慕以上＃
+			IF BASE:母乳容量
+				CALL MESSAGE_BOX,@"「嘻嘻，很好♥ 随便地喝%SELF_CALL()%的奶汁…♥」"
+				CALL MESSAGE_BOX,@"「啊啊♥ 随便地喝光%SELF_CALL()%的奶汁吧♥ %SWEET_MASTER_CALL()%♥」"
+				CALL MESSAGE_BOX,@"「%SWEET_MASTER_CALL()%…♥ %SELF_CALL()%的乳房♥ 尽管随便地喝吧♥」"
+			ELSE
+				CALL MESSAGE_BOX,@"「不知道能不能榨出来…来吧，随便你榨取吧…♥」"
+				CALL MESSAGE_BOX,@"「%MASTER_CALL()%♥  虽然出不来，但%SELF_CALL()%的奶汁你还继续吸吗♥」"
+				CALL MESSAGE_BOX,@"「虽然我觉得不会有，但你还会弄吗♥ 太高兴了，%MASTER_CALL()%…♥」"
+			ENDIF
+		ELSEIF ＃陷落状态／陷落以上＃
+			IF BASE:母乳容量
+				CALL MESSAGE_BOX,@"「%MASTER_CALL()%…真的是喜欢奶汁呢…」"
+				CALL MESSAGE_BOX,@"「嗯…♥ %MASTER_CALL()%…吸了这里%SELF_CALL()%也…」"
+				CALL MESSAGE_BOX,@"「啊啊，%SELF_CALL()%的奶汁你想吸吗…？ 来吧…♥」"
+			ELSE
+				CALL MESSAGE_BOX,@"「今天应该不会有了吧…还想吸吗？ …来吧」"
+				CALL MESSAGE_BOX,@"「再，再也不会有了…即使如此%MASTER_CALL()%还是想吸吗…」"
+				CALL MESSAGE_BOX,@"「呜…♥ %MASTER_CALL()%，你还想榨取吗…？」"
+			ENDIF
+		ELSEIF ＃陷落状态／屈服以上＃
+			IF BASE:母乳容量
+				CALL MESSAGE_BOX,@"「…嘛，单纯地请求相对来说还好一些吧…」"
+				CALL MESSAGE_BOX,@"「…比强迫榨取好一些，嘛…」"
+				CALL MESSAGE_BOX,@"「没办法，比被强制榨取要好一些吧…」"
+			ELSE
+				CALL MESSAGE_BOX,@"「…今天应该不会有了吧…但是你总是要吸吧？」"
+				CALL MESSAGE_BOX,@"「纵然拼命吸也是徒劳的，我想…」"
+				CALL MESSAGE_BOX,@"「…还想榨取吗。明明已经被榨取得很彻底了」"
+			ENDIF
+		ELSE
+			IF BASE:母乳容量
+				CALL MESSAGE_BOX,@"「我、我讨厌肯定是理所当然的吧！？」"
+				CALL MESSAGE_BOX,@"「别、别再来…！ 这不是为了魔界人而产的母乳…！」"
+				CALL MESSAGE_BOX,@"「这是为了育儿才有的，不是为了%MASTER_CALL()%的…！」"
+			ELSE
+				CALL MESSAGE_BOX,@"「我、我讨厌肯定是理所当然的吧！？ 已经不会再有了！」"
+				CALL MESSAGE_BOX,@"「如果是牧场主的话，就算是了解剩下的量也好…已经不会再有了啊…」"
+				CALL MESSAGE_BOX,@"「我、我不要…！ 而且%SELF_CALL()%的胸已经完全空了！」"
+			ENDIF
+		ENDIF
+		
+	CASE "结束"
+		IF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／隶属＃
+			IF NOWEX:喷乳 >= 1000
+				CALL MESSAGE_BOX,@"「%SWEET_MASTER_CALL()%…♥ %SELF_CALL()%的败北奶水♥ 感谢你多次挤奶，非常感激…♥♥」"
+				CALL MESSAGE_BOX,@"「呵呵…♥ %SELF_CALL()%的奴隶奶♥ 多谢你喝得这么爽，%MASTER_CALL()%…♥」"
+				CALL MESSAGE_BOX,@"「%SWEET_MASTER_CALL()%…♥ %SELF_CALL()%的奴隶奶♥ 你喝得真美味啊…♥」"
+			ELSEIF !NOWEX:喷乳
+				CALL MESSAGE_BOX,@"「没挤出奶来真是对不起，%MASTER_CALL()%…所以，请再多弄弄我…♥」"
+				CALL MESSAGE_BOX,@"「明明是乳牛还挤不出奶真是抱歉，%SWEET_MASTER_CALL()%…♥」"
+				CALL MESSAGE_BOX,@"「下次我会挤出更多的， 所以，请调教%SELF_CALL()%，让我能挤出更多奶吧…♥」"
+			ELSE
+				CALL MESSAGE_BOX,@"「呵呵…♥ 你喜欢吗，%MASTER_CALL()%…？♥♥」"
+				CALL MESSAGE_BOX,@"「%SWEET_MASTER_CALL()%，再挤一些也没关系的哦…？♥♥」"
+				CALL MESSAGE_BOX,@"「%SWEET_MASTER_CALL()%，再♥ 再挤一些吧…♥」"
+			ENDIF
+		ELSEIF ＃陷落状态／恋慕以上＃
+			IF NOWEX:喷乳 >= 1000
+				CALL MESSAGE_BOX,@"「%MASTER_CALL()%♥  喝太多了…！ 喂，我都要淹没了…♥」"
+				CALL MESSAGE_BOX,@"%SWEET_MASTER_CALL()%…♥ 再多一点，再多一点♥ 请多吸吮一些…♥」"
+				CALL MESSAGE_BOX,@"「嗯，挤出好多♥ 但%MASTER_CALL()%你全都喝掉了…♥」"
+			ELSEIF !NOWEX:喷乳
+				CALL MESSAGE_BOX,@"「%MASTER_CALL()%…虽然挤出的不多，但%SELF_CALL()%感觉很舒服…♥」"
+				CALL MESSAGE_BOX,@"「嗯…虽然没挤出很多…♥ 那、%MASTER_CALL()%…你能原谅我吗…？」"
+				CALL MESSAGE_BOX,@"「%MASTER_CALL()%…奶不多，请原谅我…♥」"
+			ELSE
+				CALL MESSAGE_BOX,@"「呵呵…♥ 你喜欢吗，%MASTER_CALL()%…？♥♥」"
+				CALL MESSAGE_BOX,@"「再%MASTER_CALL()%想喝%SELF_CALL()%的奶随时都可以哦♥」"
+				CALL MESSAGE_BOX,@"「%MASTER_CALL()%…♥  %SELF_CALL()%的奶…怎么样？♥」"
+			ENDIF
+		ELSEIF ＃陷落状态／屈服以上＃
+			IF NOWEX:喷乳 >= 1000
+				CALL MESSAGE_BOX,@"「呼…♥ %MASTER_CALL()%，喝得太多了…♥」"
+				CALL MESSAGE_BOX,@"「…话说回来%MASTER_CALL()%，你真的喝了好多啊…？♥」"
+				CALL MESSAGE_BOX,@"「你真的喝了好多啊…♥ %SELF_CALL()%的奶难道这么好喝吗？♥」"
+			ELSEIF !NOWEX:喷乳
+				CALL MESSAGE_BOX,@"「嗯♥ 瞧，已经不出奶了…♥ 所以别再吸了…♥」"
+				CALL MESSAGE_BOX,@"「已经…已经不出奶了♥ 别再吸了好不好…♥」"
+				CALL MESSAGE_BOX,@"「不出奶了♥ 已经不出奶了…♥ %SELF_CALL()%的奶已经空了…♥」"
+			ELSE
+				CALL MESSAGE_BOX,@"「嗯呐…♥ 呼呼…明明不是什么好东西…♥」"
+				CALL MESSAGE_BOX,@"「呼呼…♥ 别再喝了…♥ 就这么好喝吗…？」"
+				CALL MESSAGE_BOX,@"「呼…♥ 呼…♥ 好喝吗…？♥」"
+			ENDIF
+		ELSE
+			IF NOWEX:喷乳 >= 1000
+				CALL MESSAGE_BOX,@"「呼啊…♥ 呼啊啊…♥ 居然，喷这么多…♥♥」"
+				CALL MESSAGE_BOX,@"「说什么也不可能…♥ 这、这么多奶液…♥ 你、你能相信吗…」"
+				CALL MESSAGE_BOX,@"「哈啊…♥ 哈啊…♥ 别、别再喝了…♥ 会让我变成干尸的…」"
+			ELSEIF !NOWEX:喷乳
+				CALL MESSAGE_BOX,@"「呜…♥ 我、我明明告诉过你的…」"
+				CALL MESSAGE_BOX,@"「呼呼…♥ 不、不会再出奶了，为什么…」"
+				CALL MESSAGE_BOX,@"「已经不出奶了…♥ 不、别再吸了…♥ %SELF_CALL()%的奶已经一点都没了…」"
+			ELSE
+				CALL MESSAGE_BOX,@"「嗯呐…♥ 那你满意了吧…变态…」"
+				CALL MESSAGE_BOX,@"「满足了吗，变态…」"
+				CALL MESSAGE_BOX,@"「…该死，真是讨厌…」"
+			ENDIF
+		ENDIF
+	ENDSELECT
+
+CASE "访问"
+	SELECTCASE ARGS:1
+	CASE "更改发型"
+		;メモ：一応書いてみたけどとりあえず残してある。そんな変えんやろ…と思って３個。ほぼ改変の手抜き。
+		IF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／隶属＃
+			CALL MESSAGE_BOX,@"「%MASTER_CALL()%竟然给%SELF_CALL()%整理头发…♥」"
+			CALL MESSAGE_BOX,@"「啊，按%MASTER_CALL()%说的做…♥」"
+			CALL MESSAGE_BOX,@"「%MASTER_CALL()%♥ 这样一来，我是不是有点配得上%MASTER_CALL()%的牧场了？♥」"
+		ELSEIF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「%SELF_CALL()%用这个发型更合适吗？ 如果%MASTER_CALL()%这么说，那就这样吧♥」"
+			CALL MESSAGE_BOX,@"「%MASTER_CALL()%♥ 这样怎么样…？ %SELF_CALL()%，适合吗…？♥」"
+			CALL MESSAGE_BOX,@"「%SWEET_MASTER_CALL()%…♥ %MASTER_CALL()%更喜欢这样的吗…♥」"
+		ELSE
+			CALL MESSAGE_BOX,@"「嗯…嗯，手艺挺不错嘛…」"
+			CALL MESSAGE_BOX,@"「…这样啊，%MASTER_CALL()%觉得这发型更好？」"
+			CALL MESSAGE_BOX,@"「哦哦，像个理发师一样嘛…」"
+		ENDIF
+
+	CASE "彩色隐形眼镜"
+		IF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／隶属＃
+			CALL MESSAGE_BOX,@"「%MASTER_CALL()%，居然为%SELF_CALL()%准备了这个…♥」"
+			CALL MESSAGE_BOX,@"「啊，按%MASTER_CALL()%说的做…♥」"
+			CALL MESSAGE_BOX,@"「%MASTER_CALL()%♥ 这样一来，我是不是有点配得上%MASTER_CALL()%的牧场了？♥」"
+		ELSEIF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「%SELF_CALL()%这样的眼睛更合适吗？ 如果%MASTER_CALL()%这么说，那就这样吧♥」"
+			CALL MESSAGE_BOX,@"「%MASTER_CALL()%♥ %SELF_CALL()%居然能得到这个…♥」"
+			CALL MESSAGE_BOX,@"「%SWEET_MASTER_CALL()%…♥  %MASTER_CALL()%是不是更喜欢这种瞳色…♥」"
+		ELSE
+			CALL MESSAGE_BOX,@"「…嗯，还挺不错的」"
+			CALL MESSAGE_BOX,@"「%MASTER_CALL()%认为这个更好吗？」"
+			CALL MESSAGE_BOX,@"「…戴上这个就行了吗。嗯…明白了」"
+		ENDIF
+
+	CASE "入口"
+		IF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／隶属＃
+			CALL MESSAGE_BOX,@"「%MASTER_CALL()%，特地为了见%SELF_CALL()%而来吗…♥」"
+			CALL MESSAGE_BOX,@"「是为了见%SELF_CALL()%吗？ 竟然是为了淫荡的雌牛…♥」"
+			CALL MESSAGE_BOX,@"「%MASTER_CALL()%♥ %MASTER_CALL()%♥ 快点，帮我挤一挤这发痒的胸部…♥」"
+			CALL MESSAGE_BOX,@"\d%CALLNAME%看着这边，露出淫荡的笑容，露出尖锐的乳头。"
+		ELSEIF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「啊，%MASTER_CALL()%♥ %SELF_CALL()%有事吗？ 什么都告诉我♥」"
+			CALL MESSAGE_BOX,@"「%MASTER_CALL()%♥ 为了见%SELF_CALL()%而来吗？♥」"
+			CALL MESSAGE_BOX,@"「%SWEET_MASTER_CALL()%…♥ 等着呢♥」"
+			CALL MESSAGE_BOX,@"\d%CALLNAME%看着这边微笑着坐了下来。"
+		ELSEIF ＃陷落状态／陷落以上＃
+			CALL MESSAGE_BOX,@"「%SELF_CALL()%有什么事吗？」"
+			CALL MESSAGE_BOX,@"「%MASTER_CALL()%…%SELF_CALL()%有事吗？」"
+			CALL MESSAGE_BOX,@"「怎么了？ %SELF_CALL()%有事吗？」"
+			CALL MESSAGE_BOX,@"\d%CALLNAME%看着这边，默默地示意找个地方坐下。"
+		ELSEIF ＃陷落状态／屈服以上＃
+			CALL MESSAGE_BOX,@"「…%SELF_CALL()%，有什么事吗？」"
+			CALL MESSAGE_BOX,@"「是什么，%MASTER_CALL()%…」"
+			CALL MESSAGE_BOX,@"「…是来逗笑%SELF_CALL()%的吗？」"
+			CALL MESSAGE_BOX,@"「如果没事就请出去吧」"
+		ELSE
+			CALL MESSAGE_BOX,@"「…没有什么可说的」"
+			CALL MESSAGE_BOX,@"「把人当家畜一样对待…」"
+			CALL MESSAGE_BOX,@"「…外道」"
+			CALL MESSAGE_BOX,@"\d%CALLNAME%默默地瞥了一眼这边，然后重新将视线转向了墙壁。"
+		ENDIF
+
+	CASE "对主角的称呼变更"
+		IF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／隶属＃
+			CALL MESSAGE_BOX,@"「再次，请多多关照♥ 『%MASTER_CALL()%』…♥」"
+			CALL MESSAGE_BOX,@"「『%MASTER_CALL()%』…♥」 啊，感觉更加贴切…♥」"
+			CALL MESSAGE_BOX,@"「『%MASTER_CALL()%』，『%MASTER_CALL()%』…♥」\d就像被激发了热情一样反复地回响。"
+		ELSEIF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「如果%MASTER_CALL()%希望，%SELF_CALL()%会这样称呼，『%MASTER_CALL()%』…♥」"
+			CALL MESSAGE_BOX,@"「明白了♥ 从现在开始%SELF_CALL()%会称呼为『%MASTER_CALL()%』…♥」"
+			CALL MESSAGE_BOX,@"\一边幸福地咧嘴笑着，一边一遍\d「『%MASTER_CALL()%』…♥」\d地低语。"
+		ELSEIF ＃陷落状态／陷落以上＃
+			CALL MESSAGE_BOX,@"「…明白了，今后会称呼为『%MASTER_CALL()%』」"
+			CALL MESSAGE_BOX,@"「…就叫做『%MASTER_CALL()%』吗，是吧？」"
+			CALL MESSAGE_BOX,@"「必须叫做『%MASTER_CALL()%』吗…我知道了」"
+		ELSE
+			CALL MESSAGE_BOX,@"「…『%MASTER_CALL()%』。这样满足了吗？」"
+			CALL MESSAGE_BOX,@"「『%MASTER_CALL()%』。是想让我这样称呼吗…随你便」"
+			CALL MESSAGE_BOX,@"\d%CALLNAME%只是、\d「『%MASTER_CALL()%』」\d不悦地回答了一句。"
+		ENDIF
+	
+	CASE "自室分配"
+	
+	CASE "宿舍分配"
+	
+	ENDSELECT
+	
+CASE "事件"
+	;メモ：一応書いてみたけどとりあえず残してある。ランダムキャラ想定なのでとりあえず４個
+	SELECTCASE ARGS:1
+	CASE "领取奴隶"
+		CALL MESSAGE_BOX,@"「…什么…这是什么地方…？」"
+		CALL MESSAGE_BOX,@"「这、这是… 牧场吗…？」"
+		CALL MESSAGE_BOX,@"「该死！ 解开这束缚…！」"
+		CALL MESSAGE_BOX,@"「放开！ 别碰我！」"
+	CASE "母乳体质化"
+		CALL MESSAGE_BOX,@"「…什么…！？」"
+		CALL MESSAGE_BOX,@"「这、这是… 这是为什么！？ 为什么会有母乳…！」"
+		CALL MESSAGE_BOX,@"「为、为什么突然有母乳！？」"
+		CALL MESSAGE_BOX,@"「是…是什么！？ %SELF_CALL()%发生了什么事！？」"
+	CASE "魔力母乳体质化"
+		CALL MESSAGE_BOX,@"「什么…体内…没有力气了…」"
+		CALL MESSAGE_BOX,@"「嘘…%SELF_CALL()%的…力量…为什么…！？」"
+		CALL MESSAGE_BOX,@"「%SELF_CALL()%的身体…失去了力量…！」"
+		CALL MESSAGE_BOX,@"「唔…力量…流失了…为、为什么…」"
+	CASE "超乳化"
+	
+	CASE "崩坏"
+	
+	CASE "屈服"
+	
+	CASE "陷落"
+	
+	CASE "恋慕告白"
+	
+	CASE "隶属告白"
+	
+	CASE "乳牛堕落"
+	
+	CASE "处女结界破坏"
+	
+	CASE "处女丧失"
+	
+	CASE "Ａ处女丧失"
+		IF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／恋慕以上＃
+			IF TALENT:Ａ名器 || TALENT:肛门嗜好 || ABL:Ａ感觉 >= 3
+				CALL MESSAGE_BOX,@"「……痛……！？　……可是……%ANAL_CALL()%深处……像被搔到一样……不对劲……♥」"
+				CALL MESSAGE_BOX,@"「……%MASTER_CALL()%……连这里……也要算进『调教』里吗……♥」"
+			ELSE
+				CALL MESSAGE_BOX,@"「……%ANAL_CALL()%……第一次……给%MASTER_CALL()%了……♥」"
+			ENDIF
+		ELSEIF ＃陷落状态／屈服以上＃
+			IF TALENT:Ａ名器 || TALENT:肛门嗜好 || ABL:Ａ感觉 >= 3
+				CALL MESSAGE_BOX,@"「……痛……！？　……不对……深处……为什么会……发酥……」"
+			ELSE
+				CALL MESSAGE_BOX,@"「……那里……不行……好痛……」"
+			ENDIF
+		ELSE
+			IF TALENT:Ａ名器 || TALENT:肛门嗜好 || ABL:Ａ感觉 >= 3
+				CALL MESSAGE_BOX,@"「……住手……！？　痛……！？　……可是……里面……好奇怪……」"
+			ELSE
+				CALL MESSAGE_BOX,@"「……那里……不要……好痛……拔出去……」"
+			ENDIF
+		ENDIF
+	
+	CASE "初吻"
+		IF CFLAG:乳牛 || ＃陷落状态／恋慕以上＃ || CFLAG:洗脑
+			CALL MESSAGE_BOX,@"「嗯、嗯啾…呼哈啊♥ 嘻嘻，居然和%MASTER_CALL()%亲吻了…♥♥」"
+		ELSEIF ＃陷落状态／屈服以上＃
+			CALL MESSAGE_BOX,@"「嗯、嗯唔…嗯… 亲到、连唇都…」"
+		ELSE
+			CALL MESSAGE_BOX,@"「嗯嗯唔…！？ 唔…这、这个…可恶的家伙…！」"
+		ENDIF
+	
+	CASE "初次乳交"
+	
+	CASE "初Ｍ性交"
+	
+	CASE "主人公童贞毕业"
+	
+	CASE "目的变更"
+		SELECTCASE CSTR:心境
+		
+		ENDSELECT
+	
+	ENDSELECT
+
+CASE "肉体改造"
+	SELECTCASE ARGS:1
+	CASE "膨乳"
+	
+	CASE "母乳浓厚化"
+	
+	CASE "Ａ敏感度上升"
+	
+	CASE "Ｂ敏感度上升"
+	
+	CASE "Ｃ敏感度上升"
+	
+	CASE "Ｖ敏感度上升"
+	
+	CASE "Ｎ敏感度上升"
+	
+	ENDSELECT
+	
+	
+CASE "战斗"
+	SELECTCASE ARGS:1
+	CASE "战斗开始"
+		CALL MESSAGE_BOX,@"「啊…！」"
+		CALL MESSAGE_BOX,@"「可恶…！」"
+		CALL MESSAGE_BOX,@"「让开！」"
+		CALL MESSAGE_BOX,@"「…！？ 这些家伙是什么东西…！」"
+	CASE "委托他人"
+		;堅物のひとここ来るのかな…
+	
+	CASE "非战斗职业攻击"
+	
+	CASE "支援"
+		
+	CASE "投降"
+		CALL MESSAGE_BOX,@"「呜…停下吧…求你了…！」"
+		CALL MESSAGE_BOX,@"「嗯…」"
+		CALL MESSAGE_BOX,@"（假装屈服，趁机…）"
+		CALL MESSAGE_BOX,@"（%SELF_CALL()%屈服于魔族…）"
+	CASE "攻击"
+		CALL MESSAGE_BOX,@"「哈！」"
+		CALL MESSAGE_BOX,@"「吃我一招！」"
+		CALL MESSAGE_BOX,@"「快倒下！」"
+		CALL MESSAGE_BOX,@"「呼…！」"
+	CASE "大招"
+		CALL MESSAGE_BOX,@"「就用这招了！」"
+		CALL MESSAGE_BOX,@"「这一击就足以击倒你们了，魔族…！」"
+		CALL MESSAGE_BOX,@"「吃、这一招！」"
+		CALL MESSAGE_BOX,@"「尝尝这个…！」"
+	CASE "被击中"
+		CALL MESSAGE_BOX,@"「呜…！」"
+		CALL MESSAGE_BOX,@"「嗯！」"
+		CALL MESSAGE_BOX,@"「可恶…！」"
+		CALL MESSAGE_BOX,@"「这个…！」"
+	CASE "胜利"
+		CALL MESSAGE_BOX,@"「呼…」"
+		CALL MESSAGE_BOX,@"「…危险解除了吗」"
+		CALL MESSAGE_BOX,@"「…已经没有什么了吗？」"
+		CALL MESSAGE_BOX,@"「…绝对不再挑战%SELF_CALL()%了」"
+	CASE "败北"
+		CALL MESSAGE_BOX,@"「嗯、呜…这、这样%SELF_CALL()%会…」"
+		CALL MESSAGE_BOX,@"「%SELF_CALL()%，竟然败北…！」"
+		CALL MESSAGE_BOX,@"「…呜，不要…杀了我…！」"
+		CALL MESSAGE_BOX,@"「…呜呜呜 …绝对会报仇的…！」"
+	ENDSELECT
+ENDSELECT
+

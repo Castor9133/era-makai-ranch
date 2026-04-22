@@ -1,0 +1,123 @@
+﻿
+;下着の露出などの情報
+;ARGS→上下
+;ARGS:1→露出情報
+;ARGS:2→その他情報
+;ARGS:3→その他2
+@LINGERIE_DETAIL_COMMON(ARGS,ARGS:1,ARGS:2,ARGS:3)
+
+SELECTCASE ARGS
+CASE "上面"
+	PRINT 【内衣／上身】
+CASE "下面"
+	PRINT 【内衣／下身】
+CASE "上下"
+	PRINT 【内衣／上下一起】
+ENDSELECT
+
+SELECTCASE ARGS:1
+CASE "Ａ露出"
+	CALL PRINT_WORD_COLOR("＜即使穿着也露出Ａ＞","桃")
+CASE "Ｂ露出"
+	CALL PRINT_WORD_COLOR("＜即使穿着也露出Ｂ＞","桃")
+CASE "Ｎ露出"
+	CALL PRINT_WORD_COLOR("＜即使穿着也露出Ｎ＞","桃")
+CASE "私处露出"
+	CALL PRINT_WORD_COLOR("＜即使穿着也露出ＡＣＶ＞","桃")
+CASE "全露出"
+	CALL PRINT_WORD_COLOR("＜穿着时仍然全身露出＞","桃")
+ENDSELECT
+
+SELECTCASE ARGS:2
+CASE "授乳开口"
+	CALL PRINT_WORD_COLOR("＜授乳开口＞","桃")
+CASE "极小"
+	CALL PRINT_WORD_COLOR("＜布面积最小型＞＜解开绳子可以脱衣＞","桃")
+CASE "密封"
+	CALL PRINT_WORD_COLOR("＜贴纸类型＞","桃")
+CASE "乳沟穴"
+	CALL PRINT_WORD_COLOR("＜穿着对应衣服时，即使不露出Ｂ也可以穿着衣服乳交。＞","桃")
+CASE "附带条件"
+	CALL PRINT_WORD_COLOR("＜解开绳子可以脱衣＞","桃")
+ENDSELECT
+
+SELECTCASE ARGS:3
+CASE "膨乳时破损"
+	;行が長くなるのでこの場合だけ改行
+	PRINTL
+	PRINT 胸围尺寸阶段增加时可能破损（如果成长到【巨乳】以上）。
+
+CASE "膨乳时衣服破裂"
+	PRINTL
+	PRINT 胸围尺寸阶段增加时胸部可能破裂（如果成长到【巨乳】以上）。
+ENDSELECT
+
+;ここで共通で呼んでしまう
+CALL CHECK_EQUIP_DETAIL_CHANGE_LIST(ITEMNAME:SELECT_ITEM)
+
+
+
+;衣服の露出などの情報
+;ARGS→形状情報　ARGS:1→露出情報
+@CLOTHE_DETAIL_COMMON(ARGS,ARGS:1)
+
+PRINT 【衣服】
+SELECTCASE ARGS
+CASE "侧乳露出"
+	CALL PRINT_WORD_COLOR("＜侧乳露出＞","桃")
+CASE "仅限密封类型"
+	CALL PRINT_WORD_COLOR("＜禁止穿着贴纸类型以外的内衣＞","桃")
+CASE "仅限最小类型"
+	CALL PRINT_WORD_COLOR("＜贴纸／极小类型以外的内衣不能穿＞","桃")
+CASE "反兔女郎"
+	PRINT ＜穿着时脚饰品解除／半脱／不可破＞
+ENDSELECT
+
+SELECTCASE ARGS:1
+CASE "Ｂ露出"
+	CALL PRINT_WORD_COLOR("＜经常Ｂ露出＞","桃")
+CASE "全露出"
+	CALL PRINT_WORD_COLOR("＜没内衣的时候全部露出＞","桃")
+ENDSELECT
+CALL CHECK_EQUIP_DETAIL_CHANGE_LIST(ITEMNAME:SELECT_ITEM)
+
+
+
+;アクセサリー情報
+;ARGS→部位
+@ACCESSORY_DETAIL_COMMON(ARGS)
+
+SELECTCASE ARGS
+CASE "眼"
+	PRINT 【饰品／眼】
+CASE "头"
+	PRINT 【饰品／头】
+CASE "腕"
+	PRINT 【饰品／腕】
+CASE "腿"
+	PRINT 【饰品／腿】
+CASE "颈"
+	PRINT 【饰品／颈】
+CASE "铠"
+	PRINT 【铠】
+	;CASE "上着"
+	;	PRINT 【アクセサリー／上着】
+ENDSELECT
+CALL CHECK_EQUIP_DETAIL_CHANGE_LIST(ITEMNAME:SELECT_ITEM)
+
+
+
+;上着情報
+;ARGS→これだけ着てる場合の露出度
+@JACKET_DETAIL_COMMON(ARGS)
+
+PRINT 【外衣】
+SELECTCASE ARGS
+CASE "侧乳露出"
+	CALL PRINT_WORD_COLOR,@"%ITEMNAME:SELECT_ITEM%只有的情况下：＜侧乳露出＞＜乳沟露出＞","桃"
+CASE "全露出"
+	CALL PRINT_WORD_COLOR,@"%ITEMNAME:SELECT_ITEM%只有的情况下：＜全身露出＞","桃"
+ENDSELECT
+CALL CHECK_EQUIP_DETAIL_CHANGE_LIST(ITEMNAME:SELECT_ITEM)
+
+

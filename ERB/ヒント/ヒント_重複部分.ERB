@@ -1,0 +1,320 @@
+﻿
+;搾乳（スケジュール）
+@PART_HINT_SCHEDULE_LACTATION
+
+CALL PRINTL_WORD_COLOR("（由于重复的项目，相同的标题中包含相同的信息）","灰")
+PRINTL 【母乳体质】的奴隶可以在日程表中分配【搾乳】。
+PRINTL 在执行日程表时，从牛棚的奴隶进行挤奶，
+PRINTFORML 挤取的%SAVESTR:标识／母乳%将被运送到魔界农协，成为牧场的资金来源。
+PRINTL 如果不是【母乳体质】，则不能制定日程表。
+PRINTL
+PRINTL 主人公的日程是【奶农】的场合是主人公的【技巧】Lv；
+PRINTL 不同的情况下，以执行了【奶农】的奴隶中最高的【技巧】Lv的1/2为基础
+PRINTL 来增加被挤奶奴隶的快感修正。
+PRINTL
+PRINTL 由于它是照顾魔界奶牛的延伸，请注意，如果没有任何奴隶执行【奶农】的日程表
+PRINTL 则会自动取消日程表，所以请注意。
+
+
+
+;抽出（スケジュール）
+@PART_HINT_SCHEDULE_EP_DRAIN
+
+CALL PRINTL_WORD_COLOR("（由于重复的项目，相同的标题中包含相同的信息）","灰")
+PRINTL 【母乳体质】并且灵力或者魔力残留的奴隶可以从日程分配【抽出】。
+PRINTFORML 在执行日程表时，将奴隶拘束到＜灵力抽出装置＞上，并挤取%SAVESTR:标识／母乳%。
+PRINTFORML %SAVESTR:标识／母乳%以及灵力和魔力会被挤取，然后储存在装置和各种＜魔力储存器＞中。
+PRINTL L被挤取灵力的奴隶将降级，失去战斗力，逐渐变为「家畜」。
+PRINTL ①【母乳体质】且灵力≥1EP　②【魔力母乳体质】且魔力在1MP以上
+PRINTL 以上两者之一才能制定日程表。
+PRINTL
+PRINTFORML 由于%SAVESTR:标识／母乳%的销售将不会立即发生，因此请注意资金不会增加，
+PRINTL 并且请注意＜灵力抽出装置＞的运行将大大消耗电池中的魔力。
+PRINTL
+PRINTL 从【上街】→【魔王军研究所】添加＜灵力抽出装置＞，
+PRINTL 可以增加执行【抽出】日程表的奴隶数量。
+
+
+
+;搾乳・抽出補足
+@PART_HINT_SCHEDULE_LACTATION_OR_DRAIN
+
+CALL PRINTL_WORD_COLOR("（由于重复的项目，相同的标题中包含相同的信息）","灰")
+PRINTL 从日程表进行【搾乳】【抽出】时，
+PRINTFORML 即使【母乳生产力】剩余0%MILK_COUNTING()%也可以进行挤奶。
+PRINTFORML %SAVESTR:标识／母乳%不会被产生，但是可以通过给予快感，
+PRINTFORML 未产生%SAVESTR:标识／母乳%的部分将额外为【母乳生产力】​提供经验值。
+PRINTL
+PRINTL 通过【配置】→【选项设置】→【搾乳休息母乳量】更改设置，
+PRINTL 可以在自动分配日程表时，在母乳容量低于该量的情况下，
+PRINTFORML 你可以更改量，自动改为【自由】或【等待】。（默认值：小于500%MILK_COUNTING()%）
+PRINTL （即使进行了此设置，也可以手动重新指定【搾乳】【抽出】的日程表）
+
+
+
+;吸収可能霊力
+@PART_HINT_EP_DRAIN_LIMIT
+
+CALL PRINTL_WORD_COLOR("（由于重复的项目，相同的标题中包含相同的信息）","灰")
+PRINTL 是奴隶所拥有的【灵力】中，主人公可以通过＜搾乳能量抽取＞进行上限提高的量。
+PRINTL 在角色注册时，将与灵力相同的值设置为初始值。
+PRINTL 这是一个不会回复或增加的参数。
+PRINTL
+PRINTFORML 主人公通过吸取%SAVESTR:标识／母乳%进行＜能量抽取＞以及通过＜灵力抽出装置＞和＜小型灵力抽出装置＞进行抽取时，
+PRINTL 随着灵力的被挤取，其上限值也将同步减少。
+PRINTFORML 当减少至0时，即使从该奴隶吸取%SAVESTR:标识／母乳%，其灵力上限值也不会再增加。
+
+
+
+;吸収可能魔力
+@PART_HINT_MP_DRAIN_LIMIT
+
+CALL PRINTL_WORD_COLOR("（由于重复的项目，相同的标题中包含相同的信息）","灰")
+PRINTFORML 是奴隶所拥有的【魔力】中，主人公可以通过吸取%SAVESTR:标识／魔力母乳%来提高上限的量。
+PRINTL 在角色注册时，将与魔力相同的值设置为初始值。
+PRINTL 这是一个不会回复或增加的参数。
+PRINTL
+PRINTFORML 主人公通过吸取%SAVESTR:标识／魔力母乳%来增加魔力的最大值时，同样的量将减少。
+PRINTFORML 当减少至0时，即使从该奴隶吸取%SAVESTR:标识／魔力母乳%，其魔力上限值也不会再增加。
+PRINTL
+PRINTFORML 主人公以外有人吸取%SAVESTR:标识／魔力母乳%被，并发生了魔力的转移，
+PRINTL 或者通过抽取储存在各种＜魔力储存器＞中的魔力时，吸收可吸收的魔力不会减少。
+
+
+
+;バストサイズ
+@PART_HINT_BUSTSIZE
+
+CALL PRINTL_WORD_COLOR("（由于重复的项目，相同的标题中包含相同的信息）","灰")
+PRINTL 在这个变种中，我们同时采用了AA～Z→ZA～ZZ的数字指定和尺寸感知的表示法。
+PRINTL 在命令判定等方面，基本上使用尺寸感知的表示法。
+PRINT 尺寸感知的表示法：
+CALL PRINTL_WORD_COLOR("【绝壁】→【贫乳】→【普通乳】→【巨乳】→【丰乳】→【爆乳】→【神乳】→【魔乳】→【超乳】","桃")
+PRINTL
+PRINTL 《 经验值影响 》
+PRINTL 胸部越大，【母性】经验值越多
+PRINTL 如果是【贫乳】的话则【母乳浓度】经验值会增加，【绝壁】的话会进一步增加
+PRINTL
+PRINTL 《 母乳容量影响 》
+PRINTL 胸部越大，【母乳容量】越多，与此同时，【母乳生产力】也越多
+PRINTL
+PRINTL 《 调教指令影响 》
+PRINTL 【巨乳】以上：可以选择【挤奶】【触手挤奶】指令
+PRINTL 【丰乳】以上：可以选择【纵向乳交】【强制纵向乳交】指令
+PRINTL 　　　　　　　即使使用Ｎ装备或Ｂ装备【乳交】系命令也可以选择
+PRINTL 【爆乳】以上：即使主人公参与刺激，触手乳虐待系列命令也会继续
+PRINTFORML 在乳交过程中：胸部越大，给予%CALLNAME:0%的%SAVESTR:标识／阴茎%的快感会增加
+
+
+
+;バストサイズ補足
+@PART_HINT_BUSTSIZE2
+
+CALL PRINTL_WORD_COLOR("（由于重复的项目，相同的标题中包含相同的信息）","灰")
+PRINTL 《 随机角色制作影响 》
+PRINTL （调整之前的）初始胸围越小，【Ｂ敏感度】越容易变高
+PRINTL
+PRINTL 《 拍卖价格 》
+PRINTL 【巨乳】以上、【丰乳】以上，各自会增加
+PRINTL
+PRINTL 《 刻印影响 》
+PRINTL 【母乳生产力】等级获得的3种刻印中，各自有【巨乳】【丰乳】【爆乳】以上的条件
+PRINTL （但是赋予【绝顶魔力回复淫纹】时可以忽略胸围条件）
+PRINTL
+PRINTL 《 日程影响 》
+PRINTL 胸围为ZA以上→【超乳】的情况下，即使是【服从】以上也无法进行工作，
+PRINTL 那名奴隶只能作为家畜生活，这一点请注意。
+CALL PRINTL_WORD_COLOR("请注意，由于没有减小胸围的手段，这可能会影响牧场的工作。","黄")
+SIF FLAG:玩笑表示
+	PRINTL 我认为，体验一种绝望感，再也无法像人一样生活，是一种更好的境地。
+
+
+
+;乳牛堕ち
+@PART_HINT_CATTLE_MIND_PALAM
+
+CALL PRINTL_WORD_COLOR("（由于重复的项目，相同的标题中包含相同的信息）","灰")
+PRINTFORML %SAVESTR:标识／乳房%从%SAVESTR:标识／母乳%中被榨取的乳牛的幸福是一种理解的情感。
+CALL PRINTL_WORD_COLOR("当【乳牛堕落】达到100%时，将进入【乳牛】状态。","桃")
+PRINTFORML 雌性最大的幸福就是被榨取%SAVESTR:标识／母乳%，在%SAVESTR:标识／乳房%中达到绝顶；
+PRINTL 为此，她是一名理解了要舍弃人类尊严的幸福的雌性奴隶。
+PRINTL
+PRINTL 《 乳牛堕落增加行为 》
+PRINTFORML 根据被榨取的%SAVESTR:标识／母乳%的量而增加
+PRINTL 胀乳时：根据胸围大小固定值增加
+PRINTL
+PRINTL 《 乳牛堕落增加量补偿 》
+PRINTL 每提高1级【搾乳中毒】+10%
+PRINTL 使用榨乳器・灵力抽出装置榨乳：触手榨乳・吸奶的2倍增加
+PRINTL 如果已经超过70%：增加值的1／2
+PRINTL 超过100%（【乳牛】状态）：增加值的1／8
+PRINTL
+PRINTL 《 减少乳牛堕落的行为 》（只有不是【乳牛】状态时才有效）
+PRINTL 在日程【事务】【大浴场清洁】中，减少1%以下
+PRINTL ＜花草茶＞：减少20%（当天第一次）
+
+
+
+;乳牛（状態）
+@PART_HINT_CATTLE_MIND_STATUS
+
+CALL PRINTL_WORD_COLOR("（由于重复的项目，相同的标题中包含相同的信息）","灰")
+PRINTFORML %SAVESTR:标识／乳房%被榨取%SAVESTR:标识／母乳%对她来说是最大的幸福，
+PRINTL 她接受了作为【乳牛】放弃人类尊严而过上这种生活的状态。
+PRINTL 【乳牛堕落】100%成为这个状态。
+PRINTL
+PRINTL 主人公是「教会我被搾乳的幸福的伟大主人」，她会听从你说的一切，
+PRINTL 可以像【服从】状态一样让她执行工作。
+PRINTL
+PRINTL 《 乳牛堕落时效应 》
+PRINTL 乳牛堕落上限增至999%
+PRINTL 可以工作　・可奉仕　・【处女结界】不能防御
+PRINTL [失意][反感]参数一直为0
+PRINTL [痛苦]以外的[恐惧]总是为0，[耻辱]为1/10
+PRINTL 胀乳时的[恐怖][耻辱][失意][反感]变成0，取而代之的是[淫欲]大幅度增加
+PRINTL 【精神力】100%固定
+
+
+
+;母乳容量
+@PART_HINT_MILK_CAPACITY
+
+CALL PRINTL_WORD_COLOR("（由于重复的项目，相同的标题中包含相同的信息）","灰")
+PRINTFORML 现在可以榨取的%SAVESTR:标识／母乳%的量。
+PRINTFORML 即使母乳容量为0%MILK_COUNTING()%，如果有【母乳生产力】，则可以进行榨取，但榨取量会减少。
+PRINTL
+PRINTL 《 母乳容量消耗行为 》
+PRINTL 通过榨取而消耗
+PRINTL
+PRINTL 《 母乳容量回复行为 》
+PRINTL 随着时间的推移，最多可以回复到【母乳生产力】的上限
+PRINTL 睡觉时，母乳容量和母乳生产力都可以最大化回复
+PRINTL 在调教过程中，如果母乳容量的最大值增加，那么当前值也会相应增加
+PRINTL
+PRINTL 《 当母乳容量为0时，从【母乳生产力】的搾乳量 》
+PRINTL 如果奴隶是【魔力母乳体质】并且有魔力：1／2
+PRINTL 如果应用了灵力抽出或能量吸取：1／2
+PRINTL 如果上述两者都没有，而【母乳生产力】仍然存在：1／5
+
+
+
+;母乳生産力
+@PART_HINT_MILK_PRODUCT
+
+CALL PRINTL_WORD_COLOR("（由于重复的项目，相同的标题中包含相同的信息）","灰")
+PRINTFORML 一天内可以挤出的%SAVESTR:标识／母乳%的量。
+PRINTL 通过挤取而减少，睡觉时回复到最大值。
+PRINTL 在调教过程中，如果母乳生产力的最大值增加，那么当前值也会相应增加。
+PRINTL
+PRINTL 当前的Lv状态也将显示为【母乳生产力】。
+PRINTL 每搾乳一次，母乳生产力就会有经验值，10,每000EXP【母乳生产力】状态LvUP。
+PRINTL
+PRINTL 《 母乳生产力经验值修正 》
+PRINTL 每提高1级【搾乳中毒】+20%　每提高1级【母性】+10%　【乳牛堕落】每10%+1%
+PRINTFORML 另外，如果【母乳容量】不足以进行挤取的%SAVESTR:标识／母乳%存在，那么该部分的经验值将是通常的两倍。
+
+
+
+;母乳容量・生産力計算
+@PART_HINT_MILK_CALC
+
+CALL PRINTL_WORD_COLOR("（由于重复的项目，相同的标题中包含相同的信息）","灰")
+PRINTL 《 母乳容量计算 》
+PRINTFORML 最低保障：500%MILK_COUNTING()%
+PRINTFORML 胸围每增加一码+100%MILK_COUNTING()%
+PRINTL 超过【巨乳】【爆乳】【超乳】后，每增加一码的增加量会进一步增加
+PRINTL
+PRINTL ・身体修正（以正常为100%）
+PRINTL 身高【矮小】【儿童体型】：-10%　【幼儿体型】：-25%　【高大】【巨躯】：+10%
+PRINTL 体型为【细身】：-10%　【性感】：+10%　【丰满】【丰腴】：+15%
+PRINTL 另外，种族为【牛角族】并启用了种族设定+30%
+PRINTL
+PRINTL 《 母乳生产力的计算 》
+PRINTL 基础值：【母乳容量】的2倍
+PRINTL 每提高1级【母乳生产力】+10%　每提高1级【搾乳中毒】+5%　每提高1级【母性】+3%
+
+
+
+;母乳濃度
+@PART_HINT_MILK_RICHNESS
+
+CALL PRINTL_WORD_COLOR("（由于重复的项目，相同的标题中包含相同的信息）","灰")
+PRINTFORML %SAVESTR:标识／母乳%的浓郁度、美味程度和营养价值的指标。
+PRINT 通常【母乳】→
+CALL PRINTL_WORD_COLOR("【浓厚母乳】→【上质母乳】→【丰润母乳】→【特浓母乳】→【极品母乳】","桃")
+PRINTL 每次挤奶都会为母乳浓度提供经验值，当经验值达到一定值时，【母乳浓度】状态就会LvUP。
+PRINTL
+PRINTL 《 增加量修正 》
+PRINTL 每提高1级【搾乳中毒】+5%　【母性】+对1开平方并乘以（如Lv3则√4→2倍）
+PRINTL 非【魔力母乳体质】的普通【母乳体质】：+20%
+PRINTL 胸围是【绝壁】：+20%　【贫乳】：+10%
+PRINTL
+PRINTL 《 母乳浓度影响 》（每个阶段的数值）
+PRINTL 出货价格：+30%　喝过的角色的体力回复量：+50%
+PRINTL 灵力抽出效率：+200%　魔力吸收效率：+100%
+PRINTL 搾乳刺激时：Ｂ·Ｎ快感值+5%
+PRINTL （缺点）被吸角色的体力减少量：+10%
+
+
+
+;母性
+@PART_HINT_MATERNAL
+
+CALL PRINTL_WORD_COLOR("（由于重复的项目，相同的标题中包含相同的信息）","灰")
+PRINTFORML 这是一种状态，感觉被依恋，被吸%SAVESTR:标识／母乳%的幸福感。
+PRINTFORML 当【母性】较高时，由于希望给予更多%SAVESTR:标识／母乳%，以及希望给予更美味的%SAVESTR:标识／母乳%，【母乳生产力】【母乳浓度】更容易增加。
+PRINTL 【母乳生产力】【母乳浓度】更容易增加。
+PRINTL
+PRINTL 《 母性影响 》
+PRINTL 被搾乳时的体力消耗：每增加1Lv降低10%
+PRINTL 【母乳生产力】计算值：每增加1Lv增加+3%
+PRINTL 【母乳浓度】增加值：当前Lv+对1开平方并乘以
+PRINTL 吸奶命令时：[顺从]增加
+PRINTL
+PRINTL 《 授乳经验增加 》
+PRINTL 日程【搾乳】以及牛舍的挤奶：微增
+PRINTFORML 直接喝%SAVESTR:标识／母乳%：大幅增加调教对象的母性
+PRINTL 触手搾乳：【搾乳中毒】【触手中毒】合计达到10以上则增加
+
+
+
+;母性補足
+@PART_HINT_MATERNAL2
+
+PRINTL 《 增加量修正 》
+PRINTL 每增加1个罩杯尺寸+2%
+PRINTL 【母乳浓度】每增加1Lv+5%　每提高1级【母乳生产力】+3%　每提高1级【奉仕精神】+3%
+PRINTFORML 每1次指令的喷乳量超过2,000%MILK_COUNTING()%以上：+20\%　1,000%MILK_COUNTING()%以上：+10\%
+PRINTL 有【出产经验】：+50%
+PRINTL 调教者身高【矮小】并且比被调教对象低5cm以上，或者调教者是【幼稚】：翻倍
+PRINTL 如果满足一项条件则为2倍，满足两项条件则为3倍。
+PRINTL 如果调教者是调教对象的亲生女儿，则为4倍。
+PRINTL
+PRINTL ・素质修正
+PRINTL 【幼稚】：-30%
+PRINTL 【献身的】：+30%
+PRINTL 【母性本能】：+50%
+PRINTL 未【陷落】时有效
+PRINTL 【自制心】【一线不越】：-10%　【贞操观念】：-20%
+
+
+
+;搾乳中毒
+@PART_HINT_LACTATION_RELIANCE
+
+CALL PRINTL_WORD_COLOR("（由于重复的项目，相同的标题中包含相同的信息）","灰")
+PRINTL 这是对挤奶带来的快感的依赖程度状态。
+PRINTL 接受挤奶折磨并在Ｂ・Ｎ绝顶时，【搾乳绝顶次数】会加上Ｂ・Ｎ绝顶次数，
+PRINTL 超过一定次数【搾乳中毒】Lv会增加。
+PRINTL
+PRINTL 《 搾乳中毒影响 》
+PRINTL 搾乳刺激时：每增加1LvＢ·Ｎ快感值阶段增加
+PRINTL 　　　～10Lv：+10%　～20Lv：+5%　21Lv～：+2%
+PRINTL 【乳牛堕落】增量：每增加1Lv+10%
+PRINTL 【母乳浓度】增加值：每增加1Lv+5%
+PRINTL 【母乳生产力】计算值：每增加1Lv增加+20%
+PRINTL 搾乳刺激命令时：顺从增加
+PRINTL 触手搾乳时【搾乳中毒】【触手中毒】合计10Lv以上的话[恭顺]·【母性】经验值增加
+
+
+

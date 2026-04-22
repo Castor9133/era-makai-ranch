@@ -1,0 +1,149 @@
+﻿
+;基礎・プロフィールの変更手動入力
+;ARGS→CHANGE_STATE
+@SELF_CHARA_MAKE_PROFILE_INPUT_MANUAL(ARGS)
+
+SELECTCASE ARGS
+CASE "名称"
+	CALL CHARA_MAKE_SLAVE_SHUFFLE_NAME(1)
+	
+CASE "种族"
+	STR_REF = 1000
+	STR_MAX = 300
+	
+	;共通化
+	CALL CHANGE_STR_LINEUP("种族")
+	
+	;RESULTSが空欄以外で入力
+	;ドット絵などカテゴリ指定するものはキャンセル時RETURNが必要
+	SIF RESULTS == ""
+		RETURN
+	CSTR:种族 = %RESULTS%
+	CALL CATEGORY_TRIVE
+	
+CASE "上位种族"
+	INVERTBIT CFLAG:上位种族,0
+	
+CASE "职业"
+	;長いので別関数
+	CALL SELF_CHARA_MAKE_JOB
+	
+CASE "身份"
+	STR_REF = 3200
+	STR_MAX = 50
+	CALL CHANGE_STR_LINEUP("身份",1)
+	
+	;空欄有効→キャンセルならそのまま
+	SIF !RESULT
+		CSTR:身份 = %RESULTS%
+	
+	;身分からの母乳価格補正確認
+	CALL SELF_CHARA_MAKE_MILK_PRICE
+	
+CASE "所属"
+	PRINTL 请输入您的所属。骑士团　等）
+	INPUTS
+	CSTR:所属 = %RESULTS%
+	
+CASE "服装"
+	CALL SELF_CHARA_MAKE_CLOTHE
+	
+CASE "进入魔界的目的"
+	PRINTL 请选择进入魔界的目的。
+	PRINTLC [ 0] 魔界水晶
+	PRINTLC [ 1] 魔界植物
+	PRINTLC [ 2] 声望
+	PRINTLC [ 3] 夺回
+	PRINTLC [ 4] 大门事故
+	PRINTLC [ 5] 讨伐
+	PRINTLC [ 6] 被捕获即将处分
+	PRINTLC [ 7] 被捕获即将拍卖
+	PRINTLC [ 8] 上位种族
+	PRINTLC [ 9] 天界种族
+	PRINTLC [10] 异世界转移
+	PRINTLC [99] （取消）
+	BINPUT
+	SIF RESULT == 99
+		RETURN
+	CFLAG:进入魔界的目的 = RESULT
+	
+CASE "身高"
+	PRINTL 请输入数字高度。（单位：mm）
+	INPUT
+	IF RESULT >= 0
+		CFLAG:身高 = RESULT
+		CALL HEIGHT_CSTR_CALC(1)
+	ENDIF
+	
+CASE "体型"
+	STR_REF = 50
+	STR_MAX = 50
+	CALL CHANGE_STR_LINEUP("体型")
+	SIF RESULTS != ""
+		CSTR:体型 = %RESULTS%
+	
+CASE "肤色"
+	STR_REF = 100
+	STR_MAX = 50
+	CALL CHANGE_STR_LINEUP("肤色")
+	SIF RESULTS != ""
+		CSTR:肤色 = %RESULTS%
+	CALL CATEGORY_SKIN_COLOR
+	
+CASE "胸围大小"
+	CALL INPUT_BUST
+	IF RESULT >= 0
+		ABL:胸围大小 = RESULT
+		CALL BUSTSIZE_TALENT_SET
+		SIF ABL:胸围大小 < BUSTSIZE_巨乳
+			TALENT:极上乳压 = 0
+	ENDIF
+	
+CASE "性经验"
+	;自動調整の関係で共通化できなさそう
+	STR_REF = 6590
+	STR_MAX = 10
+	PRINTL 请选择性经验。
+	PRINTL 除手动输入和取消外，选择的性经验将调整处女和经验人数等。
+	FOR LOCAL,0,STR_MAX
+		SIF STR:(STR_REF +LOCAL) != ""
+			PRINTFORMLC [{LOCAL,3}] %STR:(STR_REF +LOCAL)%
+	NEXT
+	CALL INPUTBUTTON
+	BINPUT
+	SELECTCASE RESULT
+	CASE 901
+		PRINTL 请输入性经验。（不包括处女等的调整）
+		INPUTS
+		SIF RESULTS != ""
+			CSTR:性经验 = %RESULTS%
+	CASE 999
+	CASEELSE
+		CSTR:性经验 = %STR:(STR_REF +RESULT)%
+		
+		;性経験リセット+再設定
+		CALL SLAVE_VARGIN_RESETTING
+	ENDSELECT
+
+
+;2ページ目→途中で終わってるのでここに来ない
+
+;3ページ目
+CASE "性格"
+	STR_REF = 3000
+	STR_MAX = 100
+	CALL CHANGE_STR_LINEUP("性格")
+	SIF RESULTS != ""
+		CSTR:性格 = %RESULTS%
+	CALL CATEGORY_PERSONALITY
+
+CASE "台词"
+	CALL KOJO_SETTING
+	
+;変更用関数に飛ばすようにした
+CASE "第一人称","陷落前的主人公的称呼","陷落后的主人公的称呼","阴茎称呼","膣称呼","肛门称呼"
+	CALL CHANGE_PERSONAL_CALL(ARGS)
+ENDSELECT
+
+
+

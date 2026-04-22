@@ -1,0 +1,275 @@
+﻿
+;おっぱい関連目次
+@HINT_MILK
+#DIM DYNAMIC PAGE
+
+PAGE_MAX = 2
+SIF PAGE < 1
+	PAGE = 1
+CLEARLINE LINECOUNT
+PRINTL 请选择要查看其说明的项目。
+DRAWLINE
+BR = 0
+STR_REF = 9060
+
+;ページで出す項目変更
+SELECTCASE PAGE
+CASE 1
+	CALL HINT_BUTTON_LIST(0,15)
+CASE 2
+	CALL HINT_BUTTON_LIST(15)
+ENDSELECT
+DRAWLINE
+CALL HINT_DETAIL_MILK
+CALL PRINTL_ALIGN(5)
+DRAWLINE
+PRINTLC [90] 页面切换
+PRINTFORMLC PAGE：{PAGE}／{PAGE_MAX}
+PRINTL [99] 返回
+INPUT
+PRINTL
+SELECTCASE RESULT
+CASE 0 TO 29
+	SELECT_TIPS = RESULT
+CASE 90
+	PAGE ++
+	SIF PAGE > PAGE_MAX
+		PAGE = 1
+	SELECT_TIPS = -1
+CASE 99
+	RETURN
+ENDSELECT
+RESTART
+
+
+
+;おっぱい関連解説
+@HINT_DETAIL_MILK
+
+STR_NUM = STR_REF +SELECT_TIPS
+
+;対応IDでないなら汎用出して帰る
+IF SELECT_TIPS < 0 || SELECT_TIPS >= 30 || STR:STR_NUM == ""
+	CALL NOT_SELECT_HINT_COMMON
+	RETURN
+ENDIF
+
+;項目名
+PRINTFORML 　《 %STR:STR_NUM% 》
+SELECTCASE STR:STR_NUM
+CASE "母乳"
+	PRINTFORML 这是从哺乳动物雌性的%SAVESTR:标识／乳房%中流出的，美味且充满营养的神秘液体。
+	PRINTFORML 强迫其在本来应该只有怀孕和分娩时才会流出的%SAVESTR:标识／母乳%，
+	PRINTL 是这个游戏的目的，你可以挤奶、吸吮、喝下，尽情享受。
+	
+	IF FLAG:玩笑表示
+		PRINTL
+		PRINTL 本来就和血液一样，味道不一样？别对游戏说三道四。
+	ENDIF
+	
+CASE "母乳体质"
+	PRINTL 雌性哺乳动物怀孕、分娩或被强迫成为这种体质的结果
+	PRINTFORML 由%SAVESTR:标识／乳房%中流出%SAVESTR:标识／母乳%的状态。
+	PRINTL 为了进行挤奶，首先需要达到这个状态。
+	PRINTL
+	PRINTL 除了使用＜母乳体质化药＞·＜母乳体质化精华＞成为【母乳体质】外，
+	PRINTL ＜魔力母乳体质化药＞或＜魔力母乳体质化精华＞也会作为副作用导致这种状态
+	PRINTL （【魔力母乳体质】的情况下，屏幕上将不显示该状态）
+	PRINTL
+	PRINTL 存在一种称为【先天母乳体质】的体质，即使没有经历过分娩和身体改造，
+	PRINTFORML 也会产生%SAVESTR:标识／母乳%的人类。
+	PRINTL
+	PRINTL 《 参数影响 》
+	PRINTL 搾乳刺激时：【Ｂ快感】【Ｎ快感】+10%
+	
+CASE "魔力母乳体质"
+	PRINTL 针对具有魔力的奴隶，使用＜魔力母乳体质化药＞・＜魔力母乳体质化精华＞
+	PRINTL 可以使其成为【魔力母乳体质】。
+	PRINTFORML 无论通过何种手段挤取%SAVESTR:标识／母乳%，
+	PRINTFORML 都将持续流出富含魔力的%SAVESTR:标识／母乳%，导致奴隶的魔力逐渐减少。
+	PRINTL
+	PRINTFORML 即使试图使用魔法，也会随着%SAVESTR:标识／母乳%一同泄露魔力，
+	PRINTL 若曾依赖魔法进行战斗，除非是实力极高的人类，或【上位种族】
+	PRINTL 否则将完全失去战斗力。
+	PRINTL
+	PRINTFORML 《 %SAVESTR:标识／魔力母乳%的附加效果 》
+	PRINTL 抽出时：如果拥有各种＜魔力储存器＞，可以储存挤取的魔力。
+	PRINTL 乳吸和触手挤奶时：喝下的角色的魔力将得到回复。
+	PRINTL 主人公吸了的场合：除了魔力回复外，还可以将魔力上限提高到【可吸收的魔力】
+	PRINTL
+	PRINTL 《 参数影响 》
+	PRINTL 搾乳刺激时：【Ｂ快感】【Ｎ快感】+15%
+	
+CASE "搾乳（日程）"
+	;重複呼び出しへ
+	CALL PART_HINT_SCHEDULE_LACTATION
+	
+CASE "抽出（日程）"
+	CALL PART_HINT_SCHEDULE_EP_DRAIN
+	
+CASE "搾乳・抽出补充"
+	CALL PART_HINT_SCHEDULE_LACTATION_OR_DRAIN
+	
+CASE "牛舍"
+	PRINTL 【进城】→从【不动产】建造＜牛舍＞
+	PRINTL 【母乳体质】的奴隶可以统一放入牛舍，进行统一管理。（需要里程碑进度）
+	PRINTL 初始状态的牛舍容纳数为10头，每次在【不动产】上增建可额外增加10头，最多可达到100头。
+	PRINTL 可以新建牛舍，最多可建造10座。
+	PRINTL
+	PRINTL 牛舍中的奴隶可以选择作为【搾乳牲畜】在早晚进行搾乳，
+	PRINTL 或者选择作为【牛奶制造机】在早、午、晚不停地进行挤奶。
+	PRINTL
+	PRINTL 和日程搾乳类似的是，
+	PRINTFORML ・挤取的%SAVESTR:标识／母乳%被出货给魔界农协
+	PRINTL ・如果没有人执行【奶农】实行日程的情况下会被取消
+	PRINTL 具有这些特点。
+	PRINTL 不过由于统一管理，【搾乳休息母乳量】的设定不会生效。
+	PRINTL 
+	PRINTL 放入牛舍的家畜无法单独设置日程，如果想进行除挤奶以外的活动，请将其移出牛舍。
+	PRINTL 例外情况是，在夜晚行动时，可以将牛舍内的奴隶作为【调教】的对象。
+	
+CASE "胸围大小"
+	CALL PART_HINT_BUSTSIZE
+	
+CASE "胸围大小补充"
+	CALL PART_HINT_BUSTSIZE2
+	
+CASE "膨乳"
+	PRINTL 通过使用＜膨乳药＞＜超乳药＞以及魔法＜膨乳改造精华＞＜淫乳改造精华＞，
+	PRINTL 可以增加奴隶的胸部大小。
+	PRINTL 对于【母乳体质】的情况，将重新计算【母乳容量】【母乳生产力】和【基础喷乳量】。
+	PRINTL
+	PRINTL ＜膨乳药＞＜膨乳改造精华＞：每次增加1阶段，　不超过【超乳】
+	PRINTL
+	PRINTL ＜超乳药＞：大量消耗体力，持续膨乳直至体力耗尽或达到【超乳】前
+	PRINTL 　已经处于【超乳】状态的情况下，将增加1阶段
+	PRINTL
+	PRINTL ＜淫乳改造精华＞：根据主人公的魔力，最多连续增加5阶段，或持续膨乳直至【超乳】前。
+	PRINTL 　已经处于【超乳】状态的情况下，将增加1阶段
+	
+	
+CASE "搾乳器"
+	PRINTL 有三种：＜家畜用搾乳器＞＜魔动快感搾乳器＞＜触手快感搾乳器＞。
+	PRINTL 在日程中的挤乳・抽取・牛舍挤乳时通常使用＜家畜用搾乳器＞。
+	PRINTL
+	PRINTFORML 在【道具·魔法命令】中使用时，可以将奴隶的%SAVESTR:标识／乳房%吸附，
+	PRINTFORML 可以榨取%SAVESTR:标识／母乳%。（需要【Ｎ露出】且没有其他Ｎ装备）
+	PRINTL 较高级的搾乳器会给予奴隶更大的快感。
+	PRINTFORML 挤取的%SAVESTR:标识／母乳%将被运送到魔界农协，成为牧场的资金来源。
+	PRINTL
+	PRINTFORML 在使用＜媚药＞等某些物品时，或者乳头除了%SAVESTR:标识／母乳%以外有附着物时，
+	PRINTFORML 请注意无法挤取用于出售的%SAVESTR:标识／母乳%。
+	
+CASE "小型灵力抽出装置"
+	PRINTFORML 在【道具·魔法命令】中使用时，可以将奴隶的%SAVESTR:标识／乳房%吸附，
+	PRINTFORML 可以榨取%SAVESTR:标识／母乳%。（需要【Ｎ露出】且没有其他Ｎ装备）
+	PRINTFORML 此时挤取的%SAVESTR:标识／母乳%会流入＜灵力抽出装置＞主体，
+	PRINTFORML 与%SAVESTR:标识／母乳%一同，被挤取的灵力・魔力将储存在装置和各种＜魔力储存器＞中。
+	PRINTL
+	PRINTFORML 每次使用这个装置挤取%SAVESTR:标识／母乳%，奴隶将以挤取乐趣为代价，
+	PRINTL 灵力将被挤取并降级，逐渐变为「家畜」。
+	
+CASE "吸奶"
+	PRINTL 调教过程中【吸奶】【吮乳头】或其派生指令的使用；
+	PRINTL 【去见奴隶】→选择【让我吸欧派】时，
+	PRINTFORML 主人公可以直接吸奴隶的乳头，如果奴隶是【母乳体质】，你可以喝到%SAVESTR:标识／母乳%。
+	PRINTFORML 在奴隶之间的调教日程中，调教者会喝下被调教奴隶的%SAVESTR:标识／母乳%。
+	PRINTFORML 被吸取%SAVESTR:标识／母乳%的角色将获得更多的【母性】经验值。
+	PRINTL 调教者身高在【小柄】以下，并且比调教对象矮5cm以上，且调教者为【幼稚】时，
+	PRINTL 如果调教者满足实亲女儿等条件，【母性】经验值的增加值将会上升。
+	PRINTL
+	PRINTL 《 吸乳效果 》
+	PRINTL 调教者体力回复
+	PRINTL 如果调教对象为【魔力母乳体质】的情况：调教者的魔力回复
+	PRINTL
+	PRINTL 《 调教者为主人公时的额外效果 》
+	PRINTL 调教对象为【魔力母乳体质】的场合：以【可吸收的魔力】为上限魔力的最大值增加
+	PRINTL 如果调教对象具有灵力，并且已经习得【搾乳能量吸收】：
+	PRINTFORML 吸取%SAVESTR:标识／母乳%的同时吸取调教对象的灵力，提高您的灵力，
+	PRINTL 【可吸收的灵力】为上限灵力最大值增加
+	
+CASE "触手搾乳"
+	PRINTL 通过学习魔法＜搾乳触手＞，在调教中的【触手指令】可以使用
+	PRINTL ＜包乳花瓣搾乳触手＞＜透明杯状搾乳触手＞＜榨乳蠕虫触手＞这3种搾乳触手中
+	PRINTFORML 奴隶的%SAVESTR:标识／母乳%可以被挤取。
+	PRINTL （【Ｎ露出】+没有其他Ｎ装备）
+	PRINTL
+	PRINTFORML 在使用搾乳触手挤取%SAVESTR:标识／母乳%的过程中，会发生与您亲自口中直接饮用相同的处理：
+	PRINTL ・您的体力回复
+	PRINTL ・如果是【魔力母乳体质】主人公的魔力增加
+	PRINTL ・如果应用了【搾乳能量吸收】时主人公灵力增加
+	
+CASE "搾乳能量吸收"
+	PRINTFORML 学会魔法＜搾乳能量吸收＞后，通过主人公喝下%SAVESTR:标识／母乳%
+	PRINTL 可以直接从奴隶中吸收灵力，以【可吸收的灵力】为上限，增加主人公的灵力最大值。
+	PRINTL
+	PRINTL 只要是主人公进行饮用的判定，那么不管是用【吸奶】直接喝还是【触手搾乳】
+	PRINTL 即使做了【体内凌辱】也会发生能量吸收。
+	PRINTL
+	PRINTL 如果您不想从奴隶身上吸取灵力，
+	PRINTL 通过选择奴隶→【个人设置】→将​【能量吸收不适用】打开
+	PRINTFORML 那么该奴隶即使被您喝下%SAVESTR:标识／母乳%，也不会发生能量吸收。
+	
+CASE "母乳容量"
+	CALL PART_HINT_MILK_CAPACITY
+	
+CASE "母乳生产力"
+	CALL PART_HINT_MILK_PRODUCT
+	
+CASE "母乳容量和生产力计算"
+	CALL PART_HINT_MILK_CALC
+	
+CASE "母乳浓度"
+	CALL PART_HINT_MILK_RICHNESS
+	
+CASE "母性"
+	CALL PART_HINT_MATERNAL
+	
+CASE "母性补充"
+	CALL PART_HINT_MATERNAL2
+	
+CASE "搾乳中毒"
+	CALL PART_HINT_LACTATION_RELIANCE
+	
+CASE "乳牛堕落"
+	CALL PART_HINT_CATTLE_MIND_PALAM
+	
+CASE "奶牛（状态）"
+	CALL PART_HINT_CATTLE_MIND_STATUS
+	
+CASE "母乳的出货"
+	PRINTFORML 用搾乳器从奴隶中挤出的%SAVESTR:标识／母乳%，
+	PRINTL 会在早晨行动后的【结算】阶段被运送到魔界农協，成为牧场的资金来源。
+	PRINTL
+	PRINTL （由于当前版本使用了简单的计算方法，所以可能会有多余的资金）
+	
+CASE "母乳出货金额计算"
+	PRINTL 【母乳浓度】：每增加一个阶段+30%
+	PRINTL 【无肉体改造经验】的情况下：+30%
+	PRINTL
+	PRINTL 身高为【矮小】或【儿童体型】且为【巨乳】：+10%
+	PRINTL 身高在【儿童体型】以下且为【绝壁】或【贫乳】：+20%
+	PRINTL 素质【神格】：最终倍率300%
+	PRINTL 身份是【贵族】：最终倍率150%
+	PRINTL 身份是【王族】：最终倍率500%
+	PRINTL
+	PRINTL 在计算出货金额时，排除了出现概率低的人类，奴隶的强弱几乎与计算无关。
+	PRINTL 如果觉得经费有限，那么收集一些容易捉到的奴隶也是个不错的选择。
+	PRINTL
+	PRINTFORML （由于当前版本，在母乳浓度上升之前挤取的%SAVESTR:标识／母乳%的销售价格也会根据结算时的浓度计算）
+	
+CASE "母乳商品名称"
+	PRINTL 选择奴隶→【个人设置】→【母乳商品更名】，可以更改在出货时显示的商品名。
+	PRINTL
+	PRINTL 在默认自动标识中为<名字>+<特制>+<母乳浓度>+<其他素质等标识>
+	PRINTFORML +将变成<%SAVESTR:标识／魔力母乳%／%SAVESTR:标识／母乳%>。
+	SIF FLAG:玩笑表示
+		PRINTL （虽然可以自由记述，但也可以写谎言，也没有坏处，就凭玩家的良心了）
+	
+CASE "可吸收的灵力"
+	CALL PART_HINT_EP_DRAIN_LIMIT
+	
+CASE "可吸收的魔力"
+	CALL PART_HINT_MP_DRAIN_LIMIT
+ENDSELECT
+

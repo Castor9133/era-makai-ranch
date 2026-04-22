@@ -1,0 +1,44 @@
+﻿
+;処女結界で保護されているか
+@VARGIN_BARRIER_BREAK_FLAG
+
+;処女結界でないなら当然0
+SIF !TALENT:处女结界
+	RETURN
+
+;隷属なら当然OK
+IF ＃陷落状态／隶属＃
+	CALL PRINT_WORD_COLOR,@"发誓要把一切献给%CALLNAME:0%的%CALLNAME%，自愿失去【处女结界】，湿了私处，等待着将处女献给%CALLNAME:0%的时刻…","桃"
+	CALL HEARTCB(0xD02830)
+
+;洗脳なら抵抗しない
+ELSEIF CFLAG:洗脑
+	CALL PRINTL_WORD_COLOR,@"由于被洗脑无法违抗%CALLNAME:0%的命令，用%CALLNAME:0%的%SAVESTR:标识／阴茎%随时都可以捅破保护%CALLNAME%的【处女结界】了…","桃"
+
+;恋慕ならOK
+ELSEIF ＃陷落状态／恋慕以上＃
+	CALL PRINTL_WORD_COLOR,@"%CALLNAME%希望%CALLNAME:0%作为献出自己处女的对象…","桃"
+
+;心も乳牛ならもう処女なんてどうでもいい
+ELSEIF CFLAG:乳牛
+	CALL PRINTL_WORD_COLOR,@"接受了乳牛待遇的%CALLNAME%，已经无法维持【处女结界】的效果了…","桃"
+
+;崩壊なら抵抗できない
+ELSEIF CFLAG:崩坏
+	CALL PRINTL_WORD_COLOR,@"处于绝望深渊的%CALLNAME%已经连维持【处女结界】的气力都没有了…","桃"
+
+;最大霊力の半分を切っている場合破壊可能
+ELSEIF BASE:灵力 <= MAXBASE:灵力 /2
+	CALL PRINTL_WORD_COLOR,@"因为被抽光了灵力处女结界的保护变弱了，%CALLNAME:0%的%SAVESTR:标识／阴茎%随时都可以捅破保护%CALLNAME%的【处女结界】了…","桃"
+
+;結界有効して帰る
+ELSE
+	;調教の最初はメッセージ
+	SIF !TFLAG:处女结界有效
+		CALL PRINTL_WORD_COLOR,@"%CALLNAME%的%SAVESTR:标识／膣%被【处女结界】守护着。","浅蓝色"
+	TFLAG:处女结界有效 = 1
+	RETURN
+ENDIF
+TFLAG:处女结界有效 = 0
+
+

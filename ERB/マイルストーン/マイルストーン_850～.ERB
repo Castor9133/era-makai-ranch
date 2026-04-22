@@ -1,0 +1,102 @@
+﻿
+;不動産あたり
+;＜奴隷寮＞の購入
+@MILESTONE_CHECK_850
+
+SIF ITEM:奴隶寮
+	RETURN 1
+
+
+;部屋割りに【奴隷寮】追加
+@MILESTONE_REWARD_850
+
+PRINTL 由于奴隶数量增加，我在主屋旁边建造了奴隶宿舍。
+PRINTL 这样分配给员工的奴隶数量应该会大大增加。
+PRINTL 如果这里还是太拥挤，可以考虑进一步扩建。
+CALL PRINTL_WORD_COLOR,@"在【房间分配变更】中添加了【奴隶宿舍】。","浅蓝色"
+PRINTL 可以像单间一样分配屈服的奴隶，并将其视为员工。
+
+
+
+;＜牛舎＞の購入
+@MILESTONE_CHECK_851
+
+SIF ITEM:牛舍
+	RETURN 1
+
+
+;システム【搾乳奴隷用牛舎】解放
+@MILESTONE_REWARD_851
+
+PRINTL 我新建了一个牛舍。不过，这个牛舍并不是为魔界奶牛设计的尺寸。
+PRINTL 适合饲养被成为搾乳奴隶的人类的尺寸空间、拘束工具和搾乳工具一应俱全。
+PRINTL 之前把它们放在空闲的牲畜小屋里，但似乎可以抓更多的人类来做搾乳奴隶。
+CALL PRINTL_WORD_COLOR,@"系统【牛舍】已解锁。","浅蓝色"
+PRINTL 可以放入【母乳体质】的奴隶，并根据每个牛舍的日程统一执行搾乳日程。
+
+
+
+;＜システムキッチン＞の購入
+@MILESTONE_CHECK_852
+
+SIF ITEM:系统化厨房
+	RETURN 1
+
+
+;夕食当番・システム【料理当番変更】解放
+@MILESTONE_REWARD_852
+
+PRINTL 我扩建了一个较大的厨房，配备了各种便利工具。以前总是草草了事，但
+PRINTL 奴隶的数量也增加了，或许该花些时间做些精致的菜肴。
+PRINTL 如果有擅长烹饪的奴隶，可以让他们来做饭。
+CALL PRINTL_WORD_COLOR,@"在【各种信息・管理】中，已解锁【厨师安排变更】。","浅蓝色"
+PRINTL 通过设置，可以在傍晚的活动后准备晚餐。
+
+
+
+;＜家族風呂＞の購入
+@MILESTONE_CHECK_853
+
+SIF ITEM:家庭浴池
+	RETURN 1
+
+
+;システム【一緒にお風呂】解放
+@MILESTONE_REWARD_853
+
+PRINTL 我改造了浴室，浴缸也变得更大。
+PRINTL 虽然只是足够人进入的程度，但现在应该变得相当舒适了。
+PRINTL 因为变得相当大，所以应该不止一个人，两个也能进去。
+PRINTL 在洗澡时间与奴隶进行亲密接触也许不错。
+CALL PRINTL_WORD_COLOR,@"系统【一起洗澡】已解锁。","浅蓝色"
+PRINTL 在傍晚活动后的洗澡时间，可以呼唤奴隶一起洗澡，进行亲密接触。
+
+
+
+;＜大浴場＞の購入
+@MILESTONE_CHECK_854
+
+SIF ITEM:大浴场
+	RETURN 1
+
+
+;システム【大浴場】解放・スケジュール【大浴場掃除】解放
+@MILESTONE_REWARD_854
+
+PRINTL 由于奴隶数量大幅增加，我豪气地建造了一个与主屋相邻的大浴场。
+PRINTL 这样宽敞的空间，洗澡时无需考虑时间的错开。
+PRINTL 不过由于相当宽敞，清洁恐怕不能简单应付。
+PRINTL 如果要使用，似乎需要在当天安排清洁日程。
+CALL PRINTL_WORD_COLOR,@"系统【大浴场】已解锁。","浅蓝色"
+CALL PRINTL_WORD_COLOR,@"日程【大浴场清洁】已解锁。","浅蓝色"
+PRINTL 执行后会增加「大浴场清洁完成度」，
+PRINTFORML 在达到100\%的日子，可以在洗澡时间让奴隶们一起在大浴场洗澡。
+
+
+
+
+
+
+
+
+

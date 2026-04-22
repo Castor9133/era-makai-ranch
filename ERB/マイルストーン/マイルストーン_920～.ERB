@@ -1,0 +1,192 @@
+﻿
+;オカチ街Lv1
+@MILESTONE_CHECK_920
+
+SIF FLAG:魔界等级／冈地街
+	RETURN 1
+
+
+;システム【ローン】解放・施設【アダルトショップ】解放
+@MILESTONE_REWARD_920
+
+PRINTL 冈地街的预算有了些许余裕，似乎也能够申请较大的贷款。
+PRINTL 可能是受此影响，冈地街有新的店铺开业的传单。
+CALL PRINTL_WORD_COLOR,@"在【不动产】中的贷款支付已解锁。","浅蓝色"
+CALL PRINTL_WORD_COLOR,@"【街去】→【成人商店】已解锁。","浅蓝色"
+
+
+
+;オカチ街Lv2
+@MILESTONE_CHECK_921
+
+SIF FLAG:魔界等级／冈地街 >= 2
+	RETURN 1
+
+
+;【呉服屋】の品揃え追加：仕事用・ランジェリー
+@MILESTONE_REWARD_921
+
+PRINTL 感觉冈地街开始有些热闹了。
+PRINTL 在街上经营和服店的信美小姐也很积极，收到了品种增加的传单。
+CALL PRINTL_WORD_COLOR,@"【和服店】的＜工作用＞＜内衣＞类别的商品已增加。","浅蓝色"
+
+
+
+;オカチ街Lv3
+@MILESTONE_CHECK_922
+
+SIF FLAG:魔界等级／冈地街 >= 3
+	RETURN 1
+
+
+;施設【家具屋】解放
+@MILESTONE_REWARD_922
+
+PRINTL 冈地街的预算进一步增加，似乎又有新店开业。
+CALL PRINTL_WORD_COLOR,@"【街去】→【家具店】已解锁。","浅蓝色"
+
+
+
+;オカチ街Lv4
+@MILESTONE_CHECK_923
+
+SIF FLAG:魔界等级／冈地街 >= 4
+	RETURN 1
+
+
+;【呉服屋】の品揃え追加2：レプリカ・アクセサリー
+@MILESTONE_REWARD_923
+
+PRINTL 冈地街变得相当热闹。
+PRINTL 信美桑也比以前更加努力，收到了品种增多的传单。
+CALL PRINTL_WORD_COLOR,@"【呉服屋】的＜复制品＞＜饰品＞类别的商品已新增。","浅蓝色"
+
+
+
+;オカチ街Lv5
+@MILESTONE_CHECK_924
+
+SIF FLAG:魔界等级／冈地街 >= 5
+	RETURN 1
+
+
+;＜マジカル裁ちバサミ＞入手
+@MILESTONE_REWARD_924
+
+ITEM:魔法剪刀 += 1
+PRINTL 当我走进呉服屋时，店主感谢我说这么热闹全是因为你。
+PRINTL 收到了似乎是「为了感谢你，以后也请多多关照」的＜魔法裁剪剪刀＞。
+PRINTL 不过我会用这个剪刀剪我在这家店买的东西，真的可以吗？
+PRINTL 据说「服装要根据使用者的需求来变化形状」所以应该没问题。
+CALL PRINTL_WORD_COLOR,@"已获得＜魔法裁剪剪刀＞。","浅蓝色"
+PRINTL 在交付部分衣物时可以进行【暴露改造】了。
+
+
+
+;オカチ街Lv6
+@MILESTONE_CHECK_925
+
+SIF FLAG:魔界等级／冈地街 >= 6
+	RETURN 1
+
+
+;【呉服屋】の品揃え追加3：アダルト衣装／ランジェリー
+@MILESTONE_REWARD_925
+
+PRINTL 冈地街变得非常热闹了。
+PRINTL 信美桑也兴致勃勃，收到了品种增多的传单。
+CALL PRINTL_WORD_COLOR,@"【呉服屋】的＜成人服装／内衣＞类别的商品已新增。","浅蓝色"
+
+
+
+;オカチ街Lv8
+@MILESTONE_CHECK_926
+
+SIF FLAG:魔界等级／冈地街 >= 8
+	RETURN 1
+
+
+;【呉服屋】の品揃え追加4：異世界衣服／ランジェリー・一部レプリカ
+@MILESTONE_REWARD_926
+
+PRINTL 冈地街前所未有地热闹。
+PRINTL 似乎信美桑有了神秘的灵感，收到了只在这里能买到的衣物齐全的传单！
+CALL PRINTL_WORD_COLOR,@"【呉服屋】的＜异世界衣服／内衣＞以及现有类别的一些商品已新增。","浅蓝色"
+
+
+
+
+
+;酪農業Lv1
+@MILESTONE_CHECK_930
+
+SIF FLAG:魔界等级／奶农业
+	RETURN 1
+
+
+;施設【魔界農協】での【魔界乳牛用設備購入】解放
+@MILESTONE_REWARD_930
+
+PRINTL 由于奶业的预算增加，魔界农协似乎也能引入新设备。
+CALL PRINTL_WORD_COLOR,@"【魔界农协】→【魔界奶牛用设备安装】已解放。","浅蓝色"
+PRINTL 可以购买奶牛用的一次性设备，从而提高健康度。
+
+
+
+;酪農業Lv2
+@MILESTONE_CHECK_931
+
+SIF FLAG:魔界等级／奶农业 >= 2
+	RETURN 1
+
+
+;【呉服屋】の品揃え追加：乳牛セット
+@MILESTONE_REWARD_931
+
+PRINTL 奶业正在逐渐兴盛。
+PRINTL 在这样的情况下，经营呉服屋的信美桑似乎突然想到，收到了乳牛角色扮演商品到货的传单！
+CALL PRINTL_WORD_COLOR,@"【呉服屋】的＜奶牛套装＞类别的商品已新增。","浅蓝色"
+
+
+
+;酪農業Lv5＋魔術＜個人用転移門＞
+@MILESTONE_CHECK_932
+
+SIF FLAG:魔界等级／奶农业 >= 5 && ITEM:个人用传送门
+	RETURN 1
+
+
+;システム【事業提携】解放
+@MILESTONE_REWARD_932
+
+PRINTFORML 不仅在马卡道，人类的%SAVESTR:标识／母乳%也开始受到好评，需求似乎在增加。
+PRINTL 在这样的情况下，魔界农协方面有了咨询。
+PRINTL 想在其他地方建立「人类搾乳牧场」，但关键的奶牛似乎还没有采购的计划。
+PRINTFORML 人类的%SAVESTR:标识／母乳%流通增加似乎也不错，所以决定参与讨论。
+PRINTW
+PRINTL ～人类搾乳牧场・计划地～
+PRINTL 从传送门前往附近的牧场预定地，得到了那里的老板的迎接。
+PRINTL 在这个地方，由于门的位置的原因，像马卡道那样来的人的话不会就这样随便死去被丢弃，而是
+PRINTL 魔王军支部的人似乎会立即讨伐并将其视为自己的财产。
+PRINTW
+PRINTL 于是老板提出了妙计。
+PRINTL 计划将马卡道捕获的人类转移到这里，作为挤奶家畜进行利用。
+PRINTL 由于距离问题通过传送门不成问题，所以似乎在寻找愿意协助的人。
+PRINTL 只要送过去之后的麻烦由那边接手，我们也可以得到一些报酬。
+PRINTL 这条件意外地还不错。
+PRINTL 如果让佣兵兼职，种种手续可能会变得麻烦，所以在条件上是以自己捕获的剩余为条件的。
+PRINTL 决定以【事业合作】的形式进行合作。
+PRINTW
+CALL PRINTL_WORD_COLOR,@"【事业合作】已解放。","浅蓝色"
+PRINTFORML [军队]规模的人类与伙伴一起行动时，%CALLNAME:0%若是直接战斗胜利的话
+PRINTL 可以将主要追踪目标以外的伙伴中的雌性（杂兵）送往人类搾乳牧场。
+PRINTL 与事业合作方的奶牛数量成比例，结算时收入会增加。
+PRINTL 还可以送走不需要的奴隶（≒角色删除）。
+
+
+
+
+
+
+
+

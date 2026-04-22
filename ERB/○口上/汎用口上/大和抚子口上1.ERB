@@ -1,0 +1,190 @@
+; ======================================
+; 泛用口上（性格：大和抚子）
+;
+;口上識別名：大和抚子1
+;口上作者：（汉化扩展）
+;许可证：CC BY-NC
+; ======================================
+
+@KOJO_GENERAL_INDEX_大和抚子1(ARGS:0,ARGS:1,ARGS:2,ARGS:3)
+
+IF TFLAG:Ｍ装备
+	CALL KOJO_GENERAL_MOUTH_SHACKLE_1(ARGS:0,ARGS:1,ARGS:2,ARGS:3)
+	RETURN
+ELSEIF CFLAG:崩坏 && !CFLAG:洗脑
+	IF GROUPMATCH(ARGS:0,"例文")
+	ELSEIF GROUPMATCH(ARGS:1,"洗脑触手","崩坏")
+	ELSE
+		IF NOWEX:总绝顶
+			CALL MESSAGE_BOX,@"「……失礼……♥ 身体……自己……嗯、啊……♥」"
+			CALL MESSAGE_BOX,@"「不、不成体统……♥ ……可、可停不下来……♥」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……呼……失礼了……」"
+		ENDIF
+		RETURN
+	ENDIF
+ENDIF
+
+SELECTCASE ARGS:0
+CASE "例文"
+	CALL MESSAGE_BOX,@"「【大和抚子1】已设置。\n敬语、顾礼、羞耻也先把话说对；陷落后会更献身地服侍。」"
+
+CASE "调教命令"
+	CALL KOJO_GENERAL_大和抚子1_TRAIN(ARGS:0,ARGS:1,ARGS:2,ARGS:3)
+
+CASE "绝顶"
+	IF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／隶属＃
+		CALL MESSAGE_BOX,@"「啊……♥ 已到极限……请、请尽情……使用我……♥」"
+		CALL MESSAGE_BOX,@"「失礼了……♥ ……我、我去了……♥♥」"
+	ELSEIF ＃陷落状态／恋慕以上＃
+		CALL MESSAGE_BOX,@"「%MASTER_CALL()%……♥ 失礼……我、我快要……♥」"
+		CALL MESSAGE_BOX,@"「请别移开视线……♥ 让我……把喜欢说出来……♥」"
+	ELSEIF ＃陷落状态／屈服以上＃
+		CALL MESSAGE_BOX,@"「……不、不行……♥ 请、请稍等……♥」"
+		CALL MESSAGE_BOX,@"「……这样……太、太过分了……♥」"
+	ELSE
+		CALL MESSAGE_BOX,@"「请、请住手……♥ 不、不要这样……」"
+		CALL MESSAGE_BOX,@"「……失礼了……声音……」"
+	ENDIF
+	SIF NOWEX:Ａ绝顶
+		IF TALENT:Ａ名器 || TALENT:肛门嗜好 || ABL:Ａ感觉 >= 3
+			CALL MESSAGE_BOX,@"「……失礼……！？　%ANAL_CALL()%……痛……可是……深处……像被火撩过……好羞耻……♥」"
+			CALL MESSAGE_BOX,@"「……这种事……不该……在身体里……留下痕迹……♥」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……痛……！？　%ANAL_CALL()%……请、请住手……！」"
+			CALL MESSAGE_BOX,@"「……失礼了……只有那里……真的……不行……」"
+		ENDIF
+	SIF NOWEX:Ｕ绝顶
+		IF TALENT:尿道敏感 || EX:尿道调教经验 >= 15
+			CALL MESSAGE_BOX,@"「……失礼……那处竟……有羞耻的麻……♥」"
+			CALL MESSAGE_BOX,@"「……除痛外……还有……说不出口的酥……♥」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……好痛……请、请住手……只有急与刺……」"
+			CALL MESSAGE_BOX,@"「……失礼了……那里……真的不行……」"
+		ENDIF
+
+CASE "射精"
+	IF SOURCE:膣内射精经验
+		IF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／隶属＃
+			CALL MESSAGE_BOX,@"「里、里面……♥ 都是您的……我会好好留住……♥」"
+		ELSEIF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……进来了……♥ %MASTER_CALL()%的……我会珍惜……♥」"
+			CALL MESSAGE_BOX,@"「……别担心……我会……负责……♥」"
+		ELSEIF ＃陷落状态／屈服以上＃
+			CALL MESSAGE_BOX,@"「……在里面……♥ 这、这样……会……」"
+		ELSE
+			CALL MESSAGE_BOX,@"「不、不要在里面……求您……」"
+		ENDIF
+	ELSEIF SOURCE:尻穴射精经验
+		IF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……后面……被灌满了……♥ ……请、请别笑……」"
+			CALL MESSAGE_BOX,@"「……失礼……♥ ……太丢脸了……♥」"
+		ELSEIF ＃陷落状态／屈服以上＃
+			CALL MESSAGE_BOX,@"「……后面……好热……请、请慢些……」"
+		ELSE
+			CALL MESSAGE_BOX,@"「不、不要在后面……！」"
+		ENDIF
+	ELSEIF SOURCE:精饮经验
+		IF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……咽下去了……♥ ……请您别笑……」"
+			CALL MESSAGE_BOX,@"「……这是……服侍的一部分……我明白……♥」"
+		ELSE
+			CALL MESSAGE_BOX,@"「咳……咳咳……请、请别这样……」"
+		ENDIF
+	ELSEIF TEQUIP:手淫
+		IF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……手上……弄脏了……♥ 我、我会擦干净……」"
+			CALL MESSAGE_BOX,@"「……失礼了。请稍等……我会处理好……」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……我会清理干净……请、请别靠太近……」"
+		ENDIF
+	ELSEIF SOURCE:股间射精
+		CALL MESSAGE_BOX,@"「……弄在身上了……♥ ……失礼……我会擦干净……」"
+		CALL MESSAGE_BOX,@"「……请、请给我一点时间整理……」"
+	ELSEIF SOURCE:乳房射精
+		CALL MESSAGE_BOX,@"「……在胸口……♥ ……请别看……太丢脸了……」"
+		CALL MESSAGE_BOX,@"「……我会处理干净……请您放心……」"
+	ELSEIF SOURCE:颜面射精
+		CALL MESSAGE_BOX,@"「……脸上……♥ ……失礼……我会擦掉……」"
+		CALL MESSAGE_BOX,@"「……请别笑……我会……记住教训……」"
+	ENDIF
+
+CASE "搾乳"
+	IF SOURCE:母乳漏出
+		CALL MESSAGE_BOX,@"「……失礼……胸口……自己……」"
+		RETURN
+	ENDIF
+	IF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／隶属＃
+		CALL MESSAGE_BOX,@"「……乳汁……请尽情取用……♥」"
+		CALL MESSAGE_BOX,@"「……我会……好好配合……♥」"
+	ELSEIF ＃陷落状态／恋慕以上＃
+		CALL MESSAGE_BOX,@"「……轻一些……♥ 胸口……有点酸……」"
+		CALL MESSAGE_BOX,@"「……失礼……声音……忍不住……♥」"
+	ELSE
+		CALL MESSAGE_BOX,@"「请、请别这样……那、那里……」"
+	ENDIF
+
+CASE "抽出"
+	CALL MESSAGE_BOX,@"「……腿……有些发软……请、请扶我一下……」"
+	CALL MESSAGE_BOX,@"「……失礼了……一时……站不稳……」"
+
+CASE "日程"
+	SELECTCASE ARGS:1
+	CASE "调教"
+		SELECTCASE ARGS:2
+		CASE "开始调教"
+			CALL MESSAGE_BOX,@"「……请多指教。若有失礼之处，还请您告知……」"
+		CASE "调教结束"
+			CALL MESSAGE_BOX,@"「……辛苦了。能让您满意的话……我很高兴……」"
+		ENDSELECT
+	CASEELSE
+	ENDSELECT
+
+CASE "阴茎称呼变更"
+	CALL MESSAGE_BOX,@"「……我明白了。今后便按您说的称呼……」"
+
+CASE "膣称呼变更"
+	CALL MESSAGE_BOX,@"「……连那里也要……吗。是……我会记住……」"
+
+CASE "肛门称呼变更"
+	CALL MESSAGE_BOX,@"「……后面也……明白了。我会照做……」"
+
+CASE "吸欧派"
+	SELECTCASE ARGS:1
+	CASE "开始"
+		CALL MESSAGE_BOX,@"「……请。若能让您放松些……」"
+	CASE "结束"
+		CALL MESSAGE_BOX,@"「……失礼了。胸口……还在发热……」"
+	ENDSELECT
+
+CASE "访问"
+	SELECTCASE ARGS:1
+	CASE "入口"
+		CALL MESSAGE_BOX,@"「%MASTER_CALL()%……我来了。若打扰到您……还请见谅。」"
+	CASEELSE
+	ENDSELECT
+
+CASE "事件"
+	CALL MESSAGE_BOX,@"「……发生什么事了吗？若我能帮上忙，请吩咐我。」"
+
+CASE "肉体改造"
+	CALL MESSAGE_BOX,@"「……身子要变样了么。虽惶恐……但我会努力适应。」"
+
+CASE "战斗"
+	SELECTCASE ARGS:1
+	CASE "攻击"
+		CALL MESSAGE_BOX,@"「……失礼了。我上了。」"
+	CASE "被击中"
+		CALL MESSAGE_BOX,@"「……唔……抱歉……我没事……」"
+	CASEELSE
+	ENDSELECT
+
+CASEELSE
+ENDSELECT
+RETURN
+
+; 调教命令转发（分离文件）
+@KOJO_GENERAL_大和抚子1_TRAIN(ARGS:0,ARGS:1,ARGS:2,ARGS:3)
+CALL KOJO_GENERAL_大和抚子口上1_TRAIN(ARGS:0,ARGS:1,ARGS:2,ARGS:3)
+RETURN
+

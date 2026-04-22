@@ -1,0 +1,239 @@
+﻿
+;画像・ドット絵表示設定
+;被らず表示できるか確かめるために同じページで調整できるようにした
+@IMAGE_CONFIG
+
+CLEARLINE LINECOUNT
+PRINTFORML 进行图像和像素画显示的设定。请参考右侧的样例图像进行调整。
+CALL SAMPLE_PRINT_IMAGE
+CALL SAMPLE_PRINT_PORTRAIT
+CALL MANYL(5)
+PRINTFORM [ 0] 图像显示　　
+CALL PRINT_ONOFF(FLAG:头像／显示,1)
+IF FLAG:头像／显示
+	PRINTFORML [ 1] 图像大小　：{FLAG:头像／尺寸} 
+	PRINTFORML [ 2] 图片横轴调整：{FLAG:头像／横轴调整} 
+	PRINTFORM [ 3] 没有调教等待图像时通常显示图形
+	CALL PRINT_ONOFF(FLAG:头像／调教时图像替换,1)
+	PRINTFORML [ 4] 调教执行图片显示时的上下换行：{FLAG:头像／指令时换行数}行
+	PRINTFORM [ 5] 调教执行图像显示时左对齐　
+	CALL PRINT_ONOFF(FLAG:头像／指令时左对齐,1)
+ELSE
+	CALL PRINTL_WORD_COLOR("　　 图像大小","灰")
+	CALL PRINTL_WORD_COLOR("　　 图像水平轴调整","灰")
+	CALL PRINTL_WORD_COLOR("　　 没有调教等待图像时通常显示图形","灰")
+	CALL PRINTL_WORD_COLOR("　　 调教执行图像显示时的上下换行","灰")
+	CALL PRINTL_WORD_COLOR("　　 调教执行图像显示时左对齐","灰")
+ENDIF
+PRINTL
+PRINT [10] 点绘显示　　　　
+CALL PRINT_ONOFF(FLAG:像素画／显示,1)
+IF FLAG:像素画／显示
+	PRINTFORML [11] 像素画尺寸　　：{FLAG:像素画／尺寸} 
+	PRINTFORML [12] 像素画水平轴调整　：{FLAG:像素画／横轴调整} 
+	PRINTFORML [13] 着替え画面追加横轴调整　：{FLAG:像素画／更换画面追加横轴调整}
+	PRINT [14] 非支持衣服的替换形式　　：
+	SELECTCASE FLAG:像素画／不支持服装的替换形式
+	CASE 0
+		PRINTL 裸
+	CASE 1
+		PRINTL ＜布衣＞
+	CASE 2
+		PRINTL ＜奴隶的破布＞
+	ENDSELECT
+	PRINTFORML [15] 娇小像素画适用　　　：{FLAG:像素画／娇小适用上限数值}mm未满
+	PRINT [16] 上半脱时的显示形式　　：
+	SELECTCASE FLAG:像素画／上半脱衣显示形式
+	CASE 0
+		PRINTL 着衣
+	CASE 1
+		PRINTL 脱衣
+	CASE 2
+		PRINTFORML %SAVESTR:标识／乳房%仅露出显示（※测试项目）
+	ENDSELECT
+	PRINT [17] 部分头装备可隐藏种族耳朵　
+	CALL PRINT_ONOFF(FLAG:像素画／头装备隐藏耳朵,1)
+	PRINT [18] 内衣半脱时的显示形式　：
+	SELECTCASE FLAG:像素画／内衣半脱显示形式
+	CASE 0
+		PRINTL 着衣
+	CASE 1
+		PRINTL 脱衣
+	ENDSELECT
+ELSE
+	CALL PRINTL_WORD_COLOR("　　 点绘大小","灰")
+	CALL PRINTL_WORD_COLOR("　　 点绘水平调整","灰")
+	CALL PRINTL_WORD_COLOR("　　 着替え画面追加横轴调整","灰")
+	CALL PRINTL_WORD_COLOR("　　 非支持衣服的替换形式","灰")
+	CALL PRINTL_WORD_COLOR("　　 应用娇小像素画","灰")
+	CALL PRINTL_WORD_COLOR("　　 上半脱时的显示形式","灰")
+	CALL PRINTL_WORD_COLOR("　　 部分头装备可隐藏种族耳朵","灰")
+	CALL PRINTL_WORD_COLOR("　　 内衣半脱时的显示形式","灰")
+ENDIF
+CALL PRINTL_ALIGN
+CALL DEFAULT_VOID_RETURN_BUTTON(1)
+INPUT
+PRINTL
+SIF RESULT == 99
+	RETURN
+CALL CHANGE_IMAGE_CONFIG(RESULT)
+RESTART
+
+
+
+;入力
+;ARG→RESULT
+@CHANGE_IMAGE_CONFIG(ARG)
+
+SELECTCASE ARG
+CASE 0
+	INVERTBIT FLAG:头像／显示,0
+CASE 1
+	PRINTL 请输入图像大小。
+	PRINTL 由于大小相对于字体大小，因此在进行更改时，图像大小也会发生变化。
+	PRINTL
+	PRINTL [1000] 默认值
+	PRINTL 或者输入1以上的值。
+	INPUT
+	SIF RESULT > 0
+		FLAG:头像／尺寸 = RESULT
+CASE 2
+	PRINTL 输入图像显示位置的横轴。
+	PRINTL 当您更改字体大小时，每次移动的量也会发生变化。
+	PRINTL
+	PRINTL [5000] 默认值
+	PRINTL 或者输入1以上的值。
+	INPUT
+	SIF RESULT > 0
+		FLAG:头像／横轴调整 = RESULT
+CASE 3
+	INVERTBIT FLAG:头像／调教时图像替换,0
+CASE 4
+	PRINTL 请输入调教执行图像显示时的上下换行数。
+	PRINTL 当您更改字体大小时，每次移动的量也会发生变化。
+	PRINTL
+	PRINTL [5] 默认值
+	PRINTL 或者输入0～10的值。
+	INPUT
+	SIF RESULT >= 0 && RESULT <= 10
+		FLAG:头像／指令时换行数 = RESULT
+CASE 5
+	PRINTL 设置调教执行图像显示时是否禁用横向调整并向左对齐。
+	PRINTL （虽然由于与文本对齐显示在左侧，因此在某种程度上更易于阅读，但图像左右摆动可能对眼睛造成不适）
+	PRINTL
+	PRINTL [ 0] 正常调整（默认）
+	PRINTL [ 1] 左对齐
+	BINPUT
+	FLAG:头像／指令时左对齐 = RESULT
+
+CASE 10
+	INVERTBIT FLAG:像素画／显示,0
+CASE 11
+	PRINTL 请输入像素画大小。
+	PRINTL 由于像素画大小相对于字体大小的大小，因此在进行更改时，其大小也会发生变化。
+	PRINTL
+	PRINTL [150] 默认值
+	PRINTL 或者输入1以上的值。
+	INPUT
+	SIF RESULT > 0
+		FLAG:像素画／尺寸 = RESULT
+CASE 12
+	PRINTL 请输入像素画显示位置的横轴。
+	PRINTL 当您更改字体大小时，每次移动的量也会发生变化。
+	PRINTL
+	PRINTL [4500] 默认值
+	PRINTL 或者输入1以上的值。
+	INPUT
+	SIF RESULT > 0
+		FLAG:像素画／横轴调整 = RESULT
+CASE 13
+	PRINTL 请输入更换衣服画面上不显示头像的显示位置的横向调整量。
+	PRINTL 当您更改字体大小时，每次移动的量也会发生变化。
+	PRINTL
+	PRINTL [1000] 默认值
+	PRINTL 或者请输入值。（可以输入负数）
+	INPUT
+	FLAG:像素画／更换画面追加横轴调整 = RESULT
+CASE 14
+	PRINTL 请选择是否在穿着不支持的服装时进行替换显示。
+	PRINTLC [ 0] 裸
+	PRINTLC [ 1] 用＜布衣＞替换（默认）
+	PRINTLC [ 2] 用＜奴隶的破布＞替换
+	BINPUT
+	FLAG:像素画／不支持服装的替换形式 = RESULT
+CASE 15
+	PRINTL 选择要应用娇小像素画的身高。
+	PRINTLC [ 0] 【娇小】以下（默认）
+	PRINTLC [ 1] 【矮小】以下
+	PRINTL [ 2] 【儿童体型】以下
+	PRINTL
+	PRINTLC [90] （直接输入）
+	PRINTL [99] （取消）
+	BINPUT
+	SELECTCASE RESULT
+	CASE 0
+		FLAG:像素画／娇小适用上限数值 = HEIGHT_MAX_娇小
+	CASE 1
+		FLAG:像素画／娇小适用上限数值 = HEIGHT_MAX_矮小
+	CASE 2
+		FLAG:像素画／娇小适用上限数值 = HEIGHT_MAX_儿童体型
+	CASE 90
+		PRINTL 输入要应用娇小像素画的高度上限（小于设置值时应用），以mm为单位。
+		PRINTFORML （设定上限：【高身高】的值　={HEIGHT_MAX_标准}～0）
+		INPUT
+		SIF RESULT >= 0 && RESULT <= HEIGHT_MAX_标准
+			FLAG:像素画／娇小适用上限数值 = RESULT
+	ENDSELECT
+CASE 16
+	PRINTL 请选取衣服上半身半脱时的像素画显示形式。
+	PRINTLC [ 0] 穿衣（默认）
+	PRINTLC [ 1] 脱衣
+	PRINTFORML [ 2] %SAVESTR:标识／乳房%部分裸露显示（※为测试项目，可能因衣物或胸围尺寸导致显示问题）
+	BINPUT
+	FLAG:像素画／上半脱衣显示形式 = RESULT
+CASE 17
+	PRINTL 请选取是否在装备＜修女面纱＞等时隐藏部分种族耳朵。
+	PRINTLC [ 0] 不隐藏（默认）
+	PRINTLC [ 1] 隐藏
+	BINPUT
+	FLAG:像素画／头装备隐藏耳朵 = RESULT
+CASE 18
+	PRINTL 请选取下着类半脱时的像素画显示形式。
+	PRINTLC [ 0] 穿衣（默认）
+	PRINTLC [ 1] 脱衣
+	BINPUT
+	FLAG:像素画／内衣半脱显示形式 = RESULT
+CASE 98
+	PRINTL 回复默认值？
+	PRINTL
+	PRINTL [ 0] 回复默认图像配置
+	PRINTL [ 1] 回复像素画配置默认值
+	PRINTL [ 2] 两者回复默认值
+	PRINTL [99] 取消
+	BINPUT
+	SELECTCASE RESULT
+	CASE 0
+		CALL DEFAULT_IMAGE_CONFIG
+	CASE 1
+		CALL DEFAULT_PORTRAIT_CONFIG
+	CASE 2
+		CALL DEFAULT_IMAGE_CONFIG
+		CALL DEFAULT_PORTRAIT_CONFIG
+	ENDSELECT
+ENDSELECT
+RETURN
+
+
+
+;サンプル表示
+@SAMPLE_PRINT_PORTRAIT
+#DIMS PRT_SAMPLE
+
+SIF !FLAG:像素画／显示
+	RETURN
+PRT_SAMPLE = <nobr><nonbutton pos='{FLAG:像素画／横轴调整}'><img src='点绘取样' height='{FLAG:像素画／尺寸 *5945 /1000}' ypos = '0'></nonbutton>
+HTML_PRINT PRT_SAMPLE
+
+
+
+

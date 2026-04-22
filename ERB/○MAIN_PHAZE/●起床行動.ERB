@@ -1,0 +1,24 @@
+﻿
+;起きた直後の行動
+@MORNING_ACT
+
+;拡張するかもしれない
+PRINTFORML 早上了…今天的天气是【%SAVESTR:天气／今天%】。
+
+;豊穣値処理追加
+CALL BUST_GROW_CHECK
+PRINTL
+TARGET = 0
+WAIT_ON = 0
+PRINTFORML 换好衣服的%CALLNAME%为宠物们准备了早餐。
+
+;ペットの朝ごはん
+CALL PET_BREAKFAST
+
+;朝のミルク
+PRINTFORML %CALLNAME%也开始吃早餐。
+CALL DRINK_COLD_MILK_AUTO
+SIF WAIT_ON
+	PRINTW
+
+

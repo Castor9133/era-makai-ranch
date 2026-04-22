@@ -1,0 +1,100 @@
+﻿
+;ニンゲン衣服
+@ITEM_DETAIL_CLOTHE_HUMAN_REPLICA
+
+SELECTCASE ITEMNAME:SELECT_ITEM
+CASE "旅人之服"
+	CALL CLOTHE_DETAIL_COMMON()
+	PRINTL 将一般设计的衣物做得坚固且易于活动，以便在旅行和战斗中使用。
+	PRINTL 至少作为冒险者，希望能拥有这样的装备。
+
+CASE "长袍"
+	CALL CLOTHE_DETAIL_COMMON()
+	PRINTL 这是魔法师等人身穿的，能够遮住脚部的上下一体式服装。
+	PRINTFORML %SAVESTR:标识／乳房%较大的女性通常会在腰部加上腰带，以避免显得过于丰满。
+
+CASE "贵族服"
+	CALL CLOTHE_DETAIL_COMMON()
+	PRINTL 社会地位较高的人所穿的装饰华丽的服装的总称。
+	PRINTL 这些材料看起来品质不错，作为解体・再利用的材料，很受魔界居民的欢迎。
+	
+CASE "女巫服"
+	CALL CLOTHE_DETAIL_COMMON()
+	PRINTL 基本的衣服是一套名为「小袖」的白色上部服，一套名为「绯袴」的红色下部服。
+	PRINTL 穿这种衣服的「巫女」就像是日本地区的修女一样。
+
+CASE "修道服"
+	CALL CLOTHE_DETAIL_COMMON()
+	PRINTL 接近修女穿的长袍的衣服。
+	PRINTL 虽然很难脱掉，但根本就不是容易脱掉的必要衣服。
+
+CASE "法衣"
+	CALL CLOTHE_DETAIL_COMMON()
+	PRINTL 僧侣穿的非常不容易露出身体线条的衣服。
+	PRINTL 这反而更有脱掉的乐趣，人类和魔族的概念似乎都是共通的。
+
+CASE "忍装束"
+	CALL CLOTHE_DETAIL_COMMON()
+	PRINTL 忍者身上穿的服装。
+	PRINTL 布料相当少，以免干扰快速的身段。男性忍者用的应该也不是这样，
+	PRINTL 但女性忍者认为诱惑也是任务之一，因此会选择这样的服装。
+
+CASE "战斗用女巫服"
+	CALL CLOTHE_DETAIL_COMMON()
+	PRINTL 具备与魔族战斗力的巫女穿着的服装，经过修改以提高灵活性。
+	PRINTL 由于原本的裤子并不考虑迅捷移动，
+	PRINTL 将其缩短后已经相当容易活动了。
+
+CASE "战斗修女服"
+	CALL CLOTHE_DETAIL_COMMON()
+	PRINTL 具备与魔族战斗力的修女穿着的服装，经过修改以提高灵活性。
+	PRINTL 由于改动使其上下分离，因此更容易脱下。
+
+CASE "战斗女仆装"
+	CALL CLOTHE_DETAIL_COMMON()
+	PRINTL 拥具备与魔族战斗力的女仆穿着的服装，经过修改以提高灵活性。
+	PRINTL 优化为战斗用后，可能不太适合女仆的工作，
+	PRINTL 因此这可能是一种在战斗中仍保持女仆身份的服装。
+
+CASE "比基尼盔甲"
+	CALL CLOTHE_DETAIL_COMMON("仅限密封类型")
+	PRINTFORML 只保护%SAVESTR:标识／乳房%和私处部分的铠甲。
+	PRINTL 虽然理解在特定部位使用装甲以提高灵活性的理念，但使用普通的铠甲可能更加实际。
+
+CASE "外套"
+	CALL ACCESSORY_DETAIL_COMMON("外衣")
+	PRINTL 冬季服装或穿在衣服外面的防护装备。
+
+CASE "魔法学院制服"
+	CALL CLOTHE_DETAIL_COMMON()
+	PRINTL 供地上学习魔法的人们使用的大规模学院外套制服。
+	PRINTL 蕴含防护魔法，能够防止魔法训练中的伤害和事故。
+	PRINTL 在那个国家的知名度相当高，穿着就能作为身份证明。
+
+
+;ここから拡張
+CASE "天界长袍"
+	CALL CLOTHE_DETAIL_COMMON()
+	PRINTL 使用天界素材制作的长袍。
+	PRINTL 每一件都蕴含圣洁的力量，外表虽看似柔弱，但非常耐用且不易沾染污垢。
+	PRINTL 因为抱着“如果要再现，就要完美”的信念，甚至是执念的结果，
+	PRINTL 在魔界制作的复制品也不知为何蕴含同等的力量。
+	
+CASE "礼服"
+	CALL CLOTHE_DETAIL_COMMON()
+	PRINTL 这是身份较高的人类女性穿着的，定制的豪华服装。
+	PRINTL 尽管它看起来非常奢华，但并没有在游戏中产生实际的区别。
+	IF FLAG:玩笑表示
+		PRINTL 即使是身分相对较高的女性，在宴会上也会穿。
+		PRINTL …诶，不是宴会吗？
+		PRINTL 社交圈？派对？之类的东西。有和魔界相似的风俗吗…？
+	ENDIF
+
+CASE "战斗礼服"
+	CALL CLOTHE_DETAIL_COMMON()
+	PRINTL 身份高贵、亲自参与战斗的人类女性所穿的衣物，既方便活动又豪华。
+	PRINTL 似乎是符合「贵族责任」的理念。
+	PRINTL 魔族之间基本都认为强大＝崇高，因此对于魔族来说，强大却不亲自战斗的概念是有点难以理解的。
+ENDSELECT
+
+

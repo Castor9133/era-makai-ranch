@@ -1,0 +1,419 @@
+﻿
+;射精処理
+@PENIS_EJACULATION
+
+;射精をMAXで割った回数射精
+SOURCE:射精次数 = BASE:PLAYER:射精 /MAXBASE:PLAYER:射精
+BASE:PLAYER:射精 -= (MAXBASE:PLAYER:射精 *SOURCE:射精次数)
+
+;スケジュール外に使う
+TFLAG:指令中射精次数 = SOURCE:射精次数
+
+;コンドーム使用中の場合
+IF TEQUIP:0:避孕套
+	IF GETBIT(＃Ｐ使用／Ｍ插入＃) && TEQUIP:深喉 && SOURCE:射精次数 > 0
+		CALL DEEP_THROAT_CONDOM_BEFORE_EJAC_CHOICE
+	ELSE
+		TFLAG:深喉避孕套射精地文 = 0
+	ENDIF
+	TFLAG:射精次数 += SOURCE:射精次数
+	
+	;奴隷の「あなたに射精された回数」とあなたの「射精した回数」+1
+	EXP:经验次数／主人公／射精合计 += 1
+	EXP:PLAYER:射精次数合计 += 1
+	SOURCE:阴茎拔出 = 1
+
+	;射精回数に応じてPLAYERの体力消費
+	CALL EJACULATION_PLAYER_HP_DOWN
+	RETURN
+ENDIF
+
+;注ぎ込み以外の射精をしたかの確認
+SOURCE:外射次数 = SOURCE:射精次数
+
+;注ぎ込みならここで増加　大量注ぎ込みは合計+5
+SIF SOURCE:注入灵力量 || SOURCE:注入魔力量
+	SOURCE:射精次数 ++
+SIF SOURCE:大量注入
+	SOURCE:射精次数 += 4
+
+;スケジュール外なら射精メッセージ前に止める
+;PRINTしなくなったので廃止
+;SIF TFLAG:スケジュール外Ｈ
+;	WAIT
+
+;射精箇所
+IF GETBIT(＃Ｐ使用／Ｖ插入＃)
+	CALL EJACULATION_PART_REF("Ｖ性交")
+	
+	;膣内射精
+	IF RESULT == 1
+		CALL EJACULATION_V
+	ELSE
+		CALL EJACULATION_OUT
+	ENDIF
+
+ELSEIF GETBIT(＃Ｐ使用／Ａ插入＃)
+	CALL EJACULATION_PART_REF("Ａ性交")
+	IF RESULT == 1
+		CALL EJACULATION_A
+	ELSE
+		CALL EJACULATION_OUT
+	ENDIF
+
+ELSEIF GETBIT(＃Ｐ使用／乳交＃)
+	IF TEQUIP:乳交 || TEQUIP:强制乳交
+		CALL EJACULATION_PART_REF("乳交")
+	ELSE
+		CALL EJACULATION_PART_REF("纵乳交")
+	ENDIF
+	SIF ABL:胸围大小 < BUSTSIZE_普乳 && RESULT == 1
+		RESULT = 2
+	IF RESULT == 1
+		CALL EJACULATION_B
+	ELSEIF RESULT == 2
+		CALL EJACULATION_B_OUT
+	ELSE
+		CALL EJACULATION_FACE
+	ENDIF
+	
+	;奉仕なら習得増加
+	SIF TEQUIP:乳交 || TEQUIP:纵乳交
+		SOURCE:学习 += (SOURCE:射精次数 *2000)
+
+ELSEIF GETBIT(＃Ｐ使用／Ｍ插入＃)
+	IF TEQUIP:口交
+		CALL EJACULATION_PART_REF("口交")
+		SOURCE:学习 += (SOURCE:射精次数 *2000)
+	ELSE
+		CALL EJACULATION_PART_REF("深喉")
+	ENDIF
+	IF RESULT == 1
+		CALL EJACULATION_M
+	ELSE
+		CALL EJACULATION_FACE
+	ENDIF
+
+ELSEIF TEQUIP:手淫 || TEQUIP:授乳手交
+	;素股・手コキは選択肢出ないかな
+	CALL EJACULATION_HAND
+ELSEIF TEQUIP:足交
+	CALL EJACULATION_FOOT
+ELSEIF TEQUIP:素股
+	CALL EJACULATION_CROTCH
+ENDIF
+RESETCOLOR
+SOURCE:不洁 += DAMAGE
+SOURCE:精液经验 += (DAMAGE /2)
+TFLAG:射精次数 += SOURCE:射精次数
+
+;注ぎ込み分の精力は消費しない
+SOURCE:调教者精力消费量 += (SOURCE:外射次数 *1000)
+EXP:经验次数／主人公／射精合计 += 1
+EXP:PLAYER:射精次数合计 += 1
+
+;射精回数に応じてPLAYERの体力消費
+CALL EJACULATION_PLAYER_HP_DOWN
+
+;霊力を注ぎ込んだなら100ごとに10HP回復
+SIF !SOURCE:注入灵力量
+	RETURN
+SOURCE:调教对象体力回复 = SOURCE:注入灵力量 /10
+SOURCE:调教对象体力回复 -= (SOURCE:调教对象体力回复 %10)
+SOURCE:调教对象体力回复 = LIMIT(SOURCE:调教对象体力回复,0,1000)
+
+
+
+;膣内射精
+@EJACULATION_V
+
+SOURCE:耻辱 += (SOURCE:射精次数 *1000)
+SOURCE:爱情 += (ABL:膣内射精中毒 *SOURCE:射精次数 *1000)
+SOURCE:屈辱 += (SOURCE:射精次数 *4000)
+CALL EJACULATION_SP_DAMAGE_CALC
+
+;不潔増加分
+DAMAGE = SOURCE:射精次数 *2000
+
+;Ｖ快楽増加　膣内射精中毒によりさらに増加
+PLEASURE = 1000 +ABL:膣内射精中毒 *200 +MARK:膣内射精中毒 *1000 +MARK:榨精淫穴 *2000 +MARK:精液便女 *3000
+
+;濃厚精液による増加
+CALL STRONG_SEMEN_FIX
+SOURCE:膣内射精经验 += PLEASURE
+SOURCE:Ｖ快感／主人公刺激 += PLEASURE
+
+;奴隷の「射精された回数」「あなたに射精された回数」・あなたの「射精した回数」を増加
+;全体の回数は共通部分でやってる
+;奴隷がふたなりの場合は考えてないです
+EXP:膣内射精次数 += 1
+EXP:经验次数／主人公／膣内射精 += 1
+EXP:PLAYER:膣内射精次数 += 1
+
+;妊娠判定
+CALL PREGNANT_JUDGE
+SOURCE:Ｖ润滑追加 += (SOURCE:射精次数 *1000)
+CALL SET_STAIN_TARGET("膣","精液")
+CALL SET_STAIN_PLAYER("阴茎","精液")
+TFLAG:子宫内精液量 += SOURCE:射精次数
+TFLAG:膣内精液 = 1
+
+
+
+;尻穴射精
+@EJACULATION_A
+
+SOURCE:耻辱 += (SOURCE:射精次数 *2000)
+SOURCE:爱情 += (ABL:尻穴射精中毒 *SOURCE:射精次数 *1000)
+SOURCE:屈辱 += (SOURCE:射精次数 *6000)
+CALL EJACULATION_SP_DAMAGE_CALC
+DAMAGE = SOURCE:射精次数 *4000
+PLEASURE = 1000 +ABL:尻穴射精中毒 *200 +MARK:尻穴射精中毒 *1000 +MARK:榨精尻穴 *2000 +MARK:尻穴便器 *3000
+CALL STRONG_SEMEN_FIX
+SOURCE:尻穴射精经验 += PLEASURE
+SOURCE:Ａ快感／主人公刺激 += PLEASURE
+EXP:尻穴射精次数 += 1
+EXP:经验次数／主人公／尻穴射精 += 1
+EXP:PLAYER:尻穴射精次数 += 1
+SOURCE:Ａ润滑追加 += (SOURCE:射精次数 *1000)
+CALL SET_STAIN_TARGET("肛门","精液")
+CALL SET_STAIN_PLAYER("阴茎","精液")
+TFLAG:肠内精液量 += (SOURCE:射精次数 +TFLAG:尻穴精液 -1)
+TFLAG:尻穴精液 = 1
+
+
+
+;引き抜いて外出し
+@EJACULATION_OUT
+
+SOURCE:阴茎拔出 = 1
+SOURCE:耻辱 += (SOURCE:射精次数 *500)
+SOURCE:爱情 += (SOURCE:射精次数 *500)
+SOURCE:屈辱 += (SOURCE:射精次数 *500)
+SOURCE:股间射精 = 1
+DAMAGE = SOURCE:射精次数 *2000
+CALL STRONG_SEMEN_FIX
+SOURCE:不洁 += DAMAGE
+
+;あんまり増えないので外射精するメリットはぶっちゃけそんなにないよ
+SIF TFLAG:背后
+	CALL SET_STAIN_TARGET("尻","精液")
+CALL SET_STAIN_PLAYER("阴茎","精液")
+
+
+
+;乳内射精
+@EJACULATION_B
+
+SOURCE:耻辱 += (SOURCE:射精次数 *3000)
+SOURCE:爱情 += (ABL:乳内射精中毒 *SOURCE:射精次数 *1000)
+SOURCE:屈辱 += (SOURCE:射精次数 *4000)
+DAMAGE = SOURCE:射精次数 *3000
+PLEASURE = 1000 +ABL:乳内射精中毒 *200
+CALL STRONG_SEMEN_FIX
+SOURCE:乳内射精经验 += PLEASURE
+SOURCE:Ｂ快感／主人公刺激 += PLEASURE
+EXP:乳内射精次数 += 1
+EXP:经验次数／主人公／乳内射精 += 1
+EXP:PLAYER:乳内射精次数 += 1
+CALL SET_STAIN_TARGET("乳房","精液")
+CALL SET_STAIN_PLAYER("阴茎","精液")
+TFLAG:乳内精液 = 1
+
+
+
+;胸ぶっかけ
+@EJACULATION_B_OUT
+
+SOURCE:阴茎拔出 = 1
+SOURCE:耻辱 += (SOURCE:射精次数 *700)
+SOURCE:爱情 += (SOURCE:射精次数 *1000)
+SOURCE:屈辱 += (SOURCE:射精次数 *2000)
+SOURCE:乳房射精 = 1
+DAMAGE = SOURCE:射精次数 *3000
+CALL STRONG_SEMEN_FIX
+CALL SET_STAIN_TARGET("乳房","精液")
+CALL SET_STAIN_TARGET("乳头","精液")
+CALL SET_STAIN_PLAYER("阴茎","精液")
+
+
+
+;顔ぶっかけ
+@EJACULATION_FACE
+
+SOURCE:阴茎拔出 = 1
+SOURCE:耻辱 += (SOURCE:射精次数 *700)
+SOURCE:爱情 += (SOURCE:射精次数 *1000)
+SOURCE:屈辱 += (SOURCE:射精次数 *2000)
+SOURCE:颜面射精 = 1
+DAMAGE = SOURCE:射精次数 *3000
+CALL STRONG_SEMEN_FIX
+EXP:脸射次数 += 1
+EXP:经验次数／主人公／顔射 += 1
+EXP:PLAYER:脸射次数 += 1
+CALL SET_STAIN_TARGET("脸","精液")
+CALL SET_STAIN_PLAYER("阴茎","精液")
+
+
+
+
+;口内射精
+@EJACULATION_M
+
+;終了判定出すためにここつける
+SOURCE:阴茎拔出 = 1
+SOURCE:耻辱 += (SOURCE:射精次数 *1000)
+SOURCE:爱情 += (ABL:精饮中毒 *SOURCE:射精次数 *1000)
+SOURCE:屈辱 += (SOURCE:射精次数 *5000)
+CALL EJACULATION_SP_DAMAGE_CALC
+DAMAGE = SOURCE:射精次数 *5000
+PLEASURE = 1000 +ABL:精饮中毒 *200
+CALL STRONG_SEMEN_FIX
+SOURCE:精饮经验 += PLEASURE
+EXP:精饮次数 += 1
+EXP:经验次数／主人公／精饮 += 1
+EXP:PLAYER:精饮次数 += 1
+EXP:PLAYER:精饮次数 += SOURCE:射精次数
+CALL SET_STAIN_TARGET("口","精液")
+CALL SET_STAIN_PLAYER("阴茎","精液")
+TFLAG:咽下精液量 += (SOURCE:射精次数 +TFLAG:口内精液 -1)
+TFLAG:口内精液 = 1
+
+
+
+;素股射精
+@EJACULATION_CROTCH
+
+SOURCE:阴茎拔出 = 1
+SOURCE:耻辱 += (SOURCE:射精次数 *700)
+SOURCE:爱情 += (SOURCE:射精次数 *700)
+SOURCE:屈辱 += (SOURCE:射精次数 *1000)
+SOURCE:股间射精 = 1
+DAMAGE = SOURCE:射精次数 *2000
+CALL STRONG_SEMEN_FIX
+CALL SET_STAIN_PLAYER("阴茎","精液")
+EXP:素股射精次数 += 1
+EXP:经验次数／主人公／素股射精 += 1
+EXP:PLAYER:素股射精次数 += 1
+SOURCE:学习 += DAMAGE
+
+
+
+;手コキ射精
+@EJACULATION_HAND
+
+SOURCE:阴茎拔出 = 1
+SOURCE:耻辱 += (SOURCE:射精次数 *700)
+SOURCE:爱情 += (SOURCE:射精次数 *1500)
+SOURCE:屈辱 += (SOURCE:射精次数 *1000)
+DAMAGE = SOURCE:射精次数 *2000
+CALL STRONG_SEMEN_FIX
+CALL SET_STAIN_TARGET("手","精液")
+CALL SET_STAIN_PLAYER("阴茎","精液")
+EXP:手淫射精次数 += 1
+EXP:经验次数／主人公／手淫射精 += 1
+EXP:PLAYER:手淫射精次数 += 1
+SOURCE:学习 += DAMAGE
+
+
+
+;足交射精
+@EJACULATION_FOOT
+
+SOURCE:阴茎拔出 = 1
+SOURCE:耻辱 += (SOURCE:射精次数 *800)
+SOURCE:爱情 += (SOURCE:射精次数 *900)
+SOURCE:屈辱 += (SOURCE:射精次数 *1200)
+SOURCE:股间射精 = 1
+DAMAGE = SOURCE:射精次数 *2000
+CALL STRONG_SEMEN_FIX
+CALL SET_STAIN_PLAYER("阴茎","精液")
+EXP:足交射精次数 += 1
+EXP:经验次数／主人公／足交射精 += 1
+EXP:PLAYER:足交射精次数 += 1
+SOURCE:学习 += DAMAGE
+
+
+
+;濃厚精液による快楽、不快値増加　ARGS:補正ABL
+@STRONG_SEMEN_FIX(ARGS)
+
+PLEASURE *= SOURCE:射精次数
+;そのうちABL:0:精液濃度　で判定
+
+;TIMES PLEASURE,1.50
+;TIMES DAMAGE,1.50
+
+
+
+;射精回数に応じてPLAYERの体力消費
+@EJACULATION_PLAYER_HP_DOWN
+
+;そのうちABL:0:連続射精力　で判定
+DAMAGE = SOURCE:射精次数 *200
+
+;ペニスサイズ差補正がプラスなら軽減
+SIF TFLAG:阴茎尺寸差修正 > 0
+	DAMAGE = DAMAGE * 1000 / (1000 + TFLAG:阴茎尺寸差修正)
+;絶倫なら半減
+SIF ITEM:绝伦 && GETBIT(＃有效／绝伦＃)
+	DAMAGE /= 2
+
+SOURCE:调教者体力消耗 += DAMAGE
+
+;霊力・魔力注入した場合の追加の体力計算は先にやる
+SIF !SOURCE:注入灵力量 && !SOURCE:注入魔力量
+	RETURN
+SOURCE:调教者体力消耗 += 100
+SIF SOURCE:大量注入
+	SOURCE:调教者体力消耗 += 500
+
+
+
+;体内射精時の気力減少
+@EJACULATION_SP_DAMAGE_CALC
+#DIM FALLING_FIX
+#DIM DAMAGE_ORIGN
+
+;気力減少→√射精回数 *10000
+DAMAGE = SQRT(SOURCE:射精次数 *10000)
+DAMAGE_ORIGN = DAMAGE
+
+;精液中毒で緩和、恋慕／隷属／乳牛ならさらに緩和
+IF ＃陷落状态／隶属＃
+	FALLING_FIX = 10
+ELSEIF CFLAG:乳牛
+	FALLING_FIX = 8
+ELSEIF ＃陷落状态／恋慕以上＃
+	FALLING_FIX = 7
+ELSE
+	FALLING_FIX = 5
+ENDIF
+FIX = 100 -ABL:精液中毒 *FALLING_FIX
+DAMAGE *= FIX
+DAMAGE /= 100
+
+;DAMAGEが-のとき気力増加
+IF DAMAGE >= 0
+	LOSEBASE:气力 += DAMAGE
+ELSE
+	SOURCE:调教对象气力回复 += (DAMAGE *-1)
+ENDIF
+
+
+
+;深喉＋避孕套射精：射精直前の選択（地文・飲精の見せ方のみ。EXP・SOURCE・中毒等は変えない）
+@DEEP_THROAT_CONDOM_BEFORE_EJAC_CHOICE
+
+TFLAG:深喉避孕套射精地文 = 0
+CALL PRINTL_WORD_COLOR,@"仍裹着避孕套的%SLANG_PENIS()%深顶在%CALLNAME%喉口，射精已不可避免……","桃"
+PRINTL [0] 保持避孕套，射在套里（地文：胶套承接）
+PRINTL [1] 射精前扯下避孕套（地文：直接灌喉／咽下描写，数值与平常避孕套射精相同）
+INPUT
+LOCAL = RESULT
+CLEARLINE 5
+SIF LOCAL == 1
+	TFLAG:深喉避孕套射精地文 = 1
+
+
+

@@ -1,0 +1,80 @@
+﻿
+;④感情SOURCEから振り分け
+;もろもろを30～39に変換
+@MIND_EXP_PLUS
+#DIM MIND_FIX
+
+	;乳牛堕ち→振り分け済み
+	;淫欲→マゾっ気で追加
+;マゾっ気による変換
+IF ABL:受虐癖 >= 5
+	MIND_FIX = LIMIT(ABL:受虐癖 -5,0,15)
+	SOURCE:淫欲 += ((SOURCE:屈辱 +SOURCE:支配 +SOURCE:耻辱) *MIND_FIX /10)
+	SOURCE:淫欲 += (SOURCE:被虐快感经验 *MIND_FIX /10)
+ENDIF
+
+
+	;恭順→振り分け済み
+	;屈服
+;恥じらい／大人しい・無関心でない→恥辱で増加
+SIF (TALENT:害羞 || TALENT:老实) && !TALENT:冷漠
+	SOURCE:屈服 += SOURCE:耻辱
+
+;臆病／弱気／悲観的→苦痛・恐怖で増加
+SIF TALENT:胆怯 || TALENT:弱势 || TALENT:悲观
+	SOURCE:屈服 += (SOURCE:痛苦 +SOURCE:恐怖)
+
+;臆病→支配で増加
+SIF TALENT:胆怯
+	SOURCE:屈服 += SOURCE:支配
+
+;マゾっ気により恥辱・屈辱・支配で増加
+IF ABL:受虐癖 >= 5
+	MIND_FIX = LIMIT(ABL:受虐癖 -4,0,20)
+	DAMAGE = (SOURCE:耻辱 +SOURCE:屈辱 +SOURCE:支配) *MIND_FIX /10
+	SOURCE:屈服 += DAMAGE
+ENDIF
+
+
+	;苦痛→振り分け済み
+	;恐怖
+;臆病→マゾっ気なければ恥辱・屈辱・支配で増加
+IF TALENT:胆怯 && ABL:受虐癖 < 10
+	DAMAGE = (SOURCE:耻辱 +SOURCE:屈辱 +SOURCE:支配) /2
+	SOURCE:恐怖 += DAMAGE
+ENDIF
+
+	;不快
+;不潔で基礎増加
+SOURCE:不快 += SOURCE:不洁
+
+;プライド高い／高慢→屈辱で増加
+SIF TALENT:自尊心高 || TALENT:高傲
+	SOURCE:不快 += SOURCE:屈辱
+
+
+	;反感
+;理性があれば3つで増加
+IF BASE:理性
+	DAMAGE = (SOURCE:耻辱 +SOURCE:屈辱 +SOURCE:支配) /2
+	SOURCE:反感 += DAMAGE
+ENDIF
+
+;快感の否定→理性があれば淫欲で増加
+SIF TALENT:否定快感 && BASE:理性
+	SOURCE:反感 += (SOURCE:淫欲 /2)
+
+
+	;失意
+;気力0→苦痛・恐怖で増加
+SIF !BASE:气力
+	SOURCE:失意 += (SOURCE:痛苦 +SOURCE:恐怖)
+
+
+
+
+
+
+
+
+

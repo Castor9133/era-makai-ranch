@@ -1,0 +1,28 @@
+﻿
+;1行表示のステータスを切り替える
+@CHANGE_TABLE_STATUS
+
+CALL MANYL(5)
+PRINTL 切换奴隶列表中显示的状态？
+PRINTL ・总是显示名称、陷落状态和胸围大小
+CALL HALFLINE
+PRINTL [ 0] HP+画面显示
+PRINTL 　　（预定日程或母乳浓度+母乳生产力　+适用时百合倾向）
+PRINTL [ 1] HP+母乳浓度+母乳生产力
+PRINTL [ 2] 灵力状态
+PRINTL [ 3] 魔力状态
+PRINTL [ 4] 身高+种族+发型
+PRINTL [ 5] 种族+身份或头衔
+PRINTL [ 6] 工作能力
+PRINTL [ 7] 母乳浓度+母乳生产力+陷落状态详细
+PRINTL [ 8] 预定日程+日程（主要画面仅适用，调教对象选择等HP+母乳）
+PRINTL
+PRINTL [99] 取消
+INPUT
+SIF RESULT >= 0 && RESULT < TABLE_STATUS_PAGE
+	FLAG:列表状态切换 = RESULT
+
+
+
+
+

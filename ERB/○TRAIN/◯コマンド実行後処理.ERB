@@ -1,0 +1,115 @@
+﻿
+;コマンド後擬音呼び出し
+@TRAIN_ONOMATOPOEIA_COMMON
+
+SIF !TFLAG:调教中
+	RETURN
+
+;地の文→改行→口上あれば出す→調教コマンド実行回数増加
+;パイズリなど継続判定になったのでここからは消えた
+SIF SOURCE:揉胸
+	CALL ONOMATOPOEIA("揉胸")
+SIF TFLAG:吸奶
+	CALL ONOMATOPOEIA("吸奶")
+SIF SOURCE:舐舔拟音显示
+	CALL ONOMATOPOEIA("舔舐")
+
+
+
+;コマンド後口上呼び出し
+@TRAIN_KOJO_COMMON
+
+;ARGS:2に「実行」を指定するよう追加
+;だいたいの単発コマンドには影響なく挿入時の視認性向上できる感じ
+;初経験喪失時は出さない
+;コマンド実行時にここでは出さないフラグをつけていたら出さない→ピストン、胸拭き取りなど
+;口が塞がってたりしたら余計に出るのでいる
+;SOURCE:処女喪失→300
+SIF !TFLAG:调教中
+	RETURN
+SIF !MATCH(SOURCE,1,300,305) && !SOURCE:选择指令口上隐藏
+	CALL KOJO_PRINT("调教命令",TRAINNAME:SELECTCOM,"执行")
+EXP:(SELECTCOM +1000) ++
+PRINTL
+
+
+
+;コマンド実行時画像表示
+@TRAIN_IMAGE_COMMON
+
+SIF !TFLAG:调教中
+	RETURN
+SELECTCASE TRAINNAME:SELECTCOM
+CASE "乳交","纵乳交","强制乳交","强制纵乳交"
+	CALL PRINT_IMAGE("乳交")
+CASE "素股","口交","手淫","骑乘位","背面骑乘位","Ａ骑乘位","Ａ背面骑乘位"
+	CALL PRINT_IMAGE("奉仕")
+CASEELSE
+	CALL PRINT_IMAGE("调教执行")
+ENDSELECT
+
+
+
+;時間経過処理
+@TRAIN_TIME_PROCESS
+
+SIF !TFLAG:调教中
+	RETURN
+
+;制限撤廃なら無効
+IF GETBIT(＃限制解除／调教时间＃)
+
+;時間圧縮中ならターン数増加して有効ターン×必要魔力消費
+ELSEIF TFLAG:压缩时间中
+	;時間圧縮のほうを撤廃なら無効、永続化しているなら無効
+	IF !GETBIT(＃限制解除／时间压缩＃) && !ITEM:时间压缩永久化
+		TFLAG:时间压缩有效回合数 ++
+		SOURCE:魔力消耗量 += MAGIC_USE_MP:GETNUM(ITEM,"时间压缩") *TFLAG:时间压缩有效回合数
+	ENDIF
+ELSE
+	TFLAG:剩余时间 --
+ENDIF
+TFLAG:执行指令的次数 ++
+
+
+
+;SOURCE処理後ステータス増減処理
+;調教外なら最後にまとめてやる
+@SOURCE_UP_AFTER_STATUS_UP
+
+SIF !TFLAG:调教中 && !TFLAG:日程外Ｈ
+	RETURN
+CALL ABL_UP
+CALL MARK_GET
+
+;あなたの体力増加・レベルアップ
+CALL MASTER_POWERUP
+
+;霊力・魔力の注入
+CALL POWER_INJECTION
+
+
+
+;PLAYERの刻印・リセット
+;ARG→スケジュールでもABL,MARKを見る
+@PLAYER_SOURCE_UP_AFTER_STATUS_UP(ARG)
+
+SIF PLAYER < 0
+	RETURN
+SAVE_TARGET = TARGET
+TARGET = PLAYER
+
+;スケジュール中ならABL,MARKは最後
+;ARG=1なら自動でやる
+IF TFLAG:调教中 || TFLAG:日程外Ｈ || ARG
+	CALL ABL_UP
+	CALL MARK_GET
+ENDIF
+
+;ここで調教者のリセット
+VARSET SOURCE
+VARSET PALAM
+VARSET NOWEX
+TARGET = SAVE_TARGET
+
+

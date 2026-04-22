@@ -1,0 +1,101 @@
+; ======================================
+; 泛用口上・调教命令（性格：妹系）
+; ======================================
+
+@KOJO_GENERAL_妹系口上1_TRAIN(ARGS:0,ARGS:1,ARGS:2,ARGS:3)
+
+SELECTCASE ARGS:2
+CASE "执行"
+	SELECTCASE ARGS:1
+	CASE "揉胸","育乳按摩","浓厚母乳按摩","乳罐按摩","胸爱抚","拧乳头"
+		IF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「呀……♥ 轻点……我会乖乖的……♥」"
+			CALL MESSAGE_BOX,@"「……再摸一下……也、也不是不行……♥」"
+		ELSE
+			CALL MESSAGE_BOX,@"「不、不行！别摸那里……！」"
+		ENDIF
+
+	CASE "接吻","舔舐脸","舔舐耳","舔舐腋"
+		IF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……亲一下……就一下……♥」"
+			CALL MESSAGE_BOX,@"「……嗯……不许笑……♥」"
+		ELSE
+			CALL MESSAGE_BOX,@"「太近了！不行！」"
+		ENDIF
+
+	CASE "口交","触手口交"
+		IF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……我会含住……别太用力顶……♥」"
+			CALL MESSAGE_BOX,@"「……舒服的话……要说哦……♥」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……要我用嘴……？才不要……！」"
+		ENDIF
+
+	CASE "深喉","触手深喉"
+		IF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「咳……咳……我、我还能……♥」"
+		ELSE
+			CALL MESSAGE_BOX,@"「呜……太深了……！」"
+		ENDIF
+
+	CASE "手淫","授乳手交"
+		IF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……这样……舒服吗……♥」"
+		ELSE
+			CALL MESSAGE_BOX,@"「手、手就行吗……？」"
+		ENDIF
+
+	CASE "足交"
+		IF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「用脚……也可以……我会努力……♥」"
+		ELSE
+			CALL MESSAGE_BOX,@"「用脚……好奇怪……」"
+		ENDIF
+
+	CASE "正常位","后背位","对面坐位","背面坐位","骑乘位","对面立位","背面立位","强制骑乘位","背面骑乘位"
+		IF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「进来……♥ 我、我会抱紧你……♥」"
+		ELSE
+			CALL MESSAGE_BOX,@"「不行……别进来……！」"
+		ENDIF
+
+	CASE "Ａ正常位","Ａ后背位","Ａ对面坐位","Ａ背面坐位","Ａ骑乘位","Ａ对面立位","Ａ背面立位","强制Ａ骑乘位","Ａ背面骑乘位"
+		IF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「后面……也要吗……？呜……♥」"
+		ELSE
+			CALL MESSAGE_BOX,@"「那里不行！」"
+		ENDIF
+
+	CASE "打屁股","皮鞭抽打"
+		CALL MESSAGE_BOX,@"「呜……别打……我会乖的……！」"
+
+	CASE "肛塞"
+		CALL MESSAGE_BOX,@"「后面……要放进去吗……？呜……慢点……」"
+
+	CASE "尿道塞"
+		CALL MESSAGE_BOX,@"「那、那里不行……会很奇怪……！」"
+
+	CASEELSE
+		CALL MESSAGE_BOX,@"「……要做%ARGS:1%吗……？嗯……」"
+	ENDSELECT
+
+CASE "继续"
+	SELECTCASE ARGS:1
+	CASEELSE
+		CALL MESSAGE_BOX,@"「……还要继续吗……？」"
+	ENDSELECT
+
+CASE "移除"
+	SELECTCASE ARGS:1
+	CASE "肛塞"
+		CALL MESSAGE_BOX,@"「……拔出来了……？呼……太、太好了……」"
+	CASE "尿道塞"
+		CALL MESSAGE_BOX,@"「……拿掉了……呜……轻松一点了……」"
+	CASEELSE
+		CALL MESSAGE_BOX,@"「……拿掉了……？呼……」"
+	ENDSELECT
+
+CASEELSE
+ENDSELECT
+RETURN
+

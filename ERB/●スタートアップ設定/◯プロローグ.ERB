@@ -1,0 +1,136 @@
+﻿
+;オープニング
+@PROLOGUE
+
+PRINTL 要观看开场动画吗？
+PRINTL
+PRINTLC [ 0] 看
+PRINTL [ 1] 不看
+BINPUT
+SIF RESULT
+	RETURN
+
+CALL MANYL(3)
+CALL HALFLINE
+PRINTL 这里是魔界中的魔族和地上人类持续争斗的世界。
+PRINTL
+PRINTL …尽管如此，实际上魔界中也有许多不参战的魔族。
+PRINTFORML %CALLNAME:0%是一个特别不参加战斗的魔族。%CALLNAME:0%没有加入魔王军，
+SIF FLAG:玩笑表示
+	PRINT 而是位于马凯多地区的冈地街上，
+PRINTFORML 经营着一个小牧场【%SAVESTR:牧场名%】。
+PRINTW 一边照顾魔界乳牛一边悠闲地生活着。
+
+CALL MANYL(3)
+CALL HALFLINE
+PRINTFORML 虽说只是一个小牧场，但%CALLNAME:0%并不是只有一个人经营%SAVESTR:牧场名%。
+PRINTFORML 几个月前，不知为何，有个迷路到魔界的人类女孩【%CALLNAME:1%】出现了。
+PRINTL
+PRINTL 不会使用武器，也没有魔力，街上的人们在商量怎么处置的时候
+PRINTFORML 正好%CALLNAME:0%的牧场兼职合同刚刚结束，正为人手不足而烦恼，
+PRINTW 可能是某种缘分吧，于是你决定让那个女孩在这工作。
+
+;あなた呼びが多めなのでTARGET = 0
+TARGET = 0
+CALL MANYL(3)
+CALL HALFLINE
+CALL RESIDENT_KOJO,@"尤金","我有个小请求，能不能从这边准备的女性人类那儿榨一点母乳？"
+CALL RESIDENT_KOJO,@"主人公","＞？？？"
+PRINTW
+PRINTFORML 有一天，%CALLNAME%的朋友兼魔王军研究所的研究员尤金说了一些莫名其妙的话。
+CALL RESIDENT_KOJO,@"尤金","听说有人提出『魔力恢复药水不好喝，能不能改善一下』的请求。"
+CALL RESIDENT_KOJO,@"尤金","试了很多方法，但总是不能令人满意，最后总部愤怒了。"
+CALL RESIDENT_KOJO,@"尤金","说什么『就从抓到的女性人类那儿喝母乳吧』。"
+CALL RESIDENT_KOJO,@"尤金","经过曲折，最终研制出了这个＜魔力母乳分泌促进药＞，是给人类用的。"
+IF SAVESTR:主人公语气 == "始终礼貌"
+	CALL RESIDENT_KOJO,@"主人公","＞完全不明白"
+ELSE
+	CALL RESIDENT_KOJO,@"主人公","＞完全不理解"
+ENDIF
+PRINTW
+CALL RESIDENT_KOJO,@"尤金","这个没关系，不过试了几次后，出量少而且似乎味道也不好。"
+CALL RESIDENT_KOJO,@"尤金","在会议上说『我朋友是酪农，要不请他帮忙？』结果就通过了。"
+CALL RESIDENT_KOJO,@"尤金","这边会准备很多东西，我觉得对你来说只会有好处。"
+CALL PROLOGUE_ACCEPT
+CALL RESIDENT_KOJO,@"尤金","好的，我就知道你会这么说！"
+CALL RESIDENT_KOJO,@"尤金","那就要接收人类了，手续要几天后才能办完。"
+PRINTL
+PRINTW 数日后…
+CALL MANYL(3)
+CALL HALFLINE
+CALL RESIDENT_KOJO,@"尤金","准备好了！哦，马诺也在这里啊。"
+CALL RESIDENT_KOJO,@"玛诺","你好，今天又来收货了。"
+CALL RESIDENT_KOJO,@"玛诺","哎，那边绑着的是人类吗？"
+CALL RESIDENT_KOJO,@"尤金","嗯，应该说到哪儿才好呢……"
+CALL RESIDENT_KOJO,@"尤金","等等，还是告诉马诺比较好。其实是这样的……"
+PRINTW
+CALL RESIDENT_KOJO,@"玛诺","哦哦，意思是从今天开始，老板每晚都要和这个女的……"
+CALL RESIDENT_KOJO,@"尤金","嗯，是这样……不过手续上有点麻烦。"
+CALL RESIDENT_KOJO,@"尤金","大致上是因为『不值得交给普通人』这样的理由，但可能会让你失望。"
+CALL RESIDENT_KOJO,@"尤金","听说这个有个【处女结界】，所以不能插入前面的洞。"
+
+PRINTLC [ 0] ＞原来如此…
+PRINTL [ 1] ＞…有什么问题吗？
+BINPUT
+IF RESULT
+	CALL RESIDENT_KOJO,@"尤金","啊，没有问题吗？那就太好了。"
+ELSE
+	CALL RESIDENT_KOJO,@"尤金","抱歉，非得有这样的理由才行。"
+ENDIF
+CALL RESIDENT_KOJO,@"玛诺","等等，等一下。　人类的母乳也是要怀孕才能分泌的吧？"
+CALL RESIDENT_KOJO,@"尤金","这个没问题，＜魔力母乳分泌促进药＞可以在未怀孕的情况下也能顺利分泌母乳。"
+CALL RESIDENT_KOJO,@"尤金","还有，想请马诺帮个忙，希望收集这些挤出来的牛奶。我已经和魔界农协沟通过了。"
+CALL RESIDENT_KOJO,@"玛诺","明白了～，这没问题。"
+PRINTW
+CALL MANYL(3)
+CALL HALFLINE
+CALL RESIDENT_KOJO,@"尤金","所以，这就是魔王军研究所的请求。"
+PRINTL
+PRINTL ・对奴隶进行调教→使用＜魔力母乳分泌促进药＞，挤出【魔力母乳】并希望你出货
+PRINTL ・使用＜魔力母乳分泌促进药＞后，如果通过胸部或乳头让其达到高潮，可以转化为【魔力母乳体质】
+PRINTL ・调教过程中使用各种＜搾乳器＞，或者安排成魔界乳牛的日程进行＜搾乳＞，可以挤出出货用的母乳
+PRINTL ・挤出的母乳和魔界乳牛一样，魔界农协的工作人员会在早上的日程结束时来收集
+PRINTL ・奴隶随你怎么处理都可以
+PRINTW
+CALL RESIDENT_KOJO,@"玛诺","老板，您还有多余的挤奶器吗？　啊，只有一个。不过是家畜用的，应该没问题吧。"
+CALL RESIDENT_KOJO,@"玛诺",@"突然想到了，%CALLNAME:1%可以用那种药吗？"
+CALL RESIDENT_KOJO,@"尤金","啊，那可能不行。这个是针对『有魔力的人类』的。"
+CALL RESIDENT_KOJO,@"玛诺","哦，是这样啊。那老板您在忙的时候，能做牧场工作的人也没有，所以没必要考虑了。"
+
+PRINTLC [ 0] ＞怎么会…
+PRINTLC [ 1] ＞以后会做得更好吗？
+PRINTFORML [ 2] ＞%CALLNAME:1%不能工作真是个问题
+BINPUT
+SELECTCASE RESULT
+CASE 0
+	CALL RESIDENT_KOJO,@"尤金",@"你一直用那种眼光看着%CALLNAME:1%吗……我现在才知道。"
+CASE 1
+	CALL RESIDENT_KOJO,@"尤金","现在的技术是做不到的，不过未来的事谁也说不准。"
+CASE 2
+	CALL RESIDENT_KOJO,@"尤金","没错，俩人一起操作得很好。"
+ENDSELECT
+CALL RESIDENT_KOJO,@"尤金","好的，就拜托你了！样本收集到后可能还有其他事情。"
+CALL RESIDENT_KOJO,@"玛诺","那么，我也到此为止～。接下来会很有趣吧？"
+PRINTW
+
+
+
+;そんな、ひどい
+@PROLOGUE_ACCEPT
+#DIM DYNAMIC COMMENT_LOOP
+
+PRINTLC [ 0] 做
+PRINTL [ 1] 算了
+INPUT
+SIF !RESULT
+	RETURN
+CALL RESIDENT_KOJO,@"尤金","就拜托你想办法了……这可是免费得到人类奴隶的机会哦。"
+COMMENT_LOOP ++
+SIF COMMENT_LOOP >= 3
+	CALL RESIDENT_KOJO,@"尤金","不行，要是你不答应，游戏就无法开始了。"
+SIF COMMENT_LOOP >= 5
+	CALL RESIDENT_KOJO,@"尤金","再说下去反应也不会改变哦。"
+RESTART
+
+
+

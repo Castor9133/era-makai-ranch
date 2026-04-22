@@ -1,0 +1,184 @@
+﻿
+;スケジュール一括変更
+@BULK_SCHEDULE
+#DIM GROUP
+#DIMS PLAN
+
+CALL MANYL(3)
+
+;一括変更先
+CALL SELECT_BULK_SCHEDULE_GROUP
+INPUT
+GROUP = RESULT
+SIF GROUP < 0 || GROUP >= 5
+	RETURN
+CALL MANYL(3)
+
+;ここから変更スケジュール選択
+CALL SELECT_BULK_SCHEDULE_PLAN(GROUP)
+INPUT
+
+;スケジュール入れ
+PLAN = %SET_SCHEDULE_PLAN(RESULT)%
+
+;空ならキャンセル
+SIF PLAN == ""
+	RETURN
+
+;GROUPに一致するキャラのスケジュール変更
+FOR TARGET_COUNT,0,CHARANUM
+	TARGET = TARGET_COUNT
+	CALL BULK_SCHEDULE_SET(GROUP,PLAN)
+NEXT
+CALL SCHEDULE_ADJUST
+
+
+
+;一括変更先
+@SELECT_BULK_SCHEDULE_GROUP
+
+PRINTL 要批量变更日程吗？
+PRINTL （可能无法直接进行农场操作，因此请在设置后进行个别调整。）
+CALL HALFLINE
+PRINTL ＜修改对象＞
+PRINTLC [ 0] 全体
+PRINTLC [ 1] 有单间＋在宿舍的员工
+PRINTLC [ 2] 有单间的员工
+PRINTLC [ 3] 在宿舍的员工
+PRINTLC [ 4] 牲口棚奴隶
+CALL MANYL(2)
+PRINTL [99] 取消
+
+
+
+;スケジュールの選択
+;ARG→GROUP
+@SELECT_BULK_SCHEDULE_PLAN(ARG)
+
+PRINTFORML ＜日程＞修改对象：%BULK_GROUP(ARG)%
+PRINTLC [ 0] 空闲时间／待机
+
+;仕事可能を選んだ場合
+IF ARG < 4 && ARG
+	PRINTLC [ 1] 家畜的照料
+	IF !FLAG:事务工作量
+		CALL PRINTLC_WORD_COLOR,@"　事务工作","灰"
+	ELSE
+		PRINTLC [ 2] 事务工作
+	ENDIF
+	CALL MILESTONE_UNLOCK_CHECK("调合","LC")
+	SIF RESULT
+		PRINTLC [ 3] 药品的调合
+	CALL MILESTONE_UNLOCK_CHECK("大浴场清洁","LC")
+	IF RESULT
+		IF FLAG:大浴场清洁完成度 >= 100
+			CALL PRINTLC_WORD_COLOR,@"　大浴场清洁","灰"
+		ELSE
+			PRINTLC [ 4] 大浴场清洁
+		ENDIF
+	ENDIF
+ENDIF
+PRINTLC [ 5] 搾乳（【母乳体质】之奴隶）
+PRINTL
+PRINTL [90] 重置为自动日程
+PRINTL
+PRINTL [99] 取消
+
+
+
+;変更グループ表示
+;ARG→GROUP
+@BULK_GROUP(ARG)
+#FUNCTIONS
+
+SELECTCASE ARG
+CASE 0
+	RETURNF "全体"
+CASE 1
+	RETURNF "有单间＋在宿舍的员工"
+CASE 2
+	RETURNF "有单间的员工"
+CASE 3
+	RETURNF "在宿舍的员工"
+CASE 4
+	RETURNF "牲口棚奴隶"
+ENDSELECT
+
+
+
+;変更スケジュール入れ
+;ARG→INPUT
+@SET_SCHEDULE_PLAN(ARG)
+#FUNCTIONS
+
+;ここで変更スケジュールを設定しておく
+SELECTCASE ARG
+CASE 0
+	RETURNF "自由"
+	;どうせ補正かけるのでこれでOK
+CASE 1
+	RETURNF "奶农"
+CASE 2
+	SIF !FLAG:事务工作量
+		RETURNF
+	RETURNF "事务"
+CASE 3
+	RETURNF "调剂"
+CASE 4
+	SIF FLAG:大浴场清洁完成度 >= 100
+		RETURNF
+	RETURNF "大浴场清洁"
+CASE 5
+	RETURNF "搾乳"
+
+;自動はあとで変更
+CASE 90
+	RETURNF "自动"
+CASEELSE
+	RETURNF
+ENDSELECT
+
+
+
+;選択スケジュールのセット
+;ARG→GROUP　ARGS→PLAN
+@BULK_SCHEDULE_SET(ARG,ARGS)
+
+{
+SIF GROUPMATCH(CSTR:日程,"体内凌辱","释放准备","行动完毕")
+|| CFLAG:追踪对象 || CFLAG:牛舍号码
+}
+	RETURN
+
+;条件に一致しない場合キャンセル
+SELECTCASE ARG
+CASE 0	;全員
+CASE 1
+	;個室あり＋入寮中従業員
+	SIF !EQUIP:自室
+		RETURN
+CASE 2
+	;個室あり従業員
+	SIF !EQUIP:单间
+		RETURN
+CASE 3
+	;入寮中従業員
+	SIF !CFLAG:宿舍号
+		RETURN
+CASE 4
+	;家畜小屋の奴隷
+	SIF EQUIP:自室
+		RETURN
+ENDSELECT
+
+;搾乳の場合母乳体質でないなら飛ばす
+SIF ARGS == "搾乳" && !MARK:母乳体质
+	RETURN
+SIF CSTR:状态／主人公的孩子 == "成长中" && !GROUPMATCH(ARGS,"自由","自动")
+	RETURN
+CSTR:日程 = %ARGS%
+
+;自動の場合リセットする
+SIF CSTR:日程 == "自动"
+	CALL SCHEDULE_RESET_TARGET
+

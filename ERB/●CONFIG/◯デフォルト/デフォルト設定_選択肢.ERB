@@ -1,0 +1,42 @@
+﻿
+;選択肢設定デフォルト
+@DEFAULT_CONFIG_CHOICE
+
+VARSET FLAG,0,2300,2500
+FLAG:工作休息体力 = 300
+FLAG:搾乳休息母乳量 = 500
+FLAG:自动呼叫校正确认 = 1
+FLAG:房间分配自动更改BIT = 1
+CALL DEFAULT_TRAIN_AUTO_CONFIG
+CALL DEFAULT_TRAIN_FILTER_CONFIG
+CALL DEFAULT_CAPTURE_CONFIG
+
+
+
+;調教中自動選択肢設定デフォルト
+@DEFAULT_TRAIN_AUTO_CONFIG
+
+VARSET FLAG,0,2400,2420
+FLAG:射精位置／纵乳交 = 1
+FLAG:射精位置／深喉 = 1
+FLAG:射精位置／Ｖ性交 = 1
+FLAG:射精位置／Ａ性交 = 1
+FLAG:调教后衣服没收BIT = 0b111
+
+
+
+;調教中／フィルタ・確認設定デフォルト
+@DEFAULT_TRAIN_FILTER_CONFIG
+
+FLAG:插入确认BIT = 0b111111
+FLAG:肛门过滤BIT = 0
+
+
+
+;捕獲時選択肢・キャラフラグデフォルト
+@DEFAULT_CAPTURE_CONFIG
+
+VARSET FLAG,0,2420,2430
+FLAG:捕获时选项BIT = 0b101
+FLAG:加入奴隶默认／能力有效个人BIT = 65535
+

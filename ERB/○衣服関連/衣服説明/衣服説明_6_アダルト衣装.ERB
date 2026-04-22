@@ -1,0 +1,63 @@
+﻿
+;アダルト衣装
+@ITEM_DETAIL_CLOTHE_ADULT_CLOTHE
+
+SELECTCASE ITEMNAME:SELECT_ITEM
+CASE "奴隶的破布"
+	CALL CLOTHE_DETAIL_COMMON("仅限最小类型")
+	PRINTL 一种污垢的粗布，用来穿在奴隶上的粗布
+	PRINTL 话虽如此，但在牧场，清洁是很重要的，所以要好好洗衣服。
+	PRINTL 总的来说，这是一件用来灌输「你是奴隶」的衣服。
+
+CASE "舞女的服装"
+	CALL CLOTHE_DETAIL_COMMON("仅限密封类型","Ｂ露出")
+	PRINTL 舞女穿大胆的服装。
+	PRINTFORML 它由一块从颈部悬垂的布料组成，将%SAVESTR:标识／乳房%覆盖并固定在背后，
+	PRINTL 在增加露出度的同时，也确保即使在剧烈运动时也不会看到她的乳头。
+
+CASE "反向兔女郎装"
+	CALL CLOTHE_DETAIL_COMMON("反兔女郎","全露出")
+	PRINTL 将兔子服中隐藏的部分和不隐藏的部分颠倒的衣服。真的是衣服吗？
+	PRINTL 私处贴纸之类的给你戴上也未尝不可，
+	PRINTL 被迫穿这样的衣服实在是太丢脸了，所以也许也没什么大不了的。
+
+CASE "淫乱巫女服"
+	CALL CLOTHE_DETAIL_COMMON("仅限最小类型","Ｂ露出")
+	PRINTL 带有巫女服的装饰，露出度过高的衣服。
+	PRINTFORML 即使不进行改造，原本就是两块像吊带一样的布遮挡住%SAVESTR:标识／乳房%的状态，，
+	PRINTL 但可以选择改成像乳暖簾状態那样、或者将私处部位改成私处贴纸，甚至可以选择完全不遮掩。
+
+CASE "淫乱修女服"
+	CALL CLOTHE_DETAIL_COMMON("仅限最小类型","Ｂ露出")
+	PRINTL 带有修道服的装饰，露出度过高的衣服。
+	PRINTFORML 即使不进行改造，原本就是两块像吊带一样的布遮挡住%SAVESTR:标识／乳房%的状态，，
+	PRINTL 但可以选择改成像乳暖簾状態那样、或者将私处部位改成私处贴纸，甚至可以选择完全不遮掩。
+
+CASE "淫乱女仆装"
+	CALL CLOTHE_DETAIL_COMMON("仅限最小类型","Ｂ露出")
+	PRINTL 带有女仆装的装饰，露出度过高的衣服。
+	PRINTL 露出度太高，原本的管家工作似乎无法完成。
+	PRINTFORML 即使不进行改造，原本就是两块像吊带一样的布遮挡住%SAVESTR:标识／乳房%的状态，，
+	PRINTL 但可以选择改成像乳暖簾状態那样、或者将私处部位改成私处贴纸，甚至可以选择完全不遮掩。
+
+CASE "淫乱旗袍"
+	CALL CLOTHE_DETAIL_COMMON("仅限最小类型","Ｂ露出")
+	PRINTL 花纹的旗袍，露出度太高的衣服。
+	PRINTFORML 即使不进行改造，原本就是两块像吊带一样的布遮挡住%SAVESTR:标识／乳房%的状态，，
+	PRINTL 但可以选择改成像乳暖簾状態那样、或者将私处部位改成私处贴纸，甚至可以选择完全不遮掩。
+
+CASE "淫乱礼服"
+	CALL CLOTHE_DETAIL_COMMON("仅限最小类型","Ｂ露出")
+	PRINTL 勉强能看出是礼服，露出度太高的衣服。
+	PRINTFORML 即使不进行改造，原本就是两块像吊带一样的布遮挡住%SAVESTR:标识／乳房%的状态，，
+	PRINTL 但可以选择改成像乳暖簾状態那样、或者将私处部位改成私处贴纸，甚至可以选择完全不遮掩。
+
+CASE "触手服装"
+	CALL LINGERIE_DETAIL_COMMON("上下")
+	PRINTFORML 由活的触手构成的紧身衣状服装。
+	PRINTL 看起来像普通的紧身衣，但穿上后显露本性，内侧潜伏着无数细小的触手不断刺激穿着者。
+	PRINTL 当穿着者试图脱掉时，触手的动作会变得激烈，夺走抵抗力，因此自力脱掉非常困难。
+
+ENDSELECT
+
+

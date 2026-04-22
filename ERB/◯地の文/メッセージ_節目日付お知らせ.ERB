@@ -1,0 +1,22 @@
+﻿
+;節目の日付の場合メッセージ
+@ANNIVERSARY_MESSAGE
+
+;季節の1日の場合メッセージ
+SIF DAY:日期 > 1
+	RETURN
+PRINTL
+SELECTCASE DAY:季节
+CASE 0
+	PRINTL 《 季节变了，春天来了。 》
+	PRINTL 《 新年快感！ 》
+CASE 1
+	PRINTL 《 季节变了，夏天到了。 》
+CASE 2
+	PRINTL 《 季节变了，秋天到了。 》
+CASE 3
+	PRINTL 《 季节变了，冬天到了。 》
+ENDSELECT
+FORCEWAIT
+
+

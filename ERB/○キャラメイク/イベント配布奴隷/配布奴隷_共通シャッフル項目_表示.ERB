@@ -1,0 +1,48 @@
+﻿
+;配布奴隷のシャッフル項目一覧
+@FIXED_SLAVE_CHANGE_LIST
+
+PRINTL [ 0] 重命名屏幕
+PRINTLC [ 1] 乳房弹性
+PRINTLC [ 2] 乳头颜色
+IF !SELF_CHARA_MAKE_RANDOM
+	PRINTL [ 3] 乳头颜色编码
+ELSE
+	CALL PRINTL_WORD_COLOR,@"< 3> 乳头颜色编码：仅限手动","灰"
+ENDIF
+PRINTLC [ 4] 发色
+PRINTLC [ 5] 头发特征
+PRINTL [ 6] 发型
+
+IF !SELF_CHARA_MAKE_RANDOM
+	CALL PRINTLC_WORD_COLOR,@"< 7> 批量更改：仅限随机","灰"
+	PRINTL [ 8] 头发颜色编码
+ELSE
+	PRINTLC [ 7] 发型批量更改
+	CALL PRINTL_WORD_COLOR,@"< 8> 发色编码：仅限手动","灰"
+ENDIF
+PRINTL [ 9] 阴毛
+PRINTL
+IF !SELF_CHARA_MAKE_RANDOM
+	PRINTLC [10] 右瞳色
+	PRINTL [11] 右瞳色编码
+	PRINTLC [12] 左瞳色
+	IF CSTR:左瞳色 != ""
+		PRINTL [13] 左瞳色编码
+	ELSE
+		CALL PRINTL_WORD_COLOR,@"　左瞳色编码","灰"
+	ENDIF
+ELSE
+	PRINTLC [10] 瞳色
+	CALL PRINTL_WORD_COLOR,@"<11> 眼睛颜色编码：仅限手动","灰"
+	PRINTL [12] 确定异色眼随机
+ENDIF
+
+;識別名が「スレイ」の場合のみ別個処理
+SIF CSTR:识别名 == "斯蕾"
+	PRINTFORM [20] %CALLNAME:0%的称呼变更
+CALL MANYL(2)
+PRINTFORML [30] 口上设置　当前使用口上：%CSTR:使用口上%
+
+
+

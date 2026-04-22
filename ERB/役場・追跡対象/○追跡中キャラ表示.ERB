@@ -1,0 +1,55 @@
+﻿
+;奴隷候補の現在の状態
+@PRINT_CHASE_SLAVE
+
+;いないなら帰る
+SIF !FLAG:追踪中人数
+	RETURN
+FOR TARGET_COUNT,1,CHARANUM
+	TARGET = TARGET_COUNT
+	SIF !CFLAG:追踪对象
+		CONTINUE
+	PRINTFORM [{100 +TARGET_COUNT}] %CALLNAME_DIGIT()% 级别：{CFLAG:级别}
+	SIF CFLAG:同伴规模
+		PRINTFORM ／{CFLAG:同伴级别}
+	PRINT 　
+	SELECTCASE CFLAG:追踪对象
+	CASE 1
+		CALL CHASE_SLAVE_CHASER
+		
+	;捕獲中、ゴブリン軍団のみ
+	CASE 2
+		PRINTFORML 正在捕获 凌辱次数：{CFLAG:轮奸次数} 
+		
+	;輸送中
+	CASE 3
+		PRINTL 捕获完毕・运输中 
+	CASEELSE
+		PRINTL （可能是bug）
+	ENDSELECT
+NEXT
+
+;10人未満なら表示
+SIF FLAG:追踪中人数 < 10
+	CALL PRINTL_WORD_COLOR("EMPTY","灰")
+PRINTL
+
+
+;追跡者表示
+@CHASE_SLAVE_CHASER
+
+SELECTCASE CFLAG:追踪者
+CASE 0
+	PRINTL 正在追踪（当前无追踪者）
+CASE 1
+	PRINTFORML 哥布林军团{CFLAG:追踪人数}部隊正在追踪
+CASE 2
+	PRINTFORML 新秀雇佣兵{CFLAG:追踪人数}名正在追踪
+CASE 3
+	PRINTFORML 老手雇佣兵{CFLAG:追踪人数}名正在追踪
+CASE 4
+	PRINTFORML 鬼人雇佣兵{CFLAG:追踪人数}名正在追踪
+ENDSELECT
+
+
+

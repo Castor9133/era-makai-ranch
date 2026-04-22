@@ -1,0 +1,18 @@
+﻿
+;付けてる下着名のFUNCTIONS
+@EQUIP_LINGERIE
+#FUNCTIONS
+#DIMS LINGERIE,3
+
+VARSET LINGERIE
+SIF EQUIP:装备中ID／内衣上装
+	LINGERIE:1 = [%＃穿着内衣上装／名称＃%]
+
+;上下一体なら被らない処理が必要
+IF EQUIP:装备中ID／内衣下装
+	SIF EQUIP:装备中ID／内衣上装 != EQUIP:装备中ID／内衣下装
+		LINGERIE:2 = [%＃穿着内衣下装／名称＃%]
+ENDIF
+LINGERIE = %LINGERIE:1%%LINGERIE:2%
+RETURNF LINGERIE
+

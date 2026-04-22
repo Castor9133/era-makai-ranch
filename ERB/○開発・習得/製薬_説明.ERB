@@ -1,0 +1,97 @@
+﻿
+;アイテム説明と購入数
+@ITEM_DETAIL_DRUG
+
+;対応IDでないなら汎用出して帰る
+IF SELECT_ITEM < ITEM_ID_MIN || SELECT_ITEM >= ITEM_ID_MAX || ITEMNAME:SELECT_ITEM == ""
+	PRINTL  《 显示所选药品的说明 》
+	RETURN
+	
+;とりあえずアイテム名、価格、所持数を出す
+ELSE
+	PRINTFORML %ITEMNAME:SELECT_ITEM%：%VALUE_DIGIT(ITEMPRICE:SELECT_ITEM)%EP 持有数量{ITEM:SELECT_ITEM,3}支 
+ENDIF
+PRINTL
+
+;天界種族用の共通表示・参照アイテム名ずらし
+IF STRCOUNT(ITEMNAME:SELECT_ITEM,"天国")
+	CALL PRINTL_WORD_COLOR,@"用于【天界种族】　※计划中・试作中，因此无效","黄色"
+	ITEM_NAME = %ITEMNAME:(SELECT_ITEM -20)%
+ELSE
+	ITEM_NAME = %ITEMNAME:SELECT_ITEM%
+ENDIF
+SELECTCASE ITEM_NAME
+CASE "母乳分泌促进药"
+	PRINTFORML 使用后，通过%SAVESTR:标识／乳房%或乳头的绝顶体验
+	PRINTFORML 即使没有怀孕也会产出%SAVESTR:标识／母乳%的药品。
+	PRINTL
+	PRINTL 由于时间过长会分解，请确保在使用的调教中让其达到高潮。
+	
+CASE "魔力母乳分泌促进药"
+	PRINTFORML 对拥有魔力的人类使用后，通过%SAVESTR:标识／乳房%或乳头的绝顶体验
+	PRINTFORML 将魔力转化为%SAVESTR:标识／母乳%并导致喷乳的体质药品。
+	PRINTFORML 即使想使用魔力，身体也会优先自动储存%SAVESTR:标识／母乳%，
+	PRINTL 这也会导致在战斗中无法正常使用魔力的副作用。
+	PRINTL
+	PRINTL 由于时间过长会分解，请确保在使用的调教中让其达到高潮。
+	
+CASE "育乳促进药"
+	PRINTFORML 使用后，在一段时间内受到%SAVESTR:标识／乳房%刺激时，使%SAVESTR:标识／乳房%更容易生长的药品。
+	PRINTL 生长将在睡眠时进行。
+	PRINTL
+	PRINTL ※试作中，因此无效。
+	
+CASE "浓厚母乳促进药"
+	PRINTFORML 使用后，持续一段时间在被挤奶时%SAVESTR:标识／母乳%会逐渐变得浓厚的药品。
+	PRINTL
+	PRINTL ※试作中，因此无效。
+	
+CASE "乳罐促进药"
+	PRINTFORML 使用后，持续一段时间在被挤奶时%SAVESTR:标识／母乳%的生产力会逐渐增加的药品。
+	PRINTL
+	PRINTL ※试作中，因此无效。
+	
+CASE "母乳生成促进药"
+	PRINTFORML 使用时，促进%SAVESTR:标识／母乳%的生产，恢复【母乳容量】【母乳生产力】的药品。
+	PRINTL 由于对女性身体负担较大，请注意不要使用过量。
+	PRINTL
+	PRINTL ※试作中，因此无效。
+
+
+;即効性
+CASE "母乳体质化药"
+	PRINTFORML 使用后立即，即使没有怀孕也会使%SAVESTR:标识／母乳%分泌的药品。
+	
+CASE "魔力母乳体质化药"
+	PRINTL 使用后立即，会使其成为【魔力母乳体质】的药品。
+	
+CASE "膨乳药"
+	PRINTFORML 使%SAVESTR:标识／乳房%增大1段的药品。
+	PRINTL 但不会超过【神乳】。
+	
+CASE "母乳浓厚化药"
+	PRINTFORML 一种使女性挤出的%SAVESTR:标识／母乳%浓度升高的药品。
+	PRINTL 如果浓度升高，可能需要多次使用。
+	
+CASE "渗透媚药"
+	PRINTFORML 用于手术刀的任何部位，增加敏感度的药物。（上限{SENSITIVE_MAX}\%）
+	PRINTFORML 当乳头，%SAVESTR:标识／阴蒂%使用时，比其他部位使用时增加一倍。
+
+CASE "超乳药"
+	PRINTFORML 使%SAVESTR:标识／乳房%增大几个等级的药品。
+	PRINTL 即使达到＜膨乳药＞的极限后，也可以逐渐增大乳房的大小。
+	PRINTL 但是对女性的负担很大，大幅度消耗体力。
+
+CASE "感受器敏感化药"
+	PRINTFORML 通过提高雌性大脑接收快乐的能力来增加全身敏感度的药物。（上限{SENSITIVE_MAX}\%）
+
+CASE "多器官活性药"
+	PRINTL 通过激活女性内脏，特别是肝脏的活动，使体内的魔力·灵力全部包含在血液中的药品。
+	PRINTFORML 这个血液中含有的%SAVESTR:标识／母乳%含有普通的3倍以上的魔力·灵力。
+	PRINTL 只能在调教过程中使用，调教后迅速分解。
+	PRINTFORML 此外，为了防止异物混入，在使用过程中，使用中不能挤出货用的%SAVESTR:标识／母乳%。
+
+;天界種族用→アイテム名ずらしで対応
+ENDSELECT
+
+

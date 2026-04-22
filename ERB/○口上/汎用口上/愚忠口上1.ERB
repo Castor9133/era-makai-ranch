@@ -1,0 +1,145 @@
+; ======================================
+; 泛用口上（性格：愚忠）
+;
+;口上識別名：愚忠1
+;口上作者：（汉化扩展）
+;许可证：CC BY-NC
+; ======================================
+
+@KOJO_GENERAL_INDEX_愚忠1(ARGS:0,ARGS:1,ARGS:2,ARGS:3)
+
+IF TFLAG:Ｍ装备
+	CALL KOJO_GENERAL_MOUTH_SHACKLE_1(ARGS:0,ARGS:1,ARGS:2,ARGS:3)
+	RETURN
+ELSEIF CFLAG:崩坏 && !CFLAG:洗脑
+	IF GROUPMATCH(ARGS:0,"例文")
+	ELSEIF GROUPMATCH(ARGS:1,"洗脑触手","崩坏")
+	ELSE
+		IF NOWEX:总绝顶
+			CALL MESSAGE_BOX,@"「……忠诚……♥ ……我会证明……♥」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……命令……」"
+		ENDIF
+		RETURN
+	ENDIF
+ENDIF
+
+SELECTCASE ARGS:0
+CASE "例文"
+	CALL MESSAGE_BOX,@"「【愚忠1】已设置。\n不问对错只求服从；献身＝证明忠诚。」"
+
+CASE "调教命令"
+	CALL KOJO_GENERAL_愚忠1_TRAIN(ARGS:0,ARGS:1,ARGS:2,ARGS:3)
+
+CASE "绝顶"
+	IF ＃陷落状态／恋慕以上＃
+		CALL MESSAGE_BOX,@"「啊……♥ 我、我会忍住……不行……♥」"
+		CALL MESSAGE_BOX,@"「请命令我……我会顺从到最后……♥」"
+	ELSE
+		CALL MESSAGE_BOX,@"「……命令……我会照做……」"
+	ENDIF
+	SIF NOWEX:Ａ绝顶
+		IF TALENT:Ａ名器 || TALENT:肛门嗜好 || ABL:Ａ感觉 >= 3
+			CALL MESSAGE_BOX,@"「……！？　%ANAL_CALL()%……痛……可是……深处……像被烙上……主人的……♥」"
+			CALL MESSAGE_BOX,@"「……这也是……忠诚的考验吗……♥」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……痛……！？　%ANAL_CALL()%……要裂开了……！」"
+			CALL MESSAGE_BOX,@"「……命令……太痛了……」"
+		ENDIF
+	SIF NOWEX:Ｕ绝顶
+		IF TALENT:尿道敏感 || EX:尿道调教经验 >= 15
+			CALL MESSAGE_BOX,@"「……连这里……也烙上主人……好麻……♥」"
+			CALL MESSAGE_BOX,@"「……这也是……考验吗……♥」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……命令……太刺了……尿道要坏……」"
+			CALL MESSAGE_BOX,@"「……只有痛……」"
+		ENDIF
+
+CASE "射精"
+	IF SOURCE:膣内射精经验
+		CALL MESSAGE_BOX,@"「……已接受。忠诚会收下您的全部……♥」"
+	ELSEIF SOURCE:尻穴射精经验
+		CALL MESSAGE_BOX,@"「……后方已接受。命令已完成……♥」"
+	ELSEIF SOURCE:精饮经验
+		CALL MESSAGE_BOX,@"「……已咽下。若您需要，我还能继续。」"
+	ELSEIF TEQUIP:手淫
+		CALL MESSAGE_BOX,@"「……手部已弄脏。我会清理干净，等待下一道命令。」"
+	ELSEIF SOURCE:股间射精
+		CALL MESSAGE_BOX,@"「……股间射精确认。我会清理干净，继续待命。」"
+	ELSEIF SOURCE:乳房射精
+		CALL MESSAGE_BOX,@"「……乳房射精确认。我会清理干净，继续待命。」"
+	ELSEIF SOURCE:颜面射精
+		CALL MESSAGE_BOX,@"「……颜面射精确认。我会清理干净，继续待命。」"
+	ENDIF
+
+CASE "搾乳"
+	IF SOURCE:母乳漏出
+		CALL MESSAGE_BOX,@"「……乳汁漏出。若这是命令，我会继续。」"
+		RETURN
+	ENDIF
+	CALL MESSAGE_BOX,@"「……取乳命令确认。我会配合。」"
+	CALL MESSAGE_BOX,@"「……哪怕羞耻，也是忠诚的一部分。」"
+
+CASE "抽出"
+	CALL MESSAGE_BOX,@"「……身体发软。请求短暂恢复后继续执行命令。」"
+	CALL MESSAGE_BOX,@"「……遵命。我会重新站稳。」"
+
+CASE "日程"
+	SELECTCASE ARGS:1
+	CASE "调教"
+		SELECTCASE ARGS:2
+		CASE "开始调教"
+			CALL MESSAGE_BOX,@"「命令待命。请下达今天的指示。」"
+		CASE "调教结束"
+			CALL MESSAGE_BOX,@"「命令结束确认。感谢您赐予指示。」"
+		ENDSELECT
+	CASEELSE
+	ENDSELECT
+
+CASE "阴茎称呼变更"
+	CALL MESSAGE_BOX,@"「称呼变更确认。我会按您指定的称呼称呼。」"
+
+CASE "膣称呼变更"
+	CALL MESSAGE_BOX,@"「称呼变更确认。我会记住并执行。」"
+
+CASE "肛门称呼变更"
+	CALL MESSAGE_BOX,@"「称呼变更确认。后方也将按新称呼执行。」"
+
+CASE "吸欧派"
+	SELECTCASE ARGS:1
+	CASE "开始"
+		CALL MESSAGE_BOX,@"「……遵命。请尽情使用。」"
+	CASE "结束"
+		CALL MESSAGE_BOX,@"「……结束确认。我会等待下一道命令。」"
+	ENDSELECT
+
+CASE "访问"
+	SELECTCASE ARGS:1
+	CASE "入口"
+		CALL MESSAGE_BOX,@"「……我来了。请下达命令。」"
+	CASEELSE
+	ENDSELECT
+
+CASE "事件"
+	CALL MESSAGE_BOX,@"「……事件确认。请告诉我该做什么。」"
+
+CASE "肉体改造"
+	CALL MESSAGE_BOX,@"「……身体将被改造。若这是命令，我会接受并适应。」"
+
+CASE "战斗"
+	SELECTCASE ARGS:1
+	CASE "攻击"
+		CALL MESSAGE_BOX,@"「……执行攻击。」"
+	CASE "被击中"
+		CALL MESSAGE_BOX,@"「……受击。仍可继续执行。」"
+	CASEELSE
+	ENDSELECT
+
+CASEELSE
+ENDSELECT
+RETURN
+
+@KOJO_GENERAL_愚忠1_TRAIN(ARGS:0,ARGS:1,ARGS:2,ARGS:3)
+CALL KOJO_GENERAL_愚忠口上1_TRAIN(ARGS:0,ARGS:1,ARGS:2,ARGS:3)
+RETURN
+

@@ -1,0 +1,133 @@
+﻿
+;母乳料理なら搾乳する
+@DINNER_LACTATION
+
+SIF !MILK_DINNER
+	RETURN
+
+;搾乳するのでリセット必要
+CALL RESET_TRAIN_PALAM
+;TFLAG:スケジュール外Ｈ = 1
+PLAYER = MASTER
+
+;脱衣地の文入れ
+CALL AJUST_STRIP_FLAG
+SOURCE:脱衣消息显示 = 1
+SOURCE:自主脱衣 = 1
+
+;搾乳前地の文
+CALL DINNER_LACTATION_BEFORE_MESSAGE
+
+;脱衣
+IF TFLAG:授乳开口
+	CALL OPEN_NIPPLE_SLIT
+ELSEIF !TFLAG:Ｎ露出
+	CALL TRAIN_CLOTHE_STRIP("总计","上半脱衣")
+ENDIF
+PRINTW
+
+;搾乳アシスト判定
+CALL DINNER_LACTATION_ASSIST_CHECK
+
+;搾乳開始地の文
+CALL DINNER_LACTATION_BEGIN_MESSAGE
+
+;搾乳
+CALL DINNER_LACTATION_RUN
+
+;搾乳後地の文
+CALL DINNER_LACTATION_AFTER_MESSAGE
+EXP:母乳料理 ++
+
+
+
+;搾乳アシスト判定
+@DINNER_LACTATION_ASSIST_CHECK
+
+;手伝ってあげるか任せるか
+;CFLAGでデフォルト設定していればそれに合わせる
+LACTATION_ASSIST = 0
+SELECTCASE CFLAG:母乳料理／搾乳辅助
+CASE 0
+	PRINTFORML 帮你搾乳%CALLNAME%？
+	CALL ASK_YN_DEFAULT(1)
+	SIF !RESULT
+		LACTATION_ASSIST = 1
+	
+	;デフォルトセット
+	IF DEFAULT_SET
+		IF LACTATION_ASSIST
+			CFLAG:母乳料理／搾乳辅助 = 1
+		ELSE
+			CFLAG:母乳料理／搾乳辅助 = -1
+		ENDIF
+	ENDIF
+CASE 1
+	LACTATION_ASSIST = 1
+;CASE -1
+ENDSELECT
+
+
+
+;料理用の搾乳
+@DINNER_LACTATION_RUN
+
+;WHILEで作ろうとしたけど回数でメッセージ変えようとするとFORがちょうどいい
+;30回でダメだったらなんか変だ
+TFLAG:循环中消息显示 = 1
+FOR LOCAL,0,30
+	CALL DINNER_LACTATION_RUN_SOURCE
+	SIF !LOCAL
+		CALL PRINT_IMAGE("调教执行")
+	SIF LOCAL <= 1
+		CALL ONOMATOPOEIA("揉胸")
+	SIF EX:喷乳
+		CALL ONOMATOPOEIA("搾乳器")
+	SIF LOCAL >= 2
+		TFLAG:循环中消息显示 = 0
+	CALL SOURCE_CHECK
+	
+	;貯まる量の可視化
+	PRINTFORM 　　＜搾乳量%TOSTR(EX:料理用母乳,"#,0")%／%TOSTR(DISH_NEED_MILK,"#,0")%%MILK_COUNTING()%＞
+	
+	;必要量溜まったらおわり
+	IF DISH_NEED_MILK <= EX:料理用母乳
+		PRINTL 【达成需要量】
+		RETURN
+	ENDIF
+	
+	;母乳尽きたか30回でダメだと終わっておく
+	IF LOCAL == 29 || !BASE:母乳生产力
+		PRINTFORML 　　＜所需量的%SAVESTR:标识／母乳%无法提供…改为普通菜单＞
+		MILK_DINNER = 0
+		RETURN
+	ENDIF
+	PRINTW
+NEXT
+
+
+
+;料理用ミルク搾乳SOURCE
+@DINNER_LACTATION_RUN_SOURCE
+
+;自分でやるかあなたが手伝うかで変化
+IF LACTATION_ASSIST
+	PLAYER = MASTER
+	SOURCE:Ｂ快感／主人公刺激 = 1000
+	SOURCE:Ｎ快感／主人公刺激 = 2000
+	SOURCE:耻辱 = 500
+	SOURCE:爱情 = 1000
+	SOURCE:屈辱 = 2000
+	SOURCE:支配 = 500
+	SOURCE:调教者习得 = 100
+ELSE
+	PLAYER = -1
+	SOURCE:Ｂ快感 = 300
+	SOURCE:Ｎ快感 = 1000
+	SOURCE:耻辱 = 200
+	SOURCE:屈辱 = 500
+ENDIF
+TFLAG:搾乳刺激 = 1
+TFLAG:烹调搾乳 = 1
+
+

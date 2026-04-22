@@ -1,0 +1,275 @@
+﻿
+;动作确认用口上（日程）
+;真的是调试专用，几乎没有色情内容。
+;只有这套口上会走「把候选全部显示出来」的处理。
+;不必把所有分支都填满；标几个容易空窗的关键点即可。
+;没有也不会坏的分支也很多，看个人兴趣。
+
+; ======================================
+
+;动作确认用口上
+;口上识别名：动作确认用口上（见 Str.csv）
+;写好口上后请在 Str.csv 6100 段附近登记识别名
+;口上作者：polt
+;本口上内容遵循 CC BY-NC（非商用可自由改造）
+;（creativecommons.org/licenses/by-nc/4.0/deed.ja）
+
+;加笔者：
+;（暂无）
+; ======================================
+
+; ARGS:0 场景；ARGS:1/2 用于更细分
+@KOJO_GENERAL_操作确认口上_SCHEDULE(ARGS:0,ARGS:1,ARGS:2,ARGS:3)
+
+; 进入此处时 ARGS:0 固定为「日程」；执行时随机抽一名角色播口上
+; 分支已拆到本文件；重要度中等，不必穷尽细分
+SELECTCASE ARGS:1
+CASE "奶农"
+	; 是否有过相关经历等 → 分「初次／普通」
+	SELECTCASE ARGS:2
+	CASE "初次"
+		; 本人是否曾被榨过奶
+		IF CFLAG:总搾乳量
+			IF ABL:奶农 >= 8
+				CALL MESSAGE_BOX,@"「test_该奴隶首次执行【酪农】日程：本人有过被榨乳经历，且【酪农】≥8 时的台词。」"
+			ELSE
+				CALL MESSAGE_BOX,@"「test_该奴隶首次执行【酪农】日程：本人有过被榨乳经历，且【酪农】＜8 时的台词。」"
+			ENDIF
+		ELSE
+			IF ABL:奶农 >= 8
+				CALL MESSAGE_BOX,@"「test_该奴隶首次执行【酪农】日程：本人尚无被榨乳经历，且【酪农】≥8 时的台词。」"
+			ELSE
+				CALL MESSAGE_BOX,@"「test_该奴隶首次执行【酪农】日程：本人尚无被榨乳经历，且【酪农】＜8 时的台词。」"
+			ENDIF
+		ENDIF
+	CASE "普通"
+		; 清晨或傍晚
+		IF TIME == 0 || TIME == 2
+			CALL MESSAGE_BOX,@"「test_【酪农】第 2 次及以后：清晨或傍晚给乳牛挤奶时的台词。」"
+			SIF CFLAG:被主人公吸走的母乳合计 >= 100000
+				CALL MESSAGE_BOX,@"「test_【酪农】第 2 次及以后：清晨或傍晚挤奶，且曾被 %CALLNAME:0% 累计吸吮母乳 ≥100000cc 时的台词。」"
+			SIF ABL:搾乳中毒 >= 10
+				CALL MESSAGE_BOX,@"「test_【酪农】第 2 次及以后：清晨或傍晚挤奶，且【榨乳中毒】≥10 时的台词。」"
+		; 白天放牧，无挤奶
+		ELSE
+			IF SAVESTR:天气／今天 == "晴朗"
+				CALL MESSAGE_BOX,@"「test_【酪农】第 2 次及以后：白天乳牛放牧且魔界天气为晴时的台词。」"
+				CALL MESSAGE_BOX,@"「test_稀有条件示例：在此分支 RETURN 可跳过下方候选，实现固定或高概率显示。」"
+				RETURN
+			ENDIF
+			CALL MESSAGE_BOX,@"「test_【酪农】第 2 次及以后：白天乳牛放牧时的台词。」"
+		ENDIF
+		IF FLAG:奶牛健康度 >= 80
+			CALL MESSAGE_BOX,@"「test_【酪农】第 2 次及以后：魔界乳牛健康度 ≥80 时各时段共通的台词。」"
+		ELSEIF FLAG:奶牛健康度 < 50
+			CALL MESSAGE_BOX,@"「test_【酪农】第 2 次及以后：魔界乳牛健康度 ＜50 时各时段共通的台词。」"
+		ENDIF
+		SIF !CFLAG:非战斗职业
+			CALL MESSAGE_BOX,@"「test_【酪农】第 2 次及以后：非【非战斗职】时各时段共通的台词。」"
+		SIF CFLAG:非战斗职业
+			CALL MESSAGE_BOX,@"「test_【酪农】第 2 次及以后：为【非战斗职】时各时段共通的台词。」"
+	ENDSELECT
+	
+CASE "事务"
+	SELECTCASE ARGS:2
+	CASE "初次"
+		IF ABL:事务 >= 8
+			CALL MESSAGE_BOX,@"「test_该奴隶首次执行【事务】日程且【事务】≥8 时的台词。」"
+		ELSE
+			CALL MESSAGE_BOX,@"「test_该奴隶首次执行【事务】日程且【事务】＜8 时的台词。」"
+		ENDIF
+	CASE "普通"
+		IF ABL:事务 >= 8
+			CALL MESSAGE_BOX,@"「test_【事务】第 2 次及以后且【事务】≥8 时的台词。」"
+		ELSEIF ABL:事务 >= 4
+			CALL MESSAGE_BOX,@"「test_【事务】第 2 次及以后且【事务】4～7 时的台词。」"
+		ELSE
+			CALL MESSAGE_BOX,@"「test_【事务】第 2 次及以后且【事务】＜4 时的台词。」"
+		ENDIF
+		SIF FLAG:事务工作量 >= 20
+			CALL MESSAGE_BOX,@"「test_【事务】第 2 次及以后且【事务工作量】已堆积 ≥20 时的台词。」"
+		IF CSTR:日程 == CSTR:0:日程
+			CALL MESSAGE_BOX,@"「test_【事务】第 2 次及以后且 %CALLNAME:0% 也在跑事务时的台词。」"
+		ELSE
+			CALL MESSAGE_BOX,@"「test_【事务】第 2 次及以后且 %CALLNAME:0% 日程非事务时的台词。」"
+		ENDIF
+	ENDSELECT
+	
+CASE "调剂"
+	SELECTCASE ARGS:2
+	CASE "初次"
+		IF TALENT:调合知识
+			CALL MESSAGE_BOX,@"「test_该奴隶首次执行【调剂】日程且拥有素质【调合知识】时的台词。」"
+		ELSEIF ABL:药学 >= 8
+			CALL MESSAGE_BOX,@"「test_该奴隶首次执行【调剂】日程：无【调合知识】且【药学】≥8 时的台词。」"
+		ELSE
+			CALL MESSAGE_BOX,@"「test_该奴隶首次执行【调剂】日程：无【调合知识】且【药学】＜8 时的台词。」"
+		ENDIF
+	CASE "普通"
+		SIF TALENT:调合知识
+			CALL MESSAGE_BOX,@"「test_【调剂】第 2 次及以后且拥有【调合知识】时的台词。」"
+		IF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「test_【调剂】第 2 次及以后且为【乳牛】【恋慕】【隶属】或【洗脑】其一时的台词。」"
+		ELSE
+			CALL MESSAGE_BOX,@"「test_【调剂】第 2 次及以后且均非【乳牛】【恋慕】【隶属】【洗脑】时的台词。」"
+			CALL MESSAGE_BOX,@"「test_因工作安排关系，此处多为【陷落】或【屈服】心境。」"
+		ENDIF
+	ENDSELECT
+	
+CASE "搾乳"
+	SELECTCASE ARGS:2
+	CASE "执行前"
+		SELECTCASE ARGS:3
+		CASE "初次"
+			IF EXP:搾乳器
+				CALL MESSAGE_BOX,@"「test_首次执行【榨乳】日程，且曾在其它调教中被机械榨乳过的：执行前台词。」"
+			ELSE
+				CALL MESSAGE_BOX,@"「test_首次执行【榨乳】日程，且尚无机械榨乳经历的：执行前台词。」"
+			ENDIF
+		CASE "普通"
+			IF TALENT:魔乳
+				IF CSTR:0:日程 == "奶农"
+					CALL MESSAGE_BOX,@"「test_【榨乳】第 2 次及以后：%CALLNAME:0% 日程为【酪农】且奴隶为【超乳】时的执行前台词。」"
+				ELSE
+					CALL MESSAGE_BOX,@"「test_【榨乳】第 2 次及以后：%CALLNAME:0% 日程非【酪农】且奴隶为【超乳】时的执行前台词。」"
+				ENDIF
+			ELSE
+				IF CSTR:0:日程 == "奶农"
+					CALL MESSAGE_BOX,@"「test_【榨乳】第 2 次及以后：%CALLNAME:0% 日程为【酪农】且奴隶非【超乳】时的执行前台词。」"
+				ELSE
+					CALL MESSAGE_BOX,@"「test_【榨乳】第 2 次及以后：%CALLNAME:0% 日程非【酪农】且奴隶非【超乳】时的执行前台词。」"
+				ENDIF
+			ENDIF
+		ENDSELECT
+	CASE "执行后"
+		IF EX:喷乳 >= 10000
+			CALL MESSAGE_BOX,@"「test_【榨乳】日程执行完毕且榨乳量 ≥10000cc 时的台词。」"
+		ELSE
+			CALL MESSAGE_BOX,@"「test_【榨乳】日程执行完毕且榨乳量 ＜10000cc 时的台词。」"
+		ENDIF
+		SIF !BASE:母乳生产力
+			CALL MESSAGE_BOX,@"「test_【榨乳】日程执行完毕且母乳生产力归零时的台词。」"
+	ENDSELECT
+	
+; 日程「抽出」与调教中的抽出台词是不同入口
+CASE "抽出"
+	SELECTCASE ARGS:2
+	CASE "执行前"
+		SELECTCASE ARGS:3
+		CASE "初次"
+			CALL MESSAGE_BOX,@"「test_首次执行【抽出】日程：榨乳执行前的台词。」"
+		CASE "普通"
+			; 是否跨时段连续
+			IF CFLAG:继续抽出
+				CALL MESSAGE_BOX,@"「test_【抽出】第 2 次及以后且上一时段也在【抽出】：执行前台词。」"
+			ELSE
+				CALL MESSAGE_BOX,@"「test_【抽出】第 2 次及以后：当前为清晨，或上一时段非【抽出】：执行前台词。」"
+			ENDIF
+		ENDSELECT
+	CASE "执行后"
+		CALL MESSAGE_BOX,@"「test_【抽出】日程：榨乳执行后的台词。」"
+	ENDSELECT
+	
+CASE "体内凌辱"
+	SELECTCASE ARGS:2
+	CASE "开始捕获"
+		SELECTCASE ARGS:3
+		CASE "初次"
+			IF ＃陷落状态／隶属＃ || MARK:触手的苗床
+				CALL MESSAGE_BOX,@"「test_首次执行【体内凌辱】日程：为【隶属】或持有刻印【触手的苗床】时，体内吞入开始台词。」"
+			ELSE
+				CALL MESSAGE_BOX,@"「test_首次执行【体内凌辱】日程：既非【隶属】也无【触手的苗床】时，体内吞入开始台词。」"
+			ENDIF
+		CASE "普通"
+			CALL MESSAGE_BOX,@"「test_【体内凌辱】第 2 次及以后：体内吞入开始时的台词。」"
+		ENDSELECT
+	CASE "执行前"
+		SELECTCASE ARGS:3
+		CASE "初次"
+			CALL MESSAGE_BOX,@"「test_首次执行【体内凌辱】日程：凌辱开始前台词。」"
+		CASE "普通"
+			IF CFLAG:继续体内凌辱
+				CALL MESSAGE_BOX,@"「test_【体内凌辱】第 2 次及以后且从上一时段连续：执行前台词。」"
+			ELSE
+				CALL MESSAGE_BOX,@"「test_【体内凌辱】第 2 次及以后且本时段重新开局：执行前台词。」"
+			ENDIF
+		ENDSELECT
+	CASE "执行后"
+		SELECTCASE ARGS:3
+		CASE "初次"
+			CALL MESSAGE_BOX,@"「test_首次执行【体内凌辱】日程：执行后台词。」"
+		CASE "普通"
+			CALL MESSAGE_BOX,@"「test_【体内凌辱】第 2 次及以后：执行后台词。」"
+		ENDSELECT
+	ENDSELECT
+
+; 调教日程针对单人，触发较频繁
+CASE "调教"
+	SELECTCASE ARGS:2
+	CASE "开始调教"
+		IF !EXP:执行次数／主人公调教
+			CALL MESSAGE_BOX,@"「test_首次被 %CALLNAME:0% 调教：开始前台词。」"
+		ELSE
+			CALL MESSAGE_BOX,@"「test_第 2 次及以后被 %CALLNAME:0% 调教：开始前台词。」"
+		ENDIF
+		SIF (MARK:恐怖刻印 || MARK:痛苦刻印) && !TALENT:自尊心高 && !TALENT:高傲
+			CALL MESSAGE_BOX,@"「test_持有刻印【恐怖刻印】或【痛苦刻印】，且无【自尊心高】【高傲】：开始前台词。」"
+	
+	CASE "调教结束"
+		; 可参照 TFLAG:执行指令的次数、BASE:体力 等判断是否还有余力
+		IF TFLAG:执行指令的次数 < 3
+			CALL MESSAGE_BOX,@"「test_调教指令次数 ＜3 即结束：结束后台词。」"
+			SIF !BASE:体力
+				CALL MESSAGE_BOX,@"「test_调教指令次数 ＜3 即结束且奴隶体力归零：结束后台词。」"
+		ELSEIF TFLAG:执行指令的次数 >= 20
+			CALL MESSAGE_BOX,@"「test_调教指令次数 ≥20 后结束：结束后台词。」"
+			SIF !BASE:体力
+				CALL MESSAGE_BOX,@"「test_调教指令次数 ≥20 后结束且奴隶体力归零：结束后台词。」"
+		ELSE
+			CALL MESSAGE_BOX,@"「test_调教指令次数 3～19 后结束：结束后台词。」"
+			SIF !BASE:体力
+				CALL MESSAGE_BOX,@"「test_调教指令次数 3～19 后结束且奴隶体力归零：结束后台词。」"
+		ENDIF
+	
+	CASE "晚上调教后回自室"
+		CALL MESSAGE_BOX,@"「test_夜间调教结束，%CALLNAME% 回单间时的台词。」"
+	CASE "从体内的凌辱中取出"
+		CALL MESSAGE_BOX,@"「test_为开始调教而把 %CALLNAME% 从 %CALLNAME:0% 体内取出时的台词。」"
+	CASE "从体内凌辱开始调教"
+		CALL MESSAGE_BOX,@"「test_为开始调教而从 %CALLNAME:0% 体内取出 %CALLNAME% 时的台词。」"
+	CASE "再次体内凌辱"
+		CALL MESSAGE_BOX,@"「test_调教结束，把曾为调教而取出的 %CALLNAME% 再次送回 %CALLNAME:0% 体内凌辱时的台词。」"
+	ENDSELECT
+
+CASE "探索魔界"
+	SELECTCASE ARGS:2
+	CASE "睡眠"
+		CALL MESSAGE_BOX,@"「test_未被捕获、未被追踪者抓住，进入夜间时段时的台词。」"
+	CASEELSE
+		CALL MESSAGE_BOX,@"「test_未被捕获、未被追踪者抓住，在魔界探索时的台词。」"
+	ENDSELECT
+
+CASE "追踪"
+	SELECTCASE ARGS:2
+	CASE "潜伏"
+		CALL MESSAGE_BOX,@"「test_索敌值 ≥50\% 且满足躲避追踪者条件时的台词。」"
+		CALL MESSAGE_BOX,@"「test_条件：无同伴，且（疲劳 ≥80\% 或 战斗力 ≤10000 或 有同伴但已全灭）。」"
+	CASE "潜伏失败"
+		CALL MESSAGE_BOX,@"「test_试图躲藏但仍被追踪者发现时的台词。」"
+	CASE "潜伏成功"
+		CALL MESSAGE_BOX,@"「test_成功躲藏并撑过追踪时的台词。」"
+	CASE "追踪者捕获"
+		CALL MESSAGE_BOX,@"「test_未躲藏、直接被追踪者发现时的台词。」"
+	ENDSELECT
+	
+CASE "（正在制作中）"
+	; 其它日程分支日后可在此扩展
+	SELECTCASE ARGS:2
+	CASE "初次"
+	
+	CASE "普通"
+	
+	ENDSELECT
+ENDSELECT
+
+

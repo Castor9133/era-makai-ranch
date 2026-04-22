@@ -1,0 +1,201 @@
+﻿
+;表示設定一覧
+@LIST_CONFIG_DISPLAY
+
+PRINTL --- 《 显示设置 》 ---
+ALIGNMENT LEFT
+DRAWLINE
+FLAG_REF = 2000
+FOR LOCAL,0,50
+	SIF FLAGNAME:(LOCAL +FLAG_REF) == ""
+		CONTINUE
+	CALL PRINT_CONFIG_DISPLAY(LOCAL)
+NEXT
+PRINTL
+PRINTL [70] 黑话设置
+PRINTL [71] 头像・像素画设定
+PRINTL [72] 拟音设定
+PRINTL [73] 非黑话设置
+PRINTL [74] 状态画面设定
+PRINTL [75] 日程・调教执行时设定
+
+
+
+;ARG→LOCAL　FLAG_REFを足すことでフラグ番号
+@PRINT_CONFIG_DISPLAY(ARG)
+#DIM COLOR
+
+FLAG_NAME = %FLAGNAME:(ARG +FLAG_REF)%
+SELECTCASE FLAG_NAME
+CASE "沉沦口上化绝顶次数"
+	PRINTFORM [{ARG,2}] %FLAG_NAME,32%：{FLAG:FLAG_NAME}次或更多
+
+CASE "玩笑表示"
+	LOCALS = 和作者笑话趣味不合
+	PRINTFORM [{ARG,2}] %LOCALS,32%：\@ (FLAG:FLAG_NAME) ? 也并非如此 # 是的 \@
+	
+CASE "母乳单位"
+	PRINTFORM [{ARG,2}] %FLAG_NAME,32%：\@ (FLAG:FLAG_NAME) ? cc／L # ml／L \@
+
+CASE "位数缩短显示形式"
+	PRINTFORM [{ARG,2}] %FLAG_NAME,32%：
+	SELECTCASE FLAG:FLAG_NAME
+	CASE 0
+		PRINT 无缩写
+	CASE 1
+		PRINT k,M,G,T
+	CASE 2
+		PRINT 万,亿,兆
+	ENDSELECT
+
+CASE "自动对齐行数"
+	PRINTFORM [{ARG,2}] %FLAG_NAME,32%：{FLAG:FLAG_NAME,2}行
+
+CASE "奴隶候选未拥有的强调显示形式"
+	PRINTFORM [{ARG,2}] %FLAG_NAME,32%：
+	SELECTCASE FLAG:FLAG_NAME
+	CASE 0
+		PRINT 无突出显示
+	CASE 1
+		PRINT 【种族】未持有
+	CASE 2
+		PRINT 【职业】未持有
+	CASE 3
+		PRINT 【种族】或【职业】未持有
+	CASE 4
+		PRINT 【种族】或那个种族的【身份】未持有
+	ENDSELECT
+
+CASE "颜色编码／主界面强调选项"
+	PRINTFORM [{ARG,2}] %FLAG_NAME,32%：
+	COLOR = FLAG:FLAG_NAME
+	SETCOLOR COLOR
+	PRINTFORM %UNICODE(0x2586)%(R:{GETRED(COLOR)} G:{GETGREEN(COLOR)} B:{GETBLUE(COLOR)})
+	RESETCOLOR
+
+CASEELSE
+	PRINTFORM [{ARG,2}] %FLAG_NAME,32%
+	CALL PRINT_ONOFF(FLAG:FLAG_NAME)
+
+ENDSELECT
+PRINTL
+
+
+
+;ARG→INPUT
+@CHANGE_CONFIG_DISPLAY(ARG)
+
+;番号での分岐から
+SELECTCASE ARG
+CASE 70	;スラング表示
+	CALL SLANG_CONFIG
+CASE 71	;画像表示
+	CALL IMAGE_CONFIG
+CASE 72	;擬音表示
+	CALL ONOMATOPEIA_CONFIG
+CASE 73	;スラング外表記設定
+	CALL SENTENCE_CONFIG
+CASE 74	;ステータス画面表示設定
+	CALL STATUS_CONFIG
+CASE 75	;スケジュール・調教実行時表示設定
+	CALL SCHEDULE_CONFIG
+
+;それ以外はフラグ名判定へ
+CASEELSE
+	CALL CHANGE_CONFIG_DISPLAY_NAME(ARG)
+ENDSELECT
+
+
+
+@CHANGE_CONFIG_DISPLAY_NAME(ARG)
+
+FLAG_NUM = ARG +FLAG_REF
+FLAG_NAME = %FLAGNAME:FLAG_NUM%
+
+;飛ばして反転フラグに対応する番号は共通関数
+CALL CHANGE_CONFIG_INVERTBIT
+SIF RESULT
+	RETURN
+SELECTCASE FLAG_NAME
+CASE "口上表示"
+	PRINTL 作为游戏整体的设定，显示或设定口上。
+	PRINTL
+	PRINTLC [ 0] 隐藏
+	PRINTLC [ 1] 显示（默认）
+	BINPUT
+	FLAG:FLAG_NUM = RESULT
+
+CASE "沉沦口上化绝顶次数"
+	PRINTL 请输入口上表示时第一人称・第二人称・性器的称呼变化的调教中的绝顶次数。
+	PRINTL
+	PRINTL [50] （默认）
+	PRINTL 或输入0～1000之间的数字。
+	INPUT
+	SIF RESULT >= 0 && RESULT <= 1000
+		FLAG:FLAG_NUM = RESULT
+	
+CASE "玩笑表示"
+	PRINTL 设置TIPS和项目说明栏中文本的显示和隐藏。
+	PRINTL 开笑话和恶搞OK的情况下，如果能显示出来的话，那就太好了
+	PRINTL ↑是这样的气氛
+	PRINTL 
+	PRINTL [ 0] 认真做（不显示）
+	PRINTL [ 1] 嗯，好的（显示：默认）
+	BINPUT
+	FLAG:FLAG_NUM = RESULT
+
+CASE "母乳单位"
+	PRINTFORML 设置%SAVESTR:标识／母乳%的单位。
+	PRINTL
+	PRINTL [ 0] ml／L（默认）
+	PRINTL [ 1] cc／L
+	BINPUT
+	FLAG:FLAG_NUM = RESULT
+
+CASE "位数缩短显示形式"
+	PRINTFORML 设定数字位数多时的表示方式。
+	PRINTL
+	PRINTL [ 0] 无缩写（默认）
+	PRINTL [ 1]  10,000以上缩写为「k」,M,G,T」 缩写后显示
+	PRINTL [ 2] 100,000以上缩写为「万」,亿,从兆缩写后显示
+	BINPUT
+	FLAG:FLAG_NUM = RESULT
+
+CASE "自动对齐行数"
+	PRINTL 设置自动换行以适合显示的页面上的换行数。
+	PRINTL 请根据字体大小和屏幕大小设置合适的值。
+	PRINTL
+	PRINTL [30] 30行（默认）
+	PRINTL 或输入0～50之间的数字。
+	INPUT
+	SIF RESULT >= 0 && RESULT <= 50
+		FLAG:FLAG_NUM = RESULT
+	
+CASE "奴隶候选未拥有的强调显示形式"
+	PRINTL 设置在来到魔界的奴隶候选一览中，未获得的特征是否用彩色显示
+	PRINTL 以【人类】【剑士】身份来举例。
+	PRINTL
+	PRINTL [ 0] 无突出显示（默认）
+	PRINTL
+	PRINTL [ 1] 没有【种族】时
+	PRINTL 　　　→如果未拥有【人类】奴隶，也会彩色显示
+	PRINTL
+	PRINTL [ 2] 没有【职业】时
+	PRINTL 　　　→如果未拥有【剑士】奴隶，也会彩色显示
+	PRINTL
+	PRINTL [ 3] 未持有改该【种族】或未持有该种族的相对应【职业】时
+	PRINTL 　　　→即使拥有【人类】奴隶，如果没有以【人类】的【剑士】为奴隶的话，也会以彩色显示。
+	PRINTL
+	PRINTL [ 4] 未持有改该【种族】或未持有该种族的相对应【身份】时
+	PRINTL 　　　→即使拥有【人类】奴隶，但如果只拥有相同的身份（如【教官】），也会以彩色显示
+	PRINTL
+	BINPUT
+	FLAG:FLAG_NUM = RESULT
+	
+CASE "颜色编码／主界面强调选项"
+	CALL EDIT_COLOR_CODE(FLAG:颜色编码／主界面强调选项)
+	SIF RESULT
+		FLAG:颜色编码／主界面强调选项 = RESULT
+ENDSELECT
+
+

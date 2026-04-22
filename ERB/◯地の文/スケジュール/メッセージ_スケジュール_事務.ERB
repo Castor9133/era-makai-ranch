@@ -1,0 +1,41 @@
+﻿
+;事務内容表示
+@WORK_FINANCE_BEGIN_MESSAGE
+
+SIF !EXP:执行次数／事务 && TARGET
+	PRINTFORML %CALLNAME%奉主人公之命，要帮助牧场做一些事务性工作…
+PRINTFORM %CALLNAME%%PRINT_WORK_GROUP()%将
+
+;あなたも事務の場合追加
+SIF CSTR:0:日程 == "事务" && TARGET > 0
+	PRINTFORM 和%CALLNAME:0%一起
+PRINTL 把积压的文书工作消化了。
+CALL KOJO_PRINT("日程","事务",KOJO_TYPE)
+
+
+
+;事務上手さ表示
+@WORK_FINANCE_ABL_MESSAGE
+
+SIF !TARGET
+	RETURN
+IF !EXP:执行次数／事务
+	IF ABL:事务 >= 8
+		PRINTL 利用以前的经验，非常有效率的进行事务工作。
+	ELSEIF ABL:事务 >= 4
+		PRINTL 看来很有条理。
+	ELSE
+		PRINTL …看起来进展不是很顺利。
+	ENDIF
+ELSE
+	IF ABL:事务 >= 8
+		PRINTL 用专业的手法处理事务工作。
+	ELSEIF ABL:事务 >= 4
+		PRINTL 进步得相当不错。
+	ELSE
+		PRINTL …看起来进展不是很顺利。
+	ENDIF
+ENDIF
+
+
+

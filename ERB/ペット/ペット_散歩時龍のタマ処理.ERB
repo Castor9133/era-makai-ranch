@@ -1,0 +1,26 @@
+﻿
+;龍のタマを見つける
+@PET_COMMU_WALKING_DRAGON_BALL
+
+;7コあるなら無効・基礎30%で発見　発見率補正を追加
+SIF ITEM:龙之珠 >= 7 || RAND:100 >= FIND_DRAGON_BALL +FLAG:龙之珠发现率修正
+	RETURN
+ITEM:龙之珠 ++
+PRINTFORML …散步时%PET_NAME%好像发现了什么。
+CALL PRINT_WORD_COLOR,@"获得了＜龙之珠＞！","黄"
+PRINTFORML 　→ 所持数{ITEM:龙之珠}个
+
+
+
+;帰宅時に1/5の確率
+@GOING_HOME_DRAGON_BALL
+
+SIF ITEM:龙之珠 >= 7 || RAND:100 >= (FIND_DRAGON_BALL +FLAG:龙之珠发现率修正) /5
+	RETURN
+ITEM:龙之珠 ++
+PRINTFORML 回家的路上，%PET_NAME%似乎对什么感兴趣，正在这里等待着。
+PRINTFORML 发出了前往的指示，走进了小路，%PET_NAME%似乎在草丛中找到了什么。
+CALL PRINT_WORD_COLOR,@"获得了＜龙之珠＞！","黄"
+PRINTFORML 　→ 所持数{ITEM:龙之珠}个
+
+

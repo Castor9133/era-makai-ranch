@@ -1,0 +1,198 @@
+﻿
+@BIND_0_CONTINUE
+;立ち柱
+
+LOSEBASE:气力 += 5
+SOURCE:屈辱 += 300
+SOURCE:支配 += 500
+SOURCE:受虐狂 += 300
+
+
+@BIND_1_CONTINUE
+;座り柱
+
+LOSEBASE:气力 += 5
+SOURCE:屈辱 += 300
+SOURCE:支配 += 500
+SOURCE:受虐狂 += 300
+
+
+@BIND_2_CONTINUE
+;まんぐり
+
+LOSEBASE:气力 += 5
+SOURCE:耻辱 += 1000
+SOURCE:屈辱 += 1000
+SOURCE:支配 += 500
+SOURCE:受虐狂 += 1000
+
+
+@BIND_3_CONTINUE
+;搾乳台
+
+LOSEBASE:气力 += 5
+SOURCE:耻辱 += 300
+SOURCE:屈辱 += 500
+SOURCE:支配 += 500
+SOURCE:受虐狂 += 300
+
+
+@BIND_4_CONTINUE
+;吊るし
+
+LOSEBASE:气力 += 10
+SOURCE:耻辱 += 300
+SOURCE:屈辱 += 700
+SOURCE:支配 += 700
+SOURCE:受虐狂 += 700
+SOURCE:非性感带疼痛 += 700
+
+
+@BIND_5_CONTINUE
+;十字架
+
+LOSEBASE:气力 += 5
+SOURCE:屈辱 += 700
+SOURCE:支配 += 1000
+SOURCE:受虐狂 += 200
+
+
+@BIND_6_CONTINUE
+;Ｘ字
+
+LOSEBASE:气力 += 5
+SOURCE:耻辱 += 300
+SOURCE:屈辱 += 1000
+SOURCE:支配 += 700
+SOURCE:受虐狂 += 300
+
+
+@BIND_7_CONTINUE
+;手枷屈脚
+
+LOSEBASE:气力 += 5
+SOURCE:耻辱 += 500
+SOURCE:屈辱 += 500
+SOURCE:支配 += 1000
+SOURCE:受虐狂 += 1000
+SOURCE:非性感带疼痛 += 300
+
+
+@BIND_8_CONTINUE
+;ハーネス
+
+LOSEBASE:气力 += 5
+SOURCE:耻辱 += 500
+SOURCE:屈辱 += 700
+SOURCE:支配 += 1000
+SOURCE:受虐狂 += 800
+SOURCE:非性感带疼痛 += 500
+
+
+@BIND_9_CONTINUE
+;ベッド仰向け
+
+LOSEBASE:气力 += 5
+SOURCE:耻辱 += 500
+SOURCE:屈辱 += 300
+SOURCE:支配 += 600
+SOURCE:受虐狂 += 500
+
+
+@BIND_10_CONTINUE
+;ベッドうつ伏せ
+
+LOSEBASE:气力 += 5
+SOURCE:耻辱 += 200
+SOURCE:屈辱 += 600
+SOURCE:支配 += 700
+SOURCE:受虐狂 += 600
+
+
+@BIND_11_CONTINUE
+;荒縄
+
+LOSEBASE:体力 += 10
+LOSEBASE:气力 += 10
+SOURCE:耻辱 += 200
+SOURCE:屈辱 += 500
+SOURCE:支配 += 400
+SOURCE:受虐狂 += 500
+
+
+@BIND_12_CONTINUE
+;亀甲縛り
+
+LOSEBASE:体力 += 10
+LOSEBASE:气力 += 10
+SOURCE:耻辱 += 500
+SOURCE:屈辱 += 1000
+SOURCE:支配 += 1000
+SOURCE:受虐狂 += 1200
+
+
+@BIND_13_CONTINUE
+;触手
+
+LOSEBASE:体力 += 10
+LOSEBASE:气力 += 20
+SOURCE:耻辱 += 300
+SOURCE:不洁 += 300
+SOURCE:支配 += 500
+SOURCE:异形恐惧 += 300
+SOURCE:受虐狂 += 300
+SOURCE:触手魔力消耗量 += 50
+;	SIF ITEM:血中魔力強化媚液
+;		SOURCE:淫欲 += SOURCE:淫欲 /10
+
+
+@BIND_14_CONTINUE
+;下半身埋め壁乳
+
+LOSEBASE:气力 += 5
+SOURCE:耻辱 += 300
+SOURCE:屈辱 += 1000
+SOURCE:支配 += 1000
+SOURCE:受虐狂 += 500
+
+
+@BIND_15_CONTINUE
+;三角木馬
+
+LOSEBASE:体力 += 30
+LOSEBASE:气力 += 30
+SOURCE:耻辱 += 300
+SOURCE:屈辱 += 1000
+SOURCE:支配 += 1000
+SOURCE:受虐狂 += 1500
+
+;スパンキングだと痛み1.5倍
+IF SELECTCOM == 70
+	FIX = 1500
+ELSE
+	FIX = 1000
+ENDIF
+
+;着衣状態に応じて変化
+{
+IF TFLAG:临时脱衣／衣服 || !EQUIP:装备中ID／衣服 || ＃穿着衣服／名称＃ == "反向兔女郎装" ||
+＃穿着衣服／私处撕裂＃ || GETBIT(＃半脱／衣服下＃) || ＃穿着衣服／私处露出＃
+}
+	;無し
+	{
+	IF !EQUIP:装备中ID／内衣下装 || GETBIT(＃半脱／内衣下装＃) || TFLAG:临时脱衣／内衣下装 ||
+	＃穿着内衣下装／名称＃ == "局部露出内裤"
+	}
+		FIX *= 50
+	;下着越し
+	ELSE
+		FIX *= 40
+	ENDIF
+;衣服越し
+ELSE
+	FIX *= 25
+ENDIF
+SOURCE:Ｃ疼痛 += FIX
+SOURCE:Ｖ疼痛 += FIX
+
+

@@ -1,0 +1,37 @@
+﻿
+;奴隷候補の名前
+@RANDOM_SLAVE_NAME
+
+STR_MAX = 999
+
+;どの国っぽい名前を使うか
+FIX = RAND:7
+
+;ランダムネーム優先設定があれば上書き
+;0は優先なしに使用してるので-1するよ
+SIF FLAG:随机名称替代
+	FIX = FLAG:随机名称替代 -1
+
+;日本っぽいジョブで日本名優先設定してれば上書き
+IF GROUPMATCH(CSTR:职业,"巫女","退魔巫女","女忍者","武士","武将","阴阳师")
+	SIF RAND:100 < FLAG:日本式职业的日本名率
+		FIX = 0
+ENDIF
+STR_REF = 10000 +FIX *1000
+CALL STR_REF_SHUFFLE(STR_REF)
+
+;名前が重複していないかチェック
+;CHARANUM-1にすれば現在のキャラとの比較になる
+;優先設定つけたので無限ループの可能性考慮して5回まで
+FOR TARGET_COUNT,0,CHARANUM -1
+	IF  SHUFFLE_COUNT < 5 && RESULTS == CALLNAME:TARGET_COUNT
+		SHUFFLE_COUNT ++
+		RESTART
+	ENDIF
+NEXT
+SHUFFLE_COUNT = 0
+CALLNAME = %RESULTS%
+
+
+
+

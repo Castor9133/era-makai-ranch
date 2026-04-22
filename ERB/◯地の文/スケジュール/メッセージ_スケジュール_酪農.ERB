@@ -1,0 +1,75 @@
+﻿
+;魔界乳牛の世話内容地の文
+@WORK_LACTATION_BEGIN_MESSAGE
+
+SIF !EXP:执行次数／奶农 && TARGET
+	PRINTFORML %CALLNAME%奉主人公之命，要照顾魔界乳牛…
+
+;WORK_GROUPが2以上なら「たち」表記
+PRINTFORM %CALLNAME%%PRINT_WORK_GROUP()%将
+
+;あなたも酪農の場合追加　当然だけどあなたを除く
+SIF CSTR:0:日程 == "奶农" && TARGET
+	PRINTFORM 和%CALLNAME:0%一起
+SELECTCASE TIME
+CASE 0
+	PRINTL 对牛棚里的魔界乳牛们进行了早晨的挤奶和更换稻草。
+CASE 1
+	;悪天候なら牛舎の中
+	IF GROUPMATCH(SAVESTR:天气／今天,＃恶劣天气＃)
+		PRINTL 在牛棚里轻松地检查了悠闲度过的魔界乳牛们的健康状况。
+	ELSE
+		PRINTL 对放牧的魔界乳牛进行了过程观察和小屋的清洁。
+	ENDIF
+CASE 2
+	PRINTL 进行了牛棚里的魔界乳牛们的傍晚挤奶和梳理。
+ENDSELECT
+CALL KOJO_PRINT("日程","奶农",KOJO_TYPE)
+
+
+
+;酪農上手さ表示地の文
+@WORK_LACTATION_ABL_MESSAGE
+
+;あなたを除く
+SIF !TARGET
+	RETURN
+IF !EXP:执行次数／奶农
+	IF ABL:奶农 >= 8
+		PRINTL 利用以前的经验，非常有效率的进行事务工作。
+	ELSEIF ABL:奶农 >= 4
+		PRINTL 看来很有条理。
+	ELSE
+		PRINTL 动作相当生硬。
+	ENDIF
+ELSE
+	IF ABL:奶农 >= 9
+		PRINTFORML 已经充分理解奶农工作，%CALLNAME:0%似乎再也没有什么可教的了。
+	ELSEIF ABL:奶农 >= 4
+		PRINTL 进步得相当不错。
+	ELSE
+		PRINTL 还很笨拙地工作着。
+	ENDIF
+ENDIF
+
+
+
+;魔界乳牛のミルクの出地の文
+@COW_MILK_VALUE_MESSAGE
+
+IF FIRST_HEALTH < 20
+	PRINT 乳牛们身体不好，似乎不怎么母乳… 
+ELSEIF FIRST_HEALTH < 50
+	PRINT 奶牛们看起来有点不舒服。搾乳也不正常…… 
+ELSEIF FIRST_HEALTH < 91
+	PRINT 奶牛们的身体状况良好。母乳被顺利压榨下去。 
+ELSE
+	PRINT 奶牛们精神饱满！母乳也被大量压榨。 
+ENDIF
+PRINTL
+
+
+
+
+
+

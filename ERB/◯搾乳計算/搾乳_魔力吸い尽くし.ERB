@@ -1,0 +1,20 @@
+﻿
+;魔力吸い尽くし処理
+@LACTATION_MAGIC_ALL_SUCK
+
+;COM910の場合のみ
+SIF !SOURCE:魔力吸尽
+	RETURN
+MARK:魔力母乳体质 = 0
+BASE:魔力 = 0
+MAXBASE:魔力 = 0
+BASE:可吸收的魔力 = 0
+CALL LACTATION_MAGIC_ALL_SUCK_MESSAGE
+
+
+
+
+
+
+
+

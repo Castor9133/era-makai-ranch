@@ -1,0 +1,200 @@
+﻿
+;輪姦奴隷チェック
+@RINKAN_SLAVE_CHECK
+
+;輪姦するのは1人なのでFINDCHARAを使う
+FINDCHARA CFLAG:追踪对象,2
+SIF RESULT <= 0
+	RETURN
+TARGET = RESULT
+CALL RINKAN_SLAVE
+
+
+
+;ゴブリンたちが捕まえた奴隷の輪姦
+@RINKAN_SLAVE
+#DIM GOBLINS
+
+PRINTL 　　　《 轮奸 》
+CALL RESET_TRAIN_PALAM
+CALL GOBLINS_FLAG_SET
+CALL RINKAN_SLAVE_STRIP_CLOTHE
+CALL RINKAN_SLAVE_STRIP_LINGERIE
+
+;輪姦するゴブリンの数
+;処女結界でちっぱいだと6～12
+GOBLINS = 6 *CFLAG:追踪人数 +RAND:8
+SIF ABL:胸围大小 < BUSTSIZE_普乳 && TALENT:处女结界
+	GOBLINS = 6 +RAND:7
+CALL RINKAN_SLAVE_BEGIN_MESSAGE
+FOR LOCAL,0,GOBLINS
+	CALL RINKAN_SLAVE_SOURCE
+	SIF !LOCAL
+		CALL PRINT_IMAGE("调教执行")
+	CALL SOURCE_CHECK
+	
+	;1回目だけ
+	SIF !LOCAL
+		CALL LOST_VARGIN_MIND_DAMAGE
+NEXT
+EXP:经验次数／魔族／接吻 += 1 + RAND:GOBLINS
+CALL SCHEDULE_ECSTASY_FIX
+CALL PRINT_TOTAL_GOBLINS
+CALL PRINT_STATUS_BEFORE_AFTER
+PRINTL
+CALL TRAIN_END_PALAM_CALC
+CALL ABL_UP
+CALL MARK_GET
+CALL CAPITULATION_JUDGE
+CFLAG:轮奸次数 += GOBLINS
+EXP:执行次数／被轮奸 ++
+EXP:区间执行次数／被轮奸 ++
+SIF !SOURCE:目的变更
+	PRINTW
+DRAWLINE
+
+
+
+@GOBLINS_FLAG_SET
+
+SOURCE:接吻 = 1
+TFLAG:训练前体力 = BASE:体力
+TFLAG:吸奶 = 1
+TFLAG:深喉阴茎 = 1
+
+;乳がでかいほど経験になりやすい
+SIF RAND:100 < ABL:胸围大小 *8
+	TFLAG:乳交阴茎 = 1
+CALL STATUS_BEFORE_RECORD
+V_PENIS = 妖精
+A_PENIS = 妖精
+M_PENIS = 妖精
+PAIZURI_PENIS = 妖精
+KISS_PLAYER = 妖精
+MILK_SUCK_PLAYER = 妖精
+FLAG:补正技巧值 = 1
+TFLAG:哥布林轮奸 = 1
+
+;苦痛がえらいことになるので初期セット(地の文的に初回は低め)
+IF CFLAG:轮奸次数
+	SIF !TALENT:处女结界
+		PALAM:Ｖ润滑 = 5000
+	PALAM:Ａ润滑 = 10000
+ELSE
+	SIF !TALENT:处女结界
+		PALAM:Ｖ润滑 = 500
+	PALAM:Ａ润滑 = 500
+ENDIF
+
+;処女喪失判定出すために必要
+TFLAG:Ａ装备 = 1
+SIF !TALENT:处女结界
+	TFLAG:Ｖ装备 = 1
+
+
+
+;服が破れてない場合まず破く処理
+@RINKAN_SLAVE_STRIP_CLOTHE
+
+SIF ＃穿着衣服／胸部撕裂＃ && ＃穿着衣服／私处撕裂＃
+	RETURN
+SOURCE:脱衣消息显示 = 1
+PRINT 哥布林们
+CALL TRAIN_CLOTHE_STRIP("衣服","批量撕掉")
+
+
+
+;下着があるとき脱がす
+@RINKAN_SLAVE_STRIP_LINGERIE
+
+SIF !EQUIP:装备中ID／内衣上装 && !EQUIP:装备中ID／内衣下装
+	RETURN
+SOURCE:脱衣消息显示 = 1
+PRINT 哥布林们
+CALL TRAIN_CLOTHE_STRIP("内衣","脱衣")
+
+;上通しても半脱ぎになるだけなのでここで消しちゃう
+EQUIP:(EQUIP:装备中ID／内衣上装) = 0
+EQUIP:(EQUIP:装备中ID／内衣下装) = 0
+EQUIP:装备中ID／内衣上装 = 0
+EQUIP:装备中ID／内衣下装 = 0
+
+
+
+;輪姦SOURCE
+@RINKAN_SLAVE_SOURCE
+
+;ゴブリンで母性は上がらない
+LOSEBASE:体力 = 10
+LOSEBASE:气力 = 20
+SOURCE:Ｂ快感／魔族 = 500
+SOURCE:Ｎ快感／魔族 = 500
+SOURCE:Ｃ快感／魔族 = 500
+SOURCE:Ａ快感／魔族 = 600
+IF TALENT:处女结界
+	SOURCE:耻辱 = 300
+	SOURCE:屈辱 = 500
+	SOURCE:不洁 = 300
+	SOURCE:支配 = 500
+ELSE
+	SOURCE:Ｖ快感／魔族 = 600
+	SOURCE:耻辱 = 500
+	SOURCE:屈辱 = 800
+	SOURCE:不洁 = 500
+	SOURCE:支配 = 600
+	SOURCE:Ｖ润滑追加 = 1000
+ENDIF
+
+;射精経験は処理を簡略化するため直接EXPに加算
+LOCAL = 0
+IF !TALENT:处女结界
+	PLEASURE = 100 + ABL:膣内射精中毒 *20 + MARK:膣内射精中毒 *100 + MARK:榨精淫穴 *200 + MARK:精液便女 *300
+	EXP:膣内射精经验 += PLEASURE
+	SOURCE:Ｖ快感 += PLEASURE
+	LOCAL += PLEASURE
+	EXP:经验次数／魔族／Ｖ性交 += (RAND:2 +1)
+ENDIF
+PLEASURE = 100 + ABL:尻穴射精中毒 *20 + MARK:尻穴射精中毒 *100 + MARK:榨精尻穴 *200 + MARK:尻穴便器 *300
+EXP:尻穴射精经验 += PLEASURE
+SOURCE:Ａ快感 += PLEASURE
+LOCAL += PLEASURE
+EXP:经验次数／魔族／Ａ性交 += (RAND:2 +1)
+IF RAND:100 < ABL:胸围大小 *8
+	TFLAG:乳交阴茎 = 1
+	PLEASURE = 100 + ABL:乳内射精中毒 *20
+	EXP:乳内射精经验 += PLEASURE
+	SOURCE:Ｂ快感 += PLEASURE
+	LOCAL += PLEASURE
+	EXP:经验次数／魔族／乳交 += (RAND:2 +1)
+ENDIF
+PLEASURE = 100 + ABL:精饮中毒 *20
+EXP:精饮经验 += PLEASURE
+LOCAL += PLEASURE
+EXP:经验次数／魔族／Ｍ性交 += (RAND:2 +1)
+EXP:精液经验 += (LOCAL /2)
+
+
+
+@PRINT_TOTAL_GOBLINS
+
+SIF EX:总绝顶
+	PRINT 绝顶次数　
+SETCOLOR 0xFF70FF
+SIF EX:Ｂ绝顶
+	PRINTFORM %SAVESTR:标识／乳房%：{EX:Ｂ绝顶}　
+SIF EX:Ｎ绝顶
+	PRINTFORM 乳头：{EX:Ｎ绝顶}　
+SIF EX:Ｃ绝顶
+	PRINTFORM %SAVESTR:标识／阴蒂%：{EX:Ｃ绝顶}　
+SIF EX:Ｖ绝顶
+	PRINTFORM %SAVESTR:标识／膣%：{EX:Ｖ绝顶}　
+SIF EX:Ａ绝顶
+	PRINTFORM %SAVESTR:标识／肛门%：{EX:Ａ绝顶}　
+PRINTL
+CALL HEARTCB(0xD02830)
+PRINTFORM 总计：{EX:总绝顶}
+CALL HEARTCB(0xD02830)
+RESETCOLOR
+CALL PRINT_STATUS_BEFORE_AFTER
+
+

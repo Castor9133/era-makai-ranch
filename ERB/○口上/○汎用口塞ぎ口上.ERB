@@ -1,0 +1,77 @@
+﻿
+;口被堵住时进入的分支（泛用口塞口上）
+;不需要太多花样，从口上里抽几种模式轮流即可。
+;SHACKLE_1：多种情况混在一起的版本。
+;目前所有口上都会先分到这里；需要的话可再写 SHACKLE_2 以后。
+;反正嘴被堵住了，有一套也就够用了。
+
+;ARGS:0 场景；ARGS:1/2 用于更细分
+@KOJO_GENERAL_MOUTH_SHACKLE_1(ARGS:0,ARGS:1,ARGS:2,ARGS:3)
+
+;分支也别堆太多，必要时只覆盖一部分即可。
+;应在调教中或体内凌辱期间才会启用。
+;戴着口枷时先到这里，再决定要不要显示台词，会比较好写。
+
+SELECTCASE ARGS:0
+CASE "射精"
+	;体内射还是外射
+	IF SOURCE:膣内射精经验 || SOURCE:尻穴射精经验 || SOURCE:精饮经验
+		IF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「啊……♥ 嗯……♥♥♥」"
+			CALL MESSAGE_BOX,@"「嗯……♥♥ ♥♥♥」"
+		ELSE
+			CALL MESSAGE_BOX,@"「嗯！？……嗯……！♥」"
+			CALL MESSAGE_BOX,@"「嗯！？……嗯……♥」"
+		ENDIF
+	ELSE
+		CALL MESSAGE_BOX,@"「嗯、嗯……♥」"
+		CALL MESSAGE_BOX,@"「嗯！？……嗯……」"
+	ENDIF
+	
+CASE "绝顶"
+	CALL MESSAGE_BOX,@"「啊……♥ 嗯……♥」"
+	CALL MESSAGE_BOX,@"「嗯……♥♥♥……」"
+	CALL MESSAGE_BOX,@"「嗯啊……♥♥♥」"
+
+CASE "搾乳"
+	CALL MESSAGE_BOX,@"「嗯……♥」"
+	CALL MESSAGE_BOX,@"「呜……♥♥……」"
+	CALL MESSAGE_BOX,@"「嗯……♥……」"
+	
+CASE "抽出"
+	CALL MESSAGE_BOX,@"「嗯……嗯……♥」"
+	CALL MESSAGE_BOX,@"「嗯……♥……嗯……♥」"
+	CALL MESSAGE_BOX,@"「嗯……♥……嗯……♥」"
+
+CASE "调教命令"
+	SELECTCASE ARGS:2
+	
+	;不显示「继续」，否则会刷屏
+	CASE "继续"
+	
+	CASE "挑逗"
+		IF CFLAG:崩坏
+			CALL MESSAGE_BOX,@"「嗯……嗯……」"
+			CALL MESSAGE_BOX,@"「嗯……嗯……」"
+			CALL MESSAGE_BOX,@"「嗯……」"
+		ELSE
+			CALL MESSAGE_BOX,@"「嗯……♥ 嗯……♥♥」"
+			CALL MESSAGE_BOX,@"「啊……♥♥ 嗯！」"
+		ENDIF
+	
+	CASEELSE
+		IF CFLAG:崩坏
+			CALL MESSAGE_BOX,@"「嗯……嗯……」"
+			CALL MESSAGE_BOX,@"「嗯……嗯……」"
+			CALL MESSAGE_BOX,@"「嗯……」"
+		ELSEIF EX:总绝顶 >= 50
+			CALL MESSAGE_BOX,@"「嗯……♥♥♥」"
+			CALL MESSAGE_BOX,@"「♥……♥♥♥」"
+			CALL MESSAGE_BOX,@"「嗯啊……♥♥♥」"
+		ELSE
+			CALL MESSAGE_BOX,@"「嗯、嗯！……唔……！」"
+			CALL MESSAGE_BOX,@"「啊……！……唔……！」"
+			CALL MESSAGE_BOX,@"「嗯！？……嗯……！」"
+		ENDIF
+	ENDSELECT
+ENDSELECT

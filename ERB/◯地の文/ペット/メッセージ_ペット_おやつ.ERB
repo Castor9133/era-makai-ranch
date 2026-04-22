@@ -1,0 +1,75 @@
+﻿
+;ペットにおやつ：地の文
+;TARGET,ANIMAL,PET_NAME指定済み
+;ARG→アイテムNO
+@PET_COMMU_MESSAGE_SNACK(ARG)
+
+ITEM_NAME = %ITEMNAME:ARG%
+FLAG_NAME = 亲和度／%ANIMAL%
+IF TALENT:受动物喜欢 || BASE:FLAG_NAME >= 6000
+	CALL PET_COMMU_MESSAGE_SNACK_LOVE
+ELSEIF !TALENT:被动物讨厌
+	CALL PET_COMMU_MESSAGE_SNACK_LOW
+ELSE
+	CALL PET_COMMU_MESSAGE_SNACK_HATE
+ENDIF
+
+
+
+;【動物に好かれる】orなつき時
+@PET_COMMU_MESSAGE_SNACK_LOVE
+
+SELECTCASE ANIMAL
+CASE "堕落天马"
+	;ガッツニンジン
+	PRINTFORML 当%CALLNAME%拿出%ITEM_NAME%时，%PET_NAME%嗅着鼻子。
+	PRINTFORML 给予%ITEM_NAME%后，%PET_NAME%兴奋地吃完，然后在蹦跳中显示出多余的活力！
+CASE "双头犬"
+	;謎肉ジャーキー
+	PRINTFORML 当%CALLNAME%拿出%ITEM_NAME%时，%PET_NAME%伸出舌头，眼睛闪闪发光。
+	PRINTFORML 将%ITEM_NAME%分成两半分别给予左右的头后，%PET_NAME%在兴奋的吃完后，
+	PRINTFORML 高兴地围绕着%CALLNAME%四处奔跑！
+CASE "魔界仓鼠"
+	;煎り魔界ひまわりの種
+	PRINTFORML 当%CALLNAME%带着%ITEM_NAME%过来时，%PET_NAME%摇动着小尾巴。
+	PRINTFORML 给予%ITEM_NAME%后，%PET_NAME%兴奋地开始吃，
+	PRINTL 一会儿后，它把嘴巴里的东西都塞满，嘴巴鼓鼓的，看起来很满足！
+ENDSELECT
+
+
+
+;【動物に嫌われる】ではなくなつき度低い
+@PET_COMMU_MESSAGE_SNACK_LOW
+
+PRINTFORML 当%CALLNAME%拿出%ITEM_NAME%时，%PET_NAME%嗅着鼻子。
+SELECTCASE ANIMAL
+CASE "堕落天马"
+	PRINTFORML 给予%ITEM_NAME%后，%PET_NAME%高兴地吃完！
+CASE "双头犬"
+	PRINTFORML 将%ITEM_NAME%分成两半分别给予左右的头后，%PET_NAME%高兴地吃完！
+CASE "魔界仓鼠"
+	PRINTFORML 给予%ITEM_NAME%后，%PET_NAME%高兴地开始吃！
+	PRINTL 一会儿后，它把嘴巴里的东西都塞满，嘴巴鼓鼓的，看起来很满足！
+ENDSELECT
+PRINTL 它用着「这个人可能是个好人」的眼神看着你。
+
+
+
+;【動物に嫌われる】
+@PET_COMMU_MESSAGE_SNACK_HATE
+
+PRINTFORML 当%CALLNAME%拿出%ITEM_NAME%时，%PET_NAME%表现出了兴趣。
+SELECTCASE ANIMAL
+CASE "堕落天马"
+	PRINTFORML 给予%ITEM_NAME%后，%PET_NAME%紧紧咬住并夺走！
+CASE "双头犬"
+	PRINTFORML 把%ITEM_NAME%半折举到左右头，%PET_NAME%就像抢一样咬住了！
+CASE "魔界仓鼠"
+	PRINTFORML 将%ITEM_NAME%分成两半分别给予左右的头后，%PET_NAME%紧紧咬住并夺走！
+	PRINTL 一会儿后，它把嘴巴里的东西都塞满，嘴巴鼓鼓的，看起来很满足！
+ENDSELECT
+PRINTL 它用着「虽然本能地不喜欢他，但他是个懂事的家伙」这样的眼神看着你。
+
+
+
+

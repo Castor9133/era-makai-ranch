@@ -1,0 +1,204 @@
+﻿
+@COM70
+;スパンキング
+;連続だと効果アップ、下着ありだとダウン
+FIX = 100
+SIF PREVCOM == 70
+	TIMES FIX,1.50
+SIF EQUIP:装备中ID／内衣下装 && !GETBIT(＃半脱／内衣下装＃) && !TFLAG:临时脱衣／内衣下装 && ＃穿着内衣下装／名称＃ != "局部露出内裤"
+	TIMES FIX,0.80
+LOSEBASE:体力 += 50 * FIX / 100
+SOURCE:非性感带疼痛 = 5000 * FIX / 100
+SOURCE:耻辱 = 2000 * FIX / 100
+SOURCE:屈辱 = 3000 * FIX / 100
+SOURCE:支配 = 2000 * FIX / 100
+SOURCE:调教者习得 = 300
+SOURCE:已用时间 = 1
+RETURN 1
+
+
+
+@COM71
+;皮鞭：部位選択→COM71_WHIP_BODY
+PRINTL 用皮鞭抽打哪里？
+PRINTFORML [0] %SAVESTR:标识／乳房%（含乳周）
+PRINTL [1] 乳头
+PRINTFORML [2] %SAVESTR:标识／阴蒂%
+PRINTFORML [3] %SAVESTR:标识／肛门%
+PRINTL [4] 后背
+PRINTL [5] 臀部
+PRINTL [99] 取消
+BINPUT
+SELECTCASE RESULT
+CASE 0 TO 5
+	CALL COM71_WHIP_BODY(RESULT)
+	RETURN RESULT
+CASEELSE
+	TFLAG:皮鞭部位 = -1
+	RETURN 0
+ENDSELECT
+
+
+
+;皮鞭抽打本体　ARG：0乳房 1乳头 2阴蒂 3肛门 4后背 5臀　RESULT=1成功 0失敗
+@COM71_WHIP_BODY(ARG)
+#DIM LHP
+#DIM MASO
+#DIM DEV
+
+DEV = 6
+MASO = (ABL:受虐癖 >= 3)
+
+FIX = 100
+SIF PREVCOM == 71
+	TIMES FIX,1.35
+SIF EQUIP:装备中ID／内衣下装 && !GETBIT(＃半脱／内衣下装＃) && !TFLAG:临时脱衣／内衣下装 && ＃穿着内衣下装／名称＃ != "局部露出内裤"
+	TIMES FIX,0.85
+
+SELECTCASE ARG
+CASE 0
+	IF !TFLAG:Ｂ露出
+		PRINTFORMW 需要使%SAVESTR:标识／乳房%露出。
+		RETURN 0
+	ENDIF
+CASE 1
+	IF !TFLAG:Ｎ露出 && !TFLAG:授乳开口
+		PRINTFORMW 需要使乳头露出。
+		RETURN 0
+	ENDIF
+CASE 2
+	IF !TFLAG:Ｃ露出
+		PRINTFORMW 需要使阴部露出。
+		RETURN 0
+	ENDIF
+CASE 3
+	IF !TFLAG:Ａ露出
+		PRINTFORMW 需要使%SAVESTR:标识／肛门%露出。
+		RETURN 0
+	ENDIF
+ENDSELECT
+
+TFLAG:皮鞭部位 = ARG
+
+;主人公体力（振鞭）
+LOCAL = 40 * FIX / 100
+BASE:0:体力 = LIMIT(BASE:0:体力 - LOCAL, 0, MAXBASE:0:体力)
+
+;痛み系リセットしてから部位別に設定
+SOURCE:非性感带疼痛 = 0
+SOURCE:Ｂ疼痛 = 0
+SOURCE:Ｃ疼痛 = 0
+SOURCE:Ｖ疼痛 = 0
+SOURCE:Ａ疼痛 = 0
+SOURCE:Ｎ疼痛 = 0
+
+SELECTCASE ARG
+CASE 0
+	SOURCE:Ｂ疼痛 = 5200 * FIX / 100
+	SOURCE:Ｎ疼痛 = 1800 * FIX / 100
+	SOURCE:非性感带疼痛 = 1200 * FIX / 100
+CASE 1
+	SOURCE:Ｎ疼痛 = 7000 * FIX / 100
+	SOURCE:Ｂ疼痛 = 1200 * FIX / 100
+	SOURCE:非性感带疼痛 = 800 * FIX / 100
+CASE 2
+	SOURCE:Ｃ疼痛 = 7500 * FIX / 100
+	SOURCE:非性感带疼痛 = 700 * FIX / 100
+CASE 3
+	SOURCE:Ａ疼痛 = 7000 * FIX / 100
+	SOURCE:非性感带疼痛 = 800 * FIX / 100
+CASE 4
+	SOURCE:非性感带疼痛 = 7500 * FIX / 100
+CASE 5
+	SOURCE:非性感带疼痛 = 8200 * FIX / 100
+ENDSELECT
+
+SOURCE:耻辱 = 2600 * FIX / 100
+SOURCE:屈辱 = 3200 * FIX / 100
+SOURCE:支配 = 2000 * FIX / 100
+SOURCE:调教者习得 = 320
+LOSEBASE:气力 += 20 * FIX / 100
+
+;対象体力減少（部位・受虐・開発で変動）
+LHP = 28 * FIX / 100
+SIF LHP < 8
+	LHP = 8
+SIF MASO
+	TIMES LHP, 0.72
+IF !MASO && ARG < 4
+	SELECTCASE ARG
+	CASE 0
+		SIF ABL:Ｂ感觉 >= DEV
+			TIMES LHP, 2.15
+	CASE 1
+		SIF ABL:Ｎ感觉 >= DEV
+			TIMES LHP, 2.15
+	CASE 2
+		SIF ABL:Ｃ感觉 >= DEV
+			TIMES LHP, 2.15
+	CASE 3
+		SIF ABL:Ａ感觉 >= DEV
+			TIMES LHP, 2.15
+	ENDSELECT
+ENDIF
+LOSEBASE:体力 += LHP
+
+;受虐癖：痛みからの派生快楽用
+SIF MASO
+	SOURCE:受虐狂 += 1400 * FIX / 100
+
+;非受虐で開発が高い部位（背・臀以外）：快感と同時に体力も大きく削られる
+IF !MASO && ARG < 4
+	SELECTCASE ARG
+	CASE 0
+		SIF ABL:Ｂ感觉 >= DEV
+			SOURCE:Ｂ快感／主人公刺激 += 3200 * FIX / 100
+	CASE 1
+		SIF ABL:Ｎ感觉 >= DEV
+			SOURCE:Ｎ快感／主人公刺激 += 3400 * FIX / 100
+	CASE 2
+		SIF ABL:Ｃ感觉 >= DEV
+			SOURCE:Ｃ快感／主人公刺激 += 3600 * FIX / 100
+	CASE 3
+		SIF ABL:Ａ感觉 >= DEV
+			SOURCE:Ａ快感／主人公刺激 += 3000 * FIX / 100
+	ENDSELECT
+ENDIF
+
+;背・臀：非受虐は快感なし。恭顺＝顺从、屈服で「忠诚」に近い従属感を表す
+IF !MASO && (ARG == 4 || ARG == 5)
+	SOURCE:恭顺 += 2800 * FIX / 100
+	SOURCE:屈服 += 380 * FIX / 100
+	IF ＃陷落状态／陷落以上＃
+		SOURCE:恭顺 += 750 * FIX / 100
+		SOURCE:爱情 += 480 * FIX / 100
+		SOURCE:屈服 += 520 * FIX / 100
+	ENDIF
+ENDIF
+
+;已陷落：全部位で少量の愛情・恭順
+IF ＃陷落状态／陷落以上＃
+	SOURCE:爱情 += 260 * FIX / 100
+	SOURCE:恭顺 += 190 * FIX / 100
+ENDIF
+
+SOURCE:已用时间 = 1
+RETURN 1
+
+
+
+@COM72
+;皮鞭装备／卸下（有道具可装备；已装备时可卸下）
+IF TFLAG:皮鞭装备
+	TFLAG:皮鞭装备 = 0
+	SOURCE:恭顺 += 80
+	SOURCE:学习 += 50
+ELSE
+	TFLAG:皮鞭装备 = 1
+	SOURCE:支配 += 120
+	SOURCE:耻辱 += 150
+ENDIF
+SOURCE:已用时间 = 1
+RETURN 1
+
+

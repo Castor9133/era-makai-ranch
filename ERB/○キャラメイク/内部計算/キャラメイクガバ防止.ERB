@@ -1,0 +1,94 @@
+﻿
+;人称が空だったら直すとこ
+@PERSON_CALL_FIX
+
+;NEWGAMEするとあなたも来てなんか入力させられるので帰す
+SIF !TARGET
+	RETURN
+CALL PERSON_CALL_FIX_SELF
+CALL PERSON_CALL_FIX_YOU
+CALL PERSON_CALL_FIX_MASTER
+CALL PERSON_CALL_FIX_PENIS
+CALL PERSON_CALL_FIX_VAGINA
+CALL PERSON_CALL_FIX_ANAL
+
+
+
+;一人称
+@PERSON_CALL_FIX_SELF
+
+SIF CSTR:第一人称 != "" && CSTR:第一人称／沉沦 != ""
+	RETURN
+PRINTFORML 因为%CALLNAME%的第一人称为空白，所以进行补正。
+PRINTL
+CALL CHANGE_PERSONAL_CALL("第一人称")
+SIF CSTR:第一人称 == "" || CSTR:第一人称／沉沦 == ""
+	RESTART
+
+
+
+;陥落前のあなた呼び方
+@PERSON_CALL_FIX_YOU
+
+SIF CSTR:主人公的称呼／陷落前 != "" && CSTR:主人公的称呼／陷落前／沉沦 != ""
+	RETURN
+PRINTFORML 由于%CALLNAME%陷落前的主人公称呼为空，因此进行修正。
+PRINTL
+CALL CHANGE_PERSONAL_CALL("陷落前的主人公的称呼")
+SIF CSTR:主人公的称呼／陷落前 == "" || CSTR:主人公的称呼／陷落前／沉沦 == ""
+	RESTART
+
+
+
+;陥落後のあなた呼び方
+@PERSON_CALL_FIX_MASTER
+
+SIF CSTR:主人公的称呼／陷落后 != "" && CSTR:主人公的称呼／陷落后／沉沦 != "" && CSTR:主人公的称呼／依恋 != ""
+	RETURN
+PRINTFORML 由于%CALLNAME%陷落后的主人公称呼为空，因此进行修正。
+PRINTL
+CALL CHANGE_PERSONAL_CALL("陷落后的主人公的称呼")
+SIF CSTR:主人公的称呼／陷落后 == "" || CSTR:主人公的称呼／陷落后／沉沦 == "" || CSTR:主人公的称呼／依恋 == ""
+	RESTART
+
+
+
+;ペニス
+@PERSON_CALL_FIX_PENIS
+
+SIF CSTR:性器称呼／阴茎 != "" && CSTR:性器称呼／阴茎／沉沦 != ""
+	RETURN
+PRINTFORML 因为%CALLNAME%的阴茎称呼为空白，所以进行补正。
+PRINTL
+CALL CHANGE_PERSONAL_CALL("阴茎称呼")
+SIF CSTR:性器称呼／阴茎 == "" || CSTR:性器称呼／阴茎／沉沦 == ""
+	RESTART
+
+
+
+;膣
+@PERSON_CALL_FIX_VAGINA
+
+SIF CSTR:性器称呼／膣 != "" && CSTR:性器称呼／膣／沉沦 != ""
+	RETURN
+PRINTFORML %CALLNAME%的阴道称呼因为空白，所以进行补正。
+PRINTL
+CALL CHANGE_PERSONAL_CALL("膣称呼")
+SIF CSTR:性器称呼／膣 == "" || CSTR:性器称呼／膣／沉沦 == ""
+	RESTART
+
+
+
+;アナル
+@PERSON_CALL_FIX_ANAL
+
+SIF CSTR:性器称呼／肛门 != "" && CSTR:性器称呼／肛门／沉沦 != ""
+	RETURN
+PRINTFORML %CALLNAME%的肛门称呼因为空白，所以进行补正。
+PRINTL
+CALL CHANGE_PERSONAL_CALL("肛门称呼")
+SIF CSTR:性器称呼／肛门 == "" || CSTR:性器称呼／肛门／沉沦 == ""
+	RESTART
+
+
+

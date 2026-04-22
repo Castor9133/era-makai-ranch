@@ -1,0 +1,71 @@
+﻿
+;奴隷候補の素質＿ジョブ補正
+@RANDOM_SLAVE_TALENT_JOB
+
+;ジョブによる補正
+SELECTCASE CSTR:职业
+;メイドと聖女なら献身的にしておく、性格で消したりする
+CASE "女仆"
+	TALENT:献身的 = 1
+	TALENT:缝纫知识 = 1
+
+CASE "圣母"
+	TALENT:献身的 = 1
+
+CASE "修女","巫女","白魔法师","药师","牧师","主教"
+	;神職、ヒーラーもそこそこ
+	SIF RAND:100 < 50
+		TALENT:献身的 = 1
+
+CASE "学者"
+	;好奇心、本もだいたい好き
+	TALENT:好奇心 = 1
+	SIF RAND:100 < 90
+		TALENT:喜欢读书 = 1
+
+CASE "厨师"
+	;料理人で料理嫌いなことほぼないやろ
+	SIF RAND:100 < 90
+		TALENT:喜欢料理 = 1
+
+CASE "放牛的"
+	;牛飼いは高確率で牛好き
+	SIF RAND:100 < 85
+		TALENT:喜欢牛 = 1
+	SIF RAND:100 < 85
+		TALENT:喜欢牛奶 = 1
+	
+CASE "牧羊人"
+	SIF RAND:100 < 85
+		TALENT:喜欢羊 = 1
+	SIF RAND:100 < 70
+		TALENT:喜欢牛奶 = 1
+ENDSELECT
+
+;調合知識
+SELECTCASE CSTR:职业
+CASE "药师","贤者","女巫"
+	TALENT:调合知识 = 1
+	
+CASE "学者","治疗师","炼金术师"
+	SIF RAND:100 < 50
+		TALENT:调合知识 = 1
+		
+CASE "黑魔法师","白魔法师","咒术师"
+	SIF RAND:100 < 20
+		TALENT:调合知识 = 1
+		
+CASEELSE
+	SIF RAND:100 < 5
+		TALENT:调合知识 = 1
+ENDSELECT
+
+SIF GROUPMATCH(CSTR:职业,"剑客","弓箭手","火枪兵","狙击手",)
+	TALENT:武装少女 = 1
+IF GROUPMATCH(CSTR:职业,"牧师","战斗修女","退魔巫女","巫女","修女","女武神","枢机主教")
+	TALENT:信仰心 = 1
+	SIF TALENT:喜欢天界族 < 0
+		TALENT:喜欢天界族 = 0
+ENDIF
+
+

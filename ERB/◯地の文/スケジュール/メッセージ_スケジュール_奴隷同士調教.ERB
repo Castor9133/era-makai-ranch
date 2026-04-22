@@ -1,0 +1,98 @@
+﻿
+;奴隷→奴隷の調教の乳責め地の文
+@TRAIN_LESBIAN_MILK_SUCK_MESSAGE
+
+IF PLAYER > 0 && CSTR:PLAYER:状态／主人公的孩子 == "成长中"
+	;母親の場合
+	IF CFLAG:PLAYER:母亲ID == CFLAG:ID
+		PRINTFORML %CALLNAME:0%告诉%CALLNAME:PLAYER%喝妈妈的%SLANG_MILK()%。
+	ELSE
+		PRINTFORML %CALLNAME:0%对%CALLNAME:PLAYER%说，让他喝%CALLNAME%的%SLANG_MILK()%。
+	ENDIF
+ELSE
+	;レズっ気と心境の分岐
+	IF ABL:PLAYER:百合癖 >= 7
+		;常に陥落だったかもしれない
+		IF CFLAG:PLAYER:乳牛
+			PRINTFORML %CALLNAME:PLAYER%满脸笑容地走向被拘束在调教室的%CALLNAME%…
+			PRINTFORML 为了教导她与自己一样，以『乳牛』的身份在%CALLNAME:0%的统治下生活的喜悦…
+		ELSEIF ＃陷落状态／陷落以上＃ || CFLAG:PLAYER:洗脑
+			PRINTFORML %CALLNAME:PLAYER%慢慢地走向被拘束在调教室的%CALLNAME%…
+		ELSE
+			PRINTFORML 看到被拘束在调教室的%CALLNAME%，%CALLNAME:PLAYER%似乎很兴奋…
+		ENDIF
+	ELSE
+		IF CFLAG:PLAYER:乳牛
+			PRINTFORML %CALLNAME:PLAYER%满脸笑容地走向被拘束在调教室的%CALLNAME%…
+			PRINTFORML 为了教导她与自己一样，以『乳牛』的身份在%CALLNAME:0%的统治下生活的喜悦…
+		ELSEIF ＃陷落状态／陷落以上＃ || CFLAG:PLAYER:洗脑
+			PRINTFORML %CALLNAME:PLAYER%满脸笑容地走向被拘束在调教室的%CALLNAME%…
+		ELSE
+			PRINTFORML 不想惩戒同样的奴隶，但不这样做的话，%CALLNAME:0%可能会对%CALLNAME%做出什么事情是不可知的。
+			PRINTFORML %CALLNAME:PLAYER%带着歉意地走向被拘束在调教室的%CALLNAME%…
+		ENDIF
+	ENDIF
+ENDIF
+PRINTW
+
+;母乳体質かとバストサイズで分岐
+PRINTFORM %CALLNAME:PLAYER%在%CALLNAME%的%SLANG_B()%
+IF MARK:母乳体质
+	IF ABL:胸围大小 >= BUSTSIZE_爆乳
+		PRINTFORM 双手抱起，一边搓揉着一边吸溜吸溜地吸着乳头溢出的%SLANG_MILK()%…
+	ELSEIF ABL:胸围大小 >= BUSTSIZE_巨乳
+		PRINTFORM 双手搓揉，吸溜吸溜地吸着乳头溢出的%SLANG_MILK()%…
+	ELSE
+		PRINTFORM 抚摸，吸溜吸溜地吸着尖端溢出的%SLANG_MILK()%…
+	ENDIF
+ELSE
+	IF ABL:胸围大小 >= BUSTSIZE_爆乳
+		PRINTFORM 双手抱起，一边揉一边又舔又吸地刺激变硬的乳头…
+	ELSEIF ABL:胸围大小 >= BUSTSIZE_巨乳
+		PRINTFORM 双手搓揉，抚摸，又舔又吸地刺激变硬的乳头…
+	ELSE
+		PRINTFORM 抚摸，又舔又吸地刺激变硬的乳头…
+	ENDIF
+ENDIF
+CALL HEARTCB(0xD02830)
+PRINTL
+CALL ONOMATOPOEIA("揉胸")
+CALL ONOMATOPOEIA("吸奶")
+SIF EX:喷乳
+	CALL KOJO_PRINT("搾乳")
+
+
+
+;Ｃ責め地の文
+@TRAIN_LESBIAN_C_MESSAGE
+
+PRINTFORML 进一步的%CALLNAME:PLAYER%用震动器刺激%CALLNAME% 的%SLANG_C()%… 
+
+;Ｖ
+@TRAIN_LESBIAN_V_MESSAGE
+
+PRINTFORML %CALLNAME:PLAYER%在%CALLNAME%的%SLANG_V()%中插入和抽出震动器… 
+
+;Ａ
+@TRAIN_LESBIAN_A_MESSAGE
+
+PRINTFORML %CALLNAME:PLAYER%将肛门震动器插入%CALLNAME%的%SLANG_A()%… 
+
+
+
+;ミルクを吸った分表示
+@TRAIN_LESBIAN_MILK_MESSAGE
+#DIM MILK_VALUE
+
+;調教者の身長*ccまで吸える、残りは搾り取る
+;記録などの合計量の時だけkMG表記
+MILK_VALUE = EX:喷乳 -TFLAG:吸食母乳
+SIF MILK_VALUE <= 0
+	RETURN
+{
+PRINTFORML %CALLNAME:PLAYER%正在处理%CALLNAME%的%SAVESTR:标识／母乳%
+%TOSTR(TFLAG:吸食母乳)%%MILK_COUNTING()%填饱了肚子，然后将
+%TOSTR(MILK_VALUE)%%MILK_COUNTING()%挤到容器中制成出货用的%SAVESTR:标识／母乳%使…
+}
+
+

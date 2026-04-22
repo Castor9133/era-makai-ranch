@@ -1,0 +1,192 @@
+﻿
+;アダルトショップPAGE2
+@ITEM_SHOP_ADULT_DETAIL_DEVICE
+
+;アイテム名・価格
+PRINTFORML 　《 %ITEMNAME:SELECT_ITEM% 》%VALUE_DIGIT(ITEMPRICE:SELECT_ITEM)%G 
+SELECTCASE ITEMNAME:SELECT_ITEM
+CASE "震动棒"
+	PRINTL ＜解锁＞
+	PRINTL 调教中：道具指令【震动棒】
+	PRINTL
+	PRINTFORML 一种插入奴隶的%SAVESTR:标识／膣%并在开启时会由魔力产生震动的刑具。
+	PRINTL 【处女丧失】会发生。
+	PRINTL 正常插入也是如此，但如果不弄湿的话可能会很痛，所以要小心。
+	IF FLAG:玩笑表示
+		PRINTL
+		PRINTL 不仅不在乎反感，而且世界观似乎是由魔族进行异种交配，反感值已经达到了最大。
+		PRINTFORML 虽然对于其他变体的印象只是想象而已，但既然已经夺取了处女，就感觉会插入%SAVESTR:标识／阴茎%
+		PRINTL 可能不怎么用。
+	ENDIF
+	
+CASE "肛用震动棒"
+	PRINTL ＜解锁＞
+	PRINTL 调教中：道具指令【肛用震动棒】
+	PRINTL
+	PRINTFORML 一种插入奴隶的%SAVESTR:标识／肛门%并在开启时会由魔力产生震动的刑具。
+	PRINTL 【Ａ处女丧失】会发生。
+	PRINTFORML 和正常插入是一样的，但是如果不弄湿的话就相当痛了，而且%SAVESTR:标识／肛门%不用润滑液基本不会湿，所以要小心。
+	IF FLAG:玩笑表示
+		PRINTL
+		PRINTFORML %SAVESTR:标识／肛门%用好像很细一样的差异哟（那个以上的兴趣很淡，是适当的知识）
+	ENDIF
+	
+CASE "乳头跳蛋"
+	PRINTL ＜解锁＞
+	PRINTL 调教中：道具指令【乳头跳蛋】
+	PRINTL
+	PRINTL 刑具夹住奴隶的乳头，打开开关后就会因魔力而振动。用2个组套安装在两个乳头上。
+	PRINTL 因为是夹子形式无论怎么喷乳也不会脱落。
+	IF FLAG:玩笑表示
+		PRINTL
+		PRINTFORML 其他变体的明显区别在于，您可以连接吸奶器来吸奶，或者直接将其吸到%SAVESTR:标识／乳房%
+		PRINTFORML 因为吸%SAVESTR:标识／母乳%有一种妙趣，所以可能不怎么使用。
+	ENDIF
+	
+CASE "阴蒂跳蛋"
+	PRINTL ＜解锁＞
+	PRINTL 调教中：道具指令【阴蒂跳蛋】
+	PRINTL
+	PRINTFORML 一种会贴于奴隶%SAVESTR:标识／阴蒂%，在开启时因魔力而震动的刑具。
+	IF FLAG:玩笑表示
+		PRINTL
+		PRINTL Ｃ刺激的基本倍率提高了，如果附上这个的话，增加绝顶次数可能是个好主意。
+	ENDIF
+	
+CASE "乳头吸引器"
+	PRINTL ＜解锁＞
+	PRINTL 调教中：痛苦指令【乳头吸引器】
+	PRINTL
+	PRINTL 在抽出了里面的空气的状态下贴在奴隶的乳头上，通过拉来强烈吸引的刑具。用2个组套安装在两个乳头上。
+	PRINTFORML 如果喷乳到一定程度，就会因%SAVESTR:标识／母乳%就会而脱落。
+	IF FLAG:玩笑表示
+		PRINTL
+		PRINTL 看起来有点痛，而且解除条件和这个变体的概念完全相反
+		PRINTL 可能不怎么用。
+	ENDIF
+	
+CASE "阴蒂吸引器"
+	PRINTL ＜解锁＞
+	PRINTL 调教中：痛苦指令【阴蒂吸引器】
+	PRINTL
+	PRINTFORML 一种附着在奴隶的%SAVESTR:标识／阴蒂%上，抽出空气以产生强大吸力的刑具。
+	IF FLAG:玩笑表示
+		PRINTL
+		PRINTL 看起来很痛。看起来很痛的是作者不太喜欢，有谁能补写一下吗？
+	ENDIF
+	
+CASE "眼罩"
+	PRINTL ＜解锁＞
+	PRINTL 调教中：道具指令【眼罩】
+	PRINTL
+	PRINTL 一种遮挡奴隶视线的刑具。
+	PRINTL 在视线被遮挡的状态下，[恐惧]和[被虐快感经验]容易上升，
+	PRINTL 在拘束状态的情况下，全身的敏感度会因为受虐而得到额外奖励。
+	IF FLAG:玩笑表示
+		PRINTL
+		PRINTL 可能会让懦弱型奴隶的心更容易折断。
+	ENDIF
+	
+CASE "口枷"
+	PRINTL ＜解锁＞
+	PRINTL 调教中：道具指令【口枷】
+	PRINTL
+	PRINTL 一种堵住奴隶嘴的刑具。
+	PRINTL 当口被塞住i时，口上也将相应变化。
+	IF FLAG:玩笑表示
+		PRINTL
+	ENDIF
+	
+CASE "口塞球"
+	PRINTL ＜解锁＞
+	PRINTL 调教中：道具指令【口塞球】
+	PRINTL
+	PRINTL 一种堵住奴隶嘴的刑具。
+	PRINTL 当口被塞住i时，口上也将相应变化。
+	PRINTL 相比于【口枷】，[被虐快感经验]和屈辱会稍微增加一些。
+	IF FLAG:玩笑表示
+		PRINTL
+	ENDIF
+	
+CASE "强制开口器"
+	PRINTL ＜解锁＞
+	PRINTL 调教中：道具命令【强制开口器】
+	PRINTL
+	PRINTL 让奴隶的嘴始终张开的刑具。
+	PRINTL 现状，口上会变成和嘴巴堵住的情况一样。
+	PRINTL 与【口枷】和【口塞球】不同，存在Ｍ插入可能。
+	IF FLAG:玩笑表示
+		PRINTL
+	ENDIF
+
+CASE "肛塞"
+	PRINTL ＜解锁＞
+	PRINTL 调教中：道具指令【肛塞】
+	PRINTL
+	PRINTL 阻塞肛门用的器具。与【肛用震动棒】互斥。
+	PRINTL 装着时无法进行Ａ插入系指令，需先卸下。
+	IF FLAG:玩笑表示
+		PRINTL
+	ENDIF
+
+CASE "皮鞭"
+	PRINTL ＜解锁＞
+	PRINTL 调教中：苦痛指令【装备皮鞭】【皮鞭抽打】
+	PRINTL
+	PRINTL 皮革制成的长鞭。先在调教中用【装备皮鞭】拿在手中，即可使用【皮鞭抽打】。
+	PRINTL 抽打时可选择乳房、乳头、阴蒂、肛门、后背、臀部等。受虐癖可减轻体力损耗；除后背与臀部外，若该部位开发高，剧痛中也会夹杂快感，但体力会大幅下降。
+	PRINTL 鞭打后背与臀部时不易产生快感，却助长恭顺与屈服；已陷落者更易滋生依恋与服从。
+	PRINTL 挥舞时也会消耗主人公的体力。
+	IF FLAG:玩笑表示
+		PRINTL
+	ENDIF
+
+CASE "尿道塞"
+	PRINTL ＜解锁＞
+	PRINTL 调教中：道具指令【尿道塞】
+	PRINTL
+	PRINTL 尿道用阻塞器具。与阴蒂跳蛋／吸引器互斥。
+	PRINTL 装着时阴蒂类道具不可用。
+	IF FLAG:玩笑表示
+		PRINTL
+	ENDIF
+	
+CASE "ＳＭ用麻绳"
+	PRINTL ＜解锁＞
+	PRINTL 调教中：拘束指令【麻绳拘束】
+	PRINTL
+	PRINTL 拘束奴隶的手脚的绳子。
+	PRINTL 绑方法的附有说明即使是初学者也可以放心，外观看起来虽然痛苦，但是经过安全考虑奴隶也可以安心。
+	PRINTL 与其他束缚设备不同，只要努力就能够行走程度的约束，
+	PRINTL 这样骑乘位以外的体位丰富的可能性变化是其特点。
+	IF FLAG:玩笑表示
+		PRINTL
+	ENDIF
+	
+CASE "备用震动棒"
+	PRINTL ＜被动技能＞
+	PRINTL 奴隶之间的调教中：非处女时震动棒使用
+	PRINTL
+	PRINTL 让陷落的奴隶进行调教的时候，能够使用震动棒。
+	PRINTFORML %CALLNAME:0%去进行调教，为了不妨碍可能会使用的情况，因此准备了「备用」。
+	IF FLAG:玩笑表示
+		PRINTL
+		PRINTL 奴隶之间调教我们稍后再处理。
+	ENDIF
+	
+CASE "备用肛用震动棒"
+	PRINTL ＜被动技能＞
+	PRINTL 奴隶之间的调教中：Ａ非处女时肛用震动棒使用
+	PRINTL
+	PRINTL 让陷落的奴隶进行调教的时候，能够使用肛用震动棒。
+	PRINTFORML %CALLNAME:0%去进行调教，为了不妨碍可能会使用的情况，因此准备了「备用」。
+	
+CASE "备用阴蒂跳蛋"
+	PRINTL ＜被动技能＞
+	PRINTL 奴隶之间的调教中：使用阴蒂跳蛋
+	PRINTL
+	PRINTL 让陷落的奴隶进行调教的时候，能够使用阴蒂跳蛋。
+	PRINTFORML %CALLNAME:0%去进行调教，为了不妨碍可能会使用的情况，因此准备了「备用」。
+ENDSELECT
+
+

@@ -1,0 +1,155 @@
+﻿
+;メインメニュー選択肢目次
+@HINT_MAIN_MENU_BUTTON
+
+CLEARLINE LINECOUNT
+PRINTL 请选择要查看其说明的项目。
+DRAWLINE
+BR = 0
+STR_REF = 9000
+CALL HINT_BUTTON_LIST
+DRAWLINE
+CALL HINT_DETAIL_MAIN_MENU_BUTTON
+CALL PRINTL_ALIGN(5)
+DRAWLINE
+PRINTL [99] 返回
+INPUT
+PRINTL
+SELECTCASE RESULT
+CASE 0 TO 29
+	SELECT_TIPS = RESULT
+CASE 99
+	RETURN
+ENDSELECT
+RESTART
+
+
+
+;メインメニュー選択肢の解説
+@HINT_DETAIL_MAIN_MENU_BUTTON
+
+STR_NUM = STR_REF +SELECT_TIPS
+
+;対応IDでないなら汎用出して帰る
+IF SELECT_TIPS < 0 || SELECT_TIPS >= 30 || STR:STR_NUM == ""
+	CALL NOT_SELECT_HINT_COMMON
+	RETURN
+ENDIF
+
+;項目名
+PRINTFORML 　《 %STR:STR_NUM% 》
+SELECTCASE STR:STR_NUM
+CASE "日程运行"
+	PRINTL 根据每个角色分配的日程执行日程，时间会流逝。
+	PRINTL 在调整日程的同时，通过点击此按钮来推进时间是这个变体的基本进行方式。
+	CALL PRINTLC_WORD_COLOR("基本上，如果不选择这个选项，时间就不会流逝。","黄")
+	PRINTL
+	PRINTL 日程的更改可以通过从选择角色的屏幕进行。
+	PRINTL 在时间流逝并回到主菜单时，
+	PRINTL 自动分配的日程可以通过选择角色后选择【自动日程管理】进行更改。
+	PRINTL 关于在日程中执行的内容，
+	PRINTL 请参见【提示】→【日程】。
+	
+CASE "调教对象选择"
+	PRINTL 选择您在这个时间要调教的奴隶。
+	PRINTL 没有捕获的奴隶、放在牛棚里的奴隶、正在进行体内凌辱的奴隶无法选择。
+	PRINTL 如果您正在城里行动并且处于【已外出】状态，也无法选择。
+	
+CASE "成批更改日程"
+	PRINTL 您可以根据一些条件批量更改角色的日程。
+	PRINTL 也可以回复自动分配的日程。
+	
+CASE "开发・习得"
+	PRINTL 使用手头的资金，灵力抽出装置中储存的灵力，主人公的魔力等进行开发。
+	PRINTL 开发可能需要一些物品。
+	
+CASE "更改显示项目"
+	PRINTL 您可以切换显示在奴隶列表中的状态。
+	PRINTL 这也可能在主菜单之外的其他地方显示，并且全部都显示为通用显示。
+	
+CASE "上街"
+	PRINTL 可以用手中的资金等购买物品、扩建牧场等。
+	PRINTL
+	PRINTL 使用该设施时，主人公的日程会变成【已外出】。
+	PRINTL 这段时间你不能再做其他动作了。
+	PRINTL 由于处理上的原因，您可以在【回家】后向奴隶们发出日程安排的指示。
+	
+CASE "提示"
+	PRINTL 这个页面。
+	PRINTL 在其他页面上也可能显示提示，但在主菜单之外，
+	PRINTL 通常会以一屏为单位显示。
+	
+CASE "各种信息・管理"
+	PRINTFORML 【在魔界的人类一览】【牧场情报】【所持物品】【%CALLNAME:0%的习得魔法】
+	PRINTL 【成就】【主菜单中应用奴隶隐藏设置】【奴隶搜索】【奴隶排序】
+	PRINTL 存储了这些项目。
+	PRINTL
+	PRINTL 如果启用了「主屏幕扩展显示」，这些按钮也将显示在主菜单屏幕底部。
+	
+CASE "保存／加载"
+	PRINTL 可以保存和加载游戏数据，
+	PRINTL 以及编辑显示在保存数据中的项目。
+	PRINTL
+	PRINTL 此外，在进行全体的日程执行后，时间切换时会自动保存。
+	PRINTL 即使不手动保存，也可以从上次继续游戏，但为了防止错误崩溃或意外覆盖等情况，
+	PRINTL 也偶尔手动保存是个好主意。
+	
+CASE "选项"
+	PRINTL 【配置设置】【输出奴隶数据】【浏览TIPS】
+	PRINTL 【返回标题】【调试命令】
+	PRINTL 存储了这些项目。
+	IF FLAG:玩笑表示
+		PRINTL
+		PRINTL 除了配置之外，其他方面的整理感觉很强。
+	ENDIF
+	
+CASE "主屏幕扩展显示"
+	PRINTL 这是一个ON／OFF形式的按钮。打开后，位于【各种信息・管理】内的项目+【显示项目切换】的选项为
+	PRINTL 将一起显示在主菜单屏幕上。
+	PRINTL 选择次数减少，很方便，但由于行数增加，请根据需要灵活使用。
+	
+CASE "显示项切换"
+	PRINTL 每次选择都会在【更改显示项目】中选择的显示状态中进行切换。
+	PRINTL 在最后一页再次选择，将返回到最初。
+	
+CASE "身在魔界的人类一览"
+	PRINTL 在早晨的行动后更新，重新显示今天来到魔界的人类列表。
+	
+CASE "牧场信息"
+	PRINTL 显示牧场设施、奴隶数量、以及其他资源等各种信息。
+	PRINTL 如果你拥有＜魔力补给装置＞，你可以通过它进行【魔力补给】。
+	
+CASE "持有物品"
+	PRINTL 显示你在牧场拥有的物品。耗材同时显示个数。
+	PRINTL 未拥有的物品将以灰色显示。
+	
+CASE "主人公掌握的魔法"
+	PRINTL 显示你掌握并可以使用的魔法。
+	PRINTL 未学习的魔法将以灰色显示。
+	
+CASE "成就"
+	PRINTL 检查游戏的进展指标，领取已达成的成就奖励。
+	PRINTL 如果项目颜色变化，表示有可领取奖励的成就，请尝试选择。
+	PRINTL
+	PRINTL 在某些成就中，由于剧情原因，你可能需要外出
+	PRINTL 因为需要和魔界的居民见面，所以在早上以及事务工作积压的状态下无法确认。请您谅解。
+
+CASE "奴隶检索"
+	PRINTL 选择一些条件，搜索并显示符合条件的奴隶。
+	PRINTL 选择奴隶后，将移动到与从主菜单中选择的相同的项目。
+	PRINTL
+	PRINTL 当奴隶数量增多时，请使用此功能。
+	PRINTL 此外，（如果非常多）可以在屏幕上显示不下的情况下，也可以选择显示所有奴隶。
+	PRINTL 您还可以保存应用中的选择条件，或加载保存的条件。
+
+CASE "奴隶分类"
+	PRINTL 可通过交换/插入来更改奴隶的显示顺序，
+	PRINTL 也可以通过选择一些条件，按升序/降序对奴隶进行排序。
+
+CASE "奴隶隐藏设置应用"
+	PRINTL 如果某个奴隶在【个人设置】中将【在主菜单中隐藏】设置为ON，
+	PRINTL 那么通过启用此项目，该奴隶将不再显示在主菜单中。
+	PRINTL 当奴隶数量增多时，请使用此功能。
+ENDSELECT
+
+

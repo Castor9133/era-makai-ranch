@@ -1,0 +1,64 @@
+; ======================================
+; 泛用口上・调教命令（性格：虔诚）
+; ======================================
+
+@KOJO_GENERAL_虔诚口上1_TRAIN(ARGS:0,ARGS:1,ARGS:2,ARGS:3)
+
+SELECTCASE ARGS:2
+CASE "执行"
+	SELECTCASE ARGS:1
+	CASE "接吻","舔舐脸","舔舐耳","舔舐腋"
+		IF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……请、请别看我这么贪心……♥」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……住手……这样是不洁……」"
+		ENDIF
+
+	CASE "口交","触手口交"
+		IF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……我会含住……请引导我……♥」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……不可以……那样会堕落……」"
+		ENDIF
+
+	CASE "正常位","后背位","对面坐位","背面坐位","骑乘位","对面立位","背面立位","强制骑乘位","背面骑乘位"
+		IF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……这是惩罚……我愿承受……♥」"
+		ELSE
+			CALL MESSAGE_BOX,@"「不要……别把我拖下去……！」"
+		ENDIF
+
+	CASE "足交"
+		IF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……用脚……也算惩罚吗……♥ ……我愿承受……♥」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……这种事……不洁……」"
+		ENDIF
+
+	CASE "肛塞"
+		CALL MESSAGE_BOX,@"「……后面……要放入……？……请、请慢些……」"
+
+	CASE "尿道塞"
+		CALL MESSAGE_BOX,@"「……那里……会让我更堕落……请、请温柔……」"
+
+	CASEELSE
+		CALL MESSAGE_BOX,@"「……若这是惩罚……我会忍受……」"
+	ENDSELECT
+
+CASE "继续"
+	CALL MESSAGE_BOX,@"「……请继续……让我学会顺从……」"
+
+CASE "移除"
+	SELECTCASE ARGS:1
+	CASE "肛塞"
+		CALL MESSAGE_BOX,@"「……取下了……呼……谢谢……」"
+	CASE "尿道塞"
+		CALL MESSAGE_BOX,@"「……拿掉了吗……稍微……轻松些……」"
+	CASEELSE
+		CALL MESSAGE_BOX,@"「……结束了吗……我还在发抖……」"
+	ENDSELECT
+
+CASEELSE
+ENDSELECT
+RETURN
+

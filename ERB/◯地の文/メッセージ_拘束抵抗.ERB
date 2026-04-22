@@ -1,0 +1,93 @@
+﻿
+;拘束抵抗or魔力枷外しメッセージ
+;ARGS→状態
+@RESIST_SHACKLE_MESSAGE(ARGS)
+
+PRINTL
+SELECTCASE ARGS
+CASE "家畜"
+	IF !＃陷落状态／隶属＃ && !CFLAG:乳牛
+		CALL KOJO_PRINT("事件","去掉枷锁","超乳")
+		PRINTL …抱着单纯的幻想，认为这只是一场噩梦而已。
+		PRINTFORML 早上，醒来的%CALLNAME%看着自己臃肿到无法正常活动的%SAVESTR:标识／乳房%，彻底绝望了…
+	ELSE
+		CALL KOJO_PRINT("事件","去掉枷锁","超乳隶属")
+		PRINTFORML 当%CALLNAME%醒来，发现自己臃肿到无法正常活动的%SAVESTR:标识／乳房%，没有回复原状。
+		IF MARK:母乳体质
+			PRINTFORML 从这个太大的%SAVESTR:标识／乳房%，%CALLNAME:0%可以挤出充分的%SAVESTR:标识／母乳%…
+			PRINTFORML 光是这样想，私处就湿透了，乳头里还渗出了%SAVESTR:标识／母乳%…
+		ELSE
+			PRINTFORML 因为%CALLNAME:0%而变大的%SAVESTR:标识／乳房%，今后也会被充分疼爱的…
+			PRINTFORML 光是这样想，%CALLNAME%的私处就湿透了…
+		ENDIF
+	ENDIF
+	PRINTL
+	PRINTFORML %CALLNAME%似乎已经看不到抵抗的意思。摘掉魔力枷锁也没关系吧。
+	
+CASE "完堕"
+	CALL KOJO_PRINT("事件","去掉枷锁","完堕")
+	PRINTFORML 完全看不出%CALLNAME%有抵抗的意思。摘掉魔力枷锁也没关系吧。
+	
+CASE "崩坏"
+	CALL KOJO_PRINT("事件","去掉枷锁","崩坏")
+	PRINTFORML %CALLNAME%只是用虚无的目光看着我…
+	PRINTL 即使回复了，抵抗的意志也已经消失了吧。把[魔力枷锁]取下来也不错。
+	
+CASE "陷落"
+	CALL KOJO_PRINT("事件","去掉枷锁","陷落")
+	PRINTFORML 早上，我去看%CALLNAME%的情况，他完全顺从地迎接我。
+	PRINTL 照这个样子，把[魔力枷锁]取下来好像也挺好的。
+	
+CASE "屈服"
+	CALL KOJO_PRINT("事件","去掉枷锁","屈服")
+	PRINTFORML %CALLNAME%似乎明白了自己的立场，完全顺从了。
+	PRINTL 照这个样子，把[魔力枷锁]取下来好像也挺好的。
+
+CASE "非战斗职业"
+	CALL KOJO_PRINT("事件","去掉枷锁","非战斗职业")
+	PRINTFORML 虽然给他戴上了枷锁，但似乎根本就没有%CALLNAME%从这里逃出去的力量。
+	PRINTL 魔力枷锁好像也不需要。
+	
+CASE "灵力0"
+	CALL KOJO_PRINT("事件","去掉枷锁","灵力0")
+	PRINTFORML 拼命摇晃身体的%CALLNAME%，被榨干了全部灵力的身体简直使不上力气…
+	PRINTL 不管原始有多强，现在的她只是一个普通的雌奴隶而已。
+	PRINTL 似乎也没有必要特意带上[魔力枷锁]。
+	
+CASE "处女结界破坏"
+	CALL KOJO_PRINT("事件","去掉枷锁","处女结界破坏")
+	PRINTFORML %CALLNAME%即使用尽全身的力量，枷锁也没有反应，
+	PRINTFORML 【处女结界】已经破坏了的情况下，那股神圣力量已经无法帮助%CALLNAME%了…
+	
+CASE "魔力母乳体质"
+	CALL KOJO_PRINT("事件","去掉枷锁","魔力母乳体质")
+	PRINTFORML %CALLNAME%虽然打算用魔力来挣脱枷锁，结果却出乎她自己的意料，魔力开始向她的%SAVESTR:标识／乳房%凝聚…
+	PRINTFORML 现在%CALLNAME%变成了【魔力母乳体质】，%CALLNAME%的魔力只会变化成她的%SAVESTR:标识／母乳%。
+	PRINTFORML 在魔力被封印的现在，%CALLNAME%的力量和孱弱奴隶没有什么不同…
+	PRINTFORML 知道自己的魔力不被自身控制，甚至成为了别人的「食物」的%CALLNAME%，脸色变得发青…
+	PRINTL
+	PRINTL 这样的话就没有必要特意带上[魔力枷锁]了。
+	
+CASE "反抗消除"
+	CALL KOJO_PRINT("事件","去掉枷锁","反抗消除")
+	PRINTFORML 虽然%CALLNAME%多少还有些反抗，但似乎已经理解根本不可能逃脱这里。
+	PRINTL 已经没有必要继续戴上[魔力枷锁]了。
+	
+CASE "休息"
+	CALL KOJO_PRINT("重复事件","拘束抵抗","休息")
+	PRINTFORML 比起抵抗，%CALLNAME%似乎优先考虑让身体休息。
+	
+CASE "触手服装"
+	CALL KOJO_PRINT("重复事件","拘束抵抗","触手服装")
+	PRINTFORML %CALLNAME%想要反抗，但却被反应过来的触手衣服猛烈刺激，无法抵抗…
+	
+CASE "抵抗"
+	CALL KOJO_PRINT("重复事件","拘束抵抗","抵抗")
+	IF MARK:魔力母乳体质
+		PRINTFORML 虽然无法使用魔力却拼命抵抗的%CALLNAME%，手脚的[魔力枷锁]启动后压制住了她的力量…
+	ELSE
+		PRINTFORML 拼命抵抗的%CALLNAME%手脚的[魔力枷锁]启动，强行压制住了力量…
+	ENDIF
+ENDSELECT
+
+

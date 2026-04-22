@@ -1,0 +1,97 @@
+﻿;**********************************************************
+;Anal(アナル)の淫語
+;**********************************************************
+@SLANG_A(ARG)
+#DIM WORD_LIMIT
+#FUNCTIONS
+
+;初期化
+EXIST = 0
+WORD_LIMIT = 0
+SLANGWORD =
+
+SIF GETBIT(FLAG:黑话前缀／肛门,2) && CFLAG:身高 < FLAG:黑话／儿童标准上限身高数值  && RAND:100 < 30
+	SLANGWORD += "未熟"
+IF GETBIT(FLAG:黑话前缀／肛门,1) && RAND:100 < 20
+	SLANGWORD += "淫荡的"
+	WORD_LIMIT ++
+ENDIF
+IF GETBIT(FLAG:黑话前缀／肛门,0) && MARK:淫尻 && RAND:100 < 80
+	SLANGWORD += "淫乱"
+	WORD_LIMIT ++
+ENDIF
+
+IF GETBIT(FLAG:黑话替换／肛门,9)
+	EXIST ++
+	SIF RAND:100 < 50
+		RETURNF SAVESTR:标识／肛门
+ENDIF
+IF GETBIT(FLAG:黑话替换／肛门,3) && MARK:淫尻
+	EXIST ++
+	IF RAND:100 < 30
+		;接頭語との相性がいまいちな感じなのでそのまま
+		SLANGWORD = 淫穴
+		RETURNF SLANGWORD
+	ENDIF
+ENDIF
+IF GETBIT(FLAG:黑话替换／肛门,2) && TALENT:Ａ名器
+	EXIST ++
+	IF RAND:100 < 30
+		SLANGWORD =
+		SIF GETBIT(FLAG:黑话前缀／肛门,0) && MARK:淫尻
+			SLANGWORD += "淫乱"
+		SLANGWORD += "榨精器官"
+		RETURNF SLANGWORD
+	ENDIF
+ENDIF
+IF GETBIT(FLAG:黑话替换／肛门,1) && TALENT:Ａ名器
+	EXIST ++
+	IF RAND:100 < 30
+		SLANGWORD =
+		SIF GETBIT(FLAG:黑话前缀／肛门,0) && MARK:淫尻
+			SLANGWORD += "淫乱"
+		SLANGWORD += "疑似性器"
+		RETURNF SLANGWORD
+	ENDIF
+ENDIF
+SIF GETBIT(FLAG:黑话替换／肛门,0) && EXIST
+	RESTART
+
+IF GETBIT(FLAG:黑话标识／肛门,0) && RAND:100 < 50
+	SLANGWORD += "尻穴"
+	RETURNF SLANGWORD
+ELSEIF GETBIT(FLAG:黑话标识／肛门,2) && RAND:100 < 50
+	SLANGWORD += "肛门"
+	RETURNF SLANGWORD
+ELSEIF GETBIT(FLAG:黑话标识／肛门,1) && RAND:100 < 30
+	SLANGWORD += "菊门"
+	RETURNF SLANGWORD
+ELSEIF GETBIT(FLAG:黑话标识／肛门,3) && RAND:100 < 30
+	SLANGWORD += "肛门"
+	RETURNF SLANGWORD
+ELSEIF GETBIT(FLAG:黑话标识／肛门,4) && RAND:100 < 30
+	SLANGWORD += "屁股小穴"
+	RETURNF SLANGWORD
+ELSEIF GETBIT(FLAG:黑话标识／肛门,5) && RAND:100 < 30
+	IF !WORD_LIMIT
+		SLANGWORD += "后面的穴"
+		RETURNF SLANGWORD
+	ELSEIF RAND:100 < 50
+		SLANGWORD =
+		SLANGWORD += "后面的穴"
+		RETURNF SLANGWORD
+	ENDIF
+ELSEIF GETBIT(FLAG:黑话标识／肛门,6)
+	IF !WORD_LIMIT
+		SLANGWORD += "不洁之穴"
+		RETURNF SLANGWORD
+	ELSEIF RAND:100 < 50
+		SLANGWORD =
+		SLANGWORD += "不洁之穴"
+		RETURNF SLANGWORD
+	ENDIF
+ENDIF
+RESTART
+
+
+

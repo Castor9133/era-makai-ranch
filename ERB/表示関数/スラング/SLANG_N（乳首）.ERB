@@ -1,0 +1,95 @@
+﻿
+;さほど数はないと思ったけど淫乳対応できるし使わせてもらおう
+;**********************************************************
+;Nipple(ニップル)の淫語
+;**********************************************************
+@SLANG_N(ARG)
+#FUNCTIONS
+
+;初期化
+EXIST = 0
+SLANGWORD =
+
+SIF GETBIT(FLAG:黑话前缀／乳头,0) && RAND:100 < 20
+	SLANGWORD += @"%CSTR:乳头颜色%色的"
+SIF GETBIT(FLAG:黑话前缀／乳头,2) && ABL:Ｎ敏感度 >= 150 && RAND:100 < 20
+	SLANGWORD += "敏感"
+SIF GETBIT(FLAG:黑话前缀／乳头,2) && MARK:淫乳 && RAND:100 < 20
+	SLANGWORD += "淫荡的"
+SIF GETBIT(FLAG:黑话前缀／乳头,1) && MARK:淫乳 && RAND:100 < 80
+	SLANGWORD += "淫乱"
+
+IF GETBIT(FLAG:黑话替换／乳头,2)
+	EXIST ++
+	IF RAND:100 < 30
+		SLANGWORD =
+		SIF GETBIT(FLAG:黑话前缀／乳头,1) && MARK:淫乳 && RAND:100 < 80
+			SLANGWORD += "淫乱"
+		IF TALENT:超乳
+			SLANGWORD += "超乳"
+		ELSEIF TALENT:魔乳
+			SLANGWORD += "魔乳"
+		ELSEIF TALENT:神乳
+			SLANGWORD += "神乳"
+		ELSEIF TALENT:爆乳
+			SLANGWORD += "爆乳"
+		ELSEIF TALENT:丰乳
+			SLANGWORD += "丰乳"
+		ELSEIF TALENT:巨乳
+			SLANGWORD += "巨乳"
+		ELSE
+			SLANGWORD += "乳房"
+		ENDIF
+		SLANGWORD += "的尖尖"
+		RETURNF SLANGWORD
+	ENDIF
+ENDIF
+IF GETBIT(FLAG:黑话替换／乳头,1)
+	EXIST ++
+	IF RAND:100 < 30
+		SLANGWORD =
+		SIF GETBIT(FLAG:黑话前缀／乳头,1) && MARK:淫乳 && RAND:100 < 80
+			SLANGWORD += "淫乱"
+		IF TALENT:超乳
+			SLANGWORD += "超乳"
+		ELSEIF TALENT:魔乳
+			SLANGWORD += "魔乳"
+		ELSEIF TALENT:神乳
+			SLANGWORD += "神乳"
+		ELSEIF TALENT:爆乳
+			SLANGWORD += "爆乳"
+		ELSEIF TALENT:丰乳
+			SLANGWORD += "丰乳"
+		ELSEIF TALENT:巨乳
+			SLANGWORD += "巨乳"
+		ELSE
+			SLANGWORD += "乳房"
+		ENDIF
+		SLANGWORD += "的顶部"
+		RETURNF SLANGWORD
+	ENDIF
+ENDIF
+SIF GETBIT(FLAG:黑话替换／乳头,0) && EXIST
+	RESTART
+
+IF GETBIT(FLAG:黑话标识／乳头,0) && RAND:100 < 50
+	SLANGWORD += "乳头"
+	RETURNF SLANGWORD
+ELSEIF GETBIT(FLAG:黑话标识／乳头,1) && RAND:100 < 30
+	SLANGWORD += "乳头"
+	RETURNF SLANGWORD
+ELSEIF GETBIT(FLAG:黑话标识／乳头,4) && RAND:100 < 30
+	SLANGWORD += "Nipple"
+	RETURNF SLANGWORD
+ELSEIF GETBIT(FLAG:黑话标识／乳头,2) && RAND:100 < 30
+	SLANGWORD += "奶头"
+	RETURNF SLANGWORD
+ELSEIF GETBIT(FLAG:黑话标识／乳头,3) && RAND:100 < 30
+	SLANGWORD += "乳宝石"
+	RETURNF SLANGWORD
+ELSEIF GETBIT(FLAG:黑话标识／乳头,5)
+	SLANGWORD += "果实"
+	RETURNF SLANGWORD
+ENDIF
+RESTART
+

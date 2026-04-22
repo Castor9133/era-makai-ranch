@@ -1,0 +1,167 @@
+﻿
+;挿入維持の快楽追加
+@PISTON_SOURCE
+
+;挿入中
+IF GETBIT(＃Ｐ使用／Ｖ插入＃)
+	SOURCE:调教者体力消耗 += 50
+	LOSEBASE:体力 += 50
+	LOSEBASE:气力 += 50
+	SOURCE:Ｖ快感／主人公刺激 = 3000
+	SOURCE:耻辱 = 3000
+	SOURCE:爱情 = 5000
+	SOURCE:屈辱 = 5000
+	SOURCE:不洁 = 1000
+	SOURCE:支配 = 3000
+	SOURCE:调教者习得 = 500
+	SOURCE:已用时间 = 1
+	
+ELSEIF GETBIT(＃Ｐ使用／Ａ插入＃)
+	SOURCE:调教者体力消耗 += 50
+	LOSEBASE:体力 += 80
+	LOSEBASE:气力 += 50
+	SOURCE:Ａ快感／主人公刺激 = 3000
+	SOURCE:耻辱 = 3000
+	SOURCE:爱情 = 2000
+	SOURCE:屈辱 = 6000
+	SOURCE:不洁 = 3000
+	SOURCE:支配 = 3000
+	SOURCE:调教者习得 = 500
+	SOURCE:已用时间 = 1
+
+ELSEIF GETBIT(＃Ｐ使用／乳交＃)
+	SOURCE:调教者体力消耗 += 50
+	LOSEBASE:体力 += 50
+	LOSEBASE:气力 += 50
+	SOURCE:Ｂ快感／主人公刺激 = 1000
+	SOURCE:耻辱 = 3000
+	SOURCE:爱情 = 4000
+	SOURCE:屈辱 = 5000
+	SOURCE:不洁 = 2000
+	SOURCE:支配 = 3000
+	SOURCE:已用时间 = 1
+
+ELSEIF GETBIT(＃Ｐ使用／Ｍ插入＃)
+	SOURCE:调教者体力消耗 += 50
+	LOSEBASE:体力 += 30
+	LOSEBASE:气力 += 50
+	SOURCE:耻辱 = 2000
+	SOURCE:爱情 = 2000
+	SOURCE:屈辱 = 5000
+	SOURCE:不洁 = 5000
+	SOURCE:支配 = 3000
+	SOURCE:已用时间 = 1
+
+ELSEIF TEQUIP:素股
+	SOURCE:调教者体力消耗 += 50
+	LOSEBASE:体力 += 30
+	LOSEBASE:气力 += 20
+	SOURCE:Ｖ快感／主人公刺激 = 2000
+	SOURCE:耻辱 = 3000
+	SOURCE:爱情 = 2000
+	SOURCE:屈辱 = 5000
+	SOURCE:不洁 = 1000
+	SOURCE:支配 = 3000
+	SOURCE:已用时间 = 1
+ENDIF
+SOURCE:选择指令口上隐藏 = 1
+
+
+
+;感度上昇エキス共通計算
+;ARG→部位
+@SENSITIVE_UP_TENTACLE(ARG)
+#DIM SENSITIVE_PLUS
+
+;SOURCE:Ａ快楽／触手→130
+;COM番号→820+ARG
+SELECTCOM = ARG +820
+LOSEBASE:体力 += 50
+LOSEBASE:气力 += 100
+SOURCE:(ARG +130) = 4000
+SOURCE:耻辱 = 4000
+SOURCE:屈辱 = 4000
+SOURCE:支配 = 3000
+SOURCE:已用时间 = 1
+SOURCE:选择指令口上隐藏 = 1
+COST = MAGIC_USE_MP:GETNUM(ITEM,"增敏粘液")
+CFLAG:当日限制／肉体改造精华 ++
+EXP:肉体改造 ++
+
+;感度が低いほど効果が高い
+;ABL:Ａ感度→10
+FIX = (1100 -ABL:(ARG +10)) /10
+FIX -= (FIX %10)
+
+;Ｎ、Ｃに使う場合は増加幅倍増
+SIF ARG == 2 || ARG == 4
+	FIX *= 2
+
+;1回の上昇量MAX100
+FIX = LIMIT(FIX,10,100)
+
+;990越えないように
+SENSITIVE_PLUS = SENSITIVE_MAX -ABL:(ARG +10)
+SENSITIVE_PLUS = LIMIT(SENSITIVE_PLUS,10,FIX)
+ABL:(ARG +10) += SENSITIVE_PLUS
+
+
+
+;浸透媚薬共通計算
+;ARG→部位
+@SENSITIVE_UP_INJECTION(ARG)
+#DIM SENSITIVE_PLUS
+
+;SOURCE:Ａ痛み→190
+;COM番号→810+ARG
+SELECTCOM = ARG +810
+LOSEBASE:体力 += 100
+SOURCE:(ARG +190) = 1000
+SOURCE:耻辱 = 5000
+SOURCE:屈辱 = 3000
+SOURCE:支配 = 3000
+SOURCE:已用时间 = 1
+SOURCE:选择指令口上隐藏 = 1
+
+;ABL:Ａ感度→10
+ITEM:渗透媚药 --
+EXP:肉体改造 ++
+CFLAG:当日制限／肉体改造药 = 1
+IF ABL:(ARG +10) < 200
+	FIX = 30
+ELSEIF ABL:(ARG +10) < 500
+	FIX = 20
+ELSE
+	FIX = 10
+ENDIF
+
+;Ｎ、Ｃに使う場合は増加幅倍増
+SIF ARG == 2 || ARG == 4
+	FIX *= 2
+
+;990越えないように
+SENSITIVE_PLUS = SENSITIVE_MAX -ABL:(ARG +10)
+SENSITIVE_PLUS = LIMIT(SENSITIVE_PLUS,10,FIX)
+ABL:(ARG +10) += SENSITIVE_PLUS
+
+
+
+;あなたの手の拭き取り
+@HAND_WASH
+
+SIF !STAIN:0:手
+	RETURN
+STAIN:0:手 = 0
+PRINTFORML 用湿毛巾擦掉%CALLNAME:0%手上的污垢…
+
+;経過時間なしの場合止め
+SIF !SOURCE:已用时间
+	PRINTW
+
+
+
+
+
+
+
+

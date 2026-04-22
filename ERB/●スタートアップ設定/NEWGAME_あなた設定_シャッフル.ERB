@@ -1,0 +1,45 @@
+﻿
+;手動入力
+;ARGS→CHANGE_STATE
+@PLAYER_DATA_CONFIG_INPUT_SHUFFLE(ARGS)
+
+;奴隷の手動キャラメイクを流用できる部分はそのまま使っちゃう
+SELECTCASE ARGS
+CASE "胸围大小","体型","肤色"
+	CALL SELF_CHARA_MAKE_PROFILE_INPUT_SHUFFLE(ARGS)
+
+{
+CASE "发色","头发特征","发型","发型一键调整","颜色编码／发","阴毛","右瞳色","左瞳色",
+"颜色编码／右目","颜色编码／左目","瞳孔形状","眼睛特征","乳房弹性","乳头颜色","颜色编码／乳头"
+}
+	CALL SELF_CHARA_MAKE_APPEARAINCE_INPUT_SHUFFLE(ARGS)
+
+CASE "身高"
+	;ここCSTR内でやってくれるので使っていい
+	CALL SELF_CHARA_MAKE_PROFILE_INPUT_SHUFFLE(ARGS)
+
+CASE "两角"
+	INVERTBIT TALENT:两角,0
+CASE "眼镜"
+	INVERTBIT EQUIP:眼镜,0
+	IF EQUIP:眼镜
+		EQUIP:装备中ID／眼 = GETNUM(EQUIP,"眼镜")
+	ELSE
+		EQUIP:装备中ID／眼 = 0
+	ENDIF
+
+CASE "外表年龄"
+	CALL SELF_CHARA_MAKE_APPEARAINCE_INPUT_SHUFFLE(ARGS)
+
+
+;性経験
+CASE "童贞","Ａ童贞","Ｍ童贞","无乳交经验","无接吻经验"
+	INVERTBIT TALENT:ARGS,0
+	CALL SELECT_VIRGIN_RESET_PLAYER
+
+;経験人数無効
+ENDSELECT
+
+
+
+

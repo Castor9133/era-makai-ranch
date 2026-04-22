@@ -1,0 +1,106 @@
+﻿
+;拘束
+;ARG→拘束番号
+;ARG:1→調教終了時にPRINTWせず返す
+@TRAIN_BIND_RUN(ARG,ARG:1)
+
+;元々と同じ選択肢、-1だとおわり　解除は通す
+;TFLAG:拘束BIT→80
+SIF ARG < 0 || (!ARG && !TFLAG:拘束BIT)
+	RETURN
+
+;キャンセルされないように修正
+IF ARG
+	SIF GETBIT(TFLAG:拘束BIT,ARG -1)
+		RETURN
+ENDIF
+
+;三角木馬用
+IF GETBIT(＃拘束／三角木马＃)
+	TFLAG:Ｃ装备 = 0
+	TFLAG:Ｖ装备 = 0
+ENDIF
+
+;一旦解除→ARG -1をSETBIT
+TFLAG:拘束BIT = 0
+SIF ARG
+	SETBIT TFLAG:拘束BIT,ARG -1
+SELECTCASE ARG
+CASE 0
+	;解除
+	PRINTFORML 解除了%CALLNAME%的拘束…
+	CALL KOJO_PRINT("调教命令","解除拘束")
+
+CASE 1	;立ち柱
+	PRINTFORML 用绳子把%CALLNAME%绑在调教房间的柱子上…
+	;CALL KOJO_PRINT("調教コマンド","拘束","立ち柱")
+
+CASE 2	;座り柱
+	PRINTFORML 坐在地板上的%CALLNAME%的手臂被抬起，绑在调教房间的柱子上…
+	;CALL KOJO_PRINT("調教コマンド","拘束","座り柱")
+
+CASE 3	;まんぐり
+	PRINTFORML %CALLNAME%的手臂被绑在脑后，阴部暴露在外面，被以下流的方式束缚着…
+	CALL KOJO_PRINT("调教命令","拘束","打桩机")
+
+CASE 4	;搾乳台
+	PRINTFORML %CALLNAME%的双手和脖子固定在颈手枷上，以%SLANG_B()%突出的样子被拘束…
+	;CALL KOJO_PRINT("調教コマンド","拘束","搾乳台")
+	CALL KOJO_PRINT("调教命令","拘束","颈手枷")
+
+CASE 5	;吊るし
+	PRINTFORML 把用铁链从吊顶上垂下来的手铐绑在%CALLNAME%上，拉动铁链以拉伸手臂的姿势吊起来…
+	CALL KOJO_PRINT("调教命令","拘束","吊索")
+
+CASE 6	;十字架
+	PRINTFORML 「%CALLNAME%的右臂、左臂和腿都被束缚并固定在十字架上…
+	;CALL KOJO_PRINT("調教コマンド","拘束","十字架")
+
+CASE 7	;Ｘ字
+	PRINTFORML 他将%CALLNAME%的四肢穿过拘束工具，双腿被打开并固定成Ｘ字…
+	;CALL KOJO_PRINT("調教コマンド","拘束","Ｘ字")
+
+CASE 8	;手枷屈脚
+	PRINTFORML %CALLNAME%的双臂上都戴着沉重的手铐，以臀部翘起的样子被拘束…
+	;CALL KOJO_PRINT("調教コマンド","拘束","手枷屈脚")
+
+CASE 9	;ハーネス
+	PRINTFORML 把吊顶上垂下来的带锁链的枷锁套在%CALLNAME%的四肢上，并用束缚带将其拉起并悬挂起来…
+	;CALL KOJO_PRINT("調教コマンド","拘束","ハーネス")
+
+CASE 10	;ベッド仰向け
+	PRINTFORML %CALLNAME%四肢安装拘束工具，仰卧床上岔开双腿被拘束…
+	;CALL KOJO_PRINT("調教コマンド","拘束","ベッド仰向け")
+
+CASE 11	;ベッドうつ伏せ
+	PRINTFORML %CALLNAME%四肢安装拘束工具，趴在床上岔开双腿被拘束…
+	;CALL KOJO_PRINT("調教コマンド","拘束","ベッドうつ伏せ")
+
+CASE 12	;荒縄
+	PRINTFORML 用绳子把%CALLNAME%绑起来了…
+	CALL KOJO_PRINT("调教命令","拘束","麻绳拘束")
+
+CASE 13	;亀甲縛り
+	PRINTFORML 用绳子将%CALLNAME%的全身龟甲缚形式绑上…
+	CALL KOJO_PRINT("调教命令","拘束","麻绳拘束")
+	;CALL KOJO_PRINT("調教コマンド","拘束","亀甲縛り")
+
+CASE 14	;触手
+	PRINTFORML 从%CALLNAME:0%身体伸出的触手将%CALLNAME%的四肢缠绕拘束了起来…
+	CALL KOJO_PRINT("调教命令","拘束","触手拘束")
+
+CASE 15	;下半身埋め壁乳
+	PRINTFORML %CALLNAME%的酮体和双臂完全固定，以%SLANG_B()%突出的造型拘束…
+	;CALL KOJO_PRINT("調教コマンド","拘束","壁乳")
+
+CASE 16	;三角木馬
+	;一人で抵抗する相手を普通に乗せるのは無理そうなので吊り下げ方式に
+	PRINTFORML 从天花板上垂下的带链的手铐被戴在了%CALLNAME%的脚上，然后被吊起来悬在半空中，接着放到三角木马上骑了上去…
+	;CALL KOJO_PRINT("調教コマンド","拘束","三角木馬")
+	TFLAG:Ｃ装备 = 1
+	TFLAG:Ｖ装备 = 1
+ENDSELECT
+PRINTW
+PREVCOM = 0
+
+

@@ -1,0 +1,82 @@
+﻿
+;体力　2000前後になればちょうどいいかな
+@SLAVE_HP_CALC
+
+;先にジョブ補正
+CALL SLAVE_HP_CALC_JOB_FIX
+STATUS = 500 +(CFLAG:级别 +10) *CFLAG:体力补正
+CALL RANDOM_FIX(STATUS,5,"体力量")
+STATUS += FIX
+
+;50刻みに補正
+STATUS -= (STATUS %50)
+STATUS = LIMIT(STATUS,1000,5000)
+
+;計算後に種族補正
+CALL SLAVE_HP_CALC_TRIBE_FIX
+MAXBASE:体力 = STATUS
+BASE:体力 = MAXBASE:体力
+
+
+
+;HPのジョブ補正
+@SLAVE_HP_CALC_JOB_FIX
+
+;上位種族なら110固定
+IF CFLAG:上位种族
+	CFLAG:体力补正 = 110
+	RETURN
+ENDIF
+SELECTCASE CSTR:职业
+CASE "学者"
+	CFLAG:体力补正 = 60
+CASE "牧师","黑魔法师","白魔法师","死灵术士","咒术师","炼金术师","女巫","圣母"
+	CFLAG:体力补正 = 70
+CASE "魔法战士","药师","主教","萨满","枢机主教","时魔道士","大魔导师","贤者","姫巫女"
+	CFLAG:体力补正 = 80
+CASE "盗贼","阴阳师","魔法少女","修女","巫女"
+	CFLAG:体力补正 = 90
+CASE "武士","角斗士","旅客","战士","骑士","冒险家"
+	CFLAG:体力补正 = 110
+CASE "圣骑士","黑暗骑士","重装兵","姫骑士"
+	CFLAG:体力补正 = 120
+CASE "圣骑士","暗黑骑士","女武神","骑士团长"
+	CFLAG:体力补正 = 130
+CASE "武将","勇者"
+	CFLAG:体力补正 = 150
+CASEELSE
+	CFLAG:体力补正 = 100
+ENDSELECT
+
+
+
+;HPの種族補正
+@SLAVE_HP_CALC_TRIBE_FIX
+
+SELECTCASE CSTR:种族
+CASE "精灵"
+	SIF GETBIT(FLAG:种族设定／精灵,6) && (RAND:100 < FLAG:体质反映率／精灵)
+		STATUS -= 200
+CASE "暗精灵"
+	SIF GETBIT(FLAG:种族设定／暗精灵,6) && (RAND:100 < FLAG:体质反映率／暗精灵)
+		STATUS -= 200
+CASE "半精灵"
+	SIF GETBIT(FLAG:种族设定／半精灵,6) && (RAND:100 < FLAG:体质反映率／半精灵)
+		STATUS -= 200
+CASE "犬耳族"
+	SIF GETBIT(FLAG:种族设定／犬耳族,4) && (RAND:100 < FLAG:体质反映率／犬耳族)
+		STATUS += 200
+CASE "牛角族"
+	SIF GETBIT(FLAG:种族设定／牛角族,5) && (RAND:100 < FLAG:体质反映率／牛角族)
+		STATUS += 200
+CASE "吸血鬼"
+	SIF GETBIT(FLAG:种族设定／吸血鬼,7) && (RAND:100 < FLAG:体质反映率／吸血鬼)
+		STATUS += 400
+CASE "半吸血鬼"
+	SIF GETBIT(FLAG:种族设定／半吸血鬼,6) && (RAND:100 < FLAG:体质反映率／半吸血鬼)
+		STATUS += 300
+CASE "龙人"
+	SIF GETBIT(FLAG:种族设定／龙人,5) && (RAND:100 < FLAG:体质反映率／龙人)
+		STATUS += 1000
+ENDSELECT
+

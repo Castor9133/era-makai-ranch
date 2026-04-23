@@ -374,6 +374,53 @@ RETURN 1
 
 
 
+@COM222
+;节律控制（方案2）
+
+;必须装备“节律联动器具”
+IF !(TEQUIP:乳头夹 || TEQUIP:阴蒂夹 || TEQUIP:肛门拉珠)
+	PRINTFORMW 需要先装上乳头夹、阴蒂夹或肛门拉珠，才能进行节律控制。
+	RETURN
+ENDIF
+;需要计时器（不消耗）
+IF !ITEM:节律计时器 && !ITEM:高精度计时器
+	PRINTFORMW 需要持有＜节律计时器＞（或＜高精度计时器＞）。
+	RETURN
+ENDIF
+
+SOURCE:已用时间 = 1
+LOSEBASE:气力 += 18 + (TFLAG:节律层数 * 4)
+SOURCE:屈辱 += 300
+SOURCE:恭顺 += 120
+SOURCE:淫欲 += 160
+
+;根据当前装备部位给予少量即时刺激（真正的倍率在SOURCE_UP结算时处理）
+IF TEQUIP:乳头夹
+	SOURCE:Ｎ快感 += 250
+ENDIF
+IF TEQUIP:阴蒂夹
+	SOURCE:Ｃ快感 += 300
+ENDIF
+IF TEQUIP:肛门拉珠
+	SOURCE:Ａ快感 += 240
+	SOURCE:Ａ疼痛 += 120
+ENDIF
+
+;叠节律层数：基础+1，高精度计时器额外+1
+FIX = 1
+SIF ITEM:高精度计时器
+	FIX += 1
+TFLAG:节律层数 = LIMIT(TFLAG:节律层数 + FIX, 0, 5)
+
+;精神紧绷累积（用于后续衰减/代价）
+TFLAG:精神紧绷 = LIMIT(TFLAG:精神紧绷 + FIX, 0, 10)
+TFLAG:节律本回合 = 1
+
+TRYCALLFORM COM222_MESSAGE
+EXP:(222 +1000) ++
+RETURN 1
+
+
 @COM250
 ;ローション
 ;時間経過なし

@@ -2,16 +2,33 @@
 ;挿入しながらの乳吸いに身長制限つけるかコンフィグ
 ;RETURN1でNG
 @BUST_SUCK_HEIGHT_CONFIG_JUDGE
-;全体位・挿入併用で乳首愛撫可能にするため身長差制限は行わない（RESULT=0で通過）
-RETURN 0
+#DIM BUST_HEIGHT
+
+SIF !GETBIT(＃身高差限制／插入吸乳＃)
+	RETURN
+SIF !TFLAG:Ｐ使用BIT
+	RETURN
+
+;絶壁の場合身長差が10cm以上あるとダメ
+;50cm差あっても10=Jあれば吸える
+BUST_HEIGHT = CFLAG:身高 +ABL:胸围大小 *50 +100
+SIF CFLAG:PLAYER:身高 > BUST_HEIGHT
+	RETURN 1
 
 
 
 ;挿入しながらのキス
 ;RETURN1でNG
 @KISS_HEIGHT_CONFIG_JUDGE
-;全体位で接吻可能にするため挿入中の身長差制限は行わない（RESULT=0で通過）
-RETURN 0
+
+SIF !GETBIT(＃身高差限制／插入接吻＃)
+	RETURN
+SIF !TFLAG:Ｐ使用BIT
+	RETURN
+
+;身長差が30cm以上あるとダメ
+SIF CFLAG:PLAYER:身高 > CFLAG:身高 +300
+	RETURN 1
 
 
 

@@ -118,6 +118,8 @@ IF NOWEX:总绝顶
 	EX:总绝顶 += NOWEX:总绝顶
 	EXP:总绝顶次数 = LIMIT(EXP:总绝顶次数 +NOWEX:总绝顶,0,ECSTASY_MAX)
 ENDIF
+; ＜绝顶育成＞契约中：本回合有部位绝顶则按部位数提高最大体力/气力
+TRYCALL MAGIC_绝顶育成_APPLY
 CFLAG:总搾乳量 += NOWEX:喷乳
 EX:喷乳 += NOWEX:喷乳
 ;奶牛堕（精神相关）：使用「搾乳绝顶次数」作为累积值

@@ -1,0 +1,13 @@
+;アダルトショップ PAGE3 禁忌魔导
+@ITEM_SHOP_ADULT_DETAIL_TABOO
+
+PRINTFORML 　《 %ITEMNAME:SELECT_ITEM% 》%VALUE_DIGIT(ITEMPRICE:SELECT_ITEM)%G 
+SELECTCASE ITEMNAME:SELECT_ITEM
+CASE "绝顶育成"
+	PRINTL ＜解锁＞
+	PRINTL 购买之后：在调教中可通过【特殊魔法】对当前奴隶使用＜绝顶育成＞（消耗魔力）。
+	PRINTL ・10 个游戏日契约；契约期内，当回合有部位绝顶时，按绝顶部位数增加最大体力与最大气力（每部位+5 等，见系统说明）。
+	PRINTL ・每位奴隶只需购买一次（重复购买为已持有时浅蓝表示）。
+	PRINTL
+	PRINTL 入手：本店第三页＜禁忌魔导＞以所持金购买（非禁断AP 的魔法学习列表）。
+ENDSELECT

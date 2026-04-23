@@ -147,4 +147,19 @@ ELSE
 	PRINTL [14] 用触手拘束并用药
 ENDIF
 
+PRINTL
+PRINTL 《 身体处置 》
+; 停止泌乳：即使当前母乳生产力为 0，只要处于本系统妊娠/产褥也可执行
+IF !BASE:母乳生产力 && !(CFLAG:魔界_妊娠S == 1) && !(CFLAG:魔界_妊娠S == 2)
+	CALL PRINTL_WORD_COLOR("　当前无可停止泌乳的状态","灰")
+ELSE
+	PRINTL [16] 停止泌乳（停止产奶）
+ENDIF
+; 终妊：仅本系统妊娠中（S==1）
+IF CFLAG:魔界_妊娠S != 1
+	CALL PRINTL_WORD_COLOR("　当前未处于可终止的妊娠中","灰")
+ELSE
+	PRINTL [17] 终止妊娠
+ENDIF
+
 

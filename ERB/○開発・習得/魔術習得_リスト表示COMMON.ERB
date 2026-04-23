@@ -1,9 +1,11 @@
-﻿
-;魔術習得リスト共通
+﻿;魔術習得リスト共通（魔界：绝顶育成改由成人店现金购买，不列入本列表）
 ;ARG→参照AP
 @MAGIC_GET_LIST_COMMON(ARG)
 
 FOR LOCAL,ITEM_ID_MIN,ITEM_ID_MAX
+	; 755＜绝顶育成＞：仅成人用品店用所持金购买，不使用禁断AP在此习得
+	SIF ITEMNAME:LOCAL == "绝顶育成"
+		CONTINUE
 	;価格設定されていれば表示
 	SIF !ITEMPRICE:LOCAL
 		CONTINUE
@@ -47,7 +49,6 @@ CASE 630 TO 649,780 TO 789
 CASEELSE
 	FLAG:１个限定物品 = 1
 ENDSELECT
-
 
 
 

@@ -134,7 +134,17 @@ CASE "吸欧派"
 CASE "访问"
 	SELECTCASE ARGS:1
 	CASE "入口"
-		CALL MESSAGE_BOX,@"「我进来咯……要先敲门吗？我刚才是不是忘了……」"
+		IF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／隶属＃
+			CALL MESSAGE_BOX,@"「你进我房间啦…要先对一下流程吗？…先抱一下算不算流程第一步？…」"
+		ELSEIF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「你进来咯。…你脸好像有点松？那我也把嘴角放松一点…」"
+		ELSEIF ＃陷落状态／陷落以上＃
+			CALL MESSAGE_BOX,@"「你进我屋了。…今天要先喝水还是先坐？我记错顺序了也没事吧…」"
+		ELSEIF ＃陷落状态／屈服以上＃
+			CALL MESSAGE_BOX,@"「你进来咯。…我尽量不踩到你的影子，这样算礼貌吗…」"
+		ELSE
+			CALL MESSAGE_BOX,@"「你进房间了。…门我关好咯。要我从哪一条指令开始听…？」"
+		ENDIF
 	CASEELSE
 	ENDSELECT
 

@@ -492,6 +492,59 @@ CASE "访问"
 		ELSE
 			CALL MESSAGE_BOX,@"「我绝对不会让你逃的！」"
 		ENDIF
+	CASE "衣服修理"
+		CALL MESSAGE_BOX,@"「衣服破了？拿来。你别磨蹭——修好之前不准乱动，省得又扯开。」"
+	CASE "摸头"
+		IF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／隶属＃
+			CALL MESSAGE_BOX,@"「……嗯，就这样。」"
+			CALL MESSAGE_BOX,@"「摸重一点也行。你不许停——停了%SELF_CALL()%会不爽。」"
+		ELSEIF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……摸够了没？」"
+			CALL MESSAGE_BOX,@"「哼……要摸就摸，别手抖。你怕的话，我就把你手按在我头上。」"
+		ELSEIF ＃陷落状态／陷落以上＃
+			CALL MESSAGE_BOX,@"「……少来这套。」"
+			CALL MESSAGE_BOX,@"「想让我安静就直说，别假装温柔。」"
+		ELSEIF ＃陷落状态／屈服以上＃
+			CALL MESSAGE_BOX,@"「……别碰太久。你以为%SELF_CALL()%是宠物吗。」"
+		ELSE
+			CALL MESSAGE_BOX,@"「拿开你的手。」"
+		ENDIF
+	CASE "接吻"
+		IF TALENT:无接吻经验
+			RETURN
+		ELSEIF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／隶属＃
+			CALL MESSAGE_BOX,@"「……来。」"
+			CALL MESSAGE_BOX,@"「你想怎么亲就怎么亲。反正%SELF_CALL()%已经是你的了——别让我等。」"
+		ELSEIF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……亲就亲。别犹豫。」"
+			CALL MESSAGE_BOX,@"「你退半步，%SELF_CALL()%就把你拽回来。别让我在这儿丢脸。」"
+		ELSEIF ＃陷落状态／陷落以上＃
+			CALL MESSAGE_BOX,@"「……只一下。」"
+			CALL MESSAGE_BOX,@"「你要是敢笑，%SELF_CALL()%就当场扇你。」"
+		ELSEIF ＃陷落状态／屈服以上＃
+			CALL MESSAGE_BOX,@"「……快点结束。」"
+		ELSE
+			CALL MESSAGE_BOX,@"「滚。」"
+		ENDIF
+
+	CASE "停止泌乳"
+		IF CFLAG:魔界_妊娠S == 1 || CFLAG:魔界_妊娠S == 2
+			CALL MESSAGE_BOX,@"「现在让我停？……你知道这意味着什么吗。怀着的、刚生的，都不是拿来赌气的。」"
+		ELSEIF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／隶属＃
+			CALL MESSAGE_BOX,@"「停止泌乳？行。牧场要的就是可控的产物——%SELF_CALL()%把产奶停了，你就别拿这事继续作文章。」"
+		ELSEIF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……停止泌乳就停止泌乳。别露出那种表情，%SELF_CALL()%又不是舍不得。」"
+		ELSE
+			CALL MESSAGE_BOX,@"「想让%SELF_CALL()%停就直说。停止产奶而已，%SELF_CALL()%自己会处理。」"
+		ENDIF
+	CASE "终止妊娠"
+		IF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／隶属＃
+			CALL MESSAGE_BOX,@"「终妊？……呵。你要清货就清货，别装成什么体贴。%SELF_CALL()%会配合。」"
+		ELSEIF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……行。你决定。%SELF_CALL()%不吵。别让我听见你之后还拿这件事取笑%SELF_CALL()%。」"
+		ELSE
+			CALL MESSAGE_BOX,@"「现在才想起来害怕？晚了。——不过你要做，%SELF_CALL()%也不会求你停。」"
+		ENDIF
 
 	CASE "对主角的称呼变更"
 		IF CFLAG:乳牛 || ＃陷落状态／恋慕以上＃ || CFLAG:洗脑

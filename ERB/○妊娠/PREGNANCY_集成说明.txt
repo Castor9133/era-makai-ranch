@@ -30,6 +30,7 @@
 - 无套膣内射末尾：`TRYCALL PREGNANCY_ON_V_CREAMPIE, 本回内射量`
 - 分娩时 `PREGNANCY_SPAWN_DAUGHTER`：有托儿所则每孩已 `NURSERY_ADD_DAUGHTER`；**未**建园时以 `PRINTFORMW` 收束为剧情说明；主工程仍可在同函数内加「登记女儿角色卡」等。
 - 每 1 游戏日：`TRYCALL PREGNANCY_DAILY_TICK, 1` 并视需要 `TRYCALL NURSERY_DAILY`（用托儿所时；顺序上宜在日头统计完可献乳人数后）
+  - 若主工程只有“单点推进天数”且不便逐角色循环，可改用：`TRYCALL PREGNANCY_DAILY_TICK_ALL, 1`（内部会对 0..CHARANUM 全员调用）
 - 带套射精：`TRYCALL PREGNANCY_CONDOM_EJAC_FILL, 量`（有套时）
 - 产前/产后/劳动：请用 `魔界_静养_不可劳动与调教` 统一判断，勿再只依赖 `魔界_妊娠日` 自写（除非扩展规则）。
 - 产后**首次**进调教口上：分娩时 `魔界_产後初调口上済=0`；静养结束且 `BEFORE_TRAIN` 里 `TRYCALL PREGNANCY_产後初调_尝试口上` 会 `CALL KOJO_PRINT("身体事件","产後初调",,)` 后置 1。汎用口上各 `KOJO_GENERAL_INDEX_*` 已加 `CASE "身体事件"/"产後初调"` 按 乳牛·洗脑·隶属 / 恋慕 / 陷落 / 屈服 / 未陷落 分岐；须登 Str `CFLAG:魔界_产後初调口上済`。
@@ -43,6 +44,12 @@
 
 五、与 pregmod
 - 无完整主工程时无法逐行对比；将 pregmod 的妊娠入口与本补丁 `@` 名、变量对位即可。
+
+六、快速自检（推荐加到调试菜单）
+- `CALL PREGNANCY_DEBUG_DUMP`：打印当前 TARGET 的妊娠/产后/静养/魔素折半等关键变量与有效日数，便于排查
+  - 「日结没推进」：重点看 `CFLAG:魔界_妊娠日/产後日` 是否变化、`魔界_有効_*` 是否刷新
+  - 「静养没拦截劳动/调教」：重点看 `CFLAG:魔界_流产后禁调`、`CFLAG:魔界_妊娠日` 与 `魔界_有効_满胎/临产静养`
+  - 「判明与 UI 不一致」：重点看 `CFLAG:魔界_妊娠判明` 与 `魔界_有効_妊娠判明`
 
 ---
 细节以本目录内 ERB 注释为准。口上/地文见上层 `AGENTS.md` 与 `.cursor/rules/workspace.mdc` 中 era-makai-ranch 条。

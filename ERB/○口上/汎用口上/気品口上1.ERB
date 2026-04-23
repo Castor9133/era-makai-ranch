@@ -481,7 +481,7 @@ CASE "吸欧派"
 	ENDSELECT
 
 CASE "访问"
-	SELECTCASE ARGS:2
+	SELECTCASE ARGS:1
 	CASE "更改发型"
 	
 	CASE "彩色隐形眼镜"
@@ -497,6 +497,62 @@ CASE "访问"
 			CALL MESSAGE_BOX,@"「%SELF_CALL()%不会像其他奴隶一样……」"
 		ELSE
 			CALL MESSAGE_BOX,@"「沉浸在愉悦中的时光也就只剩现在了」"
+		ENDIF
+
+	CASE "衣服修理"
+		CALL MESSAGE_BOX,@"「衣物破了么。请交给我——针脚会收得细些，免得失了体面。」"
+	CASE "摸头"
+		IF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／隶属＃
+			CALL MESSAGE_BOX,@"「……承蒙抚慰。」"
+			CALL MESSAGE_BOX,@"「若这能让你满意……%SELF_CALL()%会更温顺些。请继续……♥」"
+		ELSEIF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……承蒙抚慰。」"
+			CALL MESSAGE_BOX,@"「若你是想让我安心……那便够了。过犹不及，会显得轻慢。」"
+		ELSEIF ＃陷落状态／陷落以上＃
+			CALL MESSAGE_BOX,@"「……不必如此。」"
+			CALL MESSAGE_BOX,@"「你若想说什么，便直说。别用手来敷衍。」"
+		ELSEIF ＃陷落状态／屈服以上＃
+			CALL MESSAGE_BOX,@"「……请住手。」"
+			CALL MESSAGE_BOX,@"「这种亲昵，只会让我更厌恶你。」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……别碰我。」"
+		ENDIF
+	CASE "接吻"
+		IF TALENT:无接吻经验
+			RETURN
+		ELSEIF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／隶属＃
+			CALL MESSAGE_BOX,@"「……可以。」"
+			CALL MESSAGE_BOX,@"「既然你要，就拿走吧——连同我的呼吸一起……♥」"
+		ELSEIF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……可以。」"
+			CALL MESSAGE_BOX,@"「但请别急。至少让我把呼吸稳住——我不想把这当作敷衍的礼节。」"
+		ELSEIF ＃陷落状态／陷落以上＃
+			CALL MESSAGE_BOX,@"「……明白了。」"
+			CALL MESSAGE_BOX,@"「只此一次。别把它当作你可以得寸进尺的凭据。」"
+		ELSEIF ＃陷落状态／屈服以上＃
+			CALL MESSAGE_BOX,@"「……不。」"
+			CALL MESSAGE_BOX,@"「我不想把嘴唇交给你来取乐。」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……请自重。」"
+		ENDIF
+
+	CASE "停止泌乳"
+		IF CFLAG:魔界_妊娠S == 1 || CFLAG:魔界_妊娠S == 2
+			CALL MESSAGE_BOX,@"「……在此时让我停下泌乳，%SELF_CALL()%并不情愿。怀着与产后，都不该如此草率。」"
+		ELSEIF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／隶属＃
+			CALL MESSAGE_BOX,@"「谨遵吩咐。既然牧场要%SELF_CALL()%停止泌乳，%SELF_CALL()%便会让身体停下。」"
+		ELSEIF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……停止泌乳一事，%SELF_CALL()%会照办。只是请容%SELF_CALL()%说一句：这并非可随意戏弄的决定。」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……明白。%SELF_CALL()%会停止泌乳。」"
+		ENDIF
+	CASE "终止妊娠"
+		IF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／隶属＃
+			CALL MESSAGE_BOX,@"「……遵命。终妊之事，%SELF_CALL()%会配合完成。」"
+		ELSEIF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……若这是%MASTER_CALL()%的最终决定，%SELF_CALL()%会接受并配合。请你……别因此轻贱%SELF_CALL()%。」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……%SELF_CALL()%明白了。请你确认无误后，再下此令。」"
 		ENDIF
 
 	CASE "对主角的称呼变更"

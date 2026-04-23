@@ -17,6 +17,8 @@ IF TEQUIP:0:避孕套
 		TFLAG:深喉避孕套射精地文 = 0
 	ENDIF
 	TFLAG:射精次数 += SOURCE:射精次数
+	; 记录套内精液量（供妊娠/精饮等系统使用）
+	TRYCALL PREGNANCY_CONDOM_EJAC_FILL, LIMIT(SOURCE:射精次数 * 20, 0, 100)
 	
 	;奴隷の「あなたに射精された回数」とあなたの「射精した回数」+1
 	EXP:经验次数／主人公／射精合计 += 1
@@ -152,6 +154,8 @@ EXP:PLAYER:膣内射精次数 += 1
 
 ;妊娠判定
 CALL PREGNANT_JUDGE
+; makai pregnancy patch hook: only for condom-off V creampie
+TRYCALL PREGNANCY_ON_V_CREAMPIE, LIMIT(SOURCE:射精次数 * 20, 0, 100)
 SOURCE:Ｖ润滑追加 += (SOURCE:射精次数 *1000)
 CALL SET_STAIN_TARGET("膣","精液")
 CALL SET_STAIN_PLAYER("阴茎","精液")

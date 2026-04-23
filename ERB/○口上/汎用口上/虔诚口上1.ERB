@@ -144,7 +144,59 @@ CASE "吸欧派"
 CASE "访问"
 	SELECTCASE ARGS:1
 	CASE "入口"
-		CALL MESSAGE_BOX,@"「……我来了。若我能赎罪般地为您效劳……请吩咐。」"
+		IF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／隶属＃
+			CALL MESSAGE_BOX,@"「……您进这房间了。若这也是苦修……请用我。%SELF_CALL()%不会躲……♥」"
+		ELSEIF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……见您来。若我能赎罪般地为您效劳……请吩咐。」"
+		ELSEIF ＃陷落状态／陷落以上＃
+			CALL MESSAGE_BOX,@"「……见您进我屋。要责罚、要支使，都请明说。」"
+		ELSEIF ＃陷落状态／屈服以上＃
+			CALL MESSAGE_BOX,@"「……门开了。别用“怜悯”当绳子。」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……门开了。若只为看我难堪……您已经看见了。」"
+		ENDIF
+	CASE "衣服修理"
+		CALL MESSAGE_BOX,@"「衣物破损……我会补好。针脚会一针一针收紧，免得下次受累的人还是您。」"
+	CASE "摸头"
+		IF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／隶属＃
+			CALL MESSAGE_BOX,@"「……请继续。」"
+			CALL MESSAGE_BOX,@"「若这能让我更顺从……那便是我该受的垂怜……♥」"
+		ELSEIF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……您的手很温暖。若这算垂怜……我会把它当作提醒：别再走偏。」"
+		ELSEIF ＃陷落状态／陷落以上＃
+			CALL MESSAGE_BOX,@"「……我明白了。」"
+			CALL MESSAGE_BOX,@"「只是……别把这当成赦免。%SELF_CALL()%不配。」"
+		ELSEIF ＃陷落状态／屈服以上＃
+			CALL MESSAGE_BOX,@"「……请不要。」"
+			CALL MESSAGE_BOX,@"「这种温柔，会让我更难受。」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……别碰我。」"
+		ENDIF
+	CASE "接吻"
+		IF TALENT:无接吻经验
+			RETURN
+		ELSEIF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／隶属＃
+			CALL MESSAGE_BOX,@"「……可以。」"
+			CALL MESSAGE_BOX,@"「请把我亲到失去理智——这样我就不会再想“对不对”了……♥」"
+		ELSEIF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……可以。但请别把它当作轻佻的玩笑……我会认真地收下，也会认真地回报……♥」"
+		ELSEIF ＃陷落状态／陷落以上＃
+			CALL MESSAGE_BOX,@"「……明白了。」"
+			CALL MESSAGE_BOX,@"「请快些。别让我把它当成奢望。」"
+		ELSEIF ＃陷落状态／屈服以上＃
+			CALL MESSAGE_BOX,@"「……不。」"
+			CALL MESSAGE_BOX,@"「%SELF_CALL()%不想用嘴唇去换取你的好心情。」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……请自重。」"
+		ENDIF
+	CASE "停止泌乳"
+		IF CFLAG:魔界_妊娠S == 1 || CFLAG:魔界_妊娠S == 2
+			CALL MESSAGE_BOX,@"「……在此时令我停下泌乳，我不愿。那像是……连赎罪都被夺走。」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……停止泌乳。明白了。愿我能将这份渴求一并压下，不再以乳为罪。」"
+		ENDIF
+	CASE "终止妊娠"
+		CALL MESSAGE_BOX,@"「……终止妊娠……？我明白了。若这是您的意志，我会承受并配合。」"
 	CASEELSE
 	ENDSELECT
 

@@ -198,6 +198,25 @@ RETURN 1
 
 
 
+@COM583
+; 绝顶育成：10 日内，每部位绝顶叠加上限体力·气力
+SELECTCOM = 583
+COST = MAGIC_USE_MP:GETNUM(ITEM,"绝顶育成")
+SIF !ITEM:绝顶育成
+	RETURN
+SIF BASE:0:魔力 < COST
+	RETURN
+PRINTL 对%CALLNAME%施加＜绝顶育成＞吗？
+PRINTL ・持续 10 个游戏日；期间内，每有 1 个部位在当回合发生绝顶，最大体力与最大气力各＋5（多部位可叠加；例：2 个部位＋10）。
+SIF CFLAG:魔法_绝顶育成残日 > 0
+	PRINTFORML 　（当前还有 {CFLAG:魔法_绝顶育成残日} 日，再次施加将重设为 10 日。）
+CALL ASK_YN
+SIF RESULT
+	RETURN
+BASE:0:魔力 -= COST
+CFLAG:魔法_绝顶育成残日 = 10
+PRINTFORMW 已施加＜绝顶育成＞。%CALLNAME%的契约剩余 10 个游戏日。
+RETURN 1
 
 
 

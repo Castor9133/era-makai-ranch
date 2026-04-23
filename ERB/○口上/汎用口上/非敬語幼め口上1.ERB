@@ -944,18 +944,21 @@ CASE "访问"
 		ENDIF
 		
 	CASE "入口"
-		IF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／隶属＃
-			; 本时段用过 H 命令后持续
+		IF CFLAG:乳牛 || CFLAG:洗脑
 			IF CFLAG:时刻限制／Ｈ
-				CALL MESSAGE_BOX,@"「はぁん♥ %MASTER_CALL()%♥♥ %SWEET_MASTER_CALL()%♥♥♥」"
-			
-			; 尚未 H，仅摸头之后
+				CALL MESSAGE_BOX,@"「哈啊…♥ %MASTER_CALL()%…♥ %SWEET_MASTER_CALL()%…♥♥」"
 			ELSEIF CFLAG:时刻限制／摸头
-				CALL MESSAGE_BOX,@"「%MASTER_CALL()%的手…要是贪心一点的话…♥♥♥」"
-			
-			; 其它命令或刚去见面之后
+				CALL MESSAGE_BOX,@"「%MASTER_CALL()%的手…想再贪一点也…行啦…♥♥」"
 			ELSE
-				CALL MESSAGE_BOX,@"「来见我了啊♥ 好开心啊、%MASTER_CALL()%♥」"
+				CALL MESSAGE_BOX,@"「来见我啦♥ 好开心哦、%MASTER_CALL()%♥」"
+			ENDIF
+		ELSEIF ＃陷落状态／隶属＃
+			IF CFLAG:时刻限制／Ｈ
+				CALL MESSAGE_BOX,@"「……♥ 身上还记得你啦。%SWEET_MASTER_CALL()%…♥」"
+			ELSEIF CFLAG:时刻限制／摸头
+				CALL MESSAGE_BOX,@"「%MASTER_CALL()%的手…我会乖乖给摸啦…♥」"
+			ELSE
+				CALL MESSAGE_BOX,@"「你来啦。%MASTER_CALL()%…我就这么等你吩咐…♥」"
 			ENDIF
 		ELSEIF ＃陷落状态／恋慕以上＃
 			IF CFLAG:时刻限制／Ｈ

@@ -21,8 +21,7 @@ IF !ARG
 		RETURN 0
 ELSE
 	;アナルセックスフィルタあり、アナル不可体位→NG
-	;肛塞装着中はＡ挿入不可（肛用震动棒と別枠）
-	SIF !GETBIT(＃表示指令／Ａ刺激＃) || GETBIT(＃各种Ａ插入无效＃) || TFLAG:Ａ装备 || TEQUIP:肛塞 || !TFLAG:Ａ露出 || GETBIT(＃体位制限／肛门＃)
+	SIF !GETBIT(＃表示指令／Ａ刺激＃) || GETBIT(＃各种Ａ插入无效＃) || TFLAG:Ａ装备 || !TFLAG:Ａ露出 || GETBIT(＃体位制限／肛门＃)
 		RETURN 0
 ENDIF
 
@@ -58,11 +57,6 @@ CASE "骑乘位"
 	SIF !BASE:体力 || TFLAG:拘束BIT
 		RETURN 0
 
-CASE "背面骑乘位"
-	;背面騎乗も騎乗と同条件
-	SIF !BASE:体力 || TFLAG:拘束BIT
-		RETURN 0
-
 CASE "强制骑乘位"
 	;触手拘束orハーネス拘束
 	;今触手だけ
@@ -86,11 +80,11 @@ SIF !GETBIT(＃表示指令／阴茎＃) || TFLAG:Ｐ使用BIT || !BASE:体力 |
 	RETURN 0
 
 ;フェラチオ以外の場合触手強制手コキしてるとダメ・精力枯渇だとダメ
-SIF (TEQUIP:触手强制手交 || !BASE:0:精力) && ARGS != "口交" && ARGS != "饮尿"
+SIF (TEQUIP:触手强制手交 || !BASE:0:精力) && ARGS != "口交"
 	RETURN 0
 
 ;フェラチオ以外の場合拘束or触手強制手コキしてるとダメ
-SIF (TFLAG:拘束BIT || TEQUIP:触手强制手交) && ARGS != "口交" && ARGS != "饮尿"
+SIF (TFLAG:拘束BIT || TEQUIP:触手强制手交) && ARGS != "口交"
 	RETURN 0
 RETURN 1
 
@@ -180,9 +174,16 @@ CALL COMMAND_STAIN_JUDGE("乳头")
 SIF !RESULT
 	RETURN 0
 
+;後背位などで背後にいるとダメ
+SIF TFLAG:背后
+	RETURN 0
 SIF TFLAG:Ｎ装备
 	RETURN 0
 
+;身長プレイ制限があれば呼ぶ
+CALL BUST_SUCK_HEIGHT_CONFIG_JUDGE
+SIF RESULT
+	RETURN 0
 RETURN 1
 
 

@@ -1,0 +1,62 @@
+;==============================================================================
+; 绝顶育成（魔法）：对当前 TARGET 奴隶施加 10 日契约；期间内每回合若有部位绝顶，
+; 每有 1 个不同部位（Ｖ/Ａ/Ｂ/Ｎ/Ｕ 本回合 NOWEX>0）则最大体力·最大气力各 +5。
+; 日结减少残日，0 时停止。
+; 入手：【街】→ 成人用品店 第3页＜禁忌魔导＞以所持金（G）购买（价见 Item；默认 100 万 G）。
+; 本工程未带 ◯疑似定数セット 时，发动 MP 在此补登。
+;==============================================================================
+
+; 主工程无 MAGIC_USE_MP:绝顶育成 时设默认发动消耗（入手为成人店现金购买＜禁忌魔导＞页）
+@MAGIC_绝顶育成_ENSURE
+#DIM 绝顶条项号
+绝顶条项号 = GETNUM(ITEM,"绝顶育成")
+SIF 绝顶条项号 < 0
+	RETURN
+SIF !MAGIC_USE_MP:绝顶条项号
+	MAGIC_USE_MP:绝顶条项号 = 20000
+RETURN
+
+; 在 SOURCE_UP 中、本回合的 NOWEX 仍有效时调用
+@MAGIC_绝顶育成_APPLY
+#LOCALSIZE 1
+#DIM 部位数
+TRYCALL MAGIC_绝顶育成_ENSURE
+SIF !CFLAG:魔法_绝顶育成残日
+	RETURN
+部位数 = 0
+SIF NOWEX:Ｖ绝顶
+	部位数 += 1
+SIF NOWEX:Ａ绝顶
+	部位数 += 1
+SIF NOWEX:Ｂ绝顶
+	部位数 += 1
+SIF NOWEX:Ｎ绝顶
+	部位数 += 1
+SIF NOWEX:Ｕ绝顶
+	部位数 += 1
+SIF 部位数 < 1
+	RETURN
+LOCAL:0 = 部位数 * 5
+MAXBASE:体力 += LOCAL:0
+MAXBASE:气力 += LOCAL:0
+BASE:体力 += LOCAL:0
+BASE:气力 += LOCAL:0
+PRINTFORML ＜绝顶育成＞%CALLNAME%在契约期内因{部位数}个部位绝顶，最大体力与最大气力各＋%LOCAL:0%。
+RETURN
+
+
+; 每 1 游戏日调用一次（与 PREGNANCY_DAILY 同位）
+@MAGIC_绝顶育成_DAILY_ALL
+#LOCALSIZE 1
+#DIM 旧TARGET
+TRYCALL MAGIC_绝顶育成_ENSURE
+SIF ARG:0 < 1
+	RETURN
+旧TARGET = TARGET
+FOR LOCAL:0, 0, CHARANUM
+	TARGET = LOCAL:0
+	SIF CFLAG:魔法_绝顶育成残日 > 0
+		CFLAG:魔法_绝顶育成残日 -= 1
+NEXT
+TARGET = 旧TARGET
+RETURN

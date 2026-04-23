@@ -59,7 +59,7 @@ SIF TFLAG:授乳开口
 
 
 
-;Ｃ愛撫（手で阴蒂等。挿入中・体位を問わず可とするが、口・乳交で手が塞がる場合は不可）
+;Ｃ愛撫
 @COM_ABLE13
 SIF !GETBIT(＃表示指令／Ｃ刺激＃)
 	RETURN 0
@@ -101,7 +101,7 @@ SIF TFLAG:Ｖ露出
 
 
 
-;Ａ指挿れ（手で肛门。Ｖ挿入中の肛弄りは舌舐め COM25 ではなくこちら）
+;Ａ指挿れ
 @COM_ABLE15
 SIF !GETBIT(＃表示指令／Ａ刺激＃)
 	RETURN 0
@@ -212,16 +212,20 @@ SIF !RESULT
 SIF GETBIT(＃体位制限／接吻＃)
 	RETURN 0
 
+;挿入中キスの身長判定
+CALL KISS_HEIGHT_CONFIG_JUDGE
+SIF RESULT
+	RETURN 0
 RETURN 1
 
 
 
-;Ｃ舐め（舌。阴蒂の手愛撫は COM13）
+;Ｃ舐め
 @COM_ABLE23
 SIF !GETBIT(＃表示指令／Ｃ刺激＃)
 	RETURN 0
 
-;挿入中は不可（ペニス使用中は体勢的に舌舐め不可とする）
+;挿入中はダメ
 SIF TFLAG:Ｐ使用BIT
 	RETURN 0
 CALL COMMAND_STAIN_JUDGE("阴蒂")
@@ -254,7 +258,7 @@ SIF TFLAG:Ｖ露出
 
 
 
-;Ａ舐め（舌。Ｖ挿入中の肛门は手→COM15）
+;Ａ舐め
 @COM_ABLE25
 SIF !GETBIT(＃表示指令／Ａ刺激＃)
 	RETURN 0
@@ -264,7 +268,6 @@ SIF GETBIT(＃Ａ舔舐无效＃)
 ;汚れ無視Lv2が必要
 SIF ITEM:污臭无视 < 2
 	RETURN 0
-;ペニス使用中は不可（肛弄りは COM15）
 SIF TFLAG:Ｐ使用BIT
 	RETURN 0
 SIF TFLAG:Ａ装备
@@ -284,6 +287,8 @@ CALL COMMAND_STAIN_JUDGE("乳房")
 SIF !RESULT
 	RETURN 0
 SIF TEQUIP:手淫
+	RETURN 0
+SIF TFLAG:背后
 	RETURN 0
 SIF GETBIT(＃体位制限／吸奶＃)
 	RETURN 0
@@ -393,11 +398,6 @@ RETURN RESULT
 CALL SEX_COMMAND_JUDGE("强制骑乘位")
 RETURN RESULT
 
-;背面騎乗位
-@COM_ABLE38
-CALL SEX_COMMAND_JUDGE("背面骑乘位")
-RETURN RESULT
-
 
 
 ;--------------------------------------------------,
@@ -443,11 +443,6 @@ RETURN RESULT
 CALL SEX_COMMAND_JUDGE("强制骑乘位",1)
 RETURN RESULT
 
-;Ａ背面騎乗位
-@COM_ABLE48
-CALL SEX_COMMAND_JUDGE("背面骑乘位",1)
-RETURN RESULT
-
 
 
 ;--------------------------------------------------,
@@ -477,8 +472,6 @@ SIF TFLAG:Ｖ露出
 ;フェラチオ
 @COM_ABLE51
 ;奉仕判定をちょっとまとめたものを作ったよ
-SIF TEQUIP:足交
-	RETURN 0
 CALL PENIS_SERVICE_COMMAND_JUDGE("口交")
 
 ;RETURN 0してきていたらNG
@@ -546,28 +539,11 @@ RETURN RESULT
 
 ;手コキ
 @COM_ABLE57
-SIF TEQUIP:足交
-	RETURN 0
 CALL PENIS_SERVICE_COMMAND_JUDGE
 RETURN RESULT
 
-;足交
-@COM_ABLE59
-CALL PENIS_SERVICE_COMMAND_JUDGE
-SIF !RESULT
-	RETURN 0
-SIF TEQUIP:手淫 || TEQUIP:授乳手交
-	RETURN 0
-SIF TEQUIP:足交
-	RETURN 1
-SIF TFLAG:Ｍ装备
-	RETURN 0
-RETURN 1
-
 ;授乳手コキ
 @COM_ABLE58
-SIF TEQUIP:足交
-	RETURN 0
 CALL PENIS_SERVICE_COMMAND_JUDGE
 SIF !RESULT
 	RETURN 0
@@ -619,48 +595,15 @@ SIF GETBIT(＃Ｐ使用／Ｍ插入＃) || GETBIT(＃Ｐ使用／乳交＃)
 	RETURN 0
 SIF TEQUIP:手淫 || TEQUIP:授乳手交
 	RETURN 0
-;正面寄り・立ち正面の挿入中は打屁股不可（後背・対面座・騎乗系・背面立・強制／背面騎乗は可）
+;後背位、背面立位以外のＶＡ挿入中はダメ
 {
-SIF TEQUIP:正常位 || TEQUIP:背面坐位 || TEQUIP:对面立位 || 
-TEQUIP:Ａ正常位 || TEQUIP:Ａ背面坐位 || TEQUIP:Ａ对面立位
+SIF TEQUIP:正常位 || TEQUIP:对面坐位 || TEQUIP:背面坐位 || TEQUIP:骑乘位 || TEQUIP:对面立位 ||TEQUIP:强制骑乘位 || 
+TEQUIP:Ａ正常位 || TEQUIP:Ａ对面坐位 || TEQUIP:Ａ背面坐位 || TEQUIP:Ａ骑乘位 || TEQUIP:Ａ对面立位 || TEQUIP:Ａ强制骑乘位
 }
 	RETURN 0
 ;衣服の上からだとダメ
 SIF TFLAG:临时脱衣／衣服 || !EQUIP:装备中ID／衣服 || ＃穿着衣服／私处撕裂＃ || GETBIT(＃半脱／衣服下＃) || ＃穿着衣服／私处露出＃
 	RETURN 1
-
-
-
-;皮鞭抽打（须先装备皮鞭；不限插入体位）
-@COM_ABLE71
-SIF !GETBIT(＃表示指令／其他＃) || !GETBIT(＃表示指令／痛苦＃)
-	RETURN 0
-SIF !TFLAG:皮鞭装备
-	RETURN 0
-SIF !ITEM:皮鞭
-	RETURN 0
-SIF BASE:0:体力 <= 1
-	RETURN 0
-SIF GETBIT(＃体位制限／肛门＃) || GETBIT(＃拘束／床上仰卧＃)
-	RETURN 0
-SIF GETBIT(＃Ｐ使用／Ｍ插入＃) || GETBIT(＃Ｐ使用／乳交＃)
-	RETURN 0
-SIF TEQUIP:手淫 || TEQUIP:授乳手交
-	RETURN 0
-;与打屁股相同的露出／拘束限制；不因插入体位禁止
-SIF TFLAG:临时脱衣／衣服 || !EQUIP:装备中ID／衣服 || ＃穿着衣服／私处撕裂＃ || GETBIT(＃半脱／衣服下＃) || ＃穿着衣服／私处露出＃
-	RETURN 1
-RETURN 0
-
-
-
-;皮鞭装备／卸下
-@COM_ABLE72
-SIF !GETBIT(＃表示指令／其他＃) || !GETBIT(＃表示指令／痛苦＃)
-	RETURN 0
-SIF !ITEM:皮鞭 && !TFLAG:皮鞭装备
-	RETURN 0
-RETURN 1
 
 
 
@@ -993,8 +936,6 @@ SIF TEQUIP:肛用震动棒
 	RETURN 1
 SIF !ITEM:肛用震动棒
 	RETURN 0
-SIF TEQUIP:肛塞
-	RETURN 0
 SIF TFLAG:Ａ装备
 	RETURN 0
 SIF TFLAG:Ａ露出
@@ -1026,8 +967,6 @@ SIF TFLAG:授乳开口
 ;クリローター
 @COM_ABLE204
 SIF !GETBIT(＃表示指令／道具＃) || !GETBIT(＃表示指令／Ｃ刺激＃)
-	RETURN 0
-SIF TFLAG:尿道装备
 	RETURN 0
 SIF GETBIT(＃Ｐ使用／Ｍ插入＃) || GETBIT(＃Ｐ使用／乳交＃)
 	RETURN 0
@@ -1068,8 +1007,6 @@ SIF TFLAG:授乳开口
 ;クリ吸引器
 @COM_ABLE206
 SIF !GETBIT(＃表示指令／道具＃) || !GETBIT(＃表示指令／Ｃ刺激＃) || !GETBIT(＃表示指令／痛苦＃)
-	RETURN 0
-SIF TFLAG:尿道装备
 	RETURN 0
 SIF TFLAG:Ｐ使用BIT
 	RETURN 0
@@ -1154,132 +1091,6 @@ SIF TFLAG:Ｍ装备
 	RETURN 0
 RETURN 1
 
-
-
-;肛塞
-@COM_ABLE213
-SIF !GETBIT(＃表示指令／道具＃) || !GETBIT(＃表示指令／Ａ刺激＃)
-	RETURN 0
-SIF GETBIT(＃Ｐ使用／Ｍ插入＃) || GETBIT(＃Ｐ使用／乳交＃)
-	RETURN 0
-SIF TEQUIP:手淫 || TEQUIP:授乳手交
-	RETURN 0
-SIF TEQUIP:肛塞
-	RETURN 1
-SIF !ITEM:肛塞
-	RETURN 0
-SIF TEQUIP:肛用震动棒
-	RETURN 0
-SIF TFLAG:Ａ装备
-	RETURN 0
-SIF TFLAG:Ａ露出
-	RETURN 1
-
-
-
-;尿道塞
-@COM_ABLE214
-SIF !GETBIT(＃表示指令／道具＃) || !GETBIT(＃表示指令／Ｃ刺激＃)
-	RETURN 0
-SIF GETBIT(＃Ｐ使用／Ｍ插入＃) || GETBIT(＃Ｐ使用／乳交＃)
-	RETURN 0
-SIF TEQUIP:手淫 || TEQUIP:授乳手交
-	RETURN 0
-SIF TEQUIP:尿道塞
-	RETURN 1
-SIF !ITEM:尿道塞
-	RETURN 0
-SIF TEQUIP:阴蒂跳蛋 || TEQUIP:阴蒂吸引器
-	RETURN 0
-SIF TFLAG:Ｃ露出
-	RETURN 1
-
-
-;饮尿
-@COM_ABLE216
-SIF !GETBIT(＃表示指令／Ｍ刺激＃)
-	RETURN 0
-SIF TEQUIP:足交
-	RETURN 0
-CALL PENIS_SERVICE_COMMAND_JUDGE("饮尿")
-SIF !RESULT
-	RETURN 0
-SIF !BASE:0:精力
-	RETURN 0
-SIF TFLAG:Ｐ使用BIT
-	RETURN 0
-SIF TEQUIP:强制开口器
-	RETURN 1
-SIF TFLAG:Ｍ装备
-	RETURN 0
-SIF GETBIT(＃体位制限／Ｍ插入＃)
-	RETURN 0
-RETURN 1
-
-
-;公开口交侍奉
-@COM_ABLE217
-SIF !GETBIT(＃表示指令／Ｍ刺激＃)
-	RETURN 0
-SIF !TFLAG:奉仕可能
-	RETURN 0
-SIF TEQUIP:足交
-	RETURN 0
-CALL PENIS_SERVICE_COMMAND_JUDGE("口交")
-SIF !RESULT
-	RETURN 0
-SIF TFLAG:Ｍ装备
-	RETURN 0
-SIF GETBIT(＃体位制限／Ｍ插入＃)
-	RETURN 0
-RETURN 1
-
-
-;公开自慰
-@COM_ABLE218
-SIF !GETBIT(＃表示指令／Ｃ刺激＃)
-	RETURN 0
-SIF !TFLAG:奉仕可能
-	RETURN 0
-SIF TFLAG:拘束BIT
-	RETURN 0
-CALL COM_ABLE13
-SIF !RESULT
-	RETURN 0
-RETURN 1
-
-
-;自慰
-@COM_ABLE219
-CALL COM_ABLE13
-RETURN RESULT
-
-
-;放尿（尿道塞装着＋装着後に時間経過した调教が2回以上。実行時は自動で塞を外す）
-@COM_ABLE220
-SIF !GETBIT(＃表示指令／Ｃ刺激＃)
-	RETURN 0
-SIF !TEQUIP:尿道塞
-	RETURN 0
-SIF TFLAG:尿道塞调教经过回合 < 2
-	RETURN 0
-SIF TEQUIP:阴蒂跳蛋 || TEQUIP:阴蒂吸引器
-	RETURN 0
-SIF !TFLAG:Ｃ露出
-	RETURN 0
-RETURN 1
-
-
-;公开放尿
-@COM_ABLE221
-SIF !GETBIT(＃表示指令／Ｃ刺激＃)
-	RETURN 0
-SIF !TFLAG:奉仕可能
-	RETURN 0
-SIF TFLAG:拘束BIT
-	RETURN 0
-CALL COM_ABLE220
-RETURN RESULT
 
 
 ;ローション

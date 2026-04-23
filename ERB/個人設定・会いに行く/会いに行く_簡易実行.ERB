@@ -62,6 +62,36 @@ PRINTW >
 SOURCE:精神参数增减已完成 = 0
 
 
+;----------------------------------------------------------------
+; 停止泌乳（平日・会いに行く）
+;----------------------------------------------------------------
+@VISIT_MANUAL_DRY
+
+PRINTFORML 你要令%CALLNAME%停止泌乳（停止产奶）吗？
+CALL ASK_YN
+SIF RESULT
+	RETURN
+CALL PREGNANCY_MANUAL_DRY
+CALL KOJO_PRINT("访问","停止泌乳","停止泌乳")
+PRINTW
+
+
+;----------------------------------------------------------------
+; 终止妊娠（平日・会いに行く）
+;----------------------------------------------------------------
+@VISIT_ABORT_PREGNANCY
+
+SIF CFLAG:魔界_妊娠S != 1
+	RETURN
+PRINTFORML 你要终止%CALLNAME%的妊娠吗？
+CALL ASK_YN
+SIF RESULT
+	RETURN
+CALL PREGNANCY_ABORT_MAKAI
+CALL KOJO_PRINT("访问","终止妊娠","终止妊娠")
+PRINTW
+
+
 
 
 

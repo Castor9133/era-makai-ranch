@@ -44,6 +44,10 @@ SIF CSTR:0:日程 == "调教"
 	BEGIN TRAIN
 
 ;ターンエンド処理に1日終了処理もあるのでこれでOK
+; 日结束：妊娠/产褥/静养等日次推进（全员）
+TRYCALL PREGNANCY_DAILY_TICK_ALL, 1
+TRYCALL MAGIC_绝顶育成_DAILY_ALL, 1
+TRYCALL NURSERY_DAILY
 CALL MAIN_TURNEND
 ;SHOPへ戻る
 

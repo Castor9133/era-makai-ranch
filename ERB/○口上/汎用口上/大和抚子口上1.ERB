@@ -169,7 +169,61 @@ CASE "吸欧派"
 CASE "访问"
 	SELECTCASE ARGS:1
 	CASE "入口"
-		CALL MESSAGE_BOX,@"「%MASTER_CALL()%……我来了。若打扰到您……还请见谅。」"
+		IF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／隶属＃
+			CALL MESSAGE_BOX,@"「%MASTER_CALL()%……见您来。请随意吩咐%SELF_CALL()%……%SELF_CALL()%不敢怠慢……♥」"
+		ELSEIF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「%MASTER_CALL()%……您来我这边。若、若我屋里失礼，还请见谅。」"
+		ELSEIF ＃陷落状态／陷落以上＃
+			CALL MESSAGE_BOX,@"「%MASTER_CALL()%……人在这儿。您若有事，%SELF_CALL()%洗耳恭听。」"
+		ELSEIF ＃陷落状态／屈服以上＃
+			CALL MESSAGE_BOX,@"「%MASTER_CALL()%……人、人在这儿。……请、请长话短说。」"
+		ELSE
+			CALL MESSAGE_BOX,@"「%MASTER_CALL()%……若无要事，请容%SELF_CALL()%告退到门边。」"
+		ENDIF
+	CASE "衣服修理"
+		CALL MESSAGE_BOX,@"「衣裳破损之处，我来补好。针线活虽不敢夸口……但会尽量缝得不露痕迹。」"
+	CASE "摸头"
+		IF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／隶属＃
+			CALL MESSAGE_BOX,@"「……承蒙抚慰。%SELF_CALL()%会更听话，也会更乖一些……♥」"
+			CALL MESSAGE_BOX,@"「若您愿意……请把手再放久一点。这样我便不会胡思乱想。」"
+		ELSEIF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……承蒙抚慰。若能让您心里稍安……%SELF_CALL()%便已知足。」"
+			CALL MESSAGE_BOX,@"「只是……我会害羞。请您别盯着我看太久……」"
+		ELSEIF ＃陷落状态／陷落以上＃
+			CALL MESSAGE_BOX,@"「……明白了。请随意。」"
+			CALL MESSAGE_BOX,@"「若您是想让我安定下来……那我会努力不失礼。」"
+		ELSEIF ＃陷落状态／屈服以上＃
+			CALL MESSAGE_BOX,@"「……不必如此。」"
+			CALL MESSAGE_BOX,@"「若您只是心血来潮……还请适可而止。」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……请不要碰我。」"
+		ENDIF
+	CASE "接吻"
+		IF TALENT:无接吻经验
+			RETURN
+		ELSEIF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／隶属＃
+			CALL MESSAGE_BOX,@"「……是。请您取用。」"
+			CALL MESSAGE_BOX,@"「我会把一切都奉上……包括这份亲吻……♥」"
+		ELSEIF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……是。若这是您的愿望……%SELF_CALL()%会收下这份亲昵，不敢轻慢……♥」"
+			CALL MESSAGE_BOX,@"「请慢一些……我想把它记住。」"
+		ELSEIF ＃陷落状态／陷落以上＃
+			CALL MESSAGE_BOX,@"「……明白了。」"
+			CALL MESSAGE_BOX,@"「请短一些。我会配合，但不想太失态。」"
+		ELSEIF ＃陷落状态／屈服以上＃
+			CALL MESSAGE_BOX,@"「……请别太久。」"
+			CALL MESSAGE_BOX,@"「我不想用这种事来交换什么。」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……请自重。」"
+		ENDIF
+	CASE "停止泌乳"
+		IF CFLAG:魔界_妊娠S == 1 || CFLAG:魔界_妊娠S == 2
+			CALL MESSAGE_BOX,@"「……此时让我停下泌乳，我并不愿。怀着与产后，都不该如此轻慢。」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……停止泌乳么。明白了。我会让身体停下，不再让您为此烦心。」"
+		ENDIF
+	CASE "终止妊娠"
+		CALL MESSAGE_BOX,@"「……终止妊娠。此事沉重，但若是您的决定……我会配合。」"
 	CASEELSE
 	ENDSELECT
 

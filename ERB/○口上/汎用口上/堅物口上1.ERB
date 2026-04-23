@@ -528,6 +528,61 @@ CASE "访问"
 			CALL MESSAGE_BOX,@"\d%CALLNAME%默默地瞥了一眼这边，然后重新将视线转向了墙壁。"
 		ENDIF
 
+	CASE "衣服修理"
+		CALL MESSAGE_BOX,@"「衣物破损会影响行动与仪态。把它交给我——别乱扯，免得越扯越坏。」"
+	CASE "摸头"
+		IF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／隶属＃
+			CALL MESSAGE_BOX,@"「……可以。」"
+			CALL MESSAGE_BOX,@"「你想让我更安静，我就安静。——但别停得太突然。」"
+		ELSEIF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……请自重。」"
+			CALL MESSAGE_BOX,@"「若你只是想让我安定下来……就短一些。别在同一个地方来回摸，会痒。」"
+		ELSEIF ＃陷落状态／陷落以上＃
+			CALL MESSAGE_BOX,@"「……你在做什么。」"
+			CALL MESSAGE_BOX,@"「想确认我会不会拒绝？那你已经确认到了。别得寸进尺。」"
+		ELSEIF ＃陷落状态／屈服以上＃
+			CALL MESSAGE_BOX,@"「……别碰。」"
+			CALL MESSAGE_BOX,@"「你越温柔，越显得虚伪。」"
+		ELSE
+			CALL MESSAGE_BOX,@"「拿开。」"
+		ENDIF
+	CASE "接吻"
+		IF TALENT:无接吻经验
+			RETURN
+		ELSEIF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／隶属＃
+			CALL MESSAGE_BOX,@"「……可以。」"
+			CALL MESSAGE_BOX,@"「你要我怎样回应，我就怎样回应。——别事后又说是我主动。」"
+		ELSEIF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……如果你坚持。」"
+			CALL MESSAGE_BOX,@"「但别把亲昵当成试探或奖惩。做了，就要负责到底。」"
+		ELSEIF ＃陷落状态／陷落以上＃
+			CALL MESSAGE_BOX,@"「……只一下。」"
+			CALL MESSAGE_BOX,@"「别把我当成你情绪的出口。」"
+		ELSEIF ＃陷落状态／屈服以上＃
+			CALL MESSAGE_BOX,@"「……不。」"
+		ELSE
+			CALL MESSAGE_BOX,@"「滚远点。」"
+		ENDIF
+
+	CASE "停止泌乳"
+		IF CFLAG:魔界_妊娠S == 1 || CFLAG:魔界_妊娠S == 2
+			CALL MESSAGE_BOX,@"「……在妊娠中或产后初期停止泌乳，我不建议。若这是命令，我会执行，但请慎重。」"
+		ELSEIF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／隶属＃
+			CALL MESSAGE_BOX,@"「明白。按牧场规程执行停止泌乳即可。之后我会避免一切促乳行为。」"
+		ELSEIF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……停止泌乳吗。若这是%MASTER_CALL()%的决定，我会配合。但请不要把它当玩笑。」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……要我停止泌乳，是吗。了解。我会照做。」"
+		ENDIF
+	CASE "终止妊娠"
+		IF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／隶属＃
+			CALL MESSAGE_BOX,@"「已收到指示：终止妊娠。我会配合处理。」"
+		ELSEIF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……我明白了。请你确认：这是最终决定吗？——既然如此，我会接受并配合。」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……这种处置没有回头路。你确定的话，我会配合。」"
+		ENDIF
+
 	CASE "对主角的称呼变更"
 		IF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／隶属＃
 			CALL MESSAGE_BOX,@"「再次，请多多关照♥ 『%MASTER_CALL()%』…♥」"

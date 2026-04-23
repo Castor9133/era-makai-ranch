@@ -144,7 +144,63 @@ CASE "吸欧派"
 CASE "访问"
 	SELECTCASE ARGS:1
 	CASE "入口"
-		CALL MESSAGE_BOX,@"「……我进来咯……不许赶我走……」"
+		IF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／隶属＃
+			CALL MESSAGE_BOX,@"「你来啦。……要我在你旁边候着，%SELF_CALL()%就不去门口乱晃……♥」"
+		ELSEIF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……你来啦……看完别、别转眼就走嘛……」"
+		ELSEIF ＃陷落状态／陷落以上＃
+			CALL MESSAGE_BOX,@"「……你进我屋了。今天……又要做啥啊……」"
+		ELSEIF ＃陷落状态／屈服以上＃
+			CALL MESSAGE_BOX,@"「……你进房间了。没正事的话%SELF_CALL()%要回角落了。」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……别理我。当%SELF_CALL()%不在这间屋里。」"
+		ENDIF
+	CASE "衣服修理"
+		CALL MESSAGE_BOX,@"「衣服破了……？给、给我。%SELF_CALL()%会补好……你要在旁边看也行，但不许笑%SELF_CALL()%笨手笨脚。」"
+	CASE "摸头"
+		IF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／隶属＃
+			CALL MESSAGE_BOX,@"「嗯……再摸。」"
+			CALL MESSAGE_BOX,@"「%SELF_CALL()%会更乖……所以你也要一直摸着，别放开……♥」"
+		ELSEIF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……摸、摸头可以。」"
+			CALL MESSAGE_BOX,@"「但你摸了就要负责。……不许摸完就走。」"
+		ELSEIF ＃陷落状态／陷落以上＃
+			CALL MESSAGE_BOX,@"「……突然摸什么嘛。」"
+			CALL MESSAGE_BOX,@"「……不过……你要摸就摸。%SELF_CALL()%不会躲。」"
+		ELSEIF ＃陷落状态／屈服以上＃
+			CALL MESSAGE_BOX,@"「……别弄乱我的头发。」"
+			CALL MESSAGE_BOX,@"「摸一下就行了，别以为这样就能装作温柔。」"
+		ELSE
+			CALL MESSAGE_BOX,@"「别碰！……%SELF_CALL()%会咬人。」"
+		ENDIF
+	CASE "接吻"
+		IF TALENT:无接吻经验
+			RETURN
+		ELSEIF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／隶属＃
+			CALL MESSAGE_BOX,@"「……亲我。」"
+			CALL MESSAGE_BOX,@"「再多一点……别停……%SELF_CALL()%会乖乖的……♥」"
+		ELSEIF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……亲一下。」"
+			CALL MESSAGE_BOX,@"「……不、不是命令也行……%SELF_CALL()%自己想要……」"
+		ELSEIF ＃陷落状态／陷落以上＃
+			CALL MESSAGE_BOX,@"「……就一下下。」"
+			CALL MESSAGE_BOX,@"「你不许笑。笑了%SELF_CALL()%就不亲了。」"
+		ELSEIF ＃陷落状态／屈服以上＃
+			CALL MESSAGE_BOX,@"「……快点。」"
+			CALL MESSAGE_BOX,@"「%SELF_CALL()%不想把嘴唇交给你太久。」"
+		ELSE
+			CALL MESSAGE_BOX,@"「别靠近！%SELF_CALL()%讨厌你！」"
+		ENDIF
+	CASE "停止泌乳"
+		IF CFLAG:魔界_妊娠S == 1 || CFLAG:魔界_妊娠S == 2
+			CALL MESSAGE_BOX,@"「……现在停吗……？%SELF_CALL()%……不太想……」"
+		ELSEIF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／隶属＃
+			CALL MESSAGE_BOX,@"「停、停止泌乳……？……好吧……%SELF_CALL()%会努力停下来……」"
+		ELSE
+			CALL MESSAGE_BOX,@"「停、停止泌乳……？……好吧……%SELF_CALL()%会努力停下来……」"
+		ENDIF
+	CASE "终止妊娠"
+		CALL MESSAGE_BOX,@"「……要终止吗……？嗯……我、我知道了……」"
 	CASEELSE
 	ENDSELECT
 

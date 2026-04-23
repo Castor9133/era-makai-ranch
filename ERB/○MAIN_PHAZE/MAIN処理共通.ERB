@@ -97,6 +97,16 @@ NEXT
 ;スケジュール実行+メッセージ
 @SCHEDULE_RUN(ARGS)
 
+; 静养期（流产/临产/产后）不可劳动与调教：在各日程入口统一拦截
+; 只拦截需要“上班”的日程，避免影响其它非劳动流程
+IF TARGET > 0 && GROUPMATCH(ARGS,＃事务日程＃)
+	CALL 魔界_静养_不可劳动与调教
+	IF RESULT
+		CFLAG:行动完毕 = 1
+		RETURN
+	ENDIF
+ENDIF
+
 SELECTCASE ARGS
 CASE "奶农"
 	CALL WORK_LACTATION_ENTRANCE
@@ -122,6 +132,13 @@ ENDSELECT
 
 ;メッセージなし簡易実行
 @SCHEDULE_RUN_SIMPLE(ARGS)
+
+; 简易执行也需要拦截劳动（避免静养期仍被扣体力/执行工作）
+IF TARGET > 0 && GROUPMATCH(ARGS,＃事务日程＃)
+	CALL 魔界_静养_不可劳动与调教
+	SIF RESULT
+		RETURN
+ENDIF
 
 SELECTCASE ARGS
 CASE "奶农"

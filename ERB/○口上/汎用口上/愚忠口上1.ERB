@@ -169,7 +169,52 @@ CASE "吸欧派"
 CASE "访问"
 	SELECTCASE ARGS:1
 	CASE "入口"
-		CALL MESSAGE_BOX,@"「……我来了。请下达命令。」"
+		IF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／隶属＃
+			CALL MESSAGE_BOX,@"「……来房确认。将优先处理您的指令。请下命令。」"
+		ELSEIF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……您进房间了。请下达命令。」"
+		ELSEIF ＃陷落状态／陷落以上＃
+			CALL MESSAGE_BOX,@"「……见您来。有任务请指定优先级。」"
+		ELSEIF ＃陷落状态／屈服以上＃
+			CALL MESSAGE_BOX,@"「……您来我这间了。要做什么。」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……门开了。无命令则待命。」"
+		ENDIF
+	CASE "衣服修理"
+		CALL MESSAGE_BOX,@"「……衣物修复指令确认。将以最小痕迹完成缝补与加固。」"
+	CASE "摸头"
+		IF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／隶属＃
+			CALL MESSAGE_BOX,@"「……抚摸确认。情绪稳定度上升。将维持当前状态。」"
+		ELSEIF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……抚摸确认。若这是奖励，我会记下并继续执行职责。」"
+		ELSEIF ＃陷落状态／陷落以上＃
+			CALL MESSAGE_BOX,@"「……接触确认。无异常。」"
+		ELSEIF ＃陷落状态／屈服以上＃
+			CALL MESSAGE_BOX,@"「……接触确认。」"
+			CALL MESSAGE_BOX,@"「……不理解。」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……拒绝接触。」"
+		ENDIF
+	CASE "接吻"
+		IF TALENT:无接吻经验
+			RETURN
+		ELSEIF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／隶属＃
+			CALL MESSAGE_BOX,@"「……接吻确认。将配合执行。」"
+			CALL MESSAGE_BOX,@"「……请继续。执行到您满意为止。」"
+		ELSEIF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……接触确认。将配合执行。若您需要更久，请下达更明确的命令。」"
+		ELSEIF ＃陷落状态／陷落以上＃
+			CALL MESSAGE_BOX,@"「……接吻确认。配合。」"
+		ELSEIF ＃陷落状态／屈服以上＃
+			CALL MESSAGE_BOX,@"「……」"
+			CALL MESSAGE_BOX,@"「……不想。」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……拒绝。」"
+		ENDIF
+	CASE "停止泌乳"
+		CALL MESSAGE_BOX,@"「……收到。停止泌乳。」"
+	CASE "终止妊娠"
+		CALL MESSAGE_BOX,@"「……收到。终止妊娠。」"
 	CASEELSE
 	ENDSELECT
 

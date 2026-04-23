@@ -237,8 +237,69 @@ CASE "吸欧派"
 CASE "访问"
 	SELECTCASE ARGS:1
 	CASE "入口"
-		CALL MESSAGE_BOX,@"「啊……%MASTER_CALL()%……%SELF_CALL()%来了……是不是打扰了……」"
-		CALL MESSAGE_BOX,@"「……那个……%SELF_CALL()%……可以进来吗……」"
+		IF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／隶属＃
+			CALL MESSAGE_BOX,@"「啊……%MASTER_CALL()%……您、您进房间了……」"
+			CALL MESSAGE_BOX,@"「要、要是指令……%SELF_CALL()%会做的……%SELF_CALL()%会很乖的……♥」"
+		ELSEIF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「啊……%MASTER_CALL()%……您来、来我这边了……是不是打扰了……」"
+			CALL MESSAGE_BOX,@"「……%SELF_CALL()%……在屋里……请、请别转个身就走掉……」"
+		ELSEIF ＃陷落状态／陷落以上＃
+			CALL MESSAGE_BOX,@"「%MASTER_CALL()%……您进、进房间了……」"
+			CALL MESSAGE_BOX,@"「……今天……要做的话……%SELF_CALL()%会、会配合的……」"
+		ELSEIF ＃陷落状态／屈服以上＃
+			CALL MESSAGE_BOX,@"「……你、你进我屋了。……没正事的话%SELF_CALL()%会躲一边……」"
+		ELSE
+			CALL MESSAGE_BOX,@"「别、别看我……不是%SELF_CALL()%要您来的……」"
+		ENDIF
+	CASE "衣服修理"
+		CALL MESSAGE_BOX,@"「衣、衣服破了……？%SELF_CALL()%……会补的……」"
+		CALL MESSAGE_BOX,@"「……别、别一直盯着看……%SELF_CALL()%会手抖……」"
+	CASE "摸头"
+		IF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／隶属＃
+			CALL MESSAGE_BOX,@"「……嗯……」"
+			CALL MESSAGE_BOX,@"「请、请再摸一会儿……%SELF_CALL()%会更乖……更听话……♥」"
+		ELSEIF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……被摸头……%SELF_CALL()%……不讨厌……」"
+			CALL MESSAGE_BOX,@"「……可、可以再……一下下吗……」"
+		ELSEIF ＃陷落状态／陷落以上＃
+			CALL MESSAGE_BOX,@"「……你、你要摸吗……」"
+			CALL MESSAGE_BOX,@"「……那、那就摸吧……%SELF_CALL()%……不会躲……」"
+		ELSEIF ＃陷落状态／屈服以上＃
+			CALL MESSAGE_BOX,@"「……别、别碰……」"
+			CALL MESSAGE_BOX,@"「……会、会让%SELF_CALL()%以为你在原谅我……」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……别碰……！」"
+		ENDIF
+	CASE "接吻"
+		IF TALENT:无接吻经验
+			RETURN
+		ELSEIF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／隶属＃
+			CALL MESSAGE_BOX,@"「……亲、亲我……」"
+			CALL MESSAGE_BOX,@"「%SELF_CALL()%会乖乖张口……请、请别丢下我……♥」"
+		ELSEIF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……亲、亲吻……%SELF_CALL()%……会配合的……」"
+			CALL MESSAGE_BOX,@"「……求你……别马上松开……%SELF_CALL()%会害怕……」"
+		ELSEIF ＃陷落状态／陷落以上＃
+			CALL MESSAGE_BOX,@"「……可、可以……」"
+			CALL MESSAGE_BOX,@"「……但、别太深……%SELF_CALL()%会喘不过来……」"
+		ELSEIF ＃陷落状态／屈服以上＃
+			CALL MESSAGE_BOX,@"「……不、不要……」"
+			CALL MESSAGE_BOX,@"「……%SELF_CALL()%……不想被你用嘴巴欺负……」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……别、别过来……！」"
+		ENDIF
+	CASE "停止泌乳"
+		IF CFLAG:魔界_妊娠S == 1
+			CALL MESSAGE_BOX,@"「……怀、怀着的时候也要停吗……？%SELF_CALL()%……会害怕……」"
+		ELSEIF CFLAG:魔界_妊娠S == 2
+			CALL MESSAGE_BOX,@"「……刚生完就停……%SELF_CALL()%……会不安……」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……要、要停止泌乳吗……%SELF_CALL()%会、会照做的……」"
+		ENDIF
+		CALL MESSAGE_BOX,@"「……好。%SELF_CALL()%会把产奶……停下来……别、别笑%SELF_CALL()%……」"
+	CASE "终止妊娠"
+		CALL MESSAGE_BOX,@"「……要、要终止吗……%SELF_CALL()%……明白了……」"
+		CALL MESSAGE_BOX,@"「……%SELF_CALL()%会配合的……求你……之后也别丢下%SELF_CALL()%……」"
 	CASEELSE
 	ENDSELECT
 

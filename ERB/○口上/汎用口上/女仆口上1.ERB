@@ -16,10 +16,10 @@ ELSEIF CFLAG:崩坏 && !CFLAG:洗脑
 	ELSEIF GROUPMATCH(ARGS:1,"洗脑触手","崩坏")
 	ELSE
 		IF NOWEX:总绝顶
-			CALL MESSAGE_BOX,@"「遵、遵命……♥ ……我、我……要……♥」"
-			CALL MESSAGE_BOX,@"「……礼仪……做不到了……♥」"
+			CALL MESSAGE_BOX,@"「对、对不起……已经……脑子一片空白……要去了……♥」"
+			CALL MESSAGE_BOX,@"「……撑、撑不住了……手也好腿也好……都听您的……♥」"
 		ELSE
-			CALL MESSAGE_BOX,@"「……遵命……」"
+			CALL MESSAGE_BOX,@"「……听您的……我……在……」"
 		ENDIF
 		RETURN
 	ENDIF
@@ -27,7 +27,7 @@ ENDIF
 
 SELECTCASE ARGS:0
 CASE "例文"
-	CALL MESSAGE_BOX,@"「【女仆1】已设置。\n规矩、侍奉、流程化羞耻；陷落后会主动以“服务”引导你更舒服。」"
+	CALL MESSAGE_BOX,@"「【女仆1】已设置。\n规矩、侍奉、克制的羞；更偏“贴身照料”的口吻——会听命，也会留意她累不累、别没精神还硬撑。」"
 
 CASE "调教命令"
 	CALL KOJO_GENERAL_女仆1_TRAIN(ARGS:0,ARGS:1,ARGS:2,ARGS:3)
@@ -35,135 +35,193 @@ CASE "调教命令"
 CASE "绝顶"
 	;深喉中的高潮（新增：深喉性癖相关口上）
 	SIF TEQUIP:深喉
-		CALL MESSAGE_BOX,@"「……咳……♥ 命令……太深了……喉咙这样被占满……失礼……♥」"
+		CALL MESSAGE_BOX,@"「……咳……♥ 顶、顶到好深……喉头都被您占着……我喘不上来……却……♥」"
 	SIF TEQUIP:深喉
-		CALL MESSAGE_BOX,@"「……请允许我回避视线……这种用喉咙失态的反应……不该被记录……♥」"
+		CALL MESSAGE_BOX,@"「……请、请别看我……这样用喉咙失态的样子……我、我会更不好意思……♥」"
 	IF ＃陷落状态／恋慕以上＃
-		CALL MESSAGE_BOX,@"「啊……♥ 失礼了……女仆要失态了……♥」"
-		CALL MESSAGE_BOX,@"「请、请继续命令……我会更舒服地服侍您……♥」"
+		CALL MESSAGE_BOX,@"「啊……♥ 不行……要、要在您面前藏不住了……♥」"
+		CALL MESSAGE_BOX,@"「就这样……多吩咐我一点……我想把您接得更深……更舒服地服侍您……♥」"
 	ELSE
 		CALL MESSAGE_BOX,@"「……不行……这样会……♥」"
 	ENDIF
 	SIF NOWEX:Ａ绝顶
 		IF TALENT:Ａ名器 || TALENT:肛门嗜好 || ABL:Ａ感觉 >= 3
-			CALL MESSAGE_BOX,@"「……失礼……！？　%ANAL_CALL()%……痛……可是……深处……像被命令牵着走……♥」"
-			CALL MESSAGE_BOX,@"「……这也是……侍奉的一环吗……♥」"
+			CALL MESSAGE_BOX,@"「……啊……！？　%ANAL_CALL()%……痛……可深处一绞一绞的……像被您牵着走……♥」"
+			CALL MESSAGE_BOX,@"「……这、这也算……照您的吩咐在服侍吗……♥」"
 		ELSE
-			CALL MESSAGE_BOX,@"「……痛……！？　%ANAL_CALL()%……失礼了……请、请轻一点……」"
-			CALL MESSAGE_BOX,@"「……只有那里……太勉强了……」"
+			CALL MESSAGE_BOX,@"「……痛……！？　%ANAL_CALL()%……请、请轻一点……别一下子顶那么深……」"
+			CALL MESSAGE_BOX,@"「……只有那里……我还不习惯……太勉强了……」"
 		ENDIF
 	SIF NOWEX:Ｕ绝顶
 		IF TEQUIP:尿道塞 || TFLAG:尿道装备
 			SIF TALENT:尿道敏感 || EX:尿道调教经验 >= 15
-				CALL MESSAGE_BOX,@"「……尿道塞在里面顶住……每一次颤动都被放大……失礼……♥」"
+				CALL MESSAGE_BOX,@"「……塞子顶着尿道……一颤就全传到那儿……我、我腰都软了……♥」"
 			SIF !(TALENT:尿道敏感 || EX:尿道调教经验 >= 15)
-				CALL MESSAGE_BOX,@"「……尿道里塞着……疼痛超出可承受范围……请、请停止……」"
+				CALL MESSAGE_BOX,@"「……尿道里塞着……疼得受不了……请、请停下来……」"
 		ELSE
 			SIF TALENT:尿道敏感 || EX:尿道调教经验 >= 15
-				CALL MESSAGE_BOX,@"「……尿道也……出现反应……失礼……这种地方不该……♥」"
+				CALL MESSAGE_BOX,@"「……连尿道也……有感觉了……好难为情……这种地方本不该……♥」"
 			SIF !(TALENT:尿道敏感 || EX:尿道调教经验 >= 15)
-				CALL MESSAGE_BOX,@"「……只有刺痛与尿意……请、请轻些……」"
+				CALL MESSAGE_BOX,@"「……又刺又憋……请、请轻一点……」"
 		ENDIF
 
 CASE "射精"
 	IF SOURCE:膣内射精经验
 		IF ＃陷落状态／恋慕以上＃
-			CALL MESSAGE_BOX,@"「……已接收。会妥善处理……♥」"
+			CALL MESSAGE_BOX,@"「……都在里面了呢。别急，交给我……我会收拾好，也会照顾好她……♥」"
 		ELSE
-			CALL MESSAGE_BOX,@"「不、不要在里面……」"
+			CALL MESSAGE_BOX,@"「不、不要……偏要射在里面……」"
 		ENDIF
 	ELSEIF SOURCE:尻穴射精经验
 		IF ＃陷落状态／恋慕以上＃
-			CALL MESSAGE_BOX,@"「……后方已接收。将按流程处理……♥」"
-			CALL MESSAGE_BOX,@"「……失礼了……请给我一点时间整理……♥」"
+			CALL MESSAGE_BOX,@"「……后面也……被您弄脏了呢……♥」"
+			CALL MESSAGE_BOX,@"「……给我一点时间。我会擦干净，也会把您照顾到舒服……♥」"
 		ELSE
-			CALL MESSAGE_BOX,@"「……不行……后面不可以……」"
+			CALL MESSAGE_BOX,@"「……不行……后面……不可以这样……」"
 		ENDIF
 	ELSEIF SOURCE:精饮经验
 		IF ＃陷落状态／恋慕以上＃
-			CALL MESSAGE_BOX,@"「……已咽下。谢谢款待……♥」"
+			CALL MESSAGE_BOX,@"「……我都咽下去了。……谢谢您赏我……♥」"
 		ELSE
-			CALL MESSAGE_BOX,@"「咳……咳……请、请别这样……」"
+			CALL MESSAGE_BOX,@"「咳……咳……请、请别这样……太呛了……」"
 		ENDIF
 	ELSEIF TEQUIP:手淫
 		IF ＃陷落状态／恋慕以上＃
-			CALL MESSAGE_BOX,@"「……手部已弄脏。将立刻进行清理……」"
+			CALL MESSAGE_BOX,@"「……手上都沾到了。您先歇一口气，我马上替您擦干净……别着凉。」"
 		ELSE
-			CALL MESSAGE_BOX,@"「……我会擦干净……」"
+			CALL MESSAGE_BOX,@"「……我会擦干净的……」"
 		ENDIF
 	ELSEIF SOURCE:股间射精
-		CALL MESSAGE_BOX,@"「股间射精已确认。将执行擦拭与清理流程。」"
-		CALL MESSAGE_BOX,@"「……失礼。请稍等片刻。」"
+		CALL MESSAGE_BOX,@"「……弄得到处都是。别动，我来替您擦干净。」"
+		CALL MESSAGE_BOX,@"「……靠这么近，我会脸红……但很快就好，不会弄疼您。」"
 	ELSEIF SOURCE:乳房射精
-		CALL MESSAGE_BOX,@"「乳房射精已确认。将执行清理流程，并更换衣物。」"
+		CALL MESSAGE_BOX,@"「……胸口都湿了。衣服也该换了……别担心，我来收拾。」"
 	ELSEIF SOURCE:颜面射精
-		CALL MESSAGE_BOX,@"「颜面射精已确认。将执行擦拭流程。」"
+		CALL MESSAGE_BOX,@"「……都溅到脸上了。请给我手帕……不，还是我来。」"
 	ENDIF
 
 CASE "搾乳"
 	IF SOURCE:母乳漏出
-		CALL MESSAGE_BOX,@"「……乳汁已自行渗出……我会处理干净……」"
+		CALL MESSAGE_BOX,@"「……已经自己渗出来了呢。别担心，我会擦干净，不会让您觉得脏乱。」"
 		RETURN
 	ENDIF
 	IF ＃陷落状态／恋慕以上＃
-		CALL MESSAGE_BOX,@"「遵命。将配合取乳服务……♥」"
-		CALL MESSAGE_BOX,@"「若您想要更多……我会调整节奏与力度……♥」"
+		CALL MESSAGE_BOX,@"「请交给我。把手给我就好……我会配合您，把她照顾到位……♥」"
+		CALL MESSAGE_BOX,@"「若您想要更多……我会替您把节奏拿稳，也会提醒您别太勉强……♥」"
 	ELSE
-		CALL MESSAGE_BOX,@"「……我会配合……但请温柔些……」"
+		CALL MESSAGE_BOX,@"「……我会配合的……但、请温柔一点……」"
 	ENDIF
 
 CASE "抽出"
-	CALL MESSAGE_BOX,@"「……身体发软。将进入恢复流程……请允许我稍作休息。」"
-	CALL MESSAGE_BOX,@"「……遵命。我会重新整理姿势……」"
+	CALL MESSAGE_BOX,@"「……腿有点发软。请让我缓一缓……我还能继续服侍您。」"
+	CALL MESSAGE_BOX,@"「……我整理一下姿势，马上回来。您别急。」"
 
 CASE "日程"
 	SELECTCASE ARGS:1
 	CASE "调教"
 		SELECTCASE ARGS:2
 		CASE "开始调教"
-			CALL MESSAGE_BOX,@"「欢迎回来，%MASTER_CALL()%。今天也将由我为您服务。」"
+			CALL MESSAGE_BOX,@"「欢迎回来，%MASTER_CALL()%。您辛苦了……今天也请把自己交给我。」"
 		CASE "调教结束"
-			CALL MESSAGE_BOX,@"「辛苦了。请先慢慢呼吸……我会照顾到您舒服为止。」"
+			CALL MESSAGE_BOX,@"「辛苦了。先慢慢呼吸……您想要的余韵，我会替您照顾好。」"
 		ENDSELECT
 	CASEELSE
 	ENDSELECT
 
 CASE "阴茎称呼变更"
-	CALL MESSAGE_BOX,@"「遵命。今后将按您指定的称呼称呼。」"
+	CALL MESSAGE_BOX,@"「好的。今后我会按您喜欢的叫法称呼……只要您听着舒服就好。」"
 
 CASE "膣称呼变更"
-	CALL MESSAGE_BOX,@"「遵命。将统一使用新称呼……」"
+	CALL MESSAGE_BOX,@"「好的。我会改口……也会提醒她按同样的称呼回应您。」"
 
 CASE "肛门称呼变更"
-	CALL MESSAGE_BOX,@"「遵命。后方称呼也将一并变更……」"
+	CALL MESSAGE_BOX,@"「好的。后面的称呼也一并改掉……我记着呢。」"
 
 CASE "吸欧派"
 	SELECTCASE ARGS:1
 	CASE "开始"
-		CALL MESSAGE_BOX,@"「遵命。请您慢慢来，我会配合呼吸与姿势。」"
+		CALL MESSAGE_BOX,@"「您慢慢来……我会扶好她，也会配合您的呼吸。」"
 	CASE "结束"
-		CALL MESSAGE_BOX,@"「已结束。若您还想继续……请直接命令我。」"
+		CALL MESSAGE_BOX,@"「已经够了吗？若您还想继续……我随时听您吩咐。」"
 	ENDSELECT
 
 CASE "访问"
 	SELECTCASE ARGS:1
 	CASE "入口"
-		CALL MESSAGE_BOX,@"「%MASTER_CALL()%在吗？女仆前来报到。需要我做什么？」"
+		IF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／隶属＃
+			CALL MESSAGE_BOX,@"「%MASTER_CALL()%，您进房间了。今天要先顾您、还是先顾她，我听您安排……♥」"
+		ELSEIF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「%MASTER_CALL()%……您来了？要泡茶、整理，还是让我先报一遍那孩子的情况？」"
+		ELSEIF ＃陷落状态／陷落以上＃
+			CALL MESSAGE_BOX,@"「%MASTER_CALL()%。见您来我这边。有吩咐我照办；没有，我退到门边不碍眼。」"
+		ELSEIF ＃陷落状态／屈服以上＃
+			CALL MESSAGE_BOX,@"「……您进房了。要说什么请尽快。」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……您来我这间了。没吩咐，我贴墙站。」"
+		ENDIF
+	CASE "衣服修理"
+		CALL MESSAGE_BOX,@"「缝补和熨烫交给我。您站旁边歇着就好，别被针划到手。」"
+	CASE "摸头"
+		IF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／隶属＃
+			CALL MESSAGE_BOX,@"「……头发被您梳顺了。嗯……只要您喜欢，我会更乖一点……♥」"
+			CALL MESSAGE_BOX,@"「若您愿意……请再多停一会儿。这样我会更安定。」"
+		ELSEIF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……被您这样摸着头发……我会脸红的。」"
+			CALL MESSAGE_BOX,@"「可、可以再一下吗……就一下……我会乖乖站着，不乱动……♥」"
+		ELSEIF ＃陷落状态／陷落以上＃
+			CALL MESSAGE_BOX,@"「……我明白了。请随意。」"
+			CALL MESSAGE_BOX,@"「只是……别太用力。我会把仪态守住的。」"
+		ELSEIF ＃陷落状态／屈服以上＃
+			CALL MESSAGE_BOX,@"「……要摸就摸吧。结束后请让我整理头发。」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……请别碰我。」"
+		ENDIF
+	CASE "接吻"
+		IF TALENT:无接吻经验
+			RETURN
+		ELSEIF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／隶属＃
+			CALL MESSAGE_BOX,@"「……请给我。哪怕只是一个吻……也足够让我继续听您的话……♥」"
+			CALL MESSAGE_BOX,@"「我会忍住不贪心……但如果您再靠近一点……我也会失态的……♥」"
+		ELSEIF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……主人。……可以。」"
+			CALL MESSAGE_BOX,@"「我会好好回应……只是，请别突然结束……我会舍不得……♥」"
+		ELSEIF ＃陷落状态／陷落以上＃
+			CALL MESSAGE_BOX,@"「……明白了。」"
+			CALL MESSAGE_BOX,@"「请短一些。我会配合，但不想把自己弄得太狼狈。」"
+		ELSEIF ＃陷落状态／屈服以上＃
+			CALL MESSAGE_BOX,@"「……行。快点。」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……别靠近。」"
+		ENDIF
+	CASE "停止泌乳"
+		IF CFLAG:魔界_妊娠S == 1 || CFLAG:魔界_妊娠S == 2
+			CALL MESSAGE_BOX,@"「%MASTER_CALL()%……恕我多嘴。怀着或刚产完就硬停泌乳，她可能会胀得难受、也容易没精神。」"
+			CALL MESSAGE_BOX,@"「不过既然是您的意思……我会照办，也会多留意她有没有发热、发软。您……尽量别让她一个人硬扛。」"
+		ELSE
+			CALL MESSAGE_BOX,@"「好的，%MASTER_CALL()%。我会让她把泌乳停下……之后也会照看她，免得不舒服。」"
+		ENDIF
+	CASE "终止妊娠"
+		IF CFLAG:魔界_妊娠S == 1
+			CALL MESSAGE_BOX,@"「%MASTER_CALL()%……终止妊娠，是真的很重的话。」"
+			CALL MESSAGE_BOX,@"「我会依您的吩咐在旁照看她……也会先握住她的手、让她知道您没有丢下她。至少……别光让她一个人在发抖里挨过去。」"
+		ELSE
+			CALL MESSAGE_BOX,@"「好的，%MASTER_CALL()%。若她并非妊娠中……那我就按您说的做，不多添一句。」"
+		ENDIF
 	CASEELSE
 	ENDSELECT
 
 CASE "事件"
-	CALL MESSAGE_BOX,@"「已收到事件。请下达指示，我会立刻处理。」"
+	CALL MESSAGE_BOX,@"「我在。请吩咐……您只要开口，剩下的交给我。」"
 
 CASE "肉体改造"
-	CALL MESSAGE_BOX,@"「……身体规格将被调整。遵命，我会尽快适应并继续服务。」"
+	CALL MESSAGE_BOX,@"「……要动她的身体吗。好的，我会先记下术后要怎么擦身、怎么喂水……等她能站稳了，我再把侍奉捡回来。」"
 
 CASE "战斗"
 	SELECTCASE ARGS:1
 	CASE "攻击"
-		CALL MESSAGE_BOX,@"「遵命。将执行攻击。」"
+		CALL MESSAGE_BOX,@"「交给我。您别往前靠。」"
 	CASE "被击中"
-		CALL MESSAGE_BOX,@"「……受击确认。仍可继续行动。」"
+		CALL MESSAGE_BOX,@"「……唔……不碍事，我还能护住您。」"
 	CASEELSE
 	ENDSELECT
 

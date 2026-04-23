@@ -802,55 +802,80 @@ CASE "访问"
 	CASE "入口"
 		IF CFLAG:乳牛 || CFLAG:洗脑
 			IF CFLAG:时刻限制／Ｈ
-				CALL MESSAGE_BOX,@"「あぁん…♥ %SWEET_MASTER_CALL()%…♥ もっとぉ…♥♥」"
-				CALL MESSAGE_BOX,@"\d%CALLNAME%はだらしなく頬を緩ませながら火照った身体を擦り寄せてくる。"
+				CALL MESSAGE_BOX,@"「啊……♥ %SWEET_MASTER_CALL()%……还要……♥♥」"
+				CALL MESSAGE_BOX,@"\d%CALLNAME%双颊松弛，身体发热，往你这边蹭过来。"
 			ELSEIF CFLAG:时刻限制／摸头
-				CALL MESSAGE_BOX,@"「%MASTER_CALL()%♥ 和宠物之间的亲密接触是很重要的哦♥♥」"
+				CALL MESSAGE_BOX,@"「%MASTER_CALL()%♥ 和宠物之间的亲密接触也很重要哦♥♥」"
 			ELSE
-				CALL MESSAGE_BOX,@"「无论什么命令都非常欢迎哦，%MASTER_CALL()%♥♥」"
-				CALL MESSAGE_BOX,@"「能来见我真是太好了……♥ 非常高兴呢♥♥」"
+				CALL MESSAGE_BOX,@"「您的什么命令我都欢迎，%MASTER_CALL()%♥♥」"
+				CALL MESSAGE_BOX,@"「能来见我真是太好了……♥ 我好开心……♥♥」"
+			ENDIF
+		ELSEIF ＃陷落状态／隶属＃
+			IF CFLAG:时刻限制／Ｈ
+				CALL MESSAGE_BOX,@"「%MASTER_CALL()%……♥ 归属还刻在身上呢……还要吗……♥」"
+			ELSEIF CFLAG:时刻限制／摸头
+				CALL MESSAGE_BOX,@"「刚才被摸过头了……再来一次也……可以哦，%MASTER_CALL()%……♥」"
+			ELSE
+				CALL MESSAGE_BOX,@"「%MASTER_CALL()%……您进房间了。我一直在这儿。请把%SELF_CALL()%当您的所有物用吧……♥」"
 			ENDIF
 		ELSEIF ＃陷落状态／恋慕以上＃
 			IF CFLAG:时刻限制／Ｈ
-				CALL MESSAGE_BOX,@"「あぁ…♥ 我非常仰慕%SWEET_MASTER_CALL()%哦♥♥」"
-				CALL MESSAGE_BOX,@"\d%CALLNAME%は潤んだ瞳に期待の色を浮かべなから、こちらをじっと見つめている。"
+				CALL MESSAGE_BOX,@"「啊……♥ 我好仰慕您，%SWEET_MASTER_CALL()%……♥♥」"
+				CALL MESSAGE_BOX,@"\d%CALLNAME%眼睛湿湿亮亮的，一直盯着你。"
 			ELSEIF CFLAG:时刻限制／摸头
-				CALL MESSAGE_BOX,@"「我、现在脸上都放松了，请不要看太久……♥」"
+				CALL MESSAGE_BOX,@"「我、现在脸上都放松了……请别盯太久……♥」"
 			ELSE
-				CALL MESSAGE_BOX,@"「%MASTER_CALL()%…♥ 请随便吩咐我哦♥♥」"
-				CALL MESSAGE_BOX,@"「能来到%MASTER_CALL()%身边真是太好了……♥♥ 今天是个好日子呢♥♥」"
-				SIF ＃陷落状态／隶属＃
-					CALL MESSAGE_BOX,@"「能来找我真是太好了……♥ 高兴得可能会失态……♥♥」"
+				CALL MESSAGE_BOX,@"「%MASTER_CALL()%……♥ 请随便吩咐我……♥♥」"
+				CALL MESSAGE_BOX,@"「您肯来我这边……真好……♥ 今天连风都好像软一点……♥♥」"
 			ENDIF
 		ELSEIF ＃陷落状态／陷落以上＃
 			IF CFLAG:时刻限制／Ｈ
-				CALL MESSAGE_BOX,@"「んん…♥ 您……满意了吗……？♥」"
+				CALL MESSAGE_BOX,@"「嗯……♥ 您……满意了吗……？♥」"
 			ELSEIF CFLAG:时刻限制／摸头
-				CALL MESSAGE_BOX,@"「唔……被温柔地抚摸感觉还不错呢……」"
+				CALL MESSAGE_BOX,@"「唔……被温柔地摸……其实也不坏……」"
 			ELSE
 				CALL MESSAGE_BOX,@"「有什么吩咐吗，%MASTER_CALL()%？」"
 			ENDIF
 		ELSEIF ＃陷落状态／屈服以上＃
 			IF CFLAG:时刻限制／Ｈ
-				CALL MESSAGE_BOX,@"「……已经足够了吧」"
+				CALL MESSAGE_BOX,@"「……已经足够了吧。」"
 			ELSEIF CFLAG:时刻限制／摸头
 				CALL MESSAGE_BOX,@"「…………」"
 			ELSE
-				CALL MESSAGE_BOX,@"「……如果有事请简短点」"
+				CALL MESSAGE_BOX,@"「……如果有事请简短点。」"
 			ENDIF
 		ELSE
 			IF CFLAG:时刻限制／Ｈ
-				CALL MESSAGE_BOX,@"「您满足于侮辱他人吗……」"
+				CALL MESSAGE_BOX,@"「……您就满足于这样侮辱人吗……」"
 			ELSEIF CFLAG:时刻限制／摸头
 				CALL MESSAGE_BOX,@"「…………」"
 			ELSE
 				IF ABL:胸围大小 == BUSTSIZE_超乳
-					CALL MESSAGE_BOX,@"「请随便处理我吧……」"
+					CALL MESSAGE_BOX,@"「……随你处置吧……」"
 				ELSE
-					CALL MESSAGE_BOX,@"「请让我从这里解放出来……」"
-					CALL MESSAGE_BOX,@"「我不想看到%MASTER_CALL()%的脸……」"
+					CALL MESSAGE_BOX,@"「……放我离开这里……」"
+					CALL MESSAGE_BOX,@"「……我不想看见你的脸，%MASTER_CALL()%……」"
 				ENDIF
 			ENDIF
+		ENDIF
+
+	CASE "停止泌乳"
+		IF CFLAG:魔界_妊娠S == 1 || CFLAG:魔界_妊娠S == 2
+			CALL MESSAGE_BOX,@"「……现在就要我停下吗……？怀着与产后……我不想这样……♥」"
+		ELSEIF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／隶属＃
+			CALL MESSAGE_BOX,@"「明白了，%MASTER_CALL()%♥ 停止泌乳处置会按您的意愿执行……♥」"
+		ELSEIF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……停止泌乳吗。%MASTER_CALL()%既然开口，我会照做……只是，别把这当成玩笑……♥」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……知道了。我会停止泌乳。」"
+		ENDIF
+	CASE "终止妊娠"
+		IF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／隶属＃
+			CALL MESSAGE_BOX,@"「遵命，%MASTER_CALL()%♥ 终妊处置……我会配合完成……♥」"
+		ELSEIF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……%MASTER_CALL()%……是最终决定吗……？明白了。我会接受并配合……♥」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……要做就做吧。我会配合。」"
 		ENDIF
 		
 	CASE "更改头衔"
@@ -864,6 +889,21 @@ CASE "访问"
 			CALL MESSAGE_BOX,@"「我明白了，按照『%MASTER_CALL()%』的吩咐来……♥」"
 		ELSE
 			CALL MESSAGE_BOX,@"「……我明白了，称呼您为『%MASTER_CALL()%』」"
+		ENDIF
+	
+	CASE "衣服修理"
+		IF CFLAG:乳牛 || CFLAG:洗脑
+			CALL MESSAGE_BOX,@"「衣服破了呀♥ %MASTER_CALL()%真是爱逞强呢……♥」"
+			CALL MESSAGE_BOX,@"「来，把它交给我♥ 我会把线脚缝得紧紧的……这样你就能更放心地“用”我了♥♥」"
+		ELSEIF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「衣服的破损……我来处理就好♥」"
+			CALL MESSAGE_BOX,@"「请坐下歇一歇。您来我房间，本不该为这种小麻烦花时间的……♥」"
+		ELSEIF ＃陷落状态／陷落以上＃
+			CALL MESSAGE_BOX,@"「衣服破了？嗯，我会缝好。别乱动就行。」"
+		ELSEIF ＃陷落状态／屈服以上＃
+			CALL MESSAGE_BOX,@"「……连这种事也要我做吗。给我。」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……别碰我。衣服放下，我修完就还你。」"
 		ENDIF
 	
 	CASE "摸头"

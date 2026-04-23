@@ -942,18 +942,21 @@ CASE "访问"
 		ENDIF
 		
 	CASE "入口"
-		IF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／隶属＃
-			;今の時間Ｈコマンド使用後ずっと
+		IF CFLAG:乳牛 || CFLAG:洗脑
 			IF CFLAG:时刻限制／Ｈ
-				CALL MESSAGE_BOX,@"「はぁん♥ %MASTER_CALL()%♥♥ %SWEET_MASTER_CALL()%♥♥♥」"
-			
-			;Ｈはまだで頭撫でた後
+				CALL MESSAGE_BOX,@"「哈啊…♥ %MASTER_CALL()%…♥ %SWEET_MASTER_CALL()%…♥♥」"
 			ELSEIF CFLAG:时刻限制／摸头
-				CALL MESSAGE_BOX,@"「%MASTER_CALL()%的手…要是贪心一点的话…♥♥♥」"
-			
-			;他コマンドか会いに行った直後
+				CALL MESSAGE_BOX,@"「%MASTER_CALL()%的手…再贪心一点也…可以…♥♥」"
 			ELSE
-				CALL MESSAGE_BOX,@"「您来见我了呢♥ 我很开心，%MASTER_CALL()%♥」"
+				CALL MESSAGE_BOX,@"「您来见我了啊♥ 我好开心，%MASTER_CALL()%♥」"
+			ENDIF
+		ELSEIF ＃陷落状态／隶属＃
+			IF CFLAG:时刻限制／Ｈ
+				CALL MESSAGE_BOX,@"「……♥ 身体还认得您。%SWEET_MASTER_CALL()%…♥」"
+			ELSEIF CFLAG:时刻限制／摸头
+				CALL MESSAGE_BOX,@"「%MASTER_CALL()%的手…我会乖乖把脑袋凑过去…♥」"
+			ELSE
+				CALL MESSAGE_BOX,@"「您来了。%MASTER_CALL()%…我会按规矩在这等您…♥」"
 			ENDIF
 		ELSEIF ＃陷落状态／恋慕以上＃
 			IF CFLAG:时刻限制／Ｈ
@@ -969,7 +972,7 @@ CASE "访问"
 			ELSEIF CFLAG:时刻限制／摸头
 				CALL MESSAGE_BOX,@"「就因为被抚摸了…真是的…」"
 			ELSE
-				CALL MESSAGE_BOX,@"「怎么了，%MASTER_CALL()%？"
+				CALL MESSAGE_BOX,@"「怎么了，%MASTER_CALL()%？」"
 			ENDIF
 		ELSEIF ＃陷落状态／屈服以上＃
 			IF CFLAG:时刻限制／Ｈ

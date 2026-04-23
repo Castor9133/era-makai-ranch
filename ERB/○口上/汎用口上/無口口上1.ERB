@@ -466,7 +466,7 @@ CASE "吸欧派"
 	ENDSELECT
 
 CASE "访问"
-	SELECTCASE ARGS:2
+	SELECTCASE ARGS:1
 	CASE "更改发型"
 	
 	CASE "彩色隐形眼镜"
@@ -482,6 +482,54 @@ CASE "访问"
 			CALL MESSAGE_BOX,@"「…………回去……」"
 		ELSE
 			CALL MESSAGE_BOX,@"「……快点，放我出去……」"
+		ENDIF
+
+	CASE "衣服修理"
+		CALL MESSAGE_BOX,@"「……给我。」"
+		CALL MESSAGE_BOX,@"「……会补好。」"
+	CASE "摸头"
+		IF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／隶属＃
+			CALL MESSAGE_BOX,@"「……嗯。」"
+			CALL MESSAGE_BOX,@"「……别停。」"
+		ELSEIF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……嗯。」"
+		ELSEIF ＃陷落状态／陷落以上＃
+			CALL MESSAGE_BOX,@"「……」"
+			CALL MESSAGE_BOX,@"「……别弄乱。」"
+		ELSEIF ＃陷落状态／屈服以上＃
+			CALL MESSAGE_BOX,@"「……别碰。」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……滚。」"
+		ENDIF
+	CASE "接吻"
+		IF TALENT:无接吻经验
+			RETURN
+		ELSEIF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／隶属＃
+			CALL MESSAGE_BOX,@"「……可以。」"
+			CALL MESSAGE_BOX,@"「……再来。」"
+		ELSEIF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……可以。」"
+		ELSEIF ＃陷落状态／陷落以上＃
+			CALL MESSAGE_BOX,@"「……只一下。」"
+		ELSEIF ＃陷落状态／屈服以上＃
+			CALL MESSAGE_BOX,@"「……不要。」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……别碰我。」"
+		ENDIF
+
+	CASE "停止泌乳"
+		IF CFLAG:魔界_妊娠S == 1 || CFLAG:魔界_妊娠S == 2
+			CALL MESSAGE_BOX,@"「……不想停。」"
+		ELSEIF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／隶属＃
+			CALL MESSAGE_BOX,@"「……停止泌乳。明白。」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……要停，就停。」"
+		ENDIF
+	CASE "终止妊娠"
+		IF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／隶属＃
+			CALL MESSAGE_BOX,@"「……终止。照做。」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……知道了。」"
 		ENDIF
 
 	CASE "对主角的称呼变更"

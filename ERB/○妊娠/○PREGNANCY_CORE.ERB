@@ -85,15 +85,33 @@ SIF TALENT:去势
 ; 妊娠(1)或产褥哺乳(2)不重复受胎。/ No conception while pregnant or in postpartum lact.
 SIF CFLAG:魔界_妊娠S == 1 || CFLAG:魔界_妊娠S == 2
 	RETURN
-; God / vampire: need vassal (乳牛/洗脑/隶属) or no pregnancy from V creampie. / 神族·吸血鬼+非隷属=不受孕
+; God / vampire: can control whether to conceive. Ask every time. / 神族·吸血鬼：可自控是否受孕，每次询问
 IF TALENT:神族 || TALENT:吸血鬼
-	SIF !CFLAG:乳牛 && !CFLAG:洗脑 && !＃陷落状态／隶属＃
-		RETURN
 	PRINTL
-	PRINTFORMW %CALLNAME%望向你，眼里带着不安……
-	PRINTL 「主人确定要我怀孕吗？……」
-	PRINTL [0] 要
-	PRINTL [1] 还是算了
+	; 性格差分（按陷落/乳牛/洗脑等状态）：同一机制但语气不同
+	IF CFLAG:乳牛
+		PRINTFORMW %CALLNAME%抬眼看你，神情里带着理所当然的服从……
+		PRINTL 「要我把这次也接住吗？……」
+	ELSEIF CFLAG:洗脑
+		PRINTFORMW %CALLNAME%像是在等待指令般停住呼吸，瞳孔里没有多余的波澜……
+		PRINTL 「请指示：受孕，或不受孕。」
+	ELSEIF ＃陷落状态／隶属＃
+		PRINTFORMW %CALLNAME%将视线压低，语气里带着克制的恭顺……
+		PRINTL 「这一次……要我接受受孕吗？……」
+	ELSEIF ＃陷落状态／恋慕以上＃
+		PRINTFORMW %CALLNAME%望向你，像是在把决定权交到你手里……
+		PRINTL 「要我为你留下它吗？……」
+	ELSEIF ＃陷落状态／屈服以上＃
+		PRINTFORMW %CALLNAME%咬着唇，像是在衡量自己能承受的后果……
+		PRINTL 「……要我接受这次受孕吗？」
+	ELSE
+		; 未陷落（反抗/拒绝等）不会给“选择是否受孕”的提问：直接拒绝受孕
+		PRINTFORMW %CALLNAME%冷笑了一声，像是听到了荒唐的玩笑……
+		PRINTL 「想让我为你生孩子？怎么可能——我们这种血脉，受不受孕是我自己说了算。」
+		RETURN
+	ENDIF
+	PRINTL [0] 受孕
+	PRINTL [1] 不受孕
 	BINPUT
 	SIF RESULT
 		RETURN
@@ -146,6 +164,24 @@ FOR LOCAL:1, 0, LOCAL:0
 			CALL PREGNANCY_END_LACTATION_POSTPARTUM
 	ENDIF
 NEXT
+RETURN
+
+
+;-------------------------------------------------------------------------------
+; Convenience wrapper: tick all characters once per day.
+; Use when the main game has a single day-advance point but no per-character loop.
+; ARG:0 = days passed (usually 1)
+;-------------------------------------------------------------------------------
+@PREGNANCY_DAILY_TICK_ALL
+#LOCALSIZE 1
+SIF ARG:0 < 1
+	RETURN
+SAVE_TARGET = TARGET
+FOR LOCAL:0, 0, CHARANUM
+	TARGET = LOCAL:0
+	TRYCALL PREGNANCY_DAILY_TICK, ARG:0
+NEXT
+TARGET = SAVE_TARGET
 RETURN
 
 
@@ -309,7 +345,7 @@ SIF BASE:母乳生产力
 ; 产后有系统泌乳标记时，手断乳也视为已结束此段“强制泌乳期”（仍占产褥日程至满）
 SIF CFLAG:魔界_妊娠S == 2
 	CFLAG:魔界_妊娠泌乳 = 0
-PRINTFORMW 你以调教手段给%CALLNAME%断乳。本系统不再在妊娠/产褥线内强制其产奶。
+PRINTFORMW 你令%CALLNAME%停止泌乳。本系统不再在妊娠/产褥线内强制其产奶。
 RETURN
 
 
@@ -422,4 +458,74 @@ RETURN
 
 @PREGNANCY_CLEAR_MANUAL_DRY_FLAG
 CFLAG:魔界_手動断乳 = 0
+RETURN
+
+
+;-------------------------------------------------------------------------------
+; Debug helper: dump current pregnancy-related state for TARGET.
+; Call from anywhere you can PRINTFORMW (e.g. dev command / debug menu).
+;-------------------------------------------------------------------------------
+@PREGNANCY_DEBUG_DUMP
+#LOCALSIZE 0
+CALL 魔界_魔素_日数_刷新
+PRINTL
+PRINTFORMW [PREG] %CALLNAME%  S={CFLAG:魔界_妊娠S}  妊娠日={CFLAG:魔界_妊娠日}  产后日={CFLAG:魔界_产後日}
+PRINTFORMW [PREG] 判明={CFLAG:魔界_妊娠判明}  泌乳标记={CFLAG:魔界_妊娠泌乳}  手动断乳={CFLAG:魔界_手動断乳}
+PRINTFORMW [PREG] 流产后禁调={CFLAG:魔界_流产后禁调}
+PRINTFORMW [PREG] 魔素浓郁FLAG={FLAG:魔界_魔素浓郁}  托儿所FLAG={FLAG:魔界_托儿所}
+PRINTFORMW [PREG] 有効:满胎={魔界_有効_满胎}  临产起={魔界_有効_临产}  产褥={魔界_有効_产褥}  判明={魔界_有効_妊娠判明}
+PRINTFORMW [PREG] 静养:临产前={魔界_有効_临产静养}  产后={魔界_有効_产后静养}  流产禁调基={魔界_流产后_禁调日}
+PRINTFORMW [PREG] 母乳生产力(BASE)={BASE:母乳生产力}
+PRINTFORMW [PREG] 体力/気力(BASE)={BASE:体力}/{BASE:気力}  MAX={MAXBASE:体力}/{MAXBASE:气力}
+RETURN
+
+
+;-------------------------------------------------------------------------------
+; Debug helper: step days and show diff. Requires developer mode.
+; ARG:0 = days passed (default 1)
+;-------------------------------------------------------------------------------
+@PREGNANCY_DEBUG_STEP_DAY
+#LOCALSIZE 1
+SIF !FLAG:开发者模式
+	RETURN
+LOCAL:0 = ARG:0
+SIF LOCAL:0 < 1
+	LOCAL:0 = 1
+PRINTFORMW [PREG] ---- BEFORE +{LOCAL:0} day(s) ----
+CALL PREGNANCY_DEBUG_DUMP
+CALL PREGNANCY_DAILY_TICK, LOCAL:0
+PRINTFORMW [PREG] ---- AFTER +{LOCAL:0} day(s) ----
+CALL PREGNANCY_DEBUG_DUMP
+RETURN
+
+
+;-------------------------------------------------------------------------------
+; Debug helper: force state for quick verification. Requires developer mode.
+; ARG:0 = 1 pregnant, 2 postpartum, 0 clear
+;-------------------------------------------------------------------------------
+@PREGNANCY_DEBUG_FORCE_STATE
+#LOCALSIZE 0
+SIF !FLAG:开发者模式
+	RETURN
+SELECTCASE ARG:0
+CASE 0
+	CFLAG:魔界_妊娠S = 0
+	CFLAG:魔界_妊娠日 = 0
+	CFLAG:魔界_产後日 = 0
+	CFLAG:魔界_妊娠判明 = 0
+	CFLAG:魔界_妊娠泌乳 = 0
+	CALL PREGNANCY_CLEAR_MANUAL_DRY_FLAG
+CASE 1
+	CFLAG:魔界_妊娠S = 1
+	CFLAG:魔界_产後日 = 0
+	SIF CFLAG:魔界_妊娠日 < 0
+		CFLAG:魔界_妊娠日 = 0
+CASE 2
+	CFLAG:魔界_妊娠S = 2
+	CFLAG:魔界_妊娠日 = 0
+	SIF CFLAG:魔界_产後日 < 0
+		CFLAG:魔界_产後日 = 0
+	CFLAG:魔界_妊娠泌乳 = 1
+ENDSELECT
+CALL PREGNANCY_DEBUG_DUMP
 RETURN

@@ -815,9 +815,20 @@ CASE "访问"
 				CALL MESSAGE_BOX,@"「%MASTER_CALL()%…♥ 还肯跟牲口玩贴贴啊，行啊。…」"
 			ELSE
 				CALL MESSAGE_BOX,@"「%MASTER_CALL()%，下啥命令都奉陪啊。…」"
-				CALL MESSAGE_BOX,@"「会跑来见我…行啊，%MASTER_CALL()%。…」"
+				CALL MESSAGE_BOX,@"「你还真进我单人间了…行啊，%MASTER_CALL()%。…」"
 				SIF ABL:胸围大小 == BUSTSIZE_超乳
 					CALL MESSAGE_BOX,@"「这对奶，自己想去找%MASTER_CALL()%，麻烦死了…」"
+			ENDIF
+		ELSEIF ＃陷落状态／隶属＃
+			IF CFLAG:时刻限制／Ｈ
+				CALL MESSAGE_BOX,@"「啊…♥ 记、记号还在呢…%SWEET_MASTER_CALL()%…别停…」"
+				CALL MESSAGE_BOX,@"\d%CALLNAME%呼吸乱糟糟的，又往你这边顶了一下。"
+			ELSEIF CFLAG:时刻限制／摸头
+				CALL MESSAGE_BOX,@"「刚摸过…再来也行…%MASTER_CALL()%…我忍得住。…」"
+			ELSE
+				CALL MESSAGE_BOX,@"「你进房了。%MASTER_CALL()%…我归你管了，行吧。…」"
+				SIF ABL:胸围大小 == BUSTSIZE_超乳
+					CALL MESSAGE_BOX,@"「这对奶又犯贱想凑你，烦死…咳，我没事。…」"
 			ENDIF
 		ELSEIF ＃陷落状态／恋慕以上＃
 			IF CFLAG:时刻限制／Ｈ
@@ -830,8 +841,6 @@ CASE "访问"
 				CALL MESSAGE_BOX,@"「%MASTER_CALL()%来一趟，算今天开熏。…」"
 				SIF ABL:胸围大小 == BUSTSIZE_超乳
 					CALL MESSAGE_BOX,@"「这对奶，自己去找%MASTER_CALL()%，烦死了。…」"
-				SIF ＃陷落状态／隶属＃
-					CALL MESSAGE_BOX,@"「%MASTER_CALL()%来一趟，爽得差点漏……咳，没、没啥。」"
 			ENDIF
 		ELSEIF ＃陷落状态／陷落以上＃
 			IF CFLAG:时刻限制／Ｈ

@@ -152,7 +152,59 @@ CASE "吸欧派"
 CASE "访问"
 	SELECTCASE ARGS:1
 	CASE "入口"
-		CALL MESSAGE_BOX,@"「……你叫我来干什么。」"
+		IF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／隶属＃
+			CALL MESSAGE_BOX,@"「……你进我房了。行啊。」"
+			CALL MESSAGE_BOX,@"「反正我现在也会听你——你最好别让我后悔没咬死你……♥」"
+		ELSEIF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……你进我屋想干什么。」"
+		ELSEIF ＃陷落状态／陷落以上＃
+			CALL MESSAGE_BOX,@"「……有事快说。别用见面当施舍。」"
+		ELSEIF ＃陷落状态／屈服以上＃
+			CALL MESSAGE_BOX,@"「……你进来看完了？满意了。」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……滚。别装得好像你在乎我。」"
+		ENDIF
+	CASE "衣服修理"
+		CALL MESSAGE_BOX,@"「衣服破了？……哈。连这种事也要我替你收拾？给我，别站太近。」"
+	CASE "摸头"
+		IF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／隶属＃
+			CALL MESSAGE_BOX,@"「……别停。」"
+			CALL MESSAGE_BOX,@"「你既然把我弄成这样，就给我把这点感觉也做到底……♥」"
+		ELSEIF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……别碰。」"
+			CALL MESSAGE_BOX,@"「你碰一下，我就觉得恶心。」"
+		ELSEIF ＃陷落状态／陷落以上＃
+			CALL MESSAGE_BOX,@"「……拿开。」"
+			CALL MESSAGE_BOX,@"「别装温柔。你那只手沾过什么，你自己清楚。」"
+		ELSEIF ＃陷落状态／屈服以上＃
+			CALL MESSAGE_BOX,@"「……别碰！」"
+		ELSE
+			CALL MESSAGE_BOX,@"「滚开。」"
+		ENDIF
+	CASE "接吻"
+		IF TALENT:无接吻经验
+			RETURN
+		ELSEIF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／隶属＃
+			CALL MESSAGE_BOX,@"「……来。」"
+			CALL MESSAGE_BOX,@"「咬也行。把我弄疼也行。反正我已经脏了——你就别假惺惺……♥」"
+		ELSEIF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……想亲？做梦。你凑过来，我就咬破你的嘴。」"
+		ELSEIF ＃陷落状态／陷落以上＃
+			CALL MESSAGE_BOX,@"「……别碰我嘴。」"
+			CALL MESSAGE_BOX,@"「敢亲上来，我就让你见血。」"
+		ELSEIF ＃陷落状态／屈服以上＃
+			CALL MESSAGE_BOX,@"「……滚。」"
+		ELSE
+			CALL MESSAGE_BOX,@"「去死。」"
+		ENDIF
+	CASE "停止泌乳"
+		IF CFLAG:魔界_妊娠S == 1 || CFLAG:魔界_妊娠S == 2
+			CALL MESSAGE_BOX,@"「……这种时候还要我停？你就这么喜欢看别人痛苦，是吗。」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……停止泌乳？呵。你倒是挺会挑别人最恶心的地方下手。」"
+		ENDIF
+	CASE "终止妊娠"
+		CALL MESSAGE_BOX,@"「……终妊。你真敢说得出口。……做吧，反正你也只会这样。」"
 	CASEELSE
 	ENDSELECT
 

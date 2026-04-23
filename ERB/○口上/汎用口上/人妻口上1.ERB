@@ -131,7 +131,59 @@ CASE "吸欧派"
 CASE "访问"
 	SELECTCASE ARGS:1
 	CASE "入口"
-		CALL MESSAGE_BOX,@"「我进来了。你现在需要我，对吗？」"
+		IF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／隶属＃
+			CALL MESSAGE_BOX,@"「你进我房间了。想怎么用我都行……但让我先确认一眼——你还喘得过气吗……♥」"
+		ELSEIF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「你来了。……你现在，需要我，对吗？」"
+		ELSEIF ＃陷落状态／陷落以上＃
+			CALL MESSAGE_BOX,@"「我在这儿候着。有正事就直说，别绕弯子。」"
+		ELSEIF ＃陷落状态／屈服以上＃
+			CALL MESSAGE_BOX,@"「……你进来说。尽快说完。」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……你进我房间了。别凑太近。」"
+		ENDIF
+	CASE "衣服修理"
+		CALL MESSAGE_BOX,@"「衣服破了？给我吧。我会补好……你别急着逞强，先坐下歇一会儿。」"
+	CASE "摸头"
+		IF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／隶属＃
+			CALL MESSAGE_BOX,@"「……嗯。手别停。再多摸一会儿。」"
+			CALL MESSAGE_BOX,@"「我会乖一点……你想要的样子，我都可以学……♥」"
+		ELSEIF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……被你这样摸着头……我会想撒娇的。」"
+			CALL MESSAGE_BOX,@"「只一会儿就好，好吗？我想把你留下来……♥」"
+		ELSEIF ＃陷落状态／陷落以上＃
+			CALL MESSAGE_BOX,@"「……嗯。你想这样哄我也行。」"
+			CALL MESSAGE_BOX,@"「但别以为摸两下就能把话糊弄过去。」"
+		ELSEIF ＃陷落状态／屈服以上＃
+			CALL MESSAGE_BOX,@"「……别太久。弄乱了我还得自己整理。」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……别碰我。」"
+		ENDIF
+	CASE "接吻"
+		IF TALENT:无接吻经验
+			RETURN
+		ELSEIF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／隶属＃
+			CALL MESSAGE_BOX,@"「……来。你想要多少都行。」"
+			CALL MESSAGE_BOX,@"「把我亲到喘不过气也没关系……只要你别走……♥」"
+		ELSEIF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……来吧。别像完成任务那样亲我……慢一点。」"
+			CALL MESSAGE_BOX,@"「我也会好好回应你……就当你今天是为了我而来……♥」"
+		ELSEIF ＃陷落状态／陷落以上＃
+			CALL MESSAGE_BOX,@"「……可以。」"
+			CALL MESSAGE_BOX,@"「但你要是只想确认我会不会拒绝……那就别亲了。」"
+		ELSEIF ＃陷落状态／屈服以上＃
+			CALL MESSAGE_BOX,@"「……快点。别在这里拖。」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……别做梦。」"
+		ENDIF
+	CASE "停止泌乳"
+		IF CFLAG:魔界_妊娠S == 1 || CFLAG:魔界_妊娠S == 2
+			CALL MESSAGE_BOX,@"「……现在就要我停？怀着、刚生的……我不想这样。」"
+		ELSE
+			CALL MESSAGE_BOX,@"「停止泌乳啊……好。你说停，我就停。……只是，之后别又用这件事折磨我，好吗？」"
+		ENDIF
+	CASE "终止妊娠"
+		CALL MESSAGE_BOX,@"「……要终止吗。明白了。你别怕，我会配合……也会把自己撑住。」"
 	CASEELSE
 	ENDSELECT
 

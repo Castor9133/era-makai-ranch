@@ -1,0 +1,233 @@
+;======== era-makai-ranch: 托儿所（多孩、可选乳源抵扣、抚养 ABL/EXP）========
+; 须在 Str/ABL/EXP 登记：ABL:抚养、EXP:抚养；FLAG:魔界_可献乳人数、魔界_育児启用乳抵(0/1)
+; 角色创建时：TRYCALL NURSERY_ROLL_STARTING抚养
+; 每日开始：主工程统计牧场可献乳者人数后 TRYCALL NURSERY_SET_可献乳人数, 人数
+; 可选：FLAG:魔界_托儿所担当 = 负责教养的 NPC 号（-1=无人带队）
+; 在园子女成长/乳児分界由 ○PREGNANCY_CORE の 魔界_有効_成長_成年 / 魔界_有効_乳児_上(魔界_魔素_日数_刷新) 供数；基 9*365 成年、3*365 前乳児。魔素浓郁=历时折半
+; 在园子表仅受数组长度约束（下为 5000，需更大时改本行两数组维数与「魔界_在园最大」同值即可）
+
+#DIM CONST 魔界_在园最大, 1
+魔界_在园最大 = 5000
+#DIM SAVED 魔界_在园数, 1
+#DIM SAVED 魔界_子日, 5000
+#DIM SAVED 魔界_子生母, 5000
+#DIM CONST 魔界_每孩日费, 1
+魔界_每孩日费 = 400
+#DIM CONST 魔界_入托费, 1
+魔界_入托费 = 8000
+
+
+@NURSERY_ROLL_STARTING抚养
+SIF RAND:100 >= 14
+	RETURN
+ABL:抚养 = MAX(1, ABL:抚养)
+EXP:抚养 = MAX(20, EXP:抚养)
+RETURN 1
+
+
+@NURSERY_TRY_BUILD
+SIF FLAG:魔界_托儿所
+	PRINTFORMW 托儿所已经建好了。
+
+SIF FLAG:魔界_托儿所
+	RETURN
+SIF MONEY:所持金 < 100000
+	PRINTFORMW 建托儿所约要 10 万，钱不够。
+
+SIF MONEY:所持金 < 100000
+	RETURN
+MONEY:所持金 -= 100000
+FLAG:魔界_托儿所 = 1
+CALL NURSERY_重算家务与熟练需求
+PRINTFORMW 你建成了托儿所。在园孩越多，每日养育费、家务压力越大；「抚养」等级与当值和乳牛管理一样能减轻人力压力。
+RETURN 1
+
+
+; ARG:0 = 生母 角色号
+@NURSERY_ADD_DAUGHTER
+SIF 魔界_在园数 > 魔界_在园最大
+	PRINTFORMW 在园已达本表长度上限。若仍要更多名额，请增大 ○NURSERY_CORE 文件头的数组维数与 魔界_在园最大。
+
+SIF 魔界_在园数 > 魔界_在园最大
+	RETURN
+SIF MONEY:所持金 < 魔界_入托费
+	PRINTFORMW 每名新孩要付出托登记费，钱不够。
+
+SIF MONEY:所持金 < 魔界_入托费
+	RETURN
+MONEY:所持金 -= 魔界_入托费
+LOCAL:0 = 魔界_在园数
+魔界_子日:LOCAL:0 = 0
+魔界_子生母:LOCAL:0 = ARG:0
+魔界_在园数 += 1
+CALL NURSERY_重算家务与熟练需求
+CALL NURSERY_给予抚养经验, 1
+PRINTFORMW 新一名女儿入托。每多一孩就多一份固定登记费与之后每日养育成本。
+SIF 魔界_在园数 > 10
+	PRINTFORMW 在园已逾十人：育儿是长期、持续消耗金钱与工时的投入，请早做预算与排班（乳源抵扣与「抚养」熟练只能减轻，不能省掉本）。
+RETURN 1
+
+
+; 可献乳人数由主工程统计（任一有泌乳、牧场规则下愿供奶者均可，不必是生母）
+@NURSERY_SET_可献乳人数
+FLAG:魔界_可献乳人数 = ARG:0
+RETURN 1
+
+
+@NURSERY_重算家务与熟练需求
+#LOCALSIZE 1
+; 2 + 每孩 2；有「担当」时按 ABL:抚养 减人手压力（与乳牛管理同思路）
+LOCAL:0 = 2 + 魔界_在园数 * 2
+IF FLAG:魔界_托儿所担当 >= 0
+	SAVE_TARGET = TARGET
+	TARGET = FLAG:魔界_托儿所担当
+	LOCAL:0 = MAX(1, LOCAL:0 - ABL:抚养 * 1 - ABL:抚养 / 2)
+	TARGET = SAVE_TARGET
+ENDIF
+FLAG:魔界_家务_托儿所当值 = LIMIT(LOCAL:0, 1, 20)
+RETURN
+
+
+@NURSERY_给予抚养经验
+SIF FLAG:魔界_托儿所担当 < 0
+	RETURN
+SAVE_TARGET = TARGET
+TARGET = FLAG:魔界_托儿所担当
+EXP:抚养 += ARG:0
+EXP:抚养 += 魔界_在园数 / 4
+CALL NURSERY_抚养升级检查
+TARGET = SAVE_TARGET
+RETURN
+
+
+@NURSERY_抚养升级检查
+SIF FLAG:魔界_托儿所担当 < 0
+	RETURN
+$KVL
+SIF ABL:抚养 >= 10
+	RETURN
+SIF EXP:抚养 < 100 + ABL:抚养 * 180
+	RETURN
+ABL:抚养 += 1
+GOTO $KVL
+RETURN
+
+
+; 每日：先长日、扣费（乳源抵扣本日名额）、再处理成年
+@NURSERY_DAILY
+#LOCALSIZE 4
+SIF !FLAG:魔界_托儿所
+	RETURN
+SIF 魔界_在园数 < 1
+	RETURN
+CALL 魔界_魔素_日数_刷新
+; 本日可抵扣的「位」= min(在园, 可献乳) 且 玩家开启用
+LOCAL:3 = 0
+SIF FLAG:魔界_育児启用乳抵
+	LOCAL:3 = LIMIT(FLAG:魔界_可献乳人数, 0, 魔界_在园数)
+FOR LOCAL:0, 0, 魔界_在园数
+	魔界_子日:LOCAL:0 += 1
+	LOCAL:1 = 魔界_每孩日费
+	IF 魔界_子日:LOCAL:0 < 魔界_有効_乳児_上 && LOCAL:3 > 0
+		LOCAL:1 = (魔界_每孩日费 * 2) / 10
+		LOCAL:3 += -1
+	ELSEIF 魔界_子日:LOCAL:0 >= 魔界_有効_乳児_上 && LOCAL:3 > 0
+		LOCAL:1 = (魔界_每孩日费 * 5) / 10
+		LOCAL:3 += -1
+	ENDIF
+	SIF MONEY:所持金 >= LOCAL:1
+		MONEY:所持金 -= LOCAL:1
+NEXT
+CALL NURSERY_重算家务与熟练需求
+CALL NURSERY_给予抚养经验, 1
+; 成年：从 0 号起扫，出园则删槽同位再扫
+LOCAL:0 = 0
+$ADLOOP
+SIF LOCAL:0 >= 魔界_在园数
+	GOTO $ADOUT
+IF 魔界_子日:LOCAL:0 < 魔界_有効_成長_成年
+	LOCAL:0 += 1
+	GOTO $ADLOOP
+ENDIF
+LOCAL:2 = 魔界_子生母:LOCAL:0
+SAVE_TARGET = TARGET
+TARGET = LOCAL:2
+SIF TARGET < 0
+	TARGET = 0
+PRINTFORMW 一名在园女儿到龄，已可自立。如何处置她？
+PRINTL [0] 给予自由、释放其离境
+PRINTL [1] 收为奴隶、编入户籍继续饲养
+BINPUT
+LOCAL:3 = 0
+SIF RESULT == 1
+	LOCAL:3 = 1
+IF RESULT == 1
+	TRYCALL NURSERY_HOOK_ADULT_奴隶, LOCAL:2
+ELSE
+	TRYCALL NURSERY_HOOK_ADULT_释放, LOCAL:2
+ENDIF
+TRYCALL NURSERY_SPAWN_ADULT_LIKE_MOTHER, LOCAL:3, LOCAL:2
+TARGET = SAVE_TARGET
+IF LOCAL:3 == 0
+	PRINTFORMW 你放她离去；此后是生是死与本牧场无涉（主工程在 HOOK 中接除名/离境等）。 
+ELSE
+	PRINTFORMW 你收她作新的奴隶，此后可如常调教与役使（主工程在 HOOK 中接生成/入栏等）。 
+ENDIF
+CALL NURSERY_REMOVE, LOCAL:0
+CALL NURSERY_给予抚养经验, 2
+GOTO $ADLOOP
+$ADOUT
+RETURN
+
+
+; 删除下标 ARG:0，后段前移
+@NURSERY_REMOVE
+#LOCALSIZE 1
+FOR LOCAL:0, ARG:0, 魔界_在园数 - 1
+	魔界_子日:LOCAL:0 = 魔界_子日:(LOCAL:0 + 1)
+	魔界_子生母:LOCAL:0 = 魔界_子生母:(LOCAL:0 + 1)
+NEXT
+SIF 魔界_在园数 > 0
+	魔界_在园数 += -1
+IF 魔界_在园数 > 0
+	魔界_子日:魔界_在园数 = 0
+	魔界_子生母:魔界_在园数 = 0
+ENDIF
+IF 魔界_在园数 == 0
+	魔界_子日:0 = 0
+	魔界_子生母:0 = 0
+	CALL NURSERY_重算家务与熟练需求
+ENDIF
+RETURN
+
+
+@NURSERY_FOSTER_BIRTH
+TRYCALL PREGNANCY_SPAWN_FOSTER_ONLY
+PRINTFORMW 女婴已交寄养，不占用在园位。
+RETURN 1
+
+
+; ARG:0=0 释放 1=奴隶，ARG:1=生母 角色号。主工程可另载 ERB 完全覆盖本 @
+@NURSERY_SPAWN_ADULT_LIKE_MOTHER
+#LOCALSIZE 0
+IF ARG:0 == 1
+	PRINTFORMW 在园到龄之女的户籍与去留已按「奴隶」路径了结：以生母%CALLNAME% 为蓝本、由牧场侧录为役畜之一员（主工程可于此处生成独立角色、分配栏位）。 
+ELSE
+	PRINTFORMW 在园到龄之女已按「释放」路径了结对她们的支配，离境自谋生路；牧籍中不再保留其抚养义务（主工程可接除名/出境事件）。 
+ENDIF
+RETURN 0
+
+
+; 在园女成年、选释放时。默认可不做事；他处覆盖同名 @
+@NURSERY_HOOK_ADULT_释放
+RETURN 0
+
+
+; 在园女成年、选奴隶时。默认可不做事
+@NURSERY_HOOK_ADULT_奴隶
+RETURN 0
+
+
+@PREGNANCY_SPAWN_FOSTER_ONLY
+PRINTFORMW 寄养线收束：女婴不记入在园，亦可由主工程在别处登册或自牧场名簿中剥离（本补丁仅到此处为段落）。 
+RETURN 0

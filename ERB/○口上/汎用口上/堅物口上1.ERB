@@ -40,7 +40,40 @@ ENDIF
 SELECTCASE ARGS:0
 CASE "例文"
 	CALL MESSAGE_BOX,@"「已设置【通用正经口上1】。将以这种方式显示」\n「有对应于素质【羞涩】的差异之类的」"
-	
+
+CASE "身体事件"
+	SELECTCASE ARGS:1
+	CASE "产後初调"
+		IF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／隶属＃
+			CALL MESSAGE_BOX,@"「产褥，完了。要怎么做，下命令。话先说在前：别指望%SELF_CALL()%有笑脸。」"
+		ELSEIF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「来了。产后的身体……不灵活。要是指令是那样，%SELF_CALL()%不拒绝。……就这点。」"
+		ELSEIF ＃陷落状态／陷落以上＃
+			CALL MESSAGE_BOX,@"「产后的头一回。随便你。%SELF_CALL()%不逃。」"
+		ELSEIF ＃陷落状态／屈服以上＃
+			CALL MESSAGE_BOX,@"「行。%SELF_CALL()%会照做。只一条：别提小孩当笑话。别的免谈。」"
+		ELSE
+			CALL MESSAGE_BOX,@"「对刚生过的人也下手。记下了。%SELF_CALL()%不躲，要动手快点。」"
+		ENDIF
+	CASE "妊娠性事初回"
+		CALL MESSAGE_BOX,@"「有了。要笑随你。反正规矩是你定的。」"
+		CALL MESSAGE_BOX,@"「……肚子在这。还要的话，就按你自己的章程来。别问%SELF_CALL()%感想。」"
+	CASE "妊娠性事"
+		CALL MESSAGE_BOX,@"「体力和气力也就那样了。要弄就省点力，别装不知道。」"
+	CASE "妊娠调教谨慎开场"
+		IF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／隶属＃
+			CALL MESSAGE_BOX,@"「挺着孕肚还要按牧场来，行。你手别往肚子上招呼，%SELF_CALL()%不跟你废话第二遍。」"
+		ELSEIF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「%SELF_CALL()%不撒娇。就一句：轻点。对你省事，对%SELF_CALL()%、对里头的，都省事。」"
+		ELSEIF ＃陷落状态／陷落以上＃
+			CALL MESSAGE_BOX,@"「来。别往死里整。%SELF_CALL()%要吐要晕你看着办。」"
+		ELSEIF ＃陷落状态／屈服以上＃
+			CALL MESSAGE_BOX,@"「……%SELF_CALL()%不逃。别拿肚子当靶。别的免谈。」"
+		ELSE
+			CALL MESSAGE_BOX,@"「行。%SELF_CALL()%不躲。出事了各自认。」"
+		ENDIF
+	ENDSELECT
+
 CASE "调教命令"
 	CALL KOJO_GENERAL_堅物1_TRAIN(ARGS:0,ARGS:1,ARGS:2,ARGS:3)
 	
@@ -515,8 +548,11 @@ CASE "访问"
 		ENDIF
 	
 	CASE "自室分配"
+		CALL MESSAGE_BOX,@"「房间？行。别老闯进来。锁给我。」"
+		CALL MESSAGE_BOX,@"「%SELF_CALL()%会整理。说完了。」"
 	
 	CASE "宿舍分配"
+		CALL MESSAGE_BOX,@"「大通铺？行。%SELF_CALL()%只睡自己那块。越界就揍。」"
 	
 	ENDSELECT
 	

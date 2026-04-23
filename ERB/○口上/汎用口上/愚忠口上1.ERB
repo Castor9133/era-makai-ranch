@@ -28,6 +28,50 @@ SELECTCASE ARGS:0
 CASE "例文"
 	CALL MESSAGE_BOX,@"「【愚忠1】已设置。\n不问对错只求服从；献身＝证明忠诚。」"
 
+CASE "身体事件"
+	SELECTCASE ARGS:1
+	CASE "产後初调"
+		IF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／隶属＃
+			CALL MESSAGE_BOX,@"「产后的静养已结束。若这是主人为牧场而定的日程，%SELF_CALL()%的身心皆为主人与乳职所用。」"
+		ELSEIF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「被您召唤之时，%SELF_CALL()%就明白……产后第一次也要献给您。痛也好漏奶也好，都请您以主人之手验收。」"
+		ELSEIF ＃陷落状态／陷落以上＃
+			CALL MESSAGE_BOX,@"「这具身体在产后仍只配放在您的台子上……请随意检查，直到您满意。孩子之名……亦随您所赐。」"
+		ELSEIF ＃陷落状态／屈服以上＃
+			CALL MESSAGE_BOX,@"「……%SELF_CALL()%不逃。产后的头一回，也会遵命。只求主人别嫌……这具生养过的身体。」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……%SELF_CALL()%是奴隶。生养之后仍是您的所有物。这条命……也继续献给您调遣。」"
+		ENDIF
+	CASE "妊娠性事初回"
+		IF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／隶属＃
+			CALL MESSAGE_BOX,@"「身孕已确……%SELF_CALL()%的子宫与身体亦为主人牧养所用。此际仍蒙主人唤来验身，是命令也便服从。」"
+		ELSEIF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「被您确认是有了之后……%SELF_CALL()%心口一直烫。您还要占有这份身子的话……请用手掌告诉%SELF_CALL()%，您不嫌弃。」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……妊娠已明。%SELF_CALL()%会服从。但腹中之物……也请您一并发落。」"
+		ENDIF
+	CASE "妊娠性事"
+		SIF RAND:2
+			RETURN
+		IF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……体力和气力都不如从前……可只要主人继续命令，%SELF_CALL()%会把自己垫给您……」"
+		ELSE
+			CALL MESSAGE_BOX,@"「怀着的身子……会更容易累。若仍要行房，是命令……%SELF_CALL()%不逃。」"
+		ENDIF
+	CASE "妊娠调教谨慎开场"
+		IF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／隶属＃
+			CALL MESSAGE_BOX,@"「身孕在腹，若主人仍须验这具身子的服顺，%SELF_CALL()%愿伏于令。然母体与所孕……亦请主人在施令之时一并纳入权衡。」"
+		ELSEIF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「%MASTER_CALL()%，%SELF_CALL()%的忠诚不含欺瞒……求您以疼惜裁度：既疼%SELF_CALL()%，也疼这未问世之命。」"
+		ELSEIF ＃陷落状态／陷落以上＃
+			CALL MESSAGE_BOX,@"「是命令%SELF_CALL()%便承受。然……%SELF_CALL()%仍乞主人记得：这肚里，亦有主人可予之名。」"
+		ELSEIF ＃陷落状态／屈服以上＃
+			CALL MESSAGE_BOX,@"「……%SELF_CALL()%是奴隶，亦将为人母。若可……求主人勿令二者在疼痛里对撞。」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……服从不变。%SELF_CALL()%只在此呈明：过当之令，不独%SELF_CALL()%一躯所承。」"
+		ENDIF
+	ENDSELECT
+
 CASE "调教命令"
 	CALL KOJO_GENERAL_愚忠1_TRAIN(ARGS:0,ARGS:1,ARGS:2,ARGS:3)
 

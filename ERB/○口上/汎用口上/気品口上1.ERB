@@ -51,7 +51,43 @@ CASE "例文"
 	「素質【恥じらい】があると少々差分がありますね」\n
 	「『连在高潮时或是变成奶牛的时候，台词里完全感受不到气质』嘛…唉，也没办法呢」"
 	}
-	
+
+CASE "身体事件"
+	SELECTCASE ARGS:1
+	CASE "产後初调"
+		IF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／隶属＃
+			CALL MESSAGE_BOX,@"「……静养已毕。若牧场把此身当作乳与劳务的一部分，%SELF_CALL()%会维持最低限度的体面去履行。」"
+		ELSEIF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……您把%SELF_CALL()%唤来。产后的余痛仍在……却也敌不过想被您触摸的渴念。……请、请至少留一线温柔。」"
+		ELSEIF ＃陷落状态／陷落以上＃
+			CALL MESSAGE_BOX,@"「产后的头一场……竟是在这里。若您执意要看我失态，也请不要把那种目光……转向她的将来。」"
+		ELSEIF ＃陷落状态／屈服以上＃
+			CALL MESSAGE_BOX,@"「……%SELF_CALL()%会照做。只恳请您别拿诞子之事，当作把柄一再品味。」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……在体面尽失的牧场里，产后仍要赴这场邀约……至少让我保留最后一分体面——结束得快些。」"
+		ENDIF
+	CASE "妊娠性事初回"
+		IF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……经诊，腹中所育已可认定。%SELF_CALL()%的矜持在这种时刻……显得可笑，却仍想请您……以掌心的温度，承认这份血脉。」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……身孕已明。若此亦属牧场账册上的一笔，%SELF_CALL()%不拒。惟愿行止有节，不要令血脉沦为笑柄。」"
+		ENDIF
+	CASE "妊娠性事"
+		CALL MESSAGE_BOX,@"「……这具身子……气力不继时甚于往日。您若仍要，请许我倚靠，亦请许我片刻喘息。」"
+	CASE "妊娠调教谨慎开场"
+		IF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／隶属＃
+			CALL MESSAGE_BOX,@"「身孕在册、乳职亦在册；若仍须在此验身，只恳请您在力度与节令上，同时体恤这具母躯与所托之血。」"
+		ELSEIF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「%MASTER_CALL()%，%SELF_CALL()%愿惜此身、亦愿惜腹中未言之名。求您以掌为界……莫令二者俱伤。」"
+		ELSEIF ＃陷落状态／陷落以上＃
+			CALL MESSAGE_BOX,@"「体面不必再谈，惟后果须分明：若您仍执意，%SELF_CALL()%只乞一分余地——为母、亦为子。」"
+		ELSEIF ＃陷落状态／屈服以上＃
+			CALL MESSAGE_BOX,@"「……%SELF_CALL()%不拒。然腰与腹，并非一人可弃之物。求您以矜悯裁之。」"
+		ELSE
+			CALL MESSAGE_BOX,@"「在妊娠而蒙召，为势所迫。%SELF_CALL()%只陈一事：过当之辱，不独一人承担。」"
+		ENDIF
+	ENDSELECT
+
 CASE "调教命令"
 	CALL KOJO_GENERAL_気品1_TRAIN(ARGS:0,ARGS:1,ARGS:2,ARGS:3)
 	
@@ -470,8 +506,13 @@ CASE "访问"
 			CALL MESSAGE_BOX,@"「『%MASTER_CALL()%』，是吧。不叫的话会遭到报复的吧？」"
 		ENDIF
 	CASE "自室分配"
-	
+		IF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……将此处作为%SELF_CALL()%的私室，或许过于奢侈。但若是您所赐，%SELF_CALL()%会保持与之相称的静雅。」"
+		ELSE
+			CALL MESSAGE_BOX,@"「有壁有门，便已胜过风餐露宿。细节……%SELF_CALL()%会自行打理。」"
+		ENDIF
 	CASE "宿舍分配"
+		CALL MESSAGE_BOX,@"「与众同栖并非体面之所向……然在牧场，亦只余此权宜。%SELF_CALL()%会守夜礼，亦望他人守分寸。」"
 	
 	ENDSELECT
 	

@@ -45,6 +45,44 @@ SELECTCASE ARGS:0
 CASE "例文"
 	CALL MESSAGE_BOX,@"「…设定了【通用无口台词1】…像这样出现」\n「如果是素质【害羞】的话，会有点不同」"
 
+CASE "身体事件"
+	SELECTCASE ARGS:1
+	CASE "产後初调"
+		IF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／隶属＃
+			CALL MESSAGE_BOX,@"「……嗯。」"
+			CALL MESSAGE_BOX,@"「……产、后……也会……照做……」"
+		ELSEIF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……你……叫……%SELF_CALL()%……」"
+			CALL MESSAGE_BOX,@"「……奶……还……会漏……别……笑……」"
+		ELSEIF ＃陷落状态／陷落以上＃
+			CALL MESSAGE_BOX,@"「……第一次……」"
+			CALL MESSAGE_BOX,@"「……身体……还没……好……轻……」"
+		ELSEIF ＃陷落状态／屈服以上＃
+			CALL MESSAGE_BOX,@"「……来、了……不要……说……孩子……」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……别……」"
+			CALL MESSAGE_BOX,@"「……%SELF_CALL()%……刚……生过……」"
+		ENDIF
+	CASE "妊娠性事初回"
+		CALL MESSAGE_BOX,@"「……有、了……真的……」"
+		CALL MESSAGE_BOX,@"「……还要……%SELF_CALL()%、会……做……别……看……%SELF_CALL()%的……肚子……」"
+	CASE "妊娠性事"
+		CALL MESSAGE_BOX,@"「……累……腰……酸……别……太……重……」"
+		CALL MESSAGE_BOX,@"「……%SELF_CALL()%的……体……不……到……满……也……是……有……的………」"
+	CASE "妊娠调教谨慎开场"
+		IF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／隶属＃
+			CALL MESSAGE_BOX,@"「……怀着……也……要……做……别……重……。孩子……在……」"
+		ELSEIF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……%MASTER_CALL()%……轻……%SELF_CALL()%、也……轻……宝……宝……求……」"
+		ELSEIF ＃陷落状态／陷落以上＃
+			CALL MESSAGE_BOX,@"「……会……配……合……。肚子……别……压……求……」"
+		ELSEIF ＃陷落状态／屈服以上＃
+			CALL MESSAGE_BOX,@"「……怕……。你……手……下……容……点……」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……别……。伤……。两……个……人……」"
+		ENDIF
+	ENDSELECT
+
 CASE "调教命令"
 	CALL KOJO_GENERAL_無口1_TRAIN(ARGS:0,ARGS:1,ARGS:2,ARGS:3)
 	
@@ -454,8 +492,12 @@ CASE "访问"
 		ENDIF
 	
 	CASE "自室分配"
+		CALL MESSAGE_BOX,@"「……%SELF_CALL()%的、房间……？」"
+		CALL MESSAGE_BOX,@"「……会、整理……不、说话……也、可以……」"
 	
 	CASE "宿舍分配"
+		CALL MESSAGE_BOX,@"「……人、多……%SELF_CALL()%、角落……」"
+		CALL MESSAGE_BOX,@"「……别、看……%SELF_CALL()%、睡相……」"
 	
 	ENDSELECT
 	

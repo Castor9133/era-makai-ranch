@@ -44,7 +44,49 @@ ENDIF
 SELECTCASE ARGS:0
 CASE "例文"
 	CALL MESSAGE_BOX,@"「【汎用强气口上1】已设置」\n「素质【害羞】有一点分支哦」"
-	
+
+CASE "身体事件"
+	SELECTCASE ARGS:1
+	CASE "产後初调"
+		IF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／隶属＃
+			CALL MESSAGE_BOX,@"「……静养？完了。要榨要卖随牧场便，%SELF_CALL()%不陪你演圣母。小孩的事少拿来恶心人。」"
+		ELSEIF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「少一副「产后第一次我温柔点」的嘴脸。……咳，%SELF_CALL()%是来了。你要摸就摸，%SELF_CALL()%、才不怕。」"
+		ELSEIF ＃陷落状态／陷落以上＃
+			CALL MESSAGE_BOX,@"「产后头一回就挑这？哈……%SELF_CALL()%的体力还没回满，输了可别怨。」"
+		ELSEIF ＃陷落状态／屈服以上＃
+			CALL MESSAGE_BOX,@"「来就来……别、别一开口就用孩子揶揄%SELF_CALL()%，%SELF_CALL()%会咬舌头的。……%SELF_CALL()%是认真的。」"
+		ELSE
+			CALL MESSAGE_BOX,@"「对刚生过的也下手，你是多饥不择食。想笑%SELF_CALL()%就笑吧，%SELF_CALL()%不指望你有良心。」"
+		ENDIF
+	CASE "妊娠性事初回"
+		IF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／隶属＃
+			CALL MESSAGE_BOX,@"「判了孕还在牧场上，就等于连肚子一起签给你了。看够了没？要上就上，%SELF_CALL()%不演柔弱那套。」"
+		ELSEIF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……是，怀了。你那一脸想摸就别装。手给我规矩点，%SELF_CALL()%可不想被你弄出动静更大的丑态。」"
+		ELSE
+			CALL MESSAGE_BOX,@"「肚子都这德行了还叫%SELF_CALL()%。哈……成，你权大，%SELF_CALL()%不跟你吵。记得留口气给明天。」"
+		ENDIF
+	CASE "妊娠性事"
+		IF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……体力比怀孕前拉胯多了。要折腾就快，别跟挤牙膏一样拖长。」"
+		ELSE
+			CALL MESSAGE_BOX,@"「怀着孕你也好意思往死里整？%SELF_CALL()%的体力可只能撑到七折，懂？」"
+		ENDIF
+	CASE "妊娠调教谨慎开场"
+		IF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／隶属＃
+			CALL MESSAGE_BOX,@"「挺着肚子还要当牛当马是牧场的规矩，%SELF_CALL()%不跟你演娇。但把劲使在正处——别拿孕肚当沙包，懂？」"
+		ELSEIF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……呿。%SELF_CALL()%会顾好自己，也会顾好里头的。你手轻点，%SELF_CALL()%就当你还长眼。」"
+		ELSEIF ＃陷落状态／陷落以上＃
+			CALL MESSAGE_BOX,@"「来就来。别给%SELF_CALL()%上刑。%SELF_CALL()%疼，里头的也不会好受。」"
+		ELSEIF ＃陷落状态／屈服以上＃
+			CALL MESSAGE_BOX,@"「……别往肚子上赌。%SELF_CALL()%怕，怕到想咬人。你识相点。」"
+		ELSE
+			CALL MESSAGE_BOX,@"「还整？行。记清楚：出事不是%SELF_CALL()%一个人背。你轻点，省得大家难看。」"
+		ENDIF
+	ENDSELECT
+
 CASE "调教命令"
 	CALL KOJO_GENERAL_強気1_TRAIN(ARGS:0,ARGS:1,ARGS:2,ARGS:3)
 	
@@ -459,9 +501,17 @@ CASE "访问"
 		ENDIF
 	
 	CASE "自室分配"
-	
+		IF CFLAG:乳牛 || ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「单间？行啊。%SELF_CALL()%的行李丢角落，要嫌乱你就别看。」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……给房间就给。敢装窃听%SELF_CALL()%就砸门。」"
+		ENDIF
 	CASE "宿舍分配"
-	
+		IF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「大通铺就大通铺。反正谁敢碰%SELF_CALL()%的东西，%SELF_CALL()%不客气。」"
+		ELSE
+			CALL MESSAGE_BOX,@"「和一群人睡？嘁……别在半夜来碍眼就好。」"
+		ENDIF
 	ENDSELECT
 	
 CASE "事件"

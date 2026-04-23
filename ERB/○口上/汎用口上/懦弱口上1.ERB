@@ -34,6 +34,42 @@ SELECTCASE ARGS:0
 CASE "例文"
 	CALL MESSAGE_BOX,@"「【懦弱1】已设置。\n第一人称：%CSTR:第一人称%　对主人公：%CSTR:主人公的称呼／陷落前%\n未陷落：恳求、退缩、偶尔道歉；陷落：顺从、示弱、不知所措，多句近义随机。」"
 
+CASE "身体事件"
+	SELECTCASE ARGS:1
+	CASE "产後初调"
+		IF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／隶属＃
+			CALL MESSAGE_BOX,@"「生、生完了也……%SELF_CALL()%会照牧场的来……要挤奶%SELF_CALL()%会伸过去……只、只请别骂……」"
+		ELSEIF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「呜……%MASTER_CALL()%一叫%SELF_CALL()%就、就来了……其实还很怕疼……可是%SELF_CALL()%、不想被讨厌……」"
+		ELSEIF ＃陷落状态／陷落以上＃
+			CALL MESSAGE_BOX,@"「产后、第一次又要……%SELF_CALL()%的腰还在抖……%SELF_CALL()%、%SELF_CALL()%会忍……别丢下%SELF_CALL()%一个人……」"
+		ELSEIF ＃陷落状态／屈服以上＃
+			CALL MESSAGE_BOX,@"「不、不要在这时候提、提孩子的事……%SELF_CALL()%、%SELF_CALL()%会照说的做……别那样笑……求你了……」"
+		ELSE
+			CALL MESSAGE_BOX,@"「人、人刚生过，为什么又……对不起、对不起%SELF_CALL()%不顶嘴、%SELF_CALL()%马上脱……请别打……」"
+		ENDIF
+	CASE "妊娠性事初回"
+		IF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……%MASTER_CALL()%、那个……%SELF_CALL()%的肚子……是、是真的……%SELF_CALL()%会听话……请你……轻一点……」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……%SELF_CALL()%、已经……有、有了……%SELF_CALL()%不跑……也会按你说的做……只是……%SELF_CALL()%会怕……请别、别太用力……」"
+		ENDIF
+	CASE "妊娠性事"
+		CALL MESSAGE_BOX,@"「……%SELF_CALL()%的体力……好容易就见底……%SELF_CALL()%、%SELF_CALL()%会尽量不让您失望……求您……慢一点……」"
+	CASE "妊娠调教谨慎开场"
+		IF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／隶属＃
+			CALL MESSAGE_BOX,@"「……%SELF_CALL()%、会听话的……可怀着的时候……%SELF_CALL()%好怕伤到自己、也伤到孩子……%MASTER_CALL()%，求您轻一点……」"
+		ELSEIF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「%MASTER_CALL()%……%SELF_CALL()%想护着%SELF_CALL()%，也想护着宝宝……别、别弄得太疼……求您了……」"
+		ELSEIF ＃陷落状态／陷落以上＃
+			CALL MESSAGE_BOX,@"「……%SELF_CALL()%不跑。可手……请别太重。%SELF_CALL()%会怕……怕到发抖……」"
+		ELSEIF ＃陷落状态／屈服以上＃
+			CALL MESSAGE_BOX,@"「命令的话……%SELF_CALL()%会照做……只、只请您……对肚子温柔一点……」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……%SELF_CALL()%不顶嘴。可是……%SELF_CALL()%会怕……求您别伤害宝宝……求您……」"
+		ENDIF
+	ENDSELECT
+
 CASE "调教命令"
 	CALL KOJO_GENERAL_懦弱1_TRAIN(ARGS:0,ARGS:1,ARGS:2,ARGS:3)
 

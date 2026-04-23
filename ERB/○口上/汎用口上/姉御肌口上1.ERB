@@ -53,7 +53,56 @@ CASE "例文"
 「大概是这样的感觉，没关系吧？」"
 	}
 	;思った以上に口上の口調が表現できない
-	
+
+CASE "身体事件"
+	SELECTCASE ARGS:1
+	CASE "产後初调"
+		IF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／隶属＃
+			CALL MESSAGE_BOX,@"「产后静养算是熬过去了……既然又要被%MASTER_CALL()%用身体来称斤论两，%SELF_CALL()%会照规矩配合。孩子那边……有空再去看就好。」"
+		ELSEIF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……身体还有点发虚。可你叫%SELF_CALL()%来，%SELF_CALL()%就照做……毕竟是她让你把%SELF_CALL()%弄成妈妈的。」"
+			CALL MESSAGE_BOX,@"「温柔一点……别一开头就把涨奶的胸当沙袋使啊。」"
+		ELSEIF ＃陷落状态／陷落以上＃
+			CALL MESSAGE_BOX,@"「哈……又回到这张台子上了。产后的头一回，别对还在漏奶的身子太狠，啊？」"
+		ELSEIF ＃陷落状态／屈服以上＃
+			CALL MESSAGE_BOX,@"「……人来了。%SELF_CALL()%会按命令来……只、只你别在%SELF_CALL()%一想起那孩子的脸，就笑得很恶心……」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……又要了？身体还欠口气没错……可对刚生过娃的女人也能伸手，%SELF_CALL()%也懒得摆架子了。赶紧完事吧。」"
+		ENDIF
+	CASE "妊娠性事初回"
+		IF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／隶属＃
+			CALL MESSAGE_BOX,@"「肚子都显出来了吧……？被主人当乳牛、当孕袋一起照单全收是规矩。今天也要验货吗，%MASTER_CALL()%。」"
+		ELSEIF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……月事没来了，%SELF_CALL()%也心里有数。既然确定怀上了，还愿意把%SELF_CALL()%拉上床……是嫌%SELF_CALL()%太安分，还是太想要啊。」"
+		ELSEIF ＃陷落状态／陷落以上＃
+			CALL MESSAGE_BOX,@"「判明是有了之后，走路都觉得沉……可你一张嘴%SELF_CALL()%就过来了。要弄轻点，嗯？里头的娃可是铁证。」"
+		ELSEIF ＃陷落状态／屈服以上＃
+			CALL MESSAGE_BOX,@"「……都写到身体上了。还要像平常那样上？%SELF_CALL()%会照办……只是别、别在肚子上使坏。」"
+		ELSE
+			CALL MESSAGE_BOX,@"「都这时候了还碰……？行啊。反正横竖是你说了算。只是出了事别怪%SELF_CALL()%没喊疼。」"
+		ENDIF
+	CASE "妊娠性事"
+		IF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／隶属＃
+			CALL MESSAGE_BOX,@"「怀着的时候体力掉得快……主人要是心疼奶量，就挑省劲的姿势让%SELF_CALL()%来。」"
+		ELSEIF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……腰酸，胸也发胀。可被你摸着，%SELF_CALL()%又老实不下来……就这一次，别太久哦。」"
+		ELSE
+			CALL MESSAGE_BOX,@"「怀着肚子还被折腾……%SELF_CALL()%的体力可不像以前那么够用了，识相点行不。」"
+		ENDIF
+	CASE "妊娠调教谨慎开场"
+		IF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／隶属＃
+			CALL MESSAGE_BOX,@"「怀着的时候……主人要验产奶也好验身子也罢，%SELF_CALL()%不躲。只请你把劲使在疼惜这具身子和里头那位上，别当沙包打。」"
+		ELSEIF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「%MASTER_CALL()%，%SELF_CALL()%也疼自己、也疼这娃。你要摸要弄都行……可轻点，让%SELF_CALL()%少吐两口酸水，嗯？」"
+		ELSEIF ＃陷落状态／陷落以上＃
+			CALL MESSAGE_BOX,@"「都到这份上了……%SELF_CALL()%不装娇。可肚子与腰是两个人的分量，你手松一松，对大家都好。」"
+		ELSEIF ＃陷落状态／屈服以上＃
+			CALL MESSAGE_BOX,@"「……还要的话%SELF_CALL()%不逃。只请你……别拿肚子当靶心，%SELF_CALL()%会怕。」"
+		ELSE
+			CALL MESSAGE_BOX,@"「都怀上了还叫%SELF_CALL()%来。行，认。横竖你轻点，对%SELF_CALL%、对里头的，都当积德。」"
+		ENDIF
+	ENDSELECT
+
 CASE "调教命令"
 	;調教コマンドごとにシチュ指定で振り分けしていくんだけど長いので別関数を呼び出す
 	;主に解説はこっちに書いてるよ
@@ -1035,7 +1084,11 @@ CASE "访问"
 
 		ENDIF
 	CASE "宿舍分配"
-	
+		IF CFLAG:乳牛 || ＃陷落状态／恋慕以上＃ || CFLAG:洗脑
+			CALL MESSAGE_BOX,@"「宿舍啊……和大家挤一间也别有滋味。%MASTER_CALL()%，床单要是潮了%SELF_CALL()%会跟你算账的。」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……大房间也好通铺也好，%SELF_CALL()%不挑。只要别在熄灯后搞莫名其妙的巡查就行。」"
+		ENDIF
 	ENDSELECT
 
 CASE "重复事件"

@@ -2,3 +2,6 @@ Sav/
 *.sav
 UserData/
 *.log
+**/*.ERB.bak
+_scan_kojo.py
+_scan_out.txt

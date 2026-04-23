@@ -1,0 +1,425 @@
+;======== era-makai-ranch: pregnancy / birth / lactation (pregmod-style patch) ========
+; 中文：须在 Str/Flag 登记 CFLAG:魔界_* 与 TFLAG:套内精液量，见 PREGNANCY_集成说明.txt。
+; EN: Register CFLAG/TFLAG names or they read as zero. See PREGNANCY_集成说明.txt.
+; 本线妊娠 140 日/产褥 60 日；若 FLAG:魔界_魔素浓郁(建议魔界=1)则各历时折半=成长加倍的体感。须登记 FLAG 名。
+; 幼児(托儿)成长满 9 年(9*365) 成年；前 3 年乳児档与日费。受孕 P% 同前。妊娠需满 魔界_有効_妊娠判明 日(基14，魔素折半) 才 CFLAG:魔界_妊娠判明=1 可确认；此前不强制泌乳。
+; 魔界_产後初调口上済、魔界_妊娠性事口上_初回済 等须登 Str。妊娠中(S==1) 体力/气力 日次不可高于 MAX 的 70%（PREGNANCY_妊娠_体力気力_日次上限；主工程宜在日次回满之后、再对当日历角色调用一次）。`身体事件/妊娠调教谨慎开场` 由 PREGNANCY_妊娠调教_谨慎开场_尝试 调，汎用口上见各性格。
+
+#DIM CONST 魔界_满胎日_基, 1
+#DIM CONST 魔界_产褥日_基, 1
+#DIM CONST 魔界_成長_成年_基, 1
+#DIM CONST 魔界_乳児_上_基, 1
+#DIM CONST 魔界_流产后_禁调日, 1
+#DIM CONST 魔界_临产静养日_基, 1
+#DIM CONST 魔界_产后静养日_基, 1
+#DIM CONST 魔界_妊娠判明日_基, 1
+#DIM 魔界_有効_满胎, 1
+#DIM 魔界_有効_妊娠判明, 1
+#DIM 魔界_有効_产褥, 1
+#DIM 魔界_有効_临产, 1
+#DIM 魔界_有効_成長_成年, 1
+#DIM 魔界_有効_乳児_上, 1
+#DIM 魔界_有効_临产静养, 1
+#DIM 魔界_有効_产后静养, 1
+魔界_满胎日_基 = 140
+魔界_产褥日_基 = 60
+魔界_成長_成年_基 = 9 * 365
+魔界_乳児_上_基 = 3 * 365
+魔界_流产后_禁调日 = 14
+魔界_临产静养日_基 = 14
+魔界_产后静养日_基 = 14
+魔界_妊娠判明日_基 = 14
+; 胎数：万分之一三胞胎(1/10000)、千分之三双胞胎(3/1000)，互斥；用 RAND:1000000 分档
+#DIM CONST 魔界_胎数R_三胞, 1
+#DIM CONST 魔界_胎数R_双胞上, 1
+魔界_胎数R_三胞 = 100
+魔界_胎数R_双胞上 = 100 + 3000
+
+
+; 据「基」日数与 FLAG:魔界_魔素浓郁 刷新有效日(富魔素=历时折半=成长加倍)。妊娠/产褥/终妊/托儿所日结开头各 CALL 一次即可。
+@魔界_魔素_日数_刷新
+#LOCALSIZE 0
+魔界_有効_满胎 = 魔界_满胎日_基
+魔界_有効_产褥 = 魔界_产褥日_基
+魔界_有効_成長_成年 = 魔界_成長_成年_基
+魔界_有効_乳児_上 = 魔界_乳児_上_基
+SIF FLAG:魔界_魔素浓郁
+	魔界_有効_满胎 /= 2
+SIF FLAG:魔界_魔素浓郁
+	魔界_有効_产褥 /= 2
+SIF FLAG:魔界_魔素浓郁
+	魔界_有効_成長_成年 /= 2
+SIF FLAG:魔界_魔素浓郁
+	魔界_有効_乳児_上 /= 2
+魔界_有効_临产 = 魔界_有効_满胎 - 10
+SIF 魔界_有効_临产 < 0
+	魔界_有効_临产 = 0
+; 静养期（历时折半同魔素）：临产前N日、产后M日内不可劳动/调教
+魔界_有効_临产静养 = 魔界_临产静养日_基
+魔界_有効_产后静养 = 魔界_产后静养日_基
+SIF FLAG:魔界_魔素浓郁
+	魔界_有効_临产静养 /= 2
+SIF FLAG:魔界_魔素浓郁
+	魔界_有効_产后静养 /= 2
+SIF 魔界_有効_临产静养 < 1
+	魔界_有効_临产静养 = 1
+SIF 魔界_有効_产后静养 < 1
+	魔界_有効_产后静养 = 1
+魔界_有効_妊娠判明 = 魔界_妊娠判明日_基
+SIF FLAG:魔界_魔素浓郁
+	魔界_有効_妊娠判明 /= 2
+SIF 魔界_有効_妊娠判明 < 1
+	魔界_有効_妊娠判明 = 1
+RETURN
+
+
+;-------------------------------------------------------------------------------
+; 无套膣内射后调用。Do not call with condom on. / 避孕套装着中は呼ばない。
+; ARG:0 = this shot volume (suggested scale 0–100; retune to match main game) / 本回内射量
+;-------------------------------------------------------------------------------
+@PREGNANCY_ON_V_CREAMPIE
+#LOCALSIZE 2
+LOCAL:0 = ARG:0
+SIF TALENT:去势
+	RETURN
+; 妊娠(1)或产褥哺乳(2)不重复受胎。/ No conception while pregnant or in postpartum lact.
+SIF CFLAG:魔界_妊娠S == 1 || CFLAG:魔界_妊娠S == 2
+	RETURN
+; God / vampire: need vassal (乳牛/洗脑/隶属) or no pregnancy from V creampie. / 神族·吸血鬼+非隷属=不受孕
+IF TALENT:神族 || TALENT:吸血鬼
+	SIF !CFLAG:乳牛 && !CFLAG:洗脑 && !＃陷落状态／隶属＃
+		RETURN
+	PRINTL
+	PRINTFORMW %CALLNAME%望向你，眼里带着不安……
+	PRINTL 「主人确定要我怀孕吗？……」
+	PRINTL [0] 要
+	PRINTL [1] 还是算了
+	BINPUT
+	SIF RESULT
+		RETURN
+ENDIF
+; Roll: success if RAND:100 < P (P 10..50) / 受孕% 10% 起，上限 50%
+LOCAL:1 = 10 + (LOCAL:0 * 40) / 100
+SIF LOCAL:1 > 50
+	LOCAL:1 = 50
+SIF RAND:100 >= LOCAL:1
+	RETURN
+CFLAG:魔界_妊娠S = 1
+CFLAG:魔界_妊娠日 = 0
+CFLAG:魔界_产後日 = 0
+CFLAG:魔界_妊娠泌乳 = 0
+CFLAG:魔界_妊娠判明 = 0
+PRINTFORMW 本回合留在体内的一切……要再过一段时日，才能从身体与脉象上判断是否成孕。
+RETURN
+
+
+;-------------------------------------------------------------------------------
+; Per day tick. / 每游戏日。 End-of-day or wake. ARG:0 = days passed. / 経過日数
+;-------------------------------------------------------------------------------
+@PREGNANCY_DAILY_TICK
+#LOCALSIZE 2
+LOCAL:0 = ARG:0
+SIF LOCAL:0 < 1
+	RETURN
+CALL 魔界_魔素_日数_刷新
+FOR LOCAL:1, 0, LOCAL:0
+	SIF CFLAG:魔界_流产后禁调 > 0
+		CFLAG:魔界_流产后禁调 += -1
+	IF CFLAG:魔界_妊娠S == 1
+		CFLAG:魔界_妊娠日 += 1
+		IF !CFLAG:魔界_妊娠判明 && CFLAG:魔界_妊娠日 >= 魔界_有効_妊娠判明
+			CFLAG:魔界_妊娠判明 = 1
+			CFLAG:魔界_妊娠性事口上_初回済 = 0
+			PRINTFORMW 经旬月余的体征与月事变化，%CALLNAME%的妊娠方得以确认；此前皆属未能确言之阶段。
+		ENDIF
+		SIF CFLAG:魔界_妊娠判明
+			CALL PREGNANCY_LACT_PREGNANT_APPLY
+		SIF CFLAG:魔界_妊娠日 >= 魔界_有効_满胎
+			CALL PREGNANCY_DO_BIRTH
+		CALL PREGNANCY_妊娠_体力気力_日次上限
+		CONTINUE
+	ENDIF
+	IF CFLAG:魔界_妊娠S == 2
+		CFLAG:魔界_产後日 += 1
+		CALL PREGNANCY_LACT_POSTPARTUM_APPLY
+		SIF CFLAG:魔界_产後日 >= 魔界_有効_产褥
+			CALL PREGNANCY_END_LACTATION_POSTPARTUM
+	ENDIF
+NEXT
+RETURN
+
+
+; 本补丁妊娠中(S==1) 的体力/气力 每日自然回满 上限=各 MAX 的 70%（在 PREGNANCY_DAILY_TICK 每经历一日末压一次；主工程若于 tick 前已回满，可再对同一 TARGET 调用本函数）
+@PREGNANCY_妊娠_体力気力_日次上限
+#LOCALSIZE 2
+SIF CFLAG:魔界_妊娠S != 1
+	RETURN
+LOCAL:0 = MAXBASE:体力 * 7 / 10
+LOCAL:1 = MAXBASE:气力 * 7 / 10
+SIF BASE:体力 > LOCAL:0
+	BASE:体力 = LOCAL:0
+SIF BASE:気力 > LOCAL:1
+	BASE:気力 = LOCAL:1
+RETURN
+
+
+; 調教开始前：确认妊娠(判明&妊娠中) 的首次性事口上＋低概率随机会话。汎用口上须登 身体事件/妊娠性事初回・妊娠性事
+@PREGNANCY_妊娠_性事口上_尝试
+#LOCALSIZE 0
+SIF !CFLAG:魔界_妊娠判明
+	RETURN
+SIF CFLAG:魔界_妊娠S != 1
+	RETURN
+IF !CFLAG:魔界_妊娠性事口上_初回済
+	CALL KOJO_PRINT("身体事件", "妊娠性事初回", "", "")
+	CFLAG:魔界_妊娠性事口上_初回済 = 1
+	RETURN
+ENDIF
+SIF RAND:5
+	RETURN
+CALL KOJO_PRINT("身体事件", "妊娠性事", "", "")
+RETURN
+
+
+; 已判明·妊娠中、每次进调教前可播一句：劝主人手下留情、疼惜母体与胎児。汎用口上 `身体事件`/`妊娠调教谨慎开场`；RAND 略降与性事同屏密度
+@PREGNANCY_妊娠调教_谨慎开场_尝试
+#LOCALSIZE 0
+SIF !CFLAG:魔界_妊娠判明
+	RETURN
+SIF CFLAG:魔界_妊娠S != 1
+	RETURN
+SIF RAND:2
+	RETURN
+CALL KOJO_PRINT("身体事件", "妊娠调教谨慎开场", "", "")
+RETURN
+
+
+@PREGNANCY_LACT_PREGNANT_APPLY
+SIF CFLAG:魔界_手動断乳
+	RETURN
+; 本系统“妊娠中最低泌乳”在断乳为真时不会强行抬高 BASE；否则维持 ≥1
+SIF BASE:母乳生产力 < 1
+	BASE:母乳生产力 = 1
+RETURN
+
+
+@PREGNANCY_DO_BIRTH
+#LOCALSIZE 2
+CFLAG:魔界_妊娠S = 2
+CFLAG:魔界_产後日 = 0
+CFLAG:魔界_妊娠日 = 0
+CFLAG:魔界_妊娠判明 = 0
+CFLAG:魔界_妊娠泌乳 = 1
+LOCAL:0 = RAND:1000000
+LOCAL:1 = 1
+IF LOCAL:0 < 魔界_胎数R_三胞
+	LOCAL:1 = 3
+ELSEIF LOCAL:0 < 魔界_胎数R_双胞上
+	LOCAL:1 = 2
+ENDIF
+PRINTL
+IF LOCAL:1 == 3
+	PRINTFORMW 阵痛的尽头，%CALLNAME%诞下三名女婴（三胞胎），种族均随母亲。
+ELSEIF LOCAL:1 == 2
+	PRINTFORMW 阵痛的尽头，%CALLNAME%诞下两名女婴（双胞胎），种族均随母亲。
+ELSE
+	PRINTFORMW 阵痛的尽头，%CALLNAME%诞下一名女婴，种族随母亲。
+ENDIF
+TRYCALL PREGNANCY_SPAWN_DAUGHTER, LOCAL:1
+CFLAG:魔界_产後初调口上済 = 0
+CALL PREGNANCY_LACT_POSTPARTUM_APPLY
+RETURN
+
+
+; ARG:0=本胎女婴数(1-3)。主工程可在此 @ 内扩展「登记独立角色卡」等；有托儿所时每孩 TRYCALL NURSERY_ADD_DAUGHTER, 生母号
+@PREGNANCY_SPAWN_DAUGHTER
+#LOCALSIZE 2
+LOCAL:0 = 1
+SIF ARG:0 > 0
+	LOCAL:0 = LIMIT(ARG:0, 1, 3)
+IF FLAG:魔界_托儿所
+	FOR LOCAL:1, 0, LOCAL:0
+		TRYCALL NURSERY_ADD_DAUGHTER, TARGET
+	NEXT
+ELSE
+	IF LOCAL:0 == 1
+		PRINTFORMW 女婴的啼哭在耳边落定；户籍与育成若未走托儿所线，可在外部名册另立一行，与母亲同族、性别女。 
+	ELSE
+		PRINTFORMW {LOCAL:0} 名女婴依序产下，种族随母。未建园或未入托时，可凭牧籍或主工程自设登记其存在。 
+	ENDIF
+ENDIF
+RETURN 0
+
+
+@PREGNANCY_LACT_POSTPARTUM_APPLY
+SIF CFLAG:魔界_手動断乳
+	RETURN
+SIF CFLAG:魔界_妊娠泌乳
+	BASE:母乳生产力 = MAX(BASE:母乳生产力, 1)
+RETURN
+
+
+@PREGNANCY_END_LACTATION_POSTPARTUM
+CALL 魔界_魔素_日数_刷新
+SIF CFLAG:魔界_妊娠S != 2
+	RETURN
+SIF CFLAG:魔界_产後日 < 魔界_有効_产褥
+	RETURN
+; 产褥日满：有系统泌乳、或已手工断乳(泌乳标记已去)仍处产褥，均收束状态
+SIF !CFLAG:魔界_妊娠泌乳 && !CFLAG:魔界_手動断乳
+	RETURN
+; Manual dry-up: still clear postpartum state; only skip zeroing milk if user kept flag. / 手動断乳中は BASE 不強制清零
+SIF !CFLAG:魔界_手動断乳
+	BASE:母乳生产力 = 0
+CFLAG:魔界_妊娠泌乳 = 0
+CFLAG:魔界_妊娠S = 0
+CFLAG:魔界_产後日 = 0
+PRINTFORMW 产后期满，%CALLNAME%由本系统维持的泌乳告一段落。
+CALL PREGNANCY_CLEAR_MANUAL_DRY_FLAG
+RETURN
+
+
+; 产后静养结束后、首次进调教时由 BEFORE_TRAIN 调；KOJO_PRINT("身体事件","产後初调",,)。说过置 1。
+@PREGNANCY_产後初调_尝试口上
+#LOCALSIZE 0
+SIF CFLAG:魔界_产後初调口上済
+	RETURN
+SIF CFLAG:魔界_妊娠S != 2
+	RETURN
+CALL 魔界_魔素_日数_刷新
+SIF CFLAG:魔界_产後日 < 魔界_有効_产后静养
+	RETURN
+CALL KOJO_PRINT("身体事件", "产後初调", "", "")
+CFLAG:魔界_产後初调口上済 = 1
+RETURN
+
+
+; Condom ejaculation fill. Call from ejac handler. / 避孕套内射精
+@PREGNANCY_CONDOM_EJAC_FILL
+SIF !TEQUIP:0:避孕套
+	RETURN
+TFLAG:套内精液量 = ARG:0
+RETURN
+
+
+@PREGNANCY_MANUAL_DRY
+CFLAG:魔界_手動断乳 = 1
+SIF BASE:母乳生产力
+	BASE:母乳生产力 = 0
+; 产后有系统泌乳标记时，手断乳也视为已结束此段“强制泌乳期”（仍占产褥日程至满）
+SIF CFLAG:魔界_妊娠S == 2
+	CFLAG:魔界_妊娠泌乳 = 0
+PRINTFORMW 你以调教手段给%CALLNAME%断乳。本系统不再在妊娠/产褥线内强制其产奶。
+RETURN
+
+
+; 静养三态：流产残日、临产前14日(有効折半)、产后14日(有効折半)。RESULT=1=不可劳动与调教。主工程排日程/劳动前同 CALL。
+@魔界_静养_不可劳动与调教
+#LOCALSIZE 1
+RESULT = 0
+CALL 魔界_魔素_日数_刷新
+IF CFLAG:魔界_流产后禁调 > 0
+	PRINTFORMW 她流产后静养未结束（尚余约{CFLAG:魔界_流产后禁调} 日），不宜劳动与调教。
+	RESULT = 1
+	RETURN
+ENDIF
+IF CFLAG:魔界_妊娠S == 1
+	LOCAL:0 = 魔界_有効_满胎 - 魔界_有効_临产静养
+	SIF LOCAL:0 < 0
+		LOCAL:0 = 0
+	IF CFLAG:魔界_妊娠日 >= LOCAL:0
+		PRINTFORMW 临产前夕须静养（【临产】），无法安排劳动与调教。
+		RESULT = 1
+		RETURN
+	ENDIF
+ENDIF
+IF CFLAG:魔界_妊娠S == 2
+	IF CFLAG:魔界_产後日 < 魔界_有効_产后静养
+		PRINTFORMW 产后初周须静养（【产后】），无法安排劳动与调教。尚余约{魔界_有効_产后静养 - CFLAG:魔界_产後日} 日满期。
+		RESULT = 1
+		RETURN
+	ENDIF
+ENDIF
+RETURN
+
+
+; 同「魔界_静养_不可劳动与调教」，保留旧名兼容。
+@PREGNANCY_流产后_可否调教
+CALL 魔界_静养_不可劳动与调教
+RETURN
+
+
+; 终止本补丁管理的妊娠。COM255 等。临产 10 日窗内先说明风险，该窗内 25% 一尸两命。
+@PREGNANCY_ABORT_MAKAI
+#LOCALSIZE 1
+SIF CFLAG:魔界_妊娠S != 1
+	RETURN
+CALL 魔界_魔素_日数_刷新
+LOCAL:0 = CFLAG:魔界_妊娠日
+IF LOCAL:0 >= 魔界_有効_临产
+	PRINTFORMW 临产前十日内终止妊娠，极易导致大出血，母体有生命危险。约有四分之一的尝试会一尸两命。仍要执行吗？
+	PRINTL [0] 仍要终止
+	PRINTL [1] 算了
+	BINPUT
+	SIF RESULT
+		RETURN
+ENDIF
+IF LOCAL:0 >= 魔界_有効_临产
+	SIF RAND:100 < 25
+		CALL PREGNANCY_ABORT_临产_双亡
+SIF !CFLAG:魔界_妊娠S
+	RETURN
+CALL PREGNANCY_ABORT_成活, LOCAL:0
+RETURN
+
+
+; ARG:0 = 终止前 魔界_妊娠日
+@PREGNANCY_ABORT_成活
+#LOCALSIZE 0
+CFLAG:魔界_妊娠S = 0
+CFLAG:魔界_妊娠日 = 0
+CFLAG:魔界_妊娠判明 = 0
+CFLAG:魔界_妊娠泌乳 = 0
+SIF BASE:母乳生产力
+	BASE:母乳生产力 = 0
+CALL PREGNANCY_CLEAR_MANUAL_DRY_FLAG
+; 大月份终妊仍存活的体力损失（临产窗内终妊方扣）
+CALL 魔界_魔素_日数_刷新
+SIF ARG:0 >= 魔界_有効_临产 && TARGET >= 0
+	BASE:体力 = LIMIT(BASE:体力 - 50, 1, MAXBASE:体力)
+CFLAG:魔界_流产后禁调 = 魔界_流产后_禁调日
+PRINTFORMW 妊娠已终止。%CALLNAME%在至少十四日内不宜再接受调教，身体亦需时间恢复。
+TRYCALL PREGNANCY_HOOK_ABORT_SURVIVE
+RETURN
+
+
+; 临产危險期终妊：母体与胎儿均未能保住（主工程可改 TRYCALL 为除名等）
+@PREGNANCY_ABORT_临产_双亡
+#LOCALSIZE 0
+PRINTFORMW 手术与出血失控……%CALLNAME%与腹中胎儿均未能保住。
+CFLAG:魔界_妊娠S = 0
+CFLAG:魔界_妊娠日 = 0
+CFLAG:魔界_妊娠判明 = 0
+CFLAG:魔界_妊娠泌乳 = 0
+SIF BASE:母乳生产力
+	BASE:母乳生产力 = 0
+CALL PREGNANCY_CLEAR_MANUAL_DRY_FLAG
+SIF TARGET >= 0
+	BASE:体力 = 0
+TRYCALL PREGNANCY_HOOK_ABORT_DOUBLE_DEATH
+RETURN
+
+
+; 主工程可覆盖：终妊存活后处理
+@PREGNANCY_HOOK_ABORT_SURVIVE
+RETURN
+
+
+; 主工程可覆盖：终妊双亡后除名/口上
+@PREGNANCY_HOOK_ABORT_DOUBLE_DEATH
+RETURN
+
+
+@PREGNANCY_CLEAR_MANUAL_DRY_FLAG
+CFLAG:魔界_手動断乳 = 0
+RETURN

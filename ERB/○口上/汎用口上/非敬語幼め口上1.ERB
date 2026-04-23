@@ -59,7 +59,49 @@ CASE "例文"
 	「素質【性知識皆無】【乙女心】【貞操観念】【恥じらい】で少し差分があるもん…」\n
 	「连在堕落后也不会使用敬语，所以这点要注意哦…？」"
 	}
-	
+
+CASE "身体事件"
+	SELECTCASE ARGS:1
+	CASE "产後初调"
+		IF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／隶属＃
+			CALL MESSAGE_BOX,@"「生完了耶……反正%SELF_CALL()%又是乳牛又听话的，%MASTER_CALL()%要揉要挤随你便啦。宝宝……晚点再看又没关系。」"
+		ELSEIF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「呜……肚子那一圈还有点闷闷的。可是%MASTER_CALL()%一叫，%SELF_CALL()%就来了……谁叫是她把%SELF_CALL()%弄成妈妈的呢。」"
+			CALL MESSAGE_BOX,@"「……不可以笑话%SELF_CALL()%的奶，还在漏啦……」"
+		ELSEIF ＃陷落状态／陷落以上＃
+			CALL MESSAGE_BOX,@"「欸、又要弄啊……产后头一回就挑这种地方，%MASTER_CALL()%也太好懂了吧。哼。」"
+		ELSEIF ＃陷落状态／屈服以上＃
+			CALL MESSAGE_BOX,@"「来、来了啦……%SELF_CALL()%会乖……求你别拿小孩的事挖苦%SELF_CALL()%，听到没……」"
+		ELSE
+			CALL MESSAGE_BOX,@"「还、还弄？！%SELF_CALL()%才刚生过……你是魔鬼吗。……算了，反抗也没用。」"
+		ENDIF
+	CASE "妊娠性事初回"
+		IF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……%MASTER_CALL()%，%SELF_CALL()%的肚子、判下来是真的有了啦。你、你要是还想上……就承认你是变态。」"
+			CALL MESSAGE_BOX,@"「……%SELF_CALL()%不逃。只是不许笑%SELF_CALL()%的腰，酸死了。」"
+		ELSE
+			CALL MESSAGE_BOX,@"「喂，孕肚都出来了你还叫%SELF_CALL()%。有意见吗？有意见%SELF_CALL()%也还是要揍床板。」"
+		ENDIF
+	CASE "妊娠性事"
+		IF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……%SELF_CALL()%好容易累哦。%MASTER_CALL()%，抱紧点，%SELF_CALL()%要耍赖了。」"
+		ELSE
+			CALL MESSAGE_BOX,@"「怀着孕你也好意思折腾%SELF_CALL()%？……哼，%SELF_CALL()%会骂你的。」"
+		ENDIF
+	CASE "妊娠调教谨慎开场"
+		IF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／隶属＃
+			CALL MESSAGE_BOX,@"「怀着还要给你挤奶是牧规啦……但%MASTER_CALL()%，%SELF_CALL()%的肚子是两个人的！你手轻点，%SELF_CALL()%会少骂你两句！」"
+		ELSEIF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「喂……%SELF_CALL()%会疼自己，也疼小不点。你要弄就轻点、短点，%SELF_CALL()%不跟你算旧账，好不好嘛。」"
+		ELSEIF ＃陷落状态／陷落以上＃
+			CALL MESSAGE_BOX,@"「……行，你赢。%SELF_CALL()%不跑。就一句：别拿肚子开涮，%SELF_CALL()%会哭的。」"
+		ELSEIF ＃陷落状态／屈服以上＃
+			CALL MESSAGE_BOX,@"「……%SELF_CALL()%不嘴硬了。你轻点。里头的……%SELF_CALL()%会怕。」"
+		ELSE
+			CALL MESSAGE_BOX,@"「都这样了还拉来？行……你行。记得轻点，不然%SELF_CALL()%真的要踢人了哦。」"
+		ENDIF
+	ENDSELECT
+
 CASE "调教命令"
 	; 按调教命令与情境细分，因篇幅长故拆到另一函数。
 	; 主要解说写在那一侧。
@@ -958,9 +1000,17 @@ CASE "访问"
 		ENDIF
 	
 	CASE "自室分配"
-	
+		IF CFLAG:乳牛 || ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「单人房欸！%SELF_CALL()%要把玩偶摆一排……啊、不行？小气。」"
+		ELSE
+			CALL MESSAGE_BOX,@"「有锁吗？有锁%SELF_CALL()%才比较安心。……不然半夜被人摸进来怎么办。」"
+		ENDIF
 	CASE "宿舍分配"
-	
+		IF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「大通铺就大通铺。吵归吵，至少不无聊……你可别半夜溜进来吓%SELF_CALL()%。」"
+		ELSE
+			CALL MESSAGE_BOX,@"「和一堆人住？行啦……谁要是偷%SELF_CALL()%零食，%SELF_CALL()%会翻脸的。」"
+		ENDIF
 	ENDSELECT
 
 ; 可重复触发的事件用

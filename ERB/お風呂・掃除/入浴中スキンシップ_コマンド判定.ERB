@@ -14,12 +14,12 @@ IF !PLAYER_PENIS
 	;処女結界破壊は基本調教だけ（キャンセル処理がめんどい）
 ELSEIF CSTR:状态／主人公的孩子 == "成长中"
 	CALL PRINTL_WORD_COLOR("无法对成长中的女儿下手。","灰")
-ELSEIF TALENT:处女结界
-	CALL PRINTL_WORD_COLOR("　因【处女结界】不能插入","灰")
 ELSEIF !BASE:PLAYER:精力
 	CALL PRINTL_WORD_COLOR,@"　%CALLNAME:PLAYER%的精力不足。","灰"
+ELSEIF TALENT:处女结界
+	PRINTL [ 4] 插入（仅后穴…【处女结界】无法膣内）
 ELSE
-	PRINTL [ 4] 插入
+	PRINTL [ 4] 插入（前穴或后穴）
 ENDIF
 PRINTL
 

@@ -1,4 +1,4 @@
-﻿
+
 ;ペニス快楽処理
 @PENIS_SENSITIVE_CALC
 
@@ -9,6 +9,10 @@ SIF PLAYER < 0
 SIF !TALENT:PLAYER:男性 && PLAYER
 	RETURN
 SIF !BASE:PLAYER:精力
+	RETURN
+
+;入浴「乳推洗背」：背中奉仕のみで主人公阴茎不累积射精（股间・素股系地文も出さない）
+SIF TFLAG:浴池洗背跳过阴茎快楽
 	RETURN
 
 ;時間経過なくても帰る
@@ -219,17 +223,30 @@ IF BASE:体力
 	FIX:1 = (FIX:2 *5 +ABL:精饮中毒 *3)
 ENDIF
 
-;フェラチオは奉仕精神+技巧で増加
-IF TEQUIP:口交
+;奉仕精神+技巧：口交／触手口はフル、深喉／触手深喉は負荷に合わせて低め
+IF TEQUIP:口交 || TEQUIP:触手口交
 	FIX:2 = LIMIT(ABL:奉仕精神 +ABL:技巧,0,15)
 	FIX:1 += (FIX:2 *5 +(ABL:奉仕精神 +ABL:技巧) *3)
+ELSEIF TEQUIP:深喉 || TEQUIP:触手深喉
+	FIX:2 = LIMIT(ABL:奉仕精神 +ABL:技巧,0,15)
+	FIX:1 += ((FIX:2 *5 +(ABL:奉仕精神 +ABL:技巧) *3) * 75 / 100)
 ENDIF
 FIX = 100 +FIX:1
 SOURCE:射精增加 *= FIX
 SOURCE:射精增加 /= 100
+;触手深喉は異形負荷で僅かに抑制
+SIF TEQUIP:触手深喉
+	TIMES SOURCE:射精增加, 0.92
 IF TALENT:口穴
 	TIMES SOURCE:射精增加,2.00
 	CALL SEX_GOOD_MOUSE_MESSAGE
+ENDIF
+
+;进阶口交：龟头责／真空吸吮で射精増加を追加（龟头责は奴隶側快感なし分、主人公のみ興奮が積み上がる）
+IF SELECTCOM == 132
+	TIMES SOURCE:射精增加, 1.30
+ELSEIF SELECTCOM == 133
+	TIMES SOURCE:射精增加, 1.35
 ENDIF
 
 

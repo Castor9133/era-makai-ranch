@@ -1,4 +1,4 @@
-﻿
+
 ; 参考了无口口上。
 ; 概念：「嘴硬的傲娇少女」
 ; 基于原创「彩华」口上去除固有名等改编。
@@ -420,6 +420,9 @@ CASE "舔舐耳"
 CASE "舔舐腋"
 CASE "舔舐脸"
 
+CASE "舔阴蒂","舔阴道","刺激龟头","真空口交","肛门指揉按摩","玩弄阴唇","G点指压","阴道指奸","肛门指奸","尿道口指弄","尿道口指奸","口内搅舌","压舌探喉"
+	CALL KOJO_SHARE_ADVANCED_TRAIN_DISPATCH(ARGS:1, ARGS:2)
+
 CASE "正常位","后背位","对面坐位","背面坐位","骑乘位","背面骑乘位","对面立位","背面立位","强制骑乘位"
 	CALL KOJO_GENERAL_強気1_TRAIN_INSIDE("Ｖ性交",ARGS:2)
 
@@ -438,13 +441,7 @@ CASE "口交"
 	ENDIF
 
 CASE "深喉"
-	IF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／恋慕以上＃
-		CALL MESSAGE_BOX,@"「嗯咕♥♥ 哼♥♥ 哈…哈♥ 不要粗暴对待%SWEET_MASTER_CALL()%♥♥♥」"
-	ELSEIF ＃陷落状态／屈服以上＃
-		CALL MESSAGE_BOX,@"「咕呜♥ 哼♥ 扑哈♥ 这太过分了！ 咕呜呜呜呜呜♥ 」"
-	ELSE
-		CALL MESSAGE_BOX,@"「嗯嗯！　咕！　嗯呜！ 哈…哈…已经够了！　咕～～！"
-	ENDIF
+	CALL KOJO_SHARE_ADVANCED_TRAIN_DISPATCH("深喉", ARGS:2)
 
 CASE "乳交"
 CASE "强制乳交"

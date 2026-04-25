@@ -1,4 +1,4 @@
-﻿
+
 ;奉仕可能状態判定
 @TRAIN_SERVICE_JUDGE
 
@@ -69,6 +69,10 @@ ENDIF
 
 ;挿入解除→装備整理
 VARSET TEQUIP,0,30,60
+TEQUIP:Ｖ指插入中 = 0
+TEQUIP:Ａ指插入中 = 0
+TEQUIP:口内搅舌中 = 0
+TEQUIP:压舌探喉中 = 0
 CALL TEQUIP_ADJUST
 
 

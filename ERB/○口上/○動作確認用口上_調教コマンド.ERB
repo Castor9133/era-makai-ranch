@@ -1,4 +1,4 @@
-﻿
+
 ;动作确认用口上（调教指令）
 ;真的是调试专用，几乎没有色情内容。
 ;只有这套口上会走「把候选全部显示出来」的处理。
@@ -190,6 +190,9 @@ CASE "深喉"
 		CALL MESSAGE_BOX,@"「test_调教指令【深喉】持续中的台词。」"
 		CALL MESSAGE_BOX,@"「test_虽有口枷判定，但本句由例外分支仍会显示（说明用）。」"
 	ENDSELECT
+
+CASE "舔阴蒂","舔阴道","刺激龟头","真空口交","肛门指揉按摩","玩弄阴唇","G点指压","阴道指奸","肛门指奸","尿道口指弄","尿道口指奸","口内搅舌","压舌探喉"
+	CALL KOJO_SHARE_ADVANCED_TRAIN_DISPATCH(ARGS:1, ARGS:2)
 
 CASE "乳交"
 	SELECTCASE ARGS:2

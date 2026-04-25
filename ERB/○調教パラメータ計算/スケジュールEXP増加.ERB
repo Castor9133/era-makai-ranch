@@ -83,6 +83,9 @@ SIF ARGS == "清洁" && CFLAG:日程执行次数
 CALL RANDOM_FIX(EXPUP,5,ARGS)
 EXPUP += FIX
 
+;身份铭牌「加成词条」：劳作语境（事务系 EXP）
+CALL IDENTITY_TAG_SCHEDULE_EXP_LABOR_BOOST(ARGS)
+
 
 
 ;EXP増加量表示
@@ -138,6 +141,9 @@ IF ARGS == "百合调教经验"
 ELSE
 	EP_GAIN += ABL:ARGS * 10
 ENDIF
+
+;身份铭牌「加成词条」：劳作／日常语境（奴隶 EP 成长）
+CALL IDENTITY_TAG_EP_GAIN_BOOST(ARGS)
 
 ;学习素质影响（与作业EXP一致）
 SIF TALENT:学得快

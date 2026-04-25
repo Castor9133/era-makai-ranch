@@ -7,6 +7,8 @@ FINDCHARA CFLAG:ID,CFLAG:0:调教对象ID
 SIF RESULT <= 0
 	RETURN
 TARGET = RESULT
+CFLAG:本场景包茎口交前戏已消费 = 0
+TFLAG:包茎口上待播 = 0
 
 ;母乳体質にしたとき自動スケジュールを割り振るために使う
 TFLAG:调教前母乳体质 = MARK:母乳体质
@@ -137,6 +139,14 @@ ELSE
 	PRINTFORMLC [900] 调教结束（剩余时间：{TFLAG:剩余时间}）
 ENDIF
 PRINTLC [801] 提示
+IF ITEM:519
+	PRINTL
+	IF TFLAG:镜子PLAY
+		CALL PRINTLC_WORD_COLOR,"[453] 关闭镜子PLAY","桃"
+	ELSE
+		PRINTLC [453] 开启镜子PLAY（对镜羞耻）
+	ENDIF
+ENDIF
 
 
 
@@ -165,6 +175,18 @@ CASE 800
 	RETURN 1
 CASE 801
 	CALL BROWSE_HINT("调教")
+CASE 453
+	IF !ITEM:519
+		PRINTFORMW 尚未购入调教立镜。（成人商店·调教用品页）
+		RETURN 1
+	ELSEIF TFLAG:镜子PLAY
+		TFLAG:镜子PLAY = 0
+		PRINTFORMW 已关闭镜子PLAY。
+	ELSE
+		TFLAG:镜子PLAY = 1
+		PRINTFORMW 已开启镜子PLAY：自慰／公开自慰／带尿道塞的放尿／口交将追加对镜羞耻加成。
+	ENDIF
+	RETURN 1
 CASE 900
 	PRINTL 还有时间，要结束调教吗？
 	CALL ASK_YN
@@ -234,6 +256,9 @@ CALL ALL_TEQUIP_REMOVE
 CALL TRAIN_BIND_RUN(0,1)
 VARSET TFLAG,0,30,100
 TFLAG:刻印入手 = 0
+TFLAG:镜子PLAY = 0
+SIF TARGET > 0
+	CFLAG:本场景包茎口交前戏已消费 = 0
 PRINTW 调教结束了…
 CALL MANYL(3)
 

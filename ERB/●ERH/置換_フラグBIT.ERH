@@ -53,6 +53,7 @@
 #DEFINE ＃全员Ｃ弱点＃			FLAG:随机角色通用弱点部位BIT,2
 #DEFINE ＃全员Ｖ弱点＃			FLAG:随机角色通用弱点部位BIT,3
 #DEFINE ＃全员Ｎ弱点＃			FLAG:随机角色通用弱点部位BIT,4
+#DEFINE ＃全员Ｍ弱点＃			FLAG:随机角色通用弱点部位BIT,5
 
 
 ;回数制限撤廃BIT

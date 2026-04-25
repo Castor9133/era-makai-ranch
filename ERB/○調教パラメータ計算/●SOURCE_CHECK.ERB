@@ -1,7 +1,9 @@
-﻿
+
 ;感度・開発度チェック
 ;この関数直接呼べるのでTRAINじゃない責めからもここを通す
 @SOURCE_CHECK
+
+CALL FINGER_TEQUIP_CHAIN_CLEAR
 
 ;調教中で経過時間ない場合汚れ追加・汚れ交換だけして帰る
 IF !SOURCE:已用时间 && TFLAG:调教中
@@ -62,6 +64,9 @@ CALL INSART_ADD_PAIN
 
 ;性癖素质：SOURCE 倍率補正（挿入拡張痛み反映後）
 CALL FETISH_TALENT_SOURCE_BOOST
+
+;身份铭牌「加成词条」：调教语境（快感系 SOURCE）
+CALL IDENTITY_TAG_TRAIN_SOURCE_BOOST
 
 ;快楽倍率計算
 CALL SENSITIVE_FIX_CALC

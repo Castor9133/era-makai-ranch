@@ -166,6 +166,12 @@ IF !TALENT:无接吻经验
 ELSE
 	CALL PRINTL_WORD_COLOR("　初经验对象・经验人数","灰")
 ENDIF
+SIF TALENT:男性
+	PRINTL
+SIF TALENT:男性
+	PRINT [ 5] 【包茎】（首次口交褪包皮叙事；无额外数值影响）
+SIF TALENT:男性
+	CALL PRINT_ONOFF(TALENT:包茎,1)
 
 
 

@@ -37,6 +37,10 @@ CASE "童贞","Ａ童贞","Ｍ童贞","无乳交经验","无接吻经验"
 	INVERTBIT TALENT:ARGS,0
 	CALL SELECT_VIRGIN_RESET_PLAYER
 
+CASE "包茎"
+	SIF TALENT:男性
+		INVERTBIT TALENT:包茎,0
+
 ;経験人数無効
 ENDSELECT
 

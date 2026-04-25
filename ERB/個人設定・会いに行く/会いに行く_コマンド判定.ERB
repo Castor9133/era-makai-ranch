@@ -117,6 +117,20 @@ ELSE
 	PRINTL [11] 接吻
 ENDIF
 
+IF !PLAYER_PENIS
+	CALL PRINTL_WORD_COLOR("　主人公无阴茎时无法选择口内侍奉","灰")
+ELSEIF BASE:0:精力 <= 0
+	CALL PRINTL_WORD_COLOR,@"　%CALLNAME:0%精力不足","灰"
+ELSEIF CFLAG:时刻限制／侍奉口爆
+	CALL PRINTL_WORD_COLOR("　此时间带已亲热过","灰")
+ELSEIF !＃陷落状态／恋慕以上＃ && !＃陷落状态／隶属＃
+	CALL PRINTL_WORD_COLOR("　需奴隶陷落状态已达恋慕或隶属","灰")
+ELSEIF !EQUIP:装备中ID／内衣上装 || !EQUIP:装备中ID／内衣下装
+	CALL PRINTL_WORD_COLOR("　需奴隶事先穿好上下内衣（街市购买成人内衣后，于更衣中装备上下装）","灰")
+ELSE
+	PRINTL [18] 亲热一下（手口足侍弄，结尾可选口内射精或忍住；情趣内衣／精饮滋补）
+ENDIF
+
 ;母乳体質でなくても授乳要求は一応できる
 IF CFLAG:时刻限制／授乳
 	CALL PRINTL_WORD_COLOR("　此时间已经提出哺乳请求","灰")

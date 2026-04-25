@@ -1,0 +1,40 @@
+
+;持有「调教立镜」且调教中开启镜子PLAY时：自慰／放尿／口交等追加羞耻SOURCE（667羞辱兴奋额外倍率）
+@SOURCE_MIRROR_PLAY_APPLY(ARGS)
+
+SIF !TFLAG:调教中
+	RETURN
+SIF ITEM:519 <= 0 || !TFLAG:镜子PLAY
+	RETURN
+
+SELECTCASE ARGS
+CASE "口交"
+	LOCAL = 950
+	LOCAL:1 = 520
+CASE "自慰"
+	LOCAL = 880
+	LOCAL:1 = 480
+CASE "公开自慰"
+	LOCAL = 1180
+	LOCAL:1 = 620
+CASE "放尿"
+	LOCAL = 900
+	LOCAL:1 = 550
+CASEELSE
+	RETURN
+ENDSELECT
+
+SOURCE:耻辱 += LOCAL
+SOURCE:屈辱 += LOCAL:1
+SOURCE:不洁 += LOCAL:1 / 2
+
+SIF ARGS == "口交"
+	SOURCE:Ｍ快感／主人公刺激 += 380
+
+IF TALENT:羞辱兴奋
+	TIMES SOURCE:耻辱, 1.10
+	TIMES SOURCE:屈辱, 1.08
+	SIF ARGS == "口交" && SOURCE:Ｍ快感／主人公刺激 > 0
+		TIMES SOURCE:Ｍ快感／主人公刺激, 1.08
+ENDIF
+

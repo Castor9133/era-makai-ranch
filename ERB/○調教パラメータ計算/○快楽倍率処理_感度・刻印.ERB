@@ -43,6 +43,13 @@ IF TFLAG:搾乳刺激
 	SENSITIVE_FIX:4 += FIX
 ENDIF
 
+;Ｍ→口腔・深喉／触手口（Ｃの固定上乗せより弱め）
+IF TEQUIP:口交 || TEQUIP:触手口交
+	SENSITIVE_FIX:5 += 28
+ELSEIF TEQUIP:深喉 || TEQUIP:触手深喉
+	SENSITIVE_FIX:5 += 38
+ENDIF
+
 
 
 ;ここから先PLAYER=あなたの場合のみ
@@ -138,5 +145,9 @@ ENDIF
 
 ;乳房と乳首はここまで倍率補正同じ
 MARK_FIX:4 = MARK_FIX:1
+
+;Ｍ（口腔）
+SIF MARK:口便器
+	MARK_FIX:5 += 30
 
 

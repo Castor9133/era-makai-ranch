@@ -1,0 +1,407 @@
+
+;==========================================
+; 拜访・[18] 亲热一下（手→口→足→结尾可选口内射精或忍住）
+; 独立地文：不经过 KOJO_PRINT／调教 SOURCE_CHECK；须恋慕或隶属、且奴隶上下内衣已装备（街市购入后更衣）见 GATE
+;==========================================
+
+@VISIT_SERVE_CLIMAX_GATE
+#FUNCTION
+SIF !PLAYER_PENIS
+	RETURNF 0
+SIF BASE:0:精力 <= 0
+	RETURNF 0
+SIF CFLAG:时刻限制／侍奉口爆
+	RETURNF 0
+SIF !＃陷落状态／恋慕以上＃ && !＃陷落状态／隶属＃
+	RETURNF 0
+SIF !EQUIP:装备中ID／内衣上装 || !EQUIP:装备中ID／内衣下装
+	RETURNF 0
+RETURNF 1
+
+
+
+@VISIT_SERVE_CLIMAX_GRP
+#FUNCTION
+IF GROUPMATCH(CSTR:使用口上,"慇懃口上1","女仆口上1","大和抚子口上1","虔诚口上1","妹系口上1","天然口上1","人妻口上1")
+	RETURNF 1
+ELSEIF GROUPMATCH(CSTR:使用口上,"強気口上1","姉御肌口上1","ボーイッシュ口上1")
+	RETURNF 2
+ELSEIF GROUPMATCH(CSTR:使用口上,"生真面目口上1","堅物口上1","気品口上1")
+	RETURNF 3
+ELSEIF GROUPMATCH(CSTR:使用口上,"懦弱口上1","非敬語幼め口上1")
+	RETURNF 4
+ELSEIF CSTR:使用口上 == "知心口上1"
+	RETURNF 5
+ELSEIF GROUPMATCH(CSTR:使用口上,"仇恨口上1","愚忠口上1")
+	RETURNF 6
+ELSEIF CSTR:使用口上 == "無口口上1"
+	RETURNF 7
+ELSE
+	RETURNF 8
+ENDIF
+
+
+
+; 答应时的短反应（性格）：具体动作与声气，避免空泛隐喻
+@VISIT_SERVE_CLIMAX_AGREE_TX
+#DIM GRP
+GRP = VISIT_SERVE_CLIMAX_GRP()
+SELECTCASE GRP
+CASE 1
+	PRINTFORML %CALLNAME%把袖口卷到小臂，指尖在毛巾边抹干水汽才探向你腰带：「……按您说的顺序。失礼了。」
+	PRINTFORML 她跪定时膝盖先找稳重心，吐息仍轻，耳根却先一步热起来。
+CASE 2
+	PRINTFORML %CALLNAME%嗤笑一声，掌心已经贴上：「规矩写这么细——行啊，看你第几步先绷不住。」
+	PRINTFORML 她拇指腹摁住铃口下缘，力道像挑衅，指节却因收力而发白。
+CASE 3
+	PRINTFORML 「……收到。手→口→足，收尾按您方才点定的那档。」%CALLNAME%复述得像报工序，笔尖似的视线却在你小腹上划了一下。
+	PRINTFORML 她指尖在太阳穴按了按，低声补一句：「……该咽的一滴不漏；该收住的……也不许我失手。」
+CASE 4
+	PRINTFORML 「……真的可以吗……？」%CALLNAME%指尖碰到就先缩半寸，又怯怯握住：「那、那我……会尽量……不弄脏……」
+	PRINTFORML 她睫毛抖得厉害，却把掌心完整地贴上去，像把勇气垫在你皮肤下面。
+CASE 5
+	PRINTFORML %CALLNAME%没急着碰，先把手覆在你手背上停一拍：「……心跳快了。」这才滑下去，掌心温度贴着你的脉走。
+	PRINTFORML 她抬眼确认你的表情，轻声道：「……你刚选的那条路……我照办到底。」
+CASE 6
+	IF CSTR:使用口上 == "愚忠口上1"
+		PRINTFORML 「……奴都听见了。」%CALLNAME%应声俯身，先把手心焐热了才敢握住：「方才您点定的那条路……奴一定侍到底，不敢有半分懈怠。」
+		PRINTFORML 她不敢抬眼直视，只把指腹贴得稳当；唇线抿得发白，像把每一句吩咐都嚼碎了咽下去。
+	ELSE
+		PRINTFORML 「……想让我来当你的泄欲工具吗？」%CALLNAME%咬住唇，仍是握住，嗓音发冷：「行——顺序你写好了，尽头怎样你也早选完了。」
+		PRINTFORML 她笑得刻薄，指甲却掐进自己膝里，像忍着不把那句骂出来。
+	ENDIF
+CASE 7
+	PRINTFORML 「…………」%CALLNAME%只点头，喉间轻轻「嗯」了一声。
+	PRINTFORML 她把手心焐在你腹侧停住，像在默数节拍，指节才一寸寸往下滑。
+CASEELSE
+	PRINTFORML %CALLNAME%有些结巴地重复了一遍「手、口、脚……最后……」，说到一半自己先红了脸。
+	PRINTFORML 她深吸一口气，把掌心贴上：「……我会……认真的。」
+ENDSELECT
+PRINTW
+RETURN
+
+
+
+@VISIT_SERVE_CLIMAX_VISIT
+
+SIF !VISIT_SERVE_CLIMAX_GATE()
+	RETURN
+
+TFLAG:侍奉口爆不射精 = 0
+CFLAG:本场景包茎口交前戏已消费 = 0
+TFLAG:包茎口上待播 = 0
+
+	PRINTFORML 你说清顺序：掌根与指腹先把你摸到脉跳顶在皮里，舌再贴着铃口与系带慢慢拖；脚跟上去，足弓与趾腹碾着茎侧和囊缘，趾根仍收着力道，像在逗你又像在伺候。
+	PRINTFORML 推到极限时，口内射精还是由你忍住——最后一步再定；她听完，目光在你腰际停了一拍，咽了一下，点头。
+	PRINTL
+	PRINTL [0] 简洁推进
+	PRINTL [1] 分段详写（性格差异较大）
+	PRINTL [99] 作罢
+BINPUT
+SELECTCASE RESULT
+CASE 99
+	RETURN
+CASE 1
+	LOCAL:10 = 1
+CASEELSE
+	LOCAL:10 = 0
+ENDSELECT
+
+PRINTL
+PRINTL 最后一步由你定夺——
+PRINTL [0] 口内射精，让她咽下（精饮滋补）
+PRINTL [1] 忍住在她唇边收住（不射精）
+BINPUT
+SELECTCASE RESULT
+CASE 1
+	TFLAG:侍奉口爆不射精 = 1
+CASEELSE
+	TFLAG:侍奉口爆不射精 = 0
+ENDSELECT
+
+PRINTL
+CALL VISIT_SERVE_CLIMAX_AGREE_TX
+
+IF PHIMOSIS_PLAYER_HAS_PHIMOSIS && !CFLAG:本场景包茎口交前戏已消费
+	CALL PHIMOSIS_FIRST_ORAL_NARRATIVE(2)
+	CALL PHIMOSIS_FIRST_ORAL_VISIT_KOJO_AND_FINISH
+ENDIF
+CALL VISIT_SERVE_CLIMAX_RUN(LOCAL:10)
+RETURN
+
+
+
+@VISIT_SERVE_CLIMAX_RUN(ARG)
+#DIM GRP
+GRP = VISIT_SERVE_CLIMAX_GRP()
+SELECTCASE GRP
+CASE 1
+	CALL VISIT_SERVE_TX_GRP1(ARG)
+CASE 2
+	CALL VISIT_SERVE_TX_GRP2(ARG)
+CASE 3
+	CALL VISIT_SERVE_TX_GRP3(ARG)
+CASE 4
+	CALL VISIT_SERVE_TX_GRP4(ARG)
+CASE 5
+	CALL VISIT_SERVE_TX_GRP5(ARG)
+CASE 6
+	CALL VISIT_SERVE_TX_GRP6(ARG)
+CASE 7
+	CALL VISIT_SERVE_TX_GRP7(ARG)
+CASEELSE
+	CALL VISIT_SERVE_TX_GRP8(ARG)
+ENDSELECT
+
+CALL VISIT_SERVE_CLIMAX_FINISH
+RETURN 1
+
+
+
+@VISIT_SERVE_CLIMAX_FINISH
+#DIM ADD_HP
+#DIM ADD_SP
+#DIM ADD_EP
+#DIM ADD_MP
+
+ADD_HP = MAXBASE:体力 / 8
+ADD_SP = MAXBASE:气力 / 7
+ADD_EP = MAXBASE:灵力 / 12
+ADD_MP = MAXBASE:魔力 / 12
+ADD_HP = LIMIT(ADD_HP, 80, MAXBASE:体力)
+ADD_SP = LIMIT(ADD_SP, 80, MAXBASE:气力)
+ADD_EP = LIMIT(ADD_EP, 40, MAXBASE:灵力)
+ADD_MP = LIMIT(ADD_MP, 40, MAXBASE:魔力)
+
+BASE:体力 = LIMIT(BASE:体力 + ADD_HP, 0, MAXBASE:体力)
+BASE:气力 = LIMIT(BASE:气力 + ADD_SP, 0, MAXBASE:气力)
+BASE:灵力 = LIMIT(BASE:灵力 + ADD_EP, 0, MAXBASE:灵力)
+BASE:魔力 = LIMIT(BASE:魔力 + ADD_MP, 0, MAXBASE:魔力)
+
+PRINTL
+PRINTFORML 她还穿着那身内衣——蕾丝边勒进肉里，刚才一举一动都落在你眼底；她无意识地揪了下摆，像想把那点羞耻藏回绳缝里。
+IF TFLAG:侍奉口爆不射精
+	LOCAL:90 = LIMIT(MAXBASE:0:精力 / 90, 50, 450)
+	BASE:0:精力 = LIMIT(BASE:0:精力 - LOCAL:90, 0, MAXBASE:0:精力)
+	CALL MIND_BASE_DIRECT_PLUS("好感度", 32)
+	CALL MIND_BASE_DIRECT_MINUS("尊严", 20)
+	PRINTFORML 铃口抵着她湿热的唇缝突突直跳，她仍含着前端吮得发酸，却抬眼等你一声收——你硬生生按住腰，把要冲口的那股压了回去。
+	PRINTFORML %CALLNAME%喉间闷哼半声，舌尖还恋恋地刮过铃口下缘；手背蹭去自己唇角的水痕，替你理衣襟时指尖却还在抖。
+ELSE
+	LOCAL:90 = LIMIT(MAXBASE:0:精力 / 35, 150, 1200)
+	BASE:0:精力 = LIMIT(BASE:0:精力 - LOCAL:90, 0, MAXBASE:0:精力)
+	CALL MIND_BASE_DIRECT_PLUS("好感度", 45)
+	CALL MIND_BASE_DIRECT_MINUS("尊严", 25)
+	PRINTFORML 精液的热度贴上舌面时她闭了闭眼，喉肌两下便咽净；唇角只剩一道白痕，被她迅速舔去。
+	PRINTFORML %CALLNAME%呼气里混着咸腥与皂粉似的余味，额发贴在鬓角，替你理平衣襟下摆时指尖还有些颤。
+ENDIF
+
+CFLAG:时刻限制／侍奉口爆 = 1
+CFLAG:时刻限制／Ｈ = 1
+TFLAG:亲密互动次数 ++
+TFLAG:侍奉口爆不射精 = 0
+
+PRINTFORML （%CALLNAME%：体力＋{ADD_HP}　气力＋{ADD_SP}　灵力＋{ADD_EP}　魔力＋{ADD_MP}）
+PRINTFORMW （%CALLNAME:0%：精力－{LOCAL:90}）
+PRINTW
+RETURN 1
+
+
+
+;--------------------------------------------------
+; ① 奉仕・大和抚子系：恭顺、措辞克制、把「侍奉」说成献给主人的礼节
+@VISIT_SERVE_TX_GRP1(ARG)
+IF ARG
+	PRINTFORMW %CALLNAME%先屈膝在你腿间，掌心蘸了薄汗却仍稳——像在做礼仪练习一样，指节顺着柱身起伏，轻重都报数似的交代给你听。
+	PRINTFORMW 用手掌把你煨得发烫之后，轮到口唇侍奉：她跪得更端正，舌尖只贴着铃口轻轻描圈，时不时抬眼觑你的眉梢；唾液牵丝时她便匆匆拿手背抹去，生怕蹭脏你的衣摆。
+	PRINTFORMW 足尖隔着袜布贴上茎侧时她颤了一下，却仍把脚踝的角度调到「刚好讨好」——趾腹揉推的节奏像在揉面团，羞耻被她压成细微的喘息。
+	IF TFLAG:侍奉口爆不射精
+		PRINTFORMW 最后一刻你收住腰，铃口在她唇瓣间猛跳两下便哑火；她还含着前端不敢深吮，只抬眼小声问：「……这样……也算听您话了……？」
+	ELSE
+		PRINTFORMW 深喉她还不敢承，却仍张大唇瓣把龟头整个含住；脉跳一下下撞在舌面上，她呜咽着咽下，一滴不漏，眼角泛红却也弯起驯顺的弧度——像在证明「主人的味道」也已变成她的养分。
+	ENDIF
+ELSE
+	IF TFLAG:侍奉口爆不射精
+		PRINTFORMW %CALLNAME%用手口把你推到边缘，足尖也蹭过；最后铃口抵在她唇间被你收住——她含着前端轻轻点头，像在确认「收到了」。
+	ELSE
+		PRINTFORMW %CALLNAME%用手把你伺候到发烫，再用嘴细致裹住前端，最后用足尖轻轻蹭弄……最后在你绷紧时她把精液全接进嘴里咽下。
+	ENDIF
+ENDIF
+RETURN 1
+
+
+
+;--------------------------------------------------
+; ② 強気・姐御・ボーイッシュ：挑衅与逞强，生理狼狈也要嘴硬
+@VISIT_SERVE_TX_GRP2(ARG)
+IF ARG
+	PRINTFORMW 「哈……♥」她叼着笑意握住你，力道故意忽轻忽重，像在赛车换挡；拇指摁住铃口那一下，她盯着你眯眼：「别先喊不行。」
+	PRINTFORMW 低头含住时她仍不服输，舌尖却老实——喉结滚动两下就呛出泪花，她抬手粗暴抹掉，含糊骂了句只有水声听得懂。
+	PRINTFORMW 脱袜太麻烦，她索性用靴里蒸得发热的足弓夹住茎身，趾根一夹一放像挑衅：「抖成这样……丑死了……♥」汗味与热度却让她自己耳尖先红。
+	IF TFLAG:侍奉口爆不射精
+		PRINTFORMW 你硬憋回去那下，她瞪圆了眼，舌尖故意在铃口下一挑：「……憋着是吧……♥ 行，算你狠……下次别怪我……♥」
+	ELSE
+		PRINTFORMW 最后一股射进来时她瞪你，腮帮鼓起像含了火；咽下去那瞬她喉管一滚，眼角水光一闪，偏要咧嘴：「……满意没啊，混蛋……♥」吐息却软得不像话。
+	ENDIF
+ELSE
+	IF TFLAG:侍奉口爆不射精
+		PRINTFORMW %CALLNAME%一边嘴硬一边把你撸到发白，最后一口卡在唇间没收；她喘着骂你变态，哈气却仍贴着柱身不放。
+	ELSE
+		PRINTFORMW %CALLNAME%一边嘴硬一边用手撸、用嘴裹、再用汗津津的足根夹弄；最后口爆时她瞪着你咽下，骂句都软成鼻音。
+	ENDIF
+ENDIF
+RETURN 1
+
+
+
+;--------------------------------------------------
+; ③ 生真面目・堅物・気品：冷静术语与步骤感，羞耻藏在体面里
+@VISIT_SERVE_TX_GRP3(ARG)
+IF ARG
+	PRINTFORMW 她先在心里过了一遍「步骤」——掌心温度、润滑是否足够、角度是否会造成皮肤牵拉；掌缘推压时像在做示范，呼吸却因你的反应乱了一格。
+	PRINTFORMW 口腔奉仕被她描述成「湿润摩擦与负压控制」——话还没说完，舌尖已经老实描开冠状沟；她皱眉压抑呕反射，像在实验室里压抑变量。
+	PRINTFORMW 足交阶段她坚持「足背血管分布较疏」，却把趾腹贴得太久，足弓发抖；她迅速收声，把颤抖归因于「肌肉疲劳」。
+	IF TFLAG:侍奉口爆不射精
+		PRINTFORMW 临界前你收住，她用手背抵着下颌仍张着嘴，铃口在唇间突突空跳；半晌才推眼镜似的说：「……未释放样本……我记下了……♥」耳尖却红透。
+	ELSE
+		PRINTFORMW 射精临界时她用手背抵住下颌固定张开角度，精液灌入时她喉音发涩仍完整吞咽；抬头像要把呼吸理顺似的说：「……残留量……我会自行评估……♥」耳尖却红透。
+	ENDIF
+ELSE
+	IF TFLAG:侍奉口爆不射精
+		PRINTFORMW %CALLNAME%像执行流程一样用手、口、足依次刺激；最后关头你收住，她抿唇点头，只剩耳朵出卖了她。
+	ELSE
+		PRINTFORMW %CALLNAME%像执行流程一样用手、口、足依次刺激；最后口内射精时她仍旧体面地咽下，只剩耳朵出卖了她。
+	ENDIF
+ENDIF
+RETURN 1
+
+
+
+;--------------------------------------------------
+; ④ 懦弱・幼め：胆怯、撒娇、越是怕越想挨近
+@VISIT_SERVE_TX_GRP4(ARG)
+IF ARG
+	PRINTFORMW 「……可以吗……？」她指尖碰到就先缩一下，又怯生生握住；每一次抚弄都像在求你点头，掌心汗把你的热度晕开。
+	PRINTFORMW 含进去时她睫毛抖得厉害，呜呜两声却不敢退；舌面软软贴着，像在讨好也像在求救——你一扶她的后脑，她就乖乖加深。
+	PRINTFORMW 足尖探过来时她差点哭出来：「……会不会……很奇怪……？」却还是用柔软的脚心贴上，轻轻磨蹭，像在蹭安全感。
+	IF TFLAG:侍奉口爆不射精
+		PRINTFORMW 你收住那刻她整张脸皱成一团，却不敢吮；眼泪掉下来，仍抓紧你的衣角小声说：「……没、没让您射出来……我、我会再努力……♥」
+	ELSE
+		PRINTFORMW 射精那瞬她整张脸皱起却不敢吐；咕嘟咽下后眼泪掉下来，她却抓紧你的衣角笑：「……甜甜的……也有点……腥……可是……是您……♥」
+	ENDIF
+ELSE
+	IF TFLAG:侍奉口爆不射精
+		PRINTFORMW %CALLNAME%怯生生侍奉到唇边停住；你没收，她哭着点头却仍抓紧你不放。
+	ELSE
+		PRINTFORMW %CALLNAME%怯生生用手、小口与脚心依次侍奉；射在嘴里时她哭着咽下，却仍抓紧你不放。
+	ENDIF
+ENDIF
+RETURN 1
+
+
+
+;--------------------------------------------------
+; ⑤ 知心：读空气、低声共谋感
+@VISIT_SERVE_TX_GRP5(ARG)
+IF ARG
+	PRINTFORMW 她没急着碰，先把手覆在你手背上停一拍——「心跳……快了。」这才滑下去，掌心温度像顺着你的脉搏走。
+	PRINTFORMW 舌尖找到你最敏感那点时她轻轻「嗯」了一声，像在附和你的心跳；唇齿之间的水声被她刻意压低，只剩彼此懂的气氛。
+	PRINTFORMW 足的触碰更像嬉戏：趾尖沿着大腿内侧划过，停在将要失控的边缘；她歪头看你眼神：「……还不给吗？」
+	IF TFLAG:侍奉口爆不射精
+		PRINTFORMW 你收住那瞬她愣了半拍，随即笑出声，指腹擦过你小腹：「……坏心眼……逗我白忙……♥ 行，我记仇了……♥」
+	ELSE
+		PRINTFORMW 最后在口中结束时她一声不吭咽下，指腹擦过你小腹：「……我都收到了。」抬起眼时笑意浅得像共谋。
+	ENDIF
+ELSE
+	IF TFLAG:侍奉口爆不射精
+		PRINTFORMW %CALLNAME%静静把你撩到唇边；你没收，她抬眼低声笑：「……存着……下次连本带利……♥」
+	ELSE
+		PRINTFORMW %CALLNAME%静静用手、唇与足把你撩到极限；口爆后她抬眼低声说把你全都接住了。
+	ENDIF
+ENDIF
+RETURN 1
+
+
+
+;--------------------------------------------------
+; ⑥ 仇恨・愚忠：屈辱与顺从拧在一起，咀咒也像宣誓
+@VISIT_SERVE_TX_GRP6(ARG)
+IF ARG
+	PRINTFORMW 「……又想让我当你的泄欲工具？」她咬住唇瓣仍是握住——力道像报复，却把热度全盘接下。
+	PRINTFORMW 口腔像被迫敞开的车间大门；她干呕了一声仍加深，眼角血丝与恨意一起泛上来。
+	PRINTFORMW 足尖碾上来时她在笑，笑得发冷：「……踩成这样你还硬……有病……♥」
+	IF TFLAG:侍奉口爆不射精
+		IF CSTR:使用口上 == "愚忠口上1"
+			PRINTFORMW 你收住那瞬她僵了僵，嗓音发涩：「……是奴僭越……您想留到何时……都依您……♥」指甲却仍抠着你腰侧不肯松。
+		ELSE
+			PRINTFORMW 你收住那瞬她愣住，随即冷笑：「……耍我……？♥ 行……你最好记住这一下……♥」指甲却仍抠着你腰侧不肯松。
+		ENDIF
+	ELSE
+		IF CSTR:使用口上 == "愚忠口上1"
+			PRINTFORMW 精液强行灌入喉间那刻她指甲抠进你腰侧；咽下后喘得发颤，仍低声补：「……全、全接住了……主人……♥」
+		ELSE
+			PRINTFORMW 精液强行灌入喉间那刻她指甲抠进你腰侧；咽下后喘着骂：「……畜生……♥」唇角却发抖，不知是恨是烫。
+		ENDIF
+	ENDIF
+ELSE
+	IF TFLAG:侍奉口爆不射精
+		IF CSTR:使用口上 == "愚忠口上1"
+			PRINTFORMW %CALLNAME%顺从地侍奉到唇边停住；你没收，她把额头抵在你腿侧闷声咕哝，手却仍环着不肯退。
+		ELSE
+			PRINTFORMW %CALLNAME%冷笑着把你推到唇边；你没收，她啐声骂句却还把脸贴在大腿根不肯退。
+		ENDIF
+	ELSE
+		IF CSTR:使用口上 == "愚忠口上1"
+			PRINTFORMW %CALLNAME%用手、嘴与足把你推到极限；最后一注射进嘴里，她颤着咽下，唇角仍翕动像在默念「……遵命……」
+		ELSE
+			PRINTFORMW %CALLNAME%冷笑着用手、嘴与足把你推到极限；最后一注射进嘴里，她咒骂着咽下。
+		ENDIF
+	ENDIF
+ENDIF
+RETURN 1
+
+
+
+;--------------------------------------------------
+; ⑦ 無口：台词极少，舞台指示补足
+@VISIT_SERVE_TX_GRP7(ARG)
+IF ARG
+	PRINTFORMW 「…………」她只摇头表示听见，掌心贴上时抖了一下，却没退。
+	PRINTFORMW 唇舌代替语言——吞咽声、鼻塞式的呼吸，一次次加深；眼角沁水。
+	PRINTFORMW 足趾蜷缩着夹住，袜边勒出印；她不看你的脸，只看那一处颤抖。
+	IF TFLAG:侍奉口爆不射精
+		PRINTFORMW 你收住那瞬她喉间空滚了一下，什么也没咽下；良久指尖在你膝头敲两下——像在问「……这样……算吗……」
+	ELSE
+		PRINTFORMW 射精时她喉结滚动两下，咽下；良久才哑着吐出一口气，指尖在你膝头敲了敲——像是「结束了」的信号。
+	ENDIF
+ELSE
+	IF TFLAG:侍奉口爆不射精
+		PRINTFORMW %CALLNAME%沉默侍奉到唇边停住；你没收，她只喘着，指尖在膝头敲了敲。
+	ELSE
+		PRINTFORMW %CALLNAME%沉默着用手、口与足侍奉到底；射在嘴里时她无声咽下，只剩喘息。
+	ENDIF
+ENDIF
+RETURN 1
+
+
+
+;--------------------------------------------------
+; ⑧ 兜底：其余口上／未匹配性格
+@VISIT_SERVE_TX_GRP8(ARG)
+IF ARG
+	PRINTFORMW %CALLNAME%有些笨拙却认真地用手把你带上热度，指腹蹭过铃口时她自己先红了耳朵。
+	PRINTFORMW 轮到舌尖时她小声吸气，含水似的一层层裹住；偶尔抬头被你目光捉住，就把脸埋得更低。
+	PRINTFORMW 足心的触感温热绵软，她小声问「会不会太重」，却仍顺着你的颤调整力道。
+	IF TFLAG:侍奉口爆不射精
+		PRINTFORMW 你收住那瞬她愣了愣，拿手背蹭嘴角，小声问：「……这样……你也会……舒服吗……♥」
+	ELSE
+		PRINTFORMW 最后在口中结束时她乖乖咽下，拿手背蹭嘴角：「……这样……你也会……舒服吗……♥」像是把羞涩与依赖一并吞进去。
+	ENDIF
+ELSE
+	IF TFLAG:侍奉口爆不射精
+		PRINTFORMW %CALLNAME%用手、嘴与足把你侍奉到唇边；你没收，她牵着手小声问舒不舒服。
+	ELSE
+		PRINTFORMW %CALLNAME%用手、嘴与足把你侍奉到射精，全部接在嘴里咽下；牵着手小声问你舒不舒服。
+	ENDIF
+ENDIF
+RETURN 1

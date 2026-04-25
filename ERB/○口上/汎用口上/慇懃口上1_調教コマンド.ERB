@@ -1,4 +1,4 @@
-﻿
+
 ;本想以过分恭敬的口吻为特征。
 ;结果有点像生真面目／气品口上的二番……
 
@@ -757,6 +757,9 @@ CASE "舔舐脸"
 		CALL MESSAGE_BOX,@"「嗨呜…请停下……呜呜…」"
 	ENDIF
 
+CASE "舔阴蒂","舔阴道","刺激龟头","真空口交","肛门指揉按摩","玩弄阴唇","G点指压","阴道指奸","肛门指奸","尿道口指弄","尿道口指奸","口内搅舌","压舌探喉"
+	CALL KOJO_SHARE_ADVANCED_TRAIN_DISPATCH(ARGS:1, ARGS:2)
+
 CASE "正常位","后背位","对面坐位","背面坐位","骑乘位","背面骑乘位","对面立位","背面立位","强制骑乘位"
 	CALL KOJO_GENERAL_慇懃用台词1_TRAIN_INSIDE("Ｖ性交",ARGS:2)
 
@@ -848,44 +851,7 @@ CASE "口交"
 	ENDSELECT
 
 CASE "深喉"
-	SELECTCASE ARGS:2
-	CASE "执行"
-		SIF SOURCE:Ｍ处女丧失
-			RETURN
-		IF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／恋慕以上＃
-			IF TFLAG:拘束BIT && TFLAG:眼罩 && TEQUIP:强制开口器
-				CALL MESSAGE_BOX,@"「ぅぶっ…！♥」\n（目隠し・拘束・開口具♥ 如今%SELF_CALL()%完全被当作自慰的工具对待了…♥♥）"
-			ELSE
-				CALL MESSAGE_BOX,@"「ぉごぉ…！♥」\n（あぁっ♥ イラマ責めっ♥ 快点用%PENIS_CALL()%来嗦嗦吧♥♥）"
-				CALL MESSAGE_BOX,@"「んほぁあ…♥」\n（はぁ…♥ %MASTER_CALL()%的%PENIS_CALL()%♥ 刚好贴合喉咙呢…♥）"
-				CALL MESSAGE_BOX,@"「んふぅ…ふぅ…♥」\n（はぅ…♥ 強引にされるのすき…♥）"
-				CALL MESSAGE_BOX,@"（%MASTER_CALL()%の気が咎めないよう、なるべく平気そうな顔で……\n　不，反而看起来痛苦更能激发虐待的欲望，您喜欢这样吗…？）"
-				SIF  ＃陷落状态／隶属＃
-					CALL MESSAGE_BOX,@"「んぶぅ♥……ふーっ♥…ふーっ♥」\n（思い切り情欲をぶつけられたい…♥ 壊れるくらい求めてほしい…っ♥♥）"
-			ENDIF
-		ELSEIF ＃陷落状态／陷落以上＃
-			CALL MESSAGE_BOX,@"「咕哇…！」\n（呜…深入到了…）"
-		ELSE
-			CALL MESSAGE_BOX,@"「嗯唔…！」\n（不，讨厌…我不想痛苦…！）"
-		ENDIF
-	CASE "继续"
-		IF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／恋慕以上＃
-			CALL MESSAGE_BOX,@"「ん゛ぐぅっ♥…お゛ぉっ♥…ぐむっ♥…お゛っ♥…お゛っ♥…お゛っ♥」"
-			CALL MESSAGE_BOX,@"「嗯呜♥…呜唔！♥…噗哈♥…呜咕♥……咕咕♥」\n（啊…头被死死抓住，连逃跑都没办法…♥）"
-			CALL MESSAGE_BOX,@"「嗯嗯♥…嗯嗯嗯♥…嗯唔♥…咕♥……呜啊♥♥」\n（啊…虽然痛苦得快要死了…身体却自然而然地接受了♥）"
-			CALL MESSAGE_BOX,@"「ぐぶっ♥…んぢゅぅ♥…ん゛っ♥…ん゛っ♥…ん゛っ♥…んぶぅっ♥♥」\n（あ、あぁ…目の前がふわふわして……きもちいいかも……）"
-			SIF !TEQUIP:强制开口器
-				CALL MESSAGE_BOX,@"「ん゛むっ♥…ふぐっ♥…ぉごっ♥…ごっ♥…お゛ごぉっ！♥♥\n　――かはぁっ♥ …%SWEET_MASTER_CALL()%♥♥ もっほぉ♥♥ …んぐぅっ！♥」"
-			SIF ABL:受虐癖 >= 5
-				CALL MESSAGE_BOX,@"「咕哇♥…嗯唔♥…哦哦啊啊♥♥♥」\n（太棒了…♥ 被当成假阳物时，被虐的欲望得到了满足…♥♥）"
-			SIF  ＃陷落状态／隶属＃
-				CALL MESSAGE_BOX,@"「抱紧♥…呜哇♥…呜咕♥…咕♥…嗯哇♥♥」\n（越痛苦，向%MASTER_CALL()%献身的快乐就越深♥♥）"
-		ELSE
-			CALL MESSAGE_BOX,@"「む゛ぐぅっ！…ぐっ…ぐっ…んぐぅっ！…ん゛ん゛ぅぅっ！」"
-			CALL MESSAGE_BOX,@"「嗯呜…啧啧…呜啊…！」\n（太痛苦了…不…不想再这样了…！）"
-			CALL MESSAGE_BOX,@"「嗯唔…嗯嗯…呜啊…嗯呜…！」\n（我会死的…要窒息了…！）"
-		ENDIF
-	ENDSELECT
+	CALL KOJO_SHARE_ADVANCED_TRAIN_DISPATCH("深喉", ARGS:2)
 
 CASE "乳交","纵乳交"
 	SELECTCASE ARGS:2
@@ -1221,13 +1187,7 @@ CASE "触手口交"
 	ENDSELECT
 
 CASE "触手深喉"
-	SELECTCASE ARGS:2
-	CASE "执行"
-		SIF SOURCE:Ｍ处女丧失
-			RETURN
-	CASE "移除"
-	CASE "继续"
-	ENDSELECT
+	CALL KOJO_SHARE_ADVANCED_TRAIN_DISPATCH("触手深喉", ARGS:2)
 
 CASE "刷子触手"
 	;複雑だったのでわかりやすめにした

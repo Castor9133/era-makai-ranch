@@ -1,4 +1,4 @@
-﻿
+
 ;奉仕共通SOURCE
 @SERVICE_CONTINUE_SOURCE_COMMON
 
@@ -47,8 +47,40 @@ SOURCE:Ｖ快感／主人公刺激 += 1000
 @EQUIP_51_CONTINUE
 ;フェラチオ継続
 
+IF SELECTCOM == 132
+	CALL SEX_MESSAGE("刺激龟头")
+	;龟头责継続：奴隶は口腔性感を得ず（Ｍ快感SOURCEなし）、精神的奉仕・恭順・体力気力の軽回復。主人公の興奮は射精増加側。
+	SOURCE:学习 += 1500
+	SOURCE:耻辱 += 900
+	SOURCE:爱情 += 1800
+	SOURCE:爱情 += (ABL:奉仕精神 *300)
+	SOURCE:屈辱 += 800
+	SOURCE:不洁 += 450
+	SOURCE:支配 += 500
+	SOURCE:恭顺 += 1400
+	LOSEBASE:体力 -= 22
+	LOSEBASE:气力 -= 32
+	CALL SOURCE_MIRROR_PLAY_APPLY("口交")
+	SOURCE:Ｍ快感／主人公刺激 = 0
+	IF TALENT:肛门嗜好 && TFLAG:Ａ露出
+		SOURCE:Ａ快感／主人公刺激 += 400
+	ENDIF
+	RETURN
+ELSEIF SELECTCOM == 133
+	CALL SEX_MESSAGE("真空口交")
+	CALL SERVICE_CONTINUE_SOURCE_COMMON
+	SOURCE:Ｍ快感／主人公刺激 += 1520
+	CALL SOURCE_MIRROR_PLAY_APPLY("口交")
+	IF TALENT:肛门嗜好 && TFLAG:Ａ露出
+		SOURCE:Ａ快感／主人公刺激 += 400
+	ENDIF
+	RETURN
+ENDIF
+
 CALL SEX_MESSAGE("口交")
 CALL SERVICE_CONTINUE_SOURCE_COMMON
+SOURCE:Ｍ快感／主人公刺激 += 720
+CALL SOURCE_MIRROR_PLAY_APPLY("口交")
 
 ;口交継続中の後庭いじり（666）
 IF TALENT:肛门嗜好 && TFLAG:Ａ露出
@@ -63,11 +95,13 @@ ENDIF
 CALL SEX_MESSAGE("深喉")
 CALL FORCIBLY_CONTINUE_SOURCE_COMMON
 LOSEBASE:气力 += 20
+SOURCE:Ｍ快感／主人公刺激 += 1120
 
 ;668 深喉嗜好（継続ターンでも反映）
 IF TALENT:深喉嗜好
 	SOURCE:耻辱 += 220
 	SOURCE:屈辱 += 180
+	SOURCE:Ｍ快感／主人公刺激 += 140
 ENDIF
 
 

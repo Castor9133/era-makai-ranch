@@ -1,4 +1,4 @@
-﻿
+
 ;乳責め触手をリセットする
 @BUST_TENTACLE_RESET
 
@@ -33,6 +33,10 @@ SIF GETBIT(＃Ｐ使用／Ａ插入＃)
 SIF GETBIT(＃Ｐ使用／Ｍ插入＃)
 	TFLAG:Ｍ装备 = 0
 VARSET TEQUIP,0,30,60
+TEQUIP:Ｖ指插入中 = 0
+TEQUIP:Ａ指插入中 = 0
+TEQUIP:口内搅舌中 = 0
+TEQUIP:压舌探喉中 = 0
 VARSET TFLAG,0,50,60
 
 

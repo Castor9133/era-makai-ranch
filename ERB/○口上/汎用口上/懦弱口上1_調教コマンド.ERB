@@ -60,13 +60,7 @@ CASE "执行"
 		ENDIF
 
 	CASE "深喉","触手深喉"
-		IF ＃陷落状态／恋慕以上＃
-			CALL MESSAGE_BOX,@"「喉咙……会努力的……♥ 咳……眼泪……忍不住……」"
-			CALL MESSAGE_BOX,@"「……深一点……也可以……♥ ……%SELF_CALL()%……顺从……♥」"
-		ELSE
-			CALL MESSAGE_BOX,@"「呜咕……太深了……%SELF_CALL()%会尽量……不吐出来……」"
-			CALL MESSAGE_BOX,@"「……对不起……喉咙……好难受……」"
-		ENDIF
+		CALL KOJO_SHARE_ADVANCED_TRAIN_DISPATCH(ARGS:1, ARGS:2)
 
 	CASE "手淫","授乳手交"
 		IF ＃陷落状态／恋慕以上＃
@@ -105,6 +99,9 @@ CASE "执行"
 	CASE "尿道塞"
 		CALL MESSAGE_BOX,@"「那里……请……温柔一点……%SELF_CALL()%……不敢动……」"
 		CALL MESSAGE_BOX,@"「……细……好可怕……」"
+
+	CASE "舔阴蒂","舔阴道","刺激龟头","真空口交","肛门指揉按摩","玩弄阴唇","G点指压","阴道指奸","肛门指奸","尿道口指弄","尿道口指奸","口内搅舌","压舌探喉"
+		CALL KOJO_SHARE_ADVANCED_TRAIN_DISPATCH(ARGS:1, ARGS:2)
 
 	CASE "正常位","后背位","对面坐位","背面坐位","骑乘位","对面立位","背面立位","强制骑乘位","背面骑乘位"
 		IF !EXP:(SELECTCOM+1000)

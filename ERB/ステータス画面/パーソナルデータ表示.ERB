@@ -44,6 +44,8 @@ IF ARG == 2 && CSTR:状态／主人公的孩子 != "成长中"
 			CALL PRINT_WORD_COLOR,@"【精力枯竭】","黄"
 		ENDIF
 		PRINTFORM 　Ｐ：{ABL:PLAYER:阴茎尺寸,3}mm 
+		SIF TALENT:0:包茎
+			CALL PRINT_WORD_COLOR,@"　【包茎】","灰"
 	ENDIF
 	PRINTL
 ENDIF

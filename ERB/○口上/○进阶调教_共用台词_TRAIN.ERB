@@ -1,0 +1,820 @@
+
+;==========================================
+; 进阶调教共用台词（舔阴蒂／舔外阴阴道口／龟头责／真空口交／深喉／触手深喉）
+; 由各泛用口上 KOJO_GENERAL_*_TRAIN 统一 CALL：KOJO_SHARE_ADVANCED_TRAIN_DISPATCH ARGS:1=Train.csv 名 ARGS:2=执行/继续
+; 文风：简体中文为主；语气按 CSTR:使用口上 分组；陷落与癖好分叉
+; 舔阴蒂／舔外阴（阴道口外）：主人公以口侍奉奴隶；共用台词为奴隶「被舔」侧反应（勿与奴隶舔主人公混淆）
+;==========================================
+
+@KOJO_SHARE_ADVANCED_TRAIN_DISPATCH(ARGS:1, ARGS:2)
+
+SELECTCASE ARGS:1
+CASE "舔阴蒂"
+	CALL KOJO_SHARE_ADV_DISPATCH_LICK_CLITORIS(ARGS:2)
+CASE "舔阴道"
+	CALL KOJO_SHARE_ADV_DISPATCH_LICK_VULVA(ARGS:2)
+CASE "刺激龟头"
+	CALL KOJO_SHARE_ADV_DISPATCH_FOCUS_GLANS(ARGS:2)
+CASE "真空口交"
+	CALL KOJO_SHARE_ADV_DISPATCH_VACUUM_BJ(ARGS:2)
+CASE "深喉"
+	CALL KOJO_SHARE_ADV_DISPATCH_IRUMA(ARGS:2)
+CASE "触手深喉"
+	CALL KOJO_SHARE_ADV_DISPATCH_TENTACLE_DT(ARGS:2)
+CASE "肛门指揉按摩","玩弄阴唇","G点指压","阴道指奸","肛门指奸","尿道口指弄","尿道口指奸","口内搅舌","压舌探喉"
+	CALL KOJO_SHARE_FINGER_ADV_TRAIN_DISPATCH(ARGS:1, ARGS:2)
+ENDSELECT
+RETURN
+
+
+
+;--------------------------------------------------
+@KOJO_SHARE_ADV_DISPATCH_LICK_CLITORIS(ARGPHASE)
+#DIMS LPR
+LPR = CSTR:使用口上
+
+SELECTCASE ARGPHASE
+CASE "执行"
+	SELECTCASE LPR
+	CASE "慇懃口上1", "女仆口上1", "大和抚子口上1", "虔诚口上1", "妹系口上1", "天然口上1", "人妻口上1"
+		CALL KOJO_SHARE_ADV_LICKC_G1_SERVE
+	CASE "強気口上1", "姉御肌口上1", "ボーイッシュ口上1"
+		CALL KOJO_SHARE_ADV_LICKC_G2_STRONG
+	CASE "生真面目口上1", "堅物口上1", "気品口上1"
+		CALL KOJO_SHARE_ADV_LICKC_G3_STIFF
+	CASE "懦弱口上1", "非敬語幼め口上1"
+		CALL KOJO_SHARE_ADV_LICKC_G4_WEAK
+	CASE "知心口上1"
+		CALL KOJO_SHARE_ADV_LICKC_G5_CONFIDANT
+	CASE "仇恨口上1", "愚忠口上1"
+		CALL KOJO_SHARE_ADV_LICKC_G6_HATE
+	CASE "無口口上1"
+		CALL KOJO_SHARE_ADV_LICKC_G7_MUTE
+	CASEELSE
+		CALL KOJO_SHARE_ADV_LICKC_FALL_ONLY
+	ENDSELECT
+CASEELSE
+ENDSELECT
+RETURN
+
+
+
+@KOJO_SHARE_ADV_LICKC_G1_SERVE
+IF CFLAG:洗脑 || CFLAG:乳牛 || ＃陷落状态／隶属＃
+	CALL MESSAGE_BOX,@"「嗯……♥ 请用您的舌头……伺候%SELF_CALL()%的那里……♥ 阴蒂……会老实……交给您……♥」"
+	CALL MESSAGE_BOX,@"「……收到……♥ 铃口似的这一点……我会……好好挺给您……慢慢地……任您舔……♥」"
+ELSEIF ＃陷落状态／恋慕以上＃
+	CALL MESSAGE_BOX,@"「……上面这一点……最诚实呢……♥ 被您这样舔……我就……很舒服……♥」"
+	CALL MESSAGE_BOX,@"「……嗯……♥ 请……含着……轻轻扯……♥ 别看……我会……颤给您看……♥」"
+ELSEIF ＃陷落状态／屈服以上＃
+	CALL MESSAGE_BOX,@"「……遵命……♥ 只、只舔这里……对吗……♥」"
+	CALL MESSAGE_BOX,@"「……轻一点……♥ 别让牙齿……磕到……♥」"
+ELSEIF ＃陷落状态／陷落以上＃
+	CALL MESSAGE_BOX,@"「……要把舌头……集中在阴蒂上……我明白……♥」"
+ELSE
+	CALL MESSAGE_BOX,@"「……别、别盯着我舔……♥ 那里……太明显了……♥」"
+ENDIF
+RETURN 1
+
+
+
+@KOJO_SHARE_ADV_LICKC_G2_STRONG
+IF CFLAG:洗脑 || ＃陷落状态／恋慕以上＃
+	CALL MESSAGE_BOX,@"「……哈……♥ 想专攻我阴蒂？行啊……别看我……抖得太难看……♥」"
+	CALL MESSAGE_BOX,@"「……这块……我最敏感……♥ 腿……自己夹紧了……您……别停……♥」"
+ELSEIF ＃陷落状态／屈服以上＃
+	CALL MESSAGE_BOX,@"「……啧……♥ 专挑阴蒂欺负……真够坏的……♥」"
+ELSE
+	CALL MESSAGE_BOX,@"「……少得意……♥ 我只是……挨命令……被你舔……♥」"
+ENDIF
+RETURN 1
+
+
+
+@KOJO_SHARE_ADV_LICKC_G3_STIFF
+IF ＃陷落状态／恋慕以上＃ || CFLAG:洗脑
+	CALL MESSAGE_BOX,@"「……您……若按书上那样……精确……也没关系……♥」"
+	CALL MESSAGE_BOX,@"「……若太刺激……我会……出声……♥ 舌压……我也会……告诉您……♥」"
+ELSEIF ＃陷落状态／屈服以上＃
+	CALL MESSAGE_BOX,@"「……理论上……快感会……集中在那里……♥」"
+ELSE
+	CALL MESSAGE_BOX,@"「……这是……必要的部位……我知道……别催……♥」"
+ENDIF
+RETURN 1
+
+
+
+@KOJO_SHARE_ADV_LICKC_G4_WEAK
+IF ＃陷落状态／恋慕以上＃
+	CALL MESSAGE_BOX,@"「……呜……♥ 只舔豆豆……会更、更明显……♥」"
+	CALL MESSAGE_BOX,@"「……对不起……♥ %SELF_CALL()%……不敢睁眼看……♥」"
+ELSE
+	CALL MESSAGE_BOX,@"「……那里……不行……♥ 一舔……腿就软……♥」"
+ENDIF
+RETURN 1
+
+
+
+@KOJO_SHARE_ADV_LICKC_G5_CONFIDANT
+IF ＃陷落状态／恋慕以上＃
+	CALL MESSAGE_BOX,@"「……我这里……抖得……您……都尝到了吧……♥」"
+	CALL MESSAGE_BOX,@"「……这里……像小小的开关……♥ 被您……一拨……我就……♥」"
+ELSE
+	CALL MESSAGE_BOX,@"「……别看……♥ 我……会忍不住……♥」"
+ENDIF
+RETURN 1
+
+
+
+@KOJO_SHARE_ADV_LICKC_G6_HATE
+IF ＃陷落状态／恋慕以上＃
+	CALL MESSAGE_BOX,@"「……混蛋……♥ 专舔阴蒂……你最清楚哪里坏……♥」"
+	CALL MESSAGE_BOX,@"「……我恨你……♥ 可我……还是听了……♥」"
+ELSE
+	CALL MESSAGE_BOX,@"「……卑鄙……♥ 挑这种地方……♥」"
+ENDIF
+RETURN 1
+
+
+
+@KOJO_SHARE_ADV_LICKC_G7_MUTE
+IF ＃陷落状态／恋慕以上＃
+	CALL MESSAGE_BOX,@"「…………♥」\n（点头……您的舌尖……顶住阴蒂侧面……她呼吸……乱了一拍……）"
+ELSE
+	CALL MESSAGE_BOX,@"「……呜……♥」\n（别开脸……喉间却漏出细声……）"
+ENDIF
+RETURN 1
+
+
+
+@KOJO_SHARE_ADV_LICKC_FALL_ONLY
+IF CFLAG:洗脑 || ＃陷落状态／隶属＃
+	CALL MESSAGE_BOX,@"「……隶属于此……♥ 阴蒂……也……任您舔净……♥」"
+ELSEIF ＃陷落状态／恋慕以上＃
+	CALL MESSAGE_BOX,@"「……只想……被您……弄……在这里……发抖……♥」"
+ELSEIF ＃陷落状态／屈服以上＃
+	CALL MESSAGE_BOX,@"「……舔阴蒂……♥ 我知道了……♥」"
+ELSE
+	CALL MESSAGE_BOX,@"「……这种命令……♥ 真是……♥」"
+ENDIF
+RETURN 1
+
+
+
+;--------------------------------------------------
+@KOJO_SHARE_ADV_DISPATCH_LICK_VULVA(ARGPHASE)
+#DIMS LPR
+LPR = CSTR:使用口上
+
+SELECTCASE ARGPHASE
+CASE "执行"
+	SIF TALENT:处女结界
+		RETURN
+	SELECTCASE LPR
+	CASE "慇懃口上1", "女仆口上1", "大和抚子口上1", "虔诚口上1", "妹系口上1", "天然口上1", "人妻口上1"
+		CALL KOJO_SHARE_ADV_LICKV_G1_SERVE
+	CASE "強気口上1", "姉御肌口上1", "ボーイッシュ口上1"
+		CALL KOJO_SHARE_ADV_LICKV_G2_STRONG
+	CASE "生真面目口上1", "堅物口上1", "気品口上1"
+		CALL KOJO_SHARE_ADV_LICKV_G3_STIFF
+	CASE "懦弱口上1", "非敬語幼め口上1"
+		CALL KOJO_SHARE_ADV_LICKV_G4_WEAK
+	CASE "知心口上1"
+		CALL KOJO_SHARE_ADV_LICKV_G5_CONFIDANT
+	CASE "仇恨口上1", "愚忠口上1"
+		CALL KOJO_SHARE_ADV_LICKV_G6_HATE
+	CASE "無口口上1"
+		CALL KOJO_SHARE_ADV_LICKV_G7_MUTE
+	CASEELSE
+		CALL KOJO_SHARE_ADV_LICKV_FALL_ONLY
+	ENDSELECT
+CASEELSE
+ENDSELECT
+RETURN
+
+
+
+@KOJO_SHARE_ADV_LICKV_G1_SERVE
+IF CFLAG:洗脑 || CFLAG:乳牛 || ＃陷落状态／隶属＃
+	CALL MESSAGE_BOX,@"「……外面这条缝……♥ 请您……仔仔细细舔开……不要插进去……拜托……♥」"
+	CALL MESSAGE_BOX,@"「……只是外用……♥ 气味与形状……都由您……记去吧……♥」"
+ELSEIF ＃陷落状态／恋慕以上＃
+	CALL MESSAGE_BOX,@"「……唇瓣……请您……沿着沟舔……♥ 里面……先……别进去……♥」"
+ELSEIF ＃陷落状态／屈服以上＃
+	CALL MESSAGE_BOX,@"「……只舔外面……对吗……♥ 请……含住那点嫩肉……♥」"
+ELSE
+	CALL MESSAGE_BOX,@"「……进不去深处……至少……别笑我……♥」"
+ENDIF
+RETURN 1
+
+
+
+@KOJO_SHARE_ADV_LICKV_G2_STRONG
+IF ＃陷落状态／恋慕以上＃ || CFLAG:洗脑
+	CALL MESSAGE_BOX,@"「……舔穴口外面而已……♥ 您别一副……把我吃干抹净的表情……♥」"
+	CALL MESSAGE_BOX,@"「……缝……会被您舔湿……♥ 手可别……偷偷往上顶……♥」"
+ELSE
+	CALL MESSAGE_BOX,@"「……规矩点……♥ 说好了只舔外面……♥」"
+ENDIF
+RETURN 1
+
+
+
+@KOJO_SHARE_ADV_LICKV_G3_STIFF
+IF ＃陷落状态／恋慕以上＃
+	CALL MESSAGE_BOX,@"「……非插入……边界……请您守住……♥ 舌面……只在外侧褶皱……♥」"
+ELSE
+	CALL MESSAGE_BOX,@"「……这是……护理一样的步骤……♥ 别多想……♥」"
+ENDIF
+RETURN 1
+
+
+
+@KOJO_SHARE_ADV_LICKV_G4_WEAK
+IF ＃陷落状态／恋慕以上＃
+	CALL MESSAGE_BOX,@"「……外面……就好……♥ 里面……我会怕……♥」"
+ELSE
+	CALL MESSAGE_BOX,@"「……别把我……往深处按……♥ 外面……就好……♥」"
+ENDIF
+RETURN 1
+
+
+
+@KOJO_SHARE_ADV_LICKV_G5_CONFIDANT
+IF ＃陷落状态／恋慕以上＃
+	CALL MESSAGE_BOX,@"「……您的沉默……比水声还清楚……♥」"
+ELSE
+	CALL MESSAGE_BOX,@"「……请您……沿着唇瓣……慢慢描……♥」"
+ENDIF
+RETURN 1
+
+
+
+@KOJO_SHARE_ADV_LICKV_G6_HATE
+IF ＃陷落状态／恋慕以上＃
+	CALL MESSAGE_BOX,@"「……混账……♥ 连缝都不放过……♥」"
+ELSE
+	CALL MESSAGE_BOX,@"「……舔外面也……这么羞辱……♥」"
+ENDIF
+RETURN 1
+
+
+
+@KOJO_SHARE_ADV_LICKV_G7_MUTE
+IF ＃陷落状态／恋慕以上＃
+	CALL MESSAGE_BOX,@"「…………♥」\n（唇瓣被舌尖翻开一点点……眼神躲闪……）"
+ELSE
+	CALL MESSAGE_BOX,@"「……呜……♥」\n（抓紧床单……不敢往下摸……）"
+ENDIF
+RETURN 1
+
+
+
+@KOJO_SHARE_ADV_LICKV_FALL_ONLY
+IF ＃陷落状态／恋慕以上＃
+	CALL MESSAGE_BOX,@"「……外面……交给您……♥」"
+ELSE
+	CALL MESSAGE_BOX,@"「……只舔口外……♥ 我记得……♥」"
+ENDIF
+RETURN 1
+
+
+
+;--------------------------------------------------
+@KOJO_SHARE_ADV_DISPATCH_FOCUS_GLANS(ARGPHASE)
+SELECTCASE ARGPHASE
+CASE "执行"
+	CALL KOJO_SHARE_ADV_FOCUS_GLANS_BODY
+CASEELSE
+ENDSELECT
+RETURN
+
+
+
+@KOJO_SHARE_ADV_FOCUS_GLANS_BODY
+#DIMS LPR
+LPR = CSTR:使用口上
+
+SELECTCASE LPR
+CASE "慇懃口上1", "女仆口上1", "大和抚子口上1", "虔诚口上1", "妹系口上1", "天然口上1", "人妻口上1"
+	IF CFLAG:洗脑 || ＃陷落状态／隶属＃
+		CALL MESSAGE_BOX,@"「……龟头……♥ 我会把系带……一点点舔开……♥」"
+		CALL MESSAGE_BOX,@"「……奉仕精神……就是为了此刻……♥」"
+	ELSEIF ＃陷落状态／恋慕以上＃
+		CALL MESSAGE_BOX,@"「……铃口……♥ 我会绕着圈……让您忍不住……♥」"
+	ELSE
+		CALL MESSAGE_BOX,@"「……集中在这里……♥ 对吗……♥」"
+	ENDIF
+CASE "強気口上1", "姉御肌口上1", "ボーイッシュ口上1"
+	IF ＃陷落状态／恋慕以上＃
+		CALL MESSAGE_BOX,@"「……顶着龟头欺负？♥ 行……别喊疼……♥」"
+	ELSE
+		CALL MESSAGE_BOX,@"「……舌尖……专盯前端……♥ 懂……♥」"
+	ENDIF
+CASE "懦弱口上1", "非敬語幼め口上1"
+	CALL MESSAGE_BOX,@"「……对不起……♥ 我会……轻轻刮……♥」"
+CASE "仇恨口上1", "愚忠口上1"
+	IF ＃陷落状态／恋慕以上＃
+		CALL MESSAGE_BOX,@"「……可恶……♥ 专捏龟头……♥」"
+	ELSE
+		CALL MESSAGE_BOX,@"「……别抖……♥」"
+	ENDIF
+CASE "無口口上1"
+	CALL MESSAGE_BOX,@"「……唔……♥」\n（目光上挑……舌尖抵住冠状沟……）"
+CASEELSE
+	IF ＃陷落状态／恋慕以上＃
+		CALL MESSAGE_BOX,@"「……龟头……♥ 我会……仔细……♥」"
+	ELSE
+		CALL MESSAGE_BOX,@"「……这里……最敏感……我知道……♥」"
+	ENDIF
+ENDSELECT
+
+SIF TALENT:羞辱兴奋 && ABL:奉仕精神 >= 8
+	CALL MESSAGE_BOX,@"「……被人看见的话……♥ 这种侍奉……会更烫……♥」"
+
+RETURN 1
+
+
+
+;--------------------------------------------------
+@KOJO_SHARE_ADV_DISPATCH_VACUUM_BJ(ARGPHASE)
+SELECTCASE ARGPHASE
+CASE "执行"
+	CALL KOJO_SHARE_ADV_VACUUM_BODY
+CASEELSE
+ENDSELECT
+RETURN
+
+
+
+@KOJO_SHARE_ADV_VACUUM_BODY
+#DIMS LPR
+LPR = CSTR:使用口上
+
+SELECTCASE LPR
+CASE "慇懃口上1", "女仆口上1", "大和抚子口上1", "虔诚口上1", "妹系口上1", "天然口上1", "人妻口上1"
+	IF CFLAG:洗脑 || ＃陷落状态／隶属＃
+		CALL MESSAGE_BOX,@"「……真空……♥ 我会把脸颊收紧……让您……逃不掉……♥」"
+	ELSEIF ＃陷落状态／恋慕以上＃
+		CALL MESSAGE_BOX,@"「……呜……♥ 吸力……会不会太强……♥」"
+	ELSE
+		CALL MESSAGE_BOX,@"「……我会……拢紧……♥」"
+	ENDIF
+CASE "強気口上1", "姉御肌口上1", "ボーイッシュ口上1"
+	IF ＃陷落状态／恋慕以上＃
+		CALL MESSAGE_BOX,@"「……想把前端……抽干？♥ 来……别示弱……♥」"
+	ELSE
+		CALL MESSAGE_BOX,@"「……吸力……忍着……♥」"
+	ENDIF
+CASE "無口口上1"
+	CALL MESSAGE_BOX,@"「……嗯咕……！」\n（腮帮深陷……鼻腔急促……点头示意继续……）"
+CASEELSE
+	IF EXP:经验次数／主人公／Ｍ性交 >= 40
+		CALL MESSAGE_BOX,@"「……熟练之后……♥ 才知道怎么……吸得更狠……♥」"
+	ELSEIF ＃陷落状态／恋慕以上＃
+		CALL MESSAGE_BOX,@"「……真空……♥ 我会……试着……♥」"
+	ELSE
+		CALL MESSAGE_BOX,@"「……吸力……♥ 我会……加强……♥」"
+	ENDIF
+ENDSELECT
+RETURN 1
+
+
+
+;--------------------------------------------------
+@KOJO_SHARE_ADV_DISPATCH_IRUMA(ARGPHASE)
+SELECTCASE ARGPHASE
+CASE "执行"
+	SIF SOURCE:Ｍ处女丧失
+		RETURN
+	CALL KOJO_SHARE_ADV_IRUMA_EXEC
+CASE "继续"
+	CALL KOJO_SHARE_ADV_IRUMA_CONTINUE
+CASEELSE
+ENDSELECT
+RETURN 1
+
+
+
+@KOJO_SHARE_ADV_IRUMA_EXEC
+IF TFLAG:拘束BIT && TFLAG:眼罩 && TEQUIP:强制开口器
+	CALL MESSAGE_BOX,@"「……唔……！」\n（眼罩吞掉了整片世界……拘束把肩背与膝弯都钉死在原处……强制开口器把齿列撬成规则的孔洞，连闭嘴求饶都做不到……唾液积在舌根，吞咽成了奢望……只剩喉咙像一条被迫营业的甬道，被人一寸寸丈量，还在暗里学会了如何更顺、更驯……）"
+	CALL ONOMATOPOEIA_DEEP_THROAT
+	RETURN 1
+ENDIF
+
+#DIMS LPR
+LPR = CSTR:使用口上
+
+SELECTCASE LPR
+CASE "慇懃口上1", "女仆口上1", "大和抚子口上1", "虔诚口上1", "妹系口上1", "天然口上1", "人妻口上1"
+	CALL KOJO_SHARE_ADV_IRUMA_EXEC_G_SERVE
+CASE "強気口上1", "姉御肌口上1", "ボーイッシュ口上1"
+	CALL KOJO_SHARE_ADV_IRUMA_EXEC_G_STRONG
+CASE "生真面目口上1", "堅物口上1", "気品口上1"
+	CALL KOJO_SHARE_ADV_IRUMA_EXEC_G_STIFF
+CASE "懦弱口上1", "非敬語幼め口上1"
+	CALL KOJO_SHARE_ADV_IRUMA_EXEC_G_WEAK
+CASE "知心口上1"
+	CALL KOJO_SHARE_ADV_IRUMA_EXEC_G_CONF
+CASE "仇恨口上1", "愚忠口上1"
+	CALL KOJO_SHARE_ADV_IRUMA_EXEC_G_HATE
+CASE "無口口上1"
+	CALL KOJO_SHARE_ADV_IRUMA_EXEC_G_MUTE
+CASEELSE
+	CALL KOJO_SHARE_ADV_IRUMA_EXEC_FALL
+ENDSELECT
+
+SIF TALENT:深喉嗜好 && TALENT:处女
+	CALL MESSAGE_BOX,@"「……唔咕……♥」\n（窒息感涌上来那一瞬，她竟生出荒唐的庆幸——喉咙先被填满，总比下面那条线更容易说服自己……可眼角仍不争气地红了：那点自欺的体面，连同呜咽一起被顶得支离破碎……）"
+
+RETURN 1
+
+
+
+@KOJO_SHARE_ADV_IRUMA_EXEC_G_SERVE
+IF CFLAG:洗脑 || ＃陷落状态／隶属＃
+	CALL MESSAGE_BOX,@"「……嗯咕……♥ 咽喉……也可以……只为……您……张开……♥」\n（她把舌尖抵在下唇内侧，像在默念服从；一进深，窒闷先扼住呼吸，她却压住干呕，把声带拧成柔顺的弧度……涎水不争气地淌下来，她就当那是敬礼时滴落的汗……）"
+ELSEIF ＃陷落状态／恋慕以上＃
+	CALL MESSAGE_BOX,@"「……请您……再深一点……♥ 我会……把痉挛……咽回去……♥」\n（眼角发热也不是懦弱：那点难堪被她一并献上，喉咙被顶开时仍轻轻点头，像在回应一句不必出口的夸奖……呜咽卡在喉口，她却努力把吞咽做得体面……）"
+ELSEIF ＃陷落状态／屈服以上＃
+	CALL MESSAGE_BOX,@"「……呜……♥ 喉口……被……顶住了……♥」\n（话语碎在窒闷里；她并拢膝盖，十指抠紧床沿，把涌上的呕意硬生生折成顺从的喘息……每一次深入都像在点名她的驯服，她却只敢把抗议咽成一声更轻的嗯……）"
+ELSE
+	CALL MESSAGE_BOX,@"「……呕……♥ 等、请您……慢一点……♥」\n（体面还在挣最后一寸；唾液牵丝，她把咳嗽吞回去，却只换来更深的侵入与更羞耻的水声……指尖发白，却仍不敢抬手推开——只剩喉管发颤，像在替她说「饶了我」……）"
+ENDIF
+RETURN 1
+
+
+
+@KOJO_SHARE_ADV_IRUMA_EXEC_G_STRONG
+IF ＃陷落状态／恋慕以上＃
+	CALL MESSAGE_BOX,@"「……咳……♥ 想把我喉咙当套子用？……行啊……睁大眼别移开……♥」\n（她挑衅地抬高下颌，下一秒喉管像被顶穿般猛地一缩，呛出眼泪也不肯低头……指尖掐进掌心，像在跟自己的反射较劲：越是狼狈，越要把那点不服输钉死在眼底……）"
+ELSE
+	CALL MESSAGE_BOX,@"「……唔……♥ 够……深了……！」\n（嗓音被堵得发哑，她偏要侧过脸用余光剜你；嘴角却骗不了人，涎水顺着唇角淌下，狼狈得发烫……胸口起伏像在骂人，喉咙却只能挤出呜咽……）"
+ENDIF
+RETURN 1
+
+
+
+@KOJO_SHARE_ADV_IRUMA_EXEC_G_STIFF
+IF ＃陷落状态／恋慕以上＃
+	CALL MESSAGE_BOX,@"「……生理反射……我会……压抑……♥」\n（她把肩膀绷成一条直线，像在会议上汇报失误；喉咙却不讲情面地痉挛，逼得她闭眼深吸，再把呜咽切碎成断断续续的换气……体面是她最后的盔甲……）"
+ELSE
+	CALL MESSAGE_BOX,@"「……呕感……还在……阈值内……♥」\n（齿关仍在抖，她把每一次顶入都当成数据点记录：更深多少、更难呼吸几秒……像在说服自己这只是可管理的负荷……眼角的水光却出卖了她……）"
+ENDIF
+RETURN 1
+
+
+
+@KOJO_SHARE_ADV_IRUMA_EXEC_G_WEAK
+IF ＃陷落状态／恋慕以上＃
+	CALL MESSAGE_BOX,@"「……对不起……♥ 眼泪……不听话……♥」\n（她想道歉却只剩鼻音；喉口每一次被顶穿都像把她往深渊里拖一寸……手指揪住床单又松开，像在犹豫要不要拽住谁的袖子……）"
+ELSE
+	CALL MESSAGE_BOX,@"「……呜咕……♥ 喉咙……好可怕……♥」\n（呜咽夹着呛咳往外涌；她想往后缩，却只换来更深的窒息……视线糊成一片，只剩耳边自己心跳擂鼓般的噪响……）"
+ENDIF
+RETURN 1
+
+
+
+@KOJO_SHARE_ADV_IRUMA_EXEC_G_CONF
+IF ＃陷落状态／恋慕以上＃
+	CALL MESSAGE_BOX,@"「……我听见了……你还想更深……♥」\n（她把额头轻轻抵向你手腕那一瞬，像在交换秘密；喉咙被迫张开时仍抬眼看你——那种近乎纵容的顺从，比她任何一句情话都直白……）"
+ELSE
+	CALL MESSAGE_BOX,@"「……慢一点……求你……♥」\n（她把颤抖压进呼吸里，试图把哀求说得像商量；窒息的水声却不给她体面……指尖碰到你衣角又缩回，只剩喉口的痉挛替她喊停……）"
+ENDIF
+RETURN 1
+
+
+
+@KOJO_SHARE_ADV_IRUMA_EXEC_G_HATE
+IF ＃陷落状态／恋慕以上＃
+	CALL MESSAGE_BOX,@"「……畜生……♥ 连喉咙……也要拿来报复我……♥」\n（咒骂被她咽成含糊的呜咽；越是恨，呼吸越短……她在窒息里发抖，却仍用指甲在你背上划出浅浅的痕——像在宣告这场屈服并非心甘情愿……身体却背叛得彻底……）"
+ELSE
+	CALL MESSAGE_BOX,@"「……咳……♥ 恶心……♥」\n（胃里翻搅，她把呕吐感死死咬住；喉咙被侵占的屈辱比疼痛更尖锐……泪水呛出来，她把脸别开，却只把下颌送到更深的去处……）"
+ENDIF
+RETURN 1
+
+
+
+@KOJO_SHARE_ADV_IRUMA_EXEC_G_MUTE
+CALL MESSAGE_BOX,@"「……唔……！」\n（声音被堵死在喉底……眼球不受控地上翻一瞬……指甲抠进掌心抠出血丝……喉结徒劳地滚动，像在吞咽一口永远咽不下去的空气……只剩下鼻腔艰难的吸气声，像在溺水边缘来回……）"
+RETURN 1
+
+
+
+@KOJO_SHARE_ADV_IRUMA_EXEC_FALL
+IF ＃陷落状态／恋慕以上＃
+	CALL MESSAGE_BOX,@"「……深喉……♥ 我会……忍……♥」\n（她没有专属口型的体面台词，只剩这句笨笨的承诺……喉咙越被填满，越要把呜咽吞回去……眼角湿了也笑一下，像在说服自己这一切还能被称作「我愿意」……）"
+ELSE
+	CALL MESSAGE_BOX,@"「……呜……♥」\n（破碎的音节刚出口就被顶散……她蜷缩起肩背，像想把羞耻缩进骨头里……涎水失控地淌下，只剩断续的呛咳在水声里浮沉……）"
+ENDIF
+RETURN 1
+
+
+
+@KOJO_SHARE_ADV_IRUMA_CONTINUE
+#DIMS LPR
+LPR = CSTR:使用口上
+
+CALL ONOMATOPOEIA_DEEP_THROAT
+; 继续：拟声 + 神态 + 身体细节（长段）
+IF TALENT:深喉嗜好 && (＃陷落状态／恋慕以上＃ || CFLAG:洗脑)
+	CALL MESSAGE_BOX,@"「咕嘟……呜咕……♥ 噜……啾……♥」\n（窒闷像潮水一遍遍没过耳鼓……她眼角含泪，唇角却弯起一点——像把窒息当成甜头……舌尖徒劳地推着入侵物，只换来更深的水声……）"
+	CALL MESSAGE_BOX,@"「……唔嗯……！」\n（唾液顺着下巴拉丝，滴在锁骨凹处……眼神恍惚却还往上瞟，确认你是否满意……喉管每一次痉挛都像在替你鼓掌……）"
+ELSEIF ＃陷落状态／恋慕以上＃
+	CALL MESSAGE_BOX,@"「……唔咕……噜……♥」\n（泪水淌下来不是演戏……她却努力抬眼，把呜咽咬碎成讨好……肩颈僵硬得像要折断，却仍把下颌送上前一寸……像在低声说「还可更深」……）"
+ELSEIF ＃陷落状态／屈服以上＃
+	CALL MESSAGE_BOX,@"「……呕……呜……！」\n（眉头锁死……视线涣散成一片白……手想推却被无形的命令钉住……只剩喉管一阵阵痉挛，连带胸腔发出沉闷的呛响……膝盖发抖，像在跪一条看不见的线……）"
+ELSE
+	CALL MESSAGE_BOX,@"「……唔——！……唔咕……！」\n（瞳里全是抗拒……泪水呛出来混着涎……腮帮被撑得发抖，喉口却仍在被迫吞吐……每一次深入都像在嘲笑她的说不……）"
+ENDIF
+
+SIF !TEQUIP:强制开口器 && (TALENT:羞辱兴奋 || ABL:受虐癖 >= 5)
+	CALL MESSAGE_BOX,@"「……咕……呜呜……」\n（羞耻把耳尖烧得发烫……每一次顶入都像公开处刑……她却抖得更厉害——仿佛越羞耻，身体越诚实……指甲掐进肉里，像在惩罚这份背叛自己的反应……）"
+
+SELECTCASE LPR
+CASE "無口口上1"
+	CALL MESSAGE_BOX,@"「…………！」\n（说不出话……只剩鼻腔艰难的吸气声……喉间呼噜的水响成了她全部语言……眼神像溺水，却仍断断续续地追随你的节奏……）"
+CASE "強気口上1", "姉御肌口上1", "ボーイッシュ口上1"
+	SIF !＃陷落状态／恋慕以上＃
+		CALL MESSAGE_BOX,@"「……呜咕……！」\n（仍瞪你……却瞪得毫无威慑……只剩水光把凶意泡软……下颌线绷得像在骂，喉咙却只剩破碎的屈服……）"
+ENDSELECT
+
+RETURN 1
+
+
+
+;--------------------------------------------------
+@KOJO_SHARE_ADV_DISPATCH_TENTACLE_DT(ARGPHASE)
+SELECTCASE ARGPHASE
+CASE "执行"
+	SIF SOURCE:Ｍ处女丧失
+		RETURN
+	CALL MESSAGE_BOX,@"「……唔……！……呜咕……！」\n（凉腻的异物硬挤开齿列……触须刮过上颚，激起一阵恶寒的痒……她瞳孔骤缩，胃液直涌，却被迫把咽反射压成一声更小的呜……触手黏液滴在舌根，腥甜与铁锈味一起漫开……）"
+	IF ＃陷落状态／恋慕以上＃ || TALENT:深喉嗜好
+		CALL MESSAGE_BOX,@"「……噜……呜呜……♥」\n（恶心与异样感搅成一团……她明明该逃，指尖却攥住床单像抓住浮木……每一次蠕动都让喉管发抖，却偏在抖里渗出一点可耻的湿热……她不懂自己为什么在抖，更不敢问……）"
+	ELSE
+		CALL MESSAGE_BOX,@"「……不要……太深……！」\n（指甲掐进肉里……眼神像要把触手烧穿……身体却背叛地软倒，只剩喉口被迫吞咽着那东西规律的侵犯……她想吐，却只能吐出一口带泡的涎……）"
+	ENDIF
+	CALL ONOMATOPOEIA_DEEP_THROAT
+CASE "继续"
+	CALL ONOMATOPOEIA_DEEP_THROAT
+	CALL MESSAGE_BOX,@"「……咕噜……呜……！」\n（粘液滴落在胸骨上，冰凉又恶心……视线被水雾糊成一片……每一次蠕动都像要把意识拖进深色的潮里……她喉咙发紧，却仍被触手逼着数自己的呜咽节拍……）"
+	IF TALENT:羞辱兴奋
+		CALL MESSAGE_BOX,@"「……唔嗯……」\n（羞耻把腹部绞紧……她羞于承认……可身体竟在迎合那种填满……耳尖烫得发疼……越恨这具身体，越听得见自己喉间可耻的水声……）"
+	ENDIF
+CASE "移除"
+	CALL MESSAGE_BOX,@"「……咳……哈啊……！」\n（触手抽离时下颌脱力，嘴角拖出半透明的黏丝……喉间还拖着「咕噜…咳咳…」与涎水「唏啾…滋溜…」的尾音……她盯着虚空干呕了两声，像要把屈辱一并呕出来……胸腔还在颤，舌尖却空空荡荡，只剩残余的腥与冷……）"
+CASEELSE
+ENDSELECT
+RETURN
+
+
+
+;==========================================
+; 手指进阶（COM134-142）共用台词
+;==========================================
+
+@KOJO_SHARE_FINGER_ADV_TRAIN_DISPATCH(ARGS:1, ARGS:2)
+
+SELECTCASE ARGS:2
+CASE "执行"
+	CALL KOJO_SHARE_FINGER_ADV_EXEC(ARGS:1)
+CASEELSE
+ENDSELECT
+RETURN
+
+
+
+@KOJO_SHARE_FINGER_ADV_EXEC(ARGS:1)
+#DIMS LPR
+LPR = CSTR:使用口上
+
+SELECTCASE ARGS:1
+CASE "肛门指揉按摩"
+	SELECTCASE LPR
+	CASE "慇懃口上1", "女仆口上1", "大和抚子口上1", "虔诚口上1", "妹系口上1", "天然口上1", "人妻口上1"
+		CALL MESSAGE_BOX,@"「……后面……被手指……这样揉……♥ 好羞耻……♥」"
+	CASE "強気口上1", "姉御肌口上1", "ボーイッシュ口上1"
+		CALL MESSAGE_BOX,@"「……啧……♥ 专挑后面欺负……♥」"
+	CASE "無口口上1"
+		CALL MESSAGE_BOX,@"「……呜……♥」\n（臀肌绷紧……喉间漏出细声……）"
+	CASEELSE
+		CALL MESSAGE_BOX,@"「……后面……别……♥」"
+	ENDSELECT
+CASE "玩弄阴唇"
+	SELECTCASE LPR
+	CASE "慇懃口上1", "女仆口上1", "大和抚子口上1", "虔诚口上1", "妹系口上1", "天然口上1", "人妻口上1"
+		CALL MESSAGE_BOX,@"「……外面……被手指……翻开……♥ 别、别看那么仔细……♥」"
+	CASE "強気口上1", "姉御肌口上1", "ボーイッシュ口上1"
+		CALL MESSAGE_BOX,@"「……阴唇……也要玩？♥ 行啊……别装正经……♥」"
+	CASE "無口口上1"
+		CALL MESSAGE_BOX,@"「……嗯……♥」\n（腿根轻颤……不敢合拢……）"
+	CASEELSE
+		CALL MESSAGE_BOX,@"「……那里……只准碰外面……♥」"
+	ENDSELECT
+CASE "G点指压"
+	SELECTCASE LPR
+	CASE "慇懃口上1", "女仆口上1", "大和抚子口上1", "虔诚口上1", "妹系口上1", "天然口上1", "人妻口上1"
+		CALL MESSAGE_BOX,@"「……里面……那点……被按住……♥ 腰……要断了……♥」"
+	CASE "強気口上1", "姉御肌口上1", "ボーイッシュ口上1"
+		CALL MESSAGE_BOX,@"「……哈……♥ G点……你找得真准……♥」"
+	CASE "無口口上1"
+		CALL MESSAGE_BOX,@"「……啊……♥」\n（背脊猛地一弓……）"
+	CASEELSE
+		CALL MESSAGE_BOX,@"「……别、别顶那里……♥」"
+	ENDSELECT
+CASE "阴道指奸"
+	SELECTCASE LPR
+	CASE "慇懃口上1", "女仆口上1", "大和抚子口上1", "虔诚口上1", "妹系口上1", "天然口上1", "人妻口上1"
+		CALL MESSAGE_BOX,@"「……手指……在里面……搅……♥ 不行……会坏掉……♥」"
+	CASE "強気口上1", "姉御肌口上1", "ボーイッシュ口上1"
+		CALL MESSAGE_BOX,@"「……指奸……♥ 你够了……♥」"
+	CASE "無口口上1"
+		CALL MESSAGE_BOX,@"「……呜咕……！」\n（涎水从唇角淌下……）"
+	CASEELSE
+		CALL MESSAGE_BOX,@"「……太深了……♥」"
+	ENDSELECT
+CASE "肛门指奸"
+	SELECTCASE LPR
+	CASE "慇懃口上1", "女仆口上1", "大和抚子口上1", "虔诚口上1", "妹系口上1", "天然口上1", "人妻口上1"
+		CALL MESSAGE_BOX,@"「……后面……被手指……抽插……♥ 好脏……可是……♥」"
+	CASE "強気口上1", "姉御肌口上1", "ボーイッシュ口上1"
+		CALL MESSAGE_BOX,@"「……后面……也要指奸……♥ 变态……♥」"
+	CASE "無口口上1"
+		CALL MESSAGE_BOX,@"「……呕……♥」\n（肠壁痉挛……）"
+	CASEELSE
+		CALL MESSAGE_BOX,@"「……后面……轻一点……♥」"
+	ENDSELECT
+CASE "尿道口指弄"
+	SELECTCASE LPR
+	CASE "慇懃口上1", "女仆口上1", "大和抚子口上1", "虔诚口上1", "妹系口上1", "天然口上1", "人妻口上1"
+		CALL MESSAGE_BOX,@"「……那里……只是小口……♥ 小指……别、别压太重……♥」"
+	CASE "強気口上1", "姉御肌口上1", "ボーイッシュ口上1"
+		CALL MESSAGE_BOX,@"「……尿道口……也要玩……♥ 你……♥」"
+	CASE "無口口上1"
+		CALL MESSAGE_BOX,@"「……呀……！」\n（下腹猛地一抽……）"
+	CASEELSE
+		CALL MESSAGE_BOX,@"「……外口……而已……♥」"
+	ENDSELECT
+CASE "尿道口指奸"
+	SELECTCASE LPR
+	CASE "慇懃口上1", "女仆口上1", "大和抚子口上1", "虔诚口上1", "妹系口上1", "天然口上1", "人妻口上1"
+		CALL MESSAGE_BOX,@"「……呜……♥ 那里……又酸又麻……♥ 不要……再碾了……♥」"
+	CASE "強気口上1", "姉御肌口上1", "ボーイッシュ口上1"
+		CALL MESSAGE_BOX,@"「……混账……♥ 专盯尿道口……♥」"
+	CASE "無口口上1"
+		CALL MESSAGE_BOX,@"「……嗯嗯……！」\n（膝头发软……）"
+	CASEELSE
+		CALL MESSAGE_BOX,@"「……那里……不行……♥」"
+	ENDSELECT
+CASE "口内搅舌"
+	SELECTCASE LPR
+	CASE "慇懃口上1", "女仆口上1", "大和抚子口上1", "虔诚口上1", "妹系口上1", "天然口上1", "人妻口上1"
+		CALL MESSAGE_BOX,@"「……舌头……被手指……搅……♥ 津液……止不住……♥」"
+	CASE "強気口上1", "姉御肌口上1", "ボーイッシュ口上1"
+		CALL MESSAGE_BOX,@"「……唔……♥ 嘴里……别乱搅……♥」"
+	CASE "無口口上1"
+		CALL MESSAGE_BOX,@"「……嗯咕……♥」\n（舌面发抖……）"
+	CASEELSE
+		CALL MESSAGE_BOX,@"「……呜……♥」"
+	ENDSELECT
+CASE "压舌探喉"
+	SELECTCASE LPR
+	CASE "慇懃口上1", "女仆口上1", "大和抚子口上1", "虔诚口上1", "妹系口上1", "天然口上1", "人妻口上1"
+		CALL MESSAGE_BOX,@"「……压、压舌……♥ 喉咙……要……呕……♥」"
+	CASE "強気口上1", "姉御肌口上1", "ボーイッシュ口上1"
+		CALL MESSAGE_BOX,@"「……咳……♥ 手指……探喉……♥ 够了……♥」"
+	CASE "無口口上1"
+		CALL MESSAGE_BOX,@"「……唔——！……」\n（干呕……泪水涌出……）"
+	CASEELSE
+		CALL MESSAGE_BOX,@"「……呕……♥ 太深了……♥」"
+	ENDSELECT
+ENDSELECT
+RETURN
+
+
+
+; 手指 TEQUIP 継続口上（Tequip 名＝ARGS:1）
+@KOJO_SHARE_FINGER_TEQUIP_CONTINUE(ARGS:1)
+#DIMS LPR
+LPR = CSTR:使用口上
+
+SELECTCASE ARGS:1
+CASE "Ｖ指插入中"
+	SELECTCASE LPR
+	CASE "慇懃口上1", "女仆口上1", "大和抚子口上1", "虔诚口上1", "妹系口上1", "天然口上1", "人妻口上1"
+		CALL MESSAGE_BOX,@"「……里面……还……插着……♥ 别、别抠那里……♥」"
+	CASE "強気口上1", "姉御肌口上1", "ボーイッシュ口上1"
+		CALL MESSAGE_BOX,@"「……哈……♥ 手指……还在里面搅……♥」"
+	CASE "無口口上1"
+		CALL MESSAGE_BOX,@"「……嗯咕……♥」\n（腰肢发软……）"
+	CASEELSE
+		CALL MESSAGE_BOX,@"「……呜……♥ 还……没拔……♥」"
+	ENDSELECT
+CASE "Ａ指插入中"
+	SELECTCASE LPR
+	CASE "慇懃口上1", "女仆口上1", "大和抚子口上1", "虔诚口上1", "妹系口上1", "天然口上1", "人妻口上1"
+		CALL MESSAGE_BOX,@"「……后面……手指……还埋着……♥ 好奇怪……♥」"
+	CASE "強気口上1", "姉御肌口上1", "ボーイッシュ口上1"
+		CALL MESSAGE_BOX,@"「……啧……♥ 后面……别乱抠……♥」"
+	CASE "無口口上1"
+		CALL MESSAGE_BOX,@"「……呜……♥」\n（臀缝轻颤……）"
+	CASEELSE
+		CALL MESSAGE_BOX,@"「……后面……轻点……♥」"
+	ENDSELECT
+CASE "口内搅舌中"
+	SELECTCASE LPR
+	CASE "慇懃口上1", "女仆口上1", "大和抚子口上1", "虔诚口上1", "妹系口上1", "天然口上1", "人妻口上1"
+		CALL MESSAGE_BOX,@"「……舌头……还被……搅着……♥ 津液……止不住……♥」"
+	CASE "強気口上1", "姉御肌口上1", "ボーイッシュ口上1"
+		CALL MESSAGE_BOX,@"「……唔……♥ 嘴里……别停……♥」"
+	CASE "無口口上1"
+		CALL MESSAGE_BOX,@"「……嗯……♥」\n（舌面发麻……）"
+	CASEELSE
+		CALL MESSAGE_BOX,@"「……呜……♥」"
+	ENDSELECT
+CASE "压舌探喉中"
+	SELECTCASE LPR
+	CASE "慇懃口上1", "女仆口上1", "大和抚子口上1", "虔诚口上1", "妹系口上1", "天然口上1", "人妻口上1"
+		CALL MESSAGE_BOX,@"「……压……着……♥ 喉咙……好难受……♥」"
+	CASE "強気口上1", "姉御肌口上1", "ボーイッシュ口上1"
+		CALL MESSAGE_BOX,@"「……咳……♥ 手指……别往咽后……♥」"
+	CASE "無口口上1"
+		CALL MESSAGE_BOX,@"「……唔呃……！」\n（眼角渗泪……）"
+	CASEELSE
+		CALL MESSAGE_BOX,@"「……呕……♥ 喘、喘不上气……♥」"
+	ENDSELECT
+ENDSELECT
+RETURN
+
+
+
+;==========================================
+; 家庭浴池：被奴隶洗（素股洗会阴／乳推洗背）执行瞬间口上
+; 由 ○口上COMMON：TFLAG:浴室 且 调教命令「素股」「乳交」执行时优先填充
+;==========================================
+@KOJO_SHARE_BATH_WASH_PENIS_SERVICE(ARGS:1)
+#DIMS LPR
+LPR = CSTR:使用口上
+
+SELECTCASE ARGS:1
+CASE "素股"
+	SELECTCASE LPR
+	CASE "慇懃口上1", "女仆口上1", "大和抚子口上1", "虔诚口上1", "妹系口上1", "天然口上1", "人妻口上1"
+		CALL MESSAGE_BOX,@"「……下面……贴着您的会阴……慢慢磨……♥ 大腿内侧……也会……仔细带到……♥」"
+		CALL MESSAGE_BOX,@"「……后面……被您戳着玩……♥ 腰……会软……可、可前面……我会……磨得更规矩……♥」"
+	CASE "強気口上1", "姉御肌口上1", "ボーイッシュ口上1"
+		CALL MESSAGE_BOX,@"「……阴部……给你会阴和大腿……好好蹭干净……♥ 看清楚了……♥」"
+		CALL MESSAGE_BOX,@"「……哈……♥ 屁眼也戳……♥ 你变态得很嘛……♥ 行啊……我腿夹紧点……看你先软还是我先……♥」"
+	CASE "生真面目口上1", "堅物口上1", "気品口上1"
+		CALL MESSAGE_BOX,@"「……外阴……沿会阴……向大腿近端……反复摩擦……♥ 压力……分段……♥」"
+		CALL MESSAGE_BOX,@"「……后穴反射……被您按着测……♥ 明知……是戏弄……♥ 我、我会把数据……咽回肚子里……♥」"
+	CASE "懦弱口上1", "非敬語幼め口上1"
+		CALL MESSAGE_BOX,@"「……用……%SLANG_V()%……帮您洗……会阴……♥ 会……好好伺候……♥」"
+		CALL MESSAGE_BOX,@"「……后面……被戳……被揉……♥ 呜……♥ 腿……夹不住了……可、可是……更想……蹭紧一点……♥」"
+	CASE "知心口上1"
+		CALL MESSAGE_BOX,@"「……这里……最敏……我知道……♥ 我用阴阜……慢慢熨过去……♥」"
+		CALL MESSAGE_BOX,@"「……坏心眼……专挑后面戳……♥ 我……喘给你听……满意了没……♥」"
+	CASE "仇恨口上1"
+		CALL MESSAGE_BOX,@"「……阴部……蹭你的会阴……♥ 洗而已……♥ 你手……越戳我越扭……♥ 得意什么……♥」"
+		CALL MESSAGE_BOX,@"「……屁眼也揉……♥ 啧……♥ 身体……却老实……♥」"
+	CASE "愚忠口上1"
+		CALL MESSAGE_BOX,@"「……属下……以阴部……摩擦主上会阴与腿根……♥ 每一寸……都洗净……♥」"
+		CALL MESSAGE_BOX,@"「……主上……又拿后穴逗弄属下……♥ 属下……会夹紧了……再磨给您看……♥」"
+	CASE "無口口上1"
+		CALL MESSAGE_BOX,@"「……嗯……♥」\n（阴唇软肉压着会阴推磨……大腿内侧也带上……）"
+		CALL MESSAGE_BOX,@"「……呜……♥」\n（菊褶被指尖戳得一跳……她臀尖绷紧……水声却更黏……）"
+	CASEELSE
+		CALL MESSAGE_BOX,@"「……用下面……帮您……洗会阴和大腿……♥」"
+		CALL MESSAGE_BOX,@"「……后面……被您揉着戳着……♥ 我……会……蹭得更卖力……♥」"
+	ENDSELECT
+CASE "乳交"
+	SELECTCASE LPR
+	CASE "慇懃口上1", "女仆口上1", "大和抚子口上1", "虔诚口上1", "妹系口上1", "天然口上1", "人妻口上1"
+		CALL MESSAGE_BOX,@"「……失礼了……用胸……推您的背……♥」"
+		CALL MESSAGE_BOX,@"「……肩胛……我会慢慢……擀开……♥」"
+	CASE "強気口上1", "姉御肌口上1", "ボーイッシュ口上1"
+		CALL MESSAGE_BOX,@"「……背过去……♥ 让我用胸给你搓干净……♥」"
+		CALL MESSAGE_BOX,@"「……别乱动……蹭歪了……可不怪我……♥」"
+	CASE "生真面目口上1", "堅物口上1", "気品口上1"
+		CALL MESSAGE_BOX,@"「……接触面：背阔肌至竖脊肌……♥ 压力……分段递增……♥」"
+		CALL MESSAGE_BOX,@"「……乳首刺激……属附带现象……♥」"
+	CASE "懦弱口上1", "非敬語幼め口上1"
+		CALL MESSAGE_BOX,@"「……会不会……太用力……♥ 背……还疼吗……♥」"
+		CALL MESSAGE_BOX,@"「……我……再轻一点……♥」"
+	CASE "知心口上1"
+		CALL MESSAGE_BOX,@"「……放松肩……♥ 交给我……♥」"
+		CALL MESSAGE_BOX,@"「……水声盖过去了……你喘出来也没关系……♥」"
+	CASE "仇恨口上1"
+		CALL MESSAGE_BOX,@"「……背对你……♥ 省得看你脸……♥」"
+	CASE "愚忠口上1"
+		CALL MESSAGE_BOX,@"「……属下……以胸推洗……主上后背……♥」"
+	CASE "無口口上1"
+		CALL MESSAGE_BOX,@"「……嗯……♥」\n（乳肉压着脊沟……一下一下推……）"
+	CASEELSE
+		CALL MESSAGE_BOX,@"「……用胸……帮您洗背……♥」"
+	ENDSELECT
+CASEELSE
+ENDSELECT
+RETURN

@@ -5,7 +5,7 @@
 @RANDOM_SLAVE_SENSITIVE
 
 ;ABL:Ａ感度→10
-FOR LOCAL,10,15
+FOR LOCAL,10,16
 	ABL:LOCAL = 7 +RAND:7
 	ABL:LOCAL *= 10
 	
@@ -26,12 +26,14 @@ SIF GETBIT(＃全员Ｃ弱点＃)
 	ABL:Ｃ敏感度 = 200
 SIF GETBIT(＃全员Ａ弱点＃)
 	ABL:Ａ敏感度 = 200
+SIF GETBIT(＃全员Ｍ弱点＃)
+	ABL:Ｍ敏感度 = 200
 
 ;乳首感度は乳房感度を下回らない
 CALL NIPPLE_SENSITIVE_FIX
 
 ;全部合計して480未満のとき再シャッフル
-SIF SUMARRAY(ABL,10,15) < 480
+SIF SUMARRAY(ABL,10,16) < 480
 	RESTART
 
 

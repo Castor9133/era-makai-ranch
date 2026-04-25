@@ -31,13 +31,13 @@ CASE "母乳出货价格"
 
 CASE "快感值"
 	IF FLAG:自定义／快感值
-		FOR LOCAL,0,5
+		FOR LOCAL,0,6
 			SOURCE:LOCAL *= FLAG:自定义／快感值
 			SOURCE:LOCAL /= 100
 		NEXT
 	ENDIF
 	IF FLAG:减半／快感值
-		FOR LOCAL,0,5
+		FOR LOCAL,0,6
 			SOURCE:LOCAL /= 2
 		NEXT
 	ENDIF

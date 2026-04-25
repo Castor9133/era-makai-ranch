@@ -1,0 +1,2 @@
+# 口上 MESSAGE_BOX 流水线仅需 Python 3.10+ 标准库。
+# 若使用自建 DeepSeek/OpenAI 脚本调用 HTTPS，可自行 pip install requests / httpx。

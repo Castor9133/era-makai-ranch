@@ -1,0 +1,75 @@
+
+@COM130
+;舔阴蒂（Ｃ舔舐の直後限定・集中舌责）
+;主人公（调教者）舔奴隶阴蒂；Ｃ快感／主人公刺激＝奴隶侧来自主人公的刺激，非奴隶舔主人公。
+
+LOSEBASE:气力 += 26
+SOURCE:Ｃ快感／主人公刺激 += 5200
+SOURCE:耻辱 += 3800
+SOURCE:爱情 += 1200
+SOURCE:屈辱 += 3400
+SOURCE:不洁 += 2400
+SOURCE:支配 += 1100
+SOURCE:调教者习得 += 550
+SOURCE:已用时间 = 1
+SOURCE:舐舔拟音显示 = 1
+RETURN 1
+
+
+
+@COM131
+;舔阴道（外阴・非插入；处女结界＝阴道守护时不可）
+
+IF TALENT:处女结界
+	PRINTFORMW %CALLNAME%的%SAVESTR:标识／膣%被不可思议的结界守护着，无法令其张开接受舔弄…
+	RETURN 0
+ENDIF
+
+LOSEBASE:气力 += 34
+SOURCE:Ｖ快感／主人公刺激 += 5200
+SOURCE:Ｖ润滑追加 += 2800
+SOURCE:耻辱 += 3600
+SOURCE:爱情 += 1100
+SOURCE:屈辱 += 4200
+SOURCE:不洁 += 5200
+SOURCE:支配 += 1100
+SOURCE:调教者习得 += 450
+SOURCE:已用时间 = 1
+SOURCE:舐舔拟音显示 = 1
+RETURN 1
+
+
+
+@COM132
+;刺激龟头（口交存续中・奉仕精神高）
+;継続側は EQUIP_51_CONTINUE（Ｍ快感なし・恭順・体力気力回復）
+
+LOSEBASE:体力 -= 8
+LOSEBASE:气力 -= 12
+SOURCE:屈辱 += 900
+SOURCE:不洁 += 450
+SOURCE:爱情 += 600
+SOURCE:学习 += 700
+SOURCE:恭顺 += 700
+SOURCE:调教者习得 += 450
+SOURCE:已用时间 = 1
+TEQUIP:口交 = 1
+RETURN 1
+
+
+
+@COM133
+;真空口交（口交存续中・口经验＋奉仕）
+;継続側のＭ快感・SERVICE_CONTINUE は EQUIP_51_CONTINUE 側
+
+LOSEBASE:气力 += 28
+SOURCE:屈辱 += 1600
+SOURCE:不洁 += 900
+SOURCE:耻辱 += 700
+SOURCE:爱情 += 500
+SOURCE:学习 += 950
+SOURCE:调教者习得 += 550
+SOURCE:已用时间 = 1
+TEQUIP:口交 = 1
+RETURN 1
+

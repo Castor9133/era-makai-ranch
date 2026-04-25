@@ -115,5 +115,45 @@ IF TALENT:尿道敏感
 	ENDIF
 ENDIF
 
+CALL ORAL_DEEP_THROAT_M_PALAM_PERMILLE
+
 RETURN
+
+
+
+;口腔／深喉：`Ｍ快感` 各分项 — Ｍ感觉・奉仕・Ｍ绝顶次数に比例＋668は口交より深喉側へ差を付ける
+@ORAL_DEEP_THROAT_M_PALAM_PERMILLE
+
+SIF !TFLAG:调教中
+	RETURN
+SIF !(GROUPMATCH(SELECTCOM, 51, 52, 108, 109) || TEQUIP:口交 || TEQUIP:深喉 || TEQUIP:触手口交 || TEQUIP:触手深喉)
+	RETURN
+
+LOCAL = 1000
+LOCAL += LIMIT(ABL:Ｍ感觉, 0, 10) * 17
+LOCAL += LIMIT(ABL:奉仕精神, 0, 10) * 6
+LOCAL += LIMIT(EXP:Ｍ绝顶次数, 0, 450) / 18
+
+IF TALENT:深喉嗜好
+	IF TEQUIP:深喉 || TEQUIP:触手深喉 || GROUPMATCH(SELECTCOM, 52, 109)
+		LOCAL += 125
+	ELSEIF TEQUIP:口交 || TEQUIP:触手口交 || GROUPMATCH(SELECTCOM, 51, 108)
+		LOCAL += 62
+	ENDIF
+ENDIF
+
+LOCAL = LIMIT(LOCAL, 1000, 1480)
+
+SIF SOURCE:Ｍ快感 > 0
+	SOURCE:Ｍ快感 = SOURCE:Ｍ快感 * LOCAL / 1000
+SIF SOURCE:Ｍ快感／主人公刺激 > 0
+	SOURCE:Ｍ快感／主人公刺激 = SOURCE:Ｍ快感／主人公刺激 * LOCAL / 1000
+SIF SOURCE:Ｍ快感／百合调教 > 0
+	SOURCE:Ｍ快感／百合调教 = SOURCE:Ｍ快感／百合调教 * LOCAL / 1000
+SIF SOURCE:Ｍ快感／器具 > 0
+	SOURCE:Ｍ快感／器具 = SOURCE:Ｍ快感／器具 * LOCAL / 1000
+SIF SOURCE:Ｍ快感／触手 > 0
+	SOURCE:Ｍ快感／触手 = SOURCE:Ｍ快感／触手 * LOCAL / 1000
+SIF SOURCE:Ｍ快感／魔族 > 0
+	SOURCE:Ｍ快感／魔族 = SOURCE:Ｍ快感／魔族 * LOCAL / 1000
 

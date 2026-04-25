@@ -60,6 +60,7 @@ IF TEQUIP:0:避孕套
 			IF TFLAG:深喉避孕套射精地文 == 1
 				CALL PRINT_深喉无套口内射精叙述
 			ELSE
+				CALL ONOMATOPOEIA_DEEP_THROAT
 				PRINTFORM %CALLNAME%被顶到发软的喉口深处（避孕套前端仍堵在那里）
 			ENDIF
 		ELSEIF TEQUIP:口交
@@ -73,10 +74,12 @@ IF TEQUIP:0:避孕套
 
 ;膣内射精
 ELSEIF SOURCE:膣内射精经验
+	CALL ONOMATOPOEIA("活塞运动","Ｖ")
 	PRINTFORM %CALLNAME%的%SLANG_V()%被
 
 ;尻穴射精
 ELSEIF SOURCE:尻穴射精经验
+	CALL ONOMATOPOEIA("活塞运动","Ａ")
 	PRINTFORM %CALLNAME%的%SLANG_A()%被
 
 ;引き抜いて外出しor素股
@@ -126,6 +129,7 @@ ELSEIF SOURCE:颜面射精
 		ENDIF
 	ELSEIF GETBIT(＃Ｐ使用／Ｍ插入＃)
 		IF TEQUIP:深喉
+			CALL ONOMATOPOEIA_DEEP_THROAT
 			IF TALENT:深喉嗜好
 				SELECTCASE RAND:5
 				CASE 0
@@ -230,6 +234,7 @@ ELSEIF SOURCE:颜面射精
 ;口内射精
 ELSEIF SOURCE:精饮经验
 	IF TEQUIP:触手深喉
+		CALL ONOMATOPOEIA_DEEP_THROAT
 		SELECTCASE RAND:6
 		CASE 0
 			PRINTFORM 触手茎干深深楔在%CALLNAME%喉口、异形精液一股股泵进食道，吸盘刮过咽壁时%CALLNAME%全身痉挛，
@@ -384,6 +389,7 @@ SIF !TEQUIP:0:避孕套
 ;深喉・口内射精（无套／摘套后地文与真实无套共用）
 @PRINT_深喉无套口内射精叙述
 
+CALL ONOMATOPOEIA_DEEP_THROAT
 IF TALENT:深喉嗜好 && ABL:精饮中毒 >= 10
 	SELECTCASE RAND:5
 	CASE 0

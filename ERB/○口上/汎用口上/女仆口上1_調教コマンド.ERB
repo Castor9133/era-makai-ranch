@@ -15,6 +15,9 @@ CASE "执行"
 		CALL MESSAGE_BOX,@"「遵命。将以口部侍奉……请您放松。」"
 		CALL MESSAGE_BOX,@"「若您皱眉……我会立刻放轻；若您眯眼……我会更深一些。」"
 
+	CASE "舔阴蒂","舔阴道","刺激龟头","真空口交","肛门指揉按摩","玩弄阴唇","G点指压","阴道指奸","肛门指奸","尿道口指弄","尿道口指奸","口内搅舌","压舌探喉"
+		CALL KOJO_SHARE_ADVANCED_TRAIN_DISPATCH(ARGS:1, ARGS:2)
+
 	CASE "正常位","后背位","对面坐位","背面坐位","骑乘位","对面立位","背面立位","强制骑乘位","背面骑乘位"
 		CALL MESSAGE_BOX,@"「遵命。将以身体侍奉……请您把重心交给我。」"
 
@@ -27,6 +30,9 @@ CASE "执行"
 
 	CASE "尿道塞"
 		CALL MESSAGE_BOX,@"「遵命。将进行尿道塞装着……我会尽量减轻不适。」"
+
+	CASE "深喉","触手深喉"
+		CALL KOJO_SHARE_ADVANCED_TRAIN_DISPATCH(ARGS:1, ARGS:2)
 
 	CASEELSE
 		CALL MESSAGE_BOX,@"「遵命。将执行%ARGS:1%。」"

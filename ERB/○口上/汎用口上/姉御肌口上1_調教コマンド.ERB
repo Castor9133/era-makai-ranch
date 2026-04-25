@@ -1,4 +1,4 @@
-﻿
+
 ; 以生真面目口上为底，参考多种口上写成。
 ; 为尽快成型曾直接覆盖生真面目口上；台词花样其实还希望更丰富。
 ; ======================================
@@ -578,6 +578,9 @@ CASE "舔舐脸"
 	ENDIF
 
 
+CASE "舔阴蒂","舔阴道","刺激龟头","真空口交","肛门指揉按摩","玩弄阴唇","G点指压","阴道指奸","肛门指奸","尿道口指弄","尿道口指奸","口内搅舌","压舌探喉"
+	CALL KOJO_SHARE_ADVANCED_TRAIN_DISPATCH(ARGS:1, ARGS:2)
+
 CASE "正常位","后背位","对面坐位","背面坐位","骑乘位","背面骑乘位","对面立位","背面立位","强制骑乘位"
 	; 目前一律转调姉御肌专用性交口上
 	; 若要体位差分可自行改写
@@ -629,33 +632,7 @@ CASE "口交"
 	ENDIF
 
 CASE "深喉"
-	IF !EXP:(SELECTCOM+1000)
-		IF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／隶属＃
-			CALL MESSAGE_BOX,@"「へ？ %SELF_CALL()%の喉で、無理やり？\n　んふふっ♥ %MASTER_CALL()%の『モノ』って感じ、ゾクゾクするね♥♥」"
-		ELSEIF ＃陷落状态／恋慕以上＃
-			CALL MESSAGE_BOX,@"「%SELF_CALL()%の喉を、犯したい…？\n　へぇ…♥ イイね、%MASTER_CALL()%からオスを感じてきゅんきゅんしちまうよ♥♥」"
-		ELSEIF ＃陷落状态／陷落以上＃
-			CALL MESSAGE_BOX,@"「口を開け、って…あーー、こんな感じ？ってちょっ…\n　―――んぐぅっ！？お゛っご！んぶぅっ！！♥ ふぐぅっ！！♥」"
-		ELSEIF ＃陷落状态／屈服以上＃
-			CALL MESSAGE_BOX,@"「口を開け、って…や、やな予感のする命令だね… あーー……おええ、あいを…？\n　―――んぶっ！？ん゛ーっ！んう゛っ！ん゛っっ！！」"
-		ELSE
-			CALL MESSAGE_BOX,@"「は…？ そんな粗末なもん見せびらかして何だい…！近寄るんじゃ…\n　―――んむ゛っ！？ん゛っ！んぐっ！ん゛むぅぅっ！！」"
-		ENDIF
-		RETURN
-	ENDIF
-	IF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／隶属＃
-		CALL MESSAGE_BOX,@"「あーっ♥ どうぞご自由にお使いください、ってな♥♥\n　―――んぶっ♥ む゛ーっ！♥ じゅるっ♥ ん゛むっっ♥」"
-		CALL MESSAGE_BOX,@"「ん゛お゛っ♥ じゅるっ♥ む゛う゛っ♥ ん゛っ♥」\n（%MASTER_CALL()%に使われてるって感覚、しあわせぇ♥♥）"
-	ELSEIF ＃陷落状态／恋慕以上＃
-		CALL MESSAGE_BOX,@"「ん゛むっ♥ お゛っっ♥ ん゛ん゛っ♥ じゅるっ♥\n ―――ハァーッ♥ ハァーッ♥ %SELF_CALL()%の喉、よかったかい？♥♥」"
-	ELSEIF ＃陷落状态／陷落以上＃
-		CALL MESSAGE_BOX,@"「はいはい、ご自由にどうぞ… んあ♥\n　―――ん゛っ！んぶっっ！お゛っぁ！♥ ふっう゛っ！♥」"
-	ELSEIF ＃陷落状态／屈服以上＃
-		CALL MESSAGE_BOX,@"「ん゛ん゛っ！ん゛む゛ぅっ！！ん゛ーっ！ん゛っぐぅぅ！！\n　―――ゴホッ、コホッ！はぁ…はぁっ……少しは、加減してほしいね……っ」"
-	ELSE
-		CALL MESSAGE_BOX,@"「…ま、また%SELF_CALL()%の喉犯そうっての！？やっ…離せっ！んあ゛ぁ\n　―――ん゛っ！んぐっっ！んっぐぶ！！ん゛ーーっ！」"
-		CALL MESSAGE_BOX,@"「ん゛ん゛っ！ん゛む゛ぅっ！！ん゛ーっ！ん゛っぐぅぅ！！\n　―――ゴホッ、カハッ！はぁ……はぁっ……%SELF_CALL()%を…なんだと…」"
-	ENDIF
+	CALL KOJO_SHARE_ADVANCED_TRAIN_DISPATCH("深喉", ARGS:2)
 
 CASE "乳交"
 CASE "强制乳交"
@@ -854,14 +831,7 @@ CASE "触手口交"
 	ENDSELECT
 	
 CASE "触手深喉"
-	SELECTCASE ARGS:2
-	CASE "移除"
-	
-	CASE "继续"
-	
-	CASEELSE
-	
-	ENDSELECT
+	CALL KOJO_SHARE_ADVANCED_TRAIN_DISPATCH("触手深喉", ARGS:2)
 	
 CASE "刷子触手"
 	;共五部位，此处宜包五条口上，分支也略有不同。

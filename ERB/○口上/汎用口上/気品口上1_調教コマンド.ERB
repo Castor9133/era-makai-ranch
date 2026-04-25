@@ -1,4 +1,4 @@
-﻿
+
 ; 参考了无口口上。
 ; 概念：「温柔大姐姐」
 ; 编号暂用占位。
@@ -406,6 +406,9 @@ CASE "舔舐耳"
 CASE "舔舐腋"
 CASE "舔舐脸"
 
+CASE "舔阴蒂","舔阴道","刺激龟头","真空口交","肛门指揉按摩","玩弄阴唇","G点指压","阴道指奸","肛门指奸","尿道口指弄","尿道口指奸","口内搅舌","压舌探喉"
+	CALL KOJO_SHARE_ADVANCED_TRAIN_DISPATCH(ARGS:1, ARGS:2)
+
 CASE "正常位","后背位","对面坐位","背面坐位","骑乘位","背面骑乘位","对面立位","背面立位","强制骑乘位"
 	CALL KOJO_GENERAL_気品1_TRAIN_INSIDE("Ｖ性交",ARGS:2)
 
@@ -424,13 +427,7 @@ CASE "口交"
 	ENDIF
 
 CASE "深喉"
-	IF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／恋慕以上＃
-		CALL MESSAGE_BOX,@"「嗯哼♥♥ 唔呜呜呜♥♥ 嗯嗯♥ 　觉得%VAGINA_CALL()%的状态如何♥ %SWEET_MASTER_CALL()%♥♥♥」"
-	ELSEIF ＃陷落状态／屈服以上＃
-		CALL MESSAGE_BOX,@"「呼呼♥  呀呀♥ 嗯哼♥ 住…住手…不要再…嗯嗯～～～♥ 」"
-	ELSE
-		CALL MESSAGE_BOX,@"「唔哼！　呼啊！　唔哼！ 嗯哼哼哼！」"
-	ENDIF
+	CALL KOJO_SHARE_ADVANCED_TRAIN_DISPATCH("深喉", ARGS:2)
 
 CASE "乳交"
 CASE "强制乳交"

@@ -151,6 +151,12 @@ ENDIF
 SIF PALAM:Ｖ润滑
 	SETBIT STAIN:膣,1
 
+;浴場で浣腸（洗屁眼）済み→本調教開始時のみＡ润滑を多めに（会いに行く等では消費しない）
+IF TFLAG:调教中 && CFLAG:浴池灌肠待调教
+	PALAM:Ａ润滑 += 16000
+	PALAM:Ａ润滑 = LIMIT(PALAM:Ａ润滑,0,99999)
+	CFLAG:浴池灌肠待调教 = 0
+ENDIF
 
 
 

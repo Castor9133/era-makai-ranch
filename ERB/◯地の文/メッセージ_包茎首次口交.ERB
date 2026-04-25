@@ -1,0 +1,187 @@
+
+;包茎主人公・本场景首次口交前戏（褪包皮三档）地文 + 口上填充
+;ARG：0=调教 COM51　1=入浴口交清洗　2=拜访侍奉（独立流程内）
+
+@PHIMOSIS_PLAYER_HAS_PHIMOSIS
+#FUNCTION
+SIF !PLAYER_PENIS
+	RETURNF 0
+SIF !TALENT:0:包茎
+	RETURNF 0
+RETURNF 1
+
+
+@PHIMOSIS_FIRST_ORAL_TIER
+#FUNCTION
+; 1=未陷落手褪　2=屈服以上+口经验15手口　3=恋慕以上+口经验40嘴为主
+SIF !＃陷落状态／屈服以上＃
+	RETURNF 1
+SIF ＃陷落状态／恋慕以上＃ && EXP:经验次数／主人公／Ｍ性交 >= 40
+	RETURNF 3
+SIF EXP:经验次数／主人公／Ｍ性交 >= 15
+	RETURNF 2
+RETURNF 1
+
+
+;地文のみ。口上は TFLAG:包茎口上待播 に档位を立て、KOJO_PRINT または拜访块内で消费。
+@PHIMOSIS_FIRST_ORAL_NARRATIVE(ARG)
+#DIM TIER
+SIF !PHIMOSIS_PLAYER_HAS_PHIMOSIS
+	RETURN
+SIF CFLAG:本场景包茎口交前戏已消费
+	RETURN
+TIER = PHIMOSIS_FIRST_ORAL_TIER()
+SELECTCASE ARG
+CASE 0
+	CALL PHIMOSIS_FIRST_ORAL_TX_TRAIN(TIER)
+CASE 1
+	CALL PHIMOSIS_FIRST_ORAL_TX_BATH(TIER)
+CASEELSE
+	CALL PHIMOSIS_FIRST_ORAL_TX_VISIT(TIER)
+ENDSELECT
+IF !FLAG:口上显示 || !CFLAG:口上显示
+	TFLAG:包茎口上待播 = 0
+	CFLAG:本场景包茎口交前戏已消费 = 1
+ELSE
+	TFLAG:包茎口上待播 = TIER
+ENDIF
+RETURN
+
+
+@PHIMOSIS_FIRST_ORAL_TX_TRAIN(TIER)
+SELECTCASE TIER
+CASE 1
+	PRINTFORML 当把%SLANG_PENIS()%递到%CALLNAME%唇边时，她先僵了一瞬——包皮口箍得紧，铃口只怯怯地露出一道湿线。
+	PRINTFORML 她没急着含进去，指腹抵着包皮缘慢慢下褪，视线却落在包皮与冠状沟交界处那点发白的垢上；蘸了唾液一点点化开、抹净，才肯让唇瓣轻碰铃口，像在确认「这一圈也算伺候到了」…
+CASE 2
+	PRINTFORML %SLANG_PENIS()%靠近时，%CALLNAME%先用手掌裹住根部稳住，拇指顺着包皮缘慢慢推褪；温热的包皮下终于露出完整的龟头，她呼吸一乱，却仍抬眼寻你的表情。
+	PRINTFORML 她低头用舌尖贴上冠状沟，把沟底那点白垢卷进口里化开咽下，舌面与指腹交替施力，把最后一圈紧涩也化开；唾液牵成细丝时，才张口将前端纳入口腔，开始真正的吮吸侍奉…
+CASEELSE
+	PRINTFORML %TRAIN_SERVICE()%几乎没给你反应的空隙——%CALLNAME%张口含住包皮下的铃口，舌尖顶住窄缝打转，舌背贴着内板刮过，把积在包皮腔里的垢一点点扫进齿间。
+	PRINTFORML 她只靠唇舌与负压便把包皮一点点翻开，龟头完全露出的瞬间喉间一滚，像把最后一抹垢也咽净，才立刻沿着柱身加深吞吐，褪皮与侍奉在同一条湿热的轨迹里一气呵成…
+ENDSELECT
+RETURN
+
+
+@PHIMOSIS_FIRST_ORAL_TX_BATH(TIER)
+SELECTCASE TIER
+CASE 1
+	PRINTFORML 水汽里皂香淡淡，%CALLNAME%先握住%SLANG_PENIS()%根部，指腹把包皮缓缓向根处推；包皮内侧那点白垢被皂沫带出来，她用拇指腹仔细抹净，又用清水冲过指腹才敢继续。
+	PRINTFORML 褪到铃口微露时，她才俯身用唇轻贴那点湿热，舌尖只敢在冠状沟外缘扫半圈，把残余的垢卷进口里化开——茎身仍大半藏在掌心里，嘴只服务最前端，却也算把「脏处」先收拾干净了…
+CASE 2
+	PRINTFORML 她把皂沫抹在掌心，先用手掌裹住%SLANG_PENIS()%，拇指与食指圈住包皮缘慢慢褪开；热水一激，冠状沟底积的垢被皂泡带出来，她忙用舌尖把皂泡与垢一起卷净咽下，又顺着沟细细描过第二遍。
+	PRINTFORML 手与嘴交替施力，包皮终于服帖地翻在根部；她这才张口将龟头整颗含住，水声与吞咽混在浴室的回音里，像把「洗净」与「侍奉」叠成同一件事…
+CASEELSE
+	PRINTFORML %CALLNAME%没先伸手，而是直接张口含住仍被包皮半掩的铃口——舌尖顶着窄缝打转，舌背贴着内板刮，把包皮腔里软白的垢扫进唾液里一并咽下。
+	PRINTFORML 龟头完全翻出时她眼角沁水却仍加深吞吐，皂香混着腥咸在齿间化开；她像要把这一遍清洗做成献祭，褪包皮与裹吮茎身在同一条黏腻的弧线里完成…
+ENDSELECT
+RETURN
+
+
+@PHIMOSIS_FIRST_ORAL_TX_VISIT(TIER)
+SELECTCASE TIER
+CASE 1
+	PRINTFORML 她跪在你腿间，先只用手：掌心焐热柱身，指腹顺着包皮缘一圈圈推褪；褪到一半时指腹沾上包皮内侧的垢，她动作一顿，另取湿巾角细细擦掉，又低头嗅了嗅确认没有异味才敢继续。
+	PRINTFORML 铃口才从包皮下完整露出来时，她才用唇轻碰那点湿热——仍不敢贸然深含，只把舌尖压在冠状沟下缘，把最后一丝垢舐净咽下，像交「褪开」与「收拾干净」两份作业…
+CASE 2
+	PRINTFORML 她一手稳住根部，一手拇指推着包皮慢慢下褪；露出的龟头被热气一蒸更显敏，她忙低头用舌尖贴上冠状沟，把沟底那点垢卷进口里咽下，又把涩意舐成水声。
+	PRINTFORML 手口并用把包皮翻到根处后，她才张口将前端深深纳住，腮边微陷，像要把刚才的笨拙全都补进这一吮里…
+CASEELSE
+	PRINTFORML 她没等你开口，唇先含住仍被包皮裹住的铃口，舌尖顶住窄缝来回顶弄；舌背贴着内板一刮，软白的垢溶进唾液里，她喉结轻滚，先咽下这一口才肯把包皮吮开半圈。
+	PRINTFORML 龟头完全露出的瞬间她呼吸一窒，腮侧凹下去，吞吐更深一层——褪开包皮与裹紧茎身连成一气，只剩吞吐的水声闷在两人之间的空隙里…
+ENDSELECT
+RETURN
+
+
+;MESSAGE_BOX 填充（由 KOJO_PRINT 或拜访流程调用；消费 TFLAG 档位）
+@PHIMOSIS_FIRST_ORAL_KOJO_FILL(ARG)
+#DIMS LPR
+SIF !ARG
+	RETURN
+LPR = CSTR:使用口上
+SELECTCASE ARG
+CASE 1
+	SELECTCASE LPR
+	CASE "慇懃口上1", "女仆口上1", "大和抚子口上1", "虔诚口上1", "妹系口上1", "天然口上1", "人妻口上1"
+		CALL MESSAGE_BOX,@"「……先用手……把包皮里……收拾整齐……♥ 垢……我会一点点擦掉……不能算没伺候到……♥」"
+		CALL MESSAGE_BOX,@"「……露出来的沟……我也会舔净……♥ 不想漏做……♥」"
+	CASE "強気口上1", "姉御肌口上1", "ボーイッシュ口上1"
+		CALL MESSAGE_BOX,@"「……藏污纳垢的地方……我看得很清楚……♥ 褪开……再收拾……♥ 别一副怕我弄不好的脸……♥」"
+	CASE "生真面目口上1", "堅物口上1", "気品口上1"
+		CALL MESSAGE_BOX,@"「……包皮内板与冠状沟交界……重点检查……♥ 角化物……先以指腹与唾液清除……♥」"
+		CALL MESSAGE_BOX,@"「……可视范围确认完毕……再进入下一阶段……♥」"
+	CASE "懦弱口上1", "非敬語幼め口上1"
+		CALL MESSAGE_BOX,@"「……我会……先弄干净……♥ 怕、怕做得不好看……让您失望……♥」"
+		CALL MESSAGE_BOX,@"「……垢……我也会擦掉……♥ 不会……偷懒的……♥」"
+	CASE "知心口上1"
+		CALL MESSAGE_BOX,@"「……藏着的……我都看见了……♥ 一步一步来……♥ 我想把该做的都做满……♥」"
+		CALL MESSAGE_BOX,@"「……若还有哪儿不干净……你点头……我就补上……♥」"
+	CASE "仇恨口上1"
+		CALL MESSAGE_BOX,@"「……垢也得清……♥ 省得你事后挑刺……说我没伺候到位……♥」"
+	CASE "愚忠口上1"
+		CALL MESSAGE_BOX,@"「……属下……先以指侍奉……褪净包皮……♥ 若有遗漏……请明示……♥」"
+		CALL MESSAGE_BOX,@"「……包皮垢……属下……不敢敷衍……♥」"
+	CASE "無口口上1"
+		CALL MESSAGE_BOX,@"「……嗯……」\n（指腹把垢抹进纸巾……又凑近闻了闻……才继续往下褪……）"
+	CASEELSE
+		CALL MESSAGE_BOX,@"「……我……先用手……把里面……弄干净……♥」"
+	ENDSELECT
+CASE 2
+	SELECTCASE LPR
+	CASE "慇懃口上1", "女仆口上1", "大和抚子口上1", "虔诚口上1", "妹系口上1", "天然口上1", "人妻口上1"
+		CALL MESSAGE_BOX,@"「……沟里的垢……我用舌尖扫了……♥ 会咽下去……♥ 这样……算清理干净了吗……♥」"
+		CALL MESSAGE_BOX,@"「……整颗龟头……都含住了……♥ 我会……再检查一遍有没有漏……♥」"
+	CASE "強気口上1", "姉御肌口上1", "ボーイッシュ口上1"
+		CALL MESSAGE_BOX,@"「……手褪开……嘴就收债……♥ 垢也给你舔进去……♥ 还敢说没伺候好？……♥」"
+	CASE "生真面目口上1", "堅物口上1", "気品口上1"
+		CALL MESSAGE_BOX,@"「……冠状沟……舌扫两遍……♥ 残留皮脂……已随唾液吞咽……♥」"
+		CALL MESSAGE_BOX,@"「……服务闭环……我会自检……♥」"
+	CASE "懦弱口上1", "非敬語幼め口上1"
+		CALL MESSAGE_BOX,@"「……味道……我知道……♥ 可是……我想做到位……♥ 垢……也会咽下去……♥」"
+	CASE "知心口上1"
+		CALL MESSAGE_BOX,@"「……这里……我扫了两遍……♥ 你还盯着我……是不信我做得够细吗……♥」"
+	CASE "仇恨口上1"
+		CALL MESSAGE_BOX,@"「……褪开了就老实……♥ 垢也吞了……♥ 还想挑哪句没伺候到……♥」"
+	CASE "愚忠口上1"
+		CALL MESSAGE_BOX,@"「……龟头……已露出……♥ 沟中垢……属下……以舌清剿……并咽下……♥」"
+	CASE "無口口上1"
+		CALL MESSAGE_BOX,@"「……嗯咕……♥」\n（指尖褪下……舌尖立刻卷着沟底扫过去……喉结一滚……）"
+	CASEELSE
+		CALL MESSAGE_BOX,@"「……手……褪开……嘴……把垢……也收拾掉……♥」"
+	ENDSELECT
+CASEELSE
+	SELECTCASE LPR
+	CASE "慇懃口上1", "女仆口上1", "大和抚子口上1", "虔诚口上1", "妹系口上1", "天然口上1", "人妻口上1"
+		CALL MESSAGE_BOX,@"「……只用嘴……帮您褪……♥ 包皮底下……我会用舌头……全扫一遍……♥」"
+		CALL MESSAGE_BOX,@"「……垢……都收进嘴里……咽下去了……♥ 这样……算……伺候到位了吗……♥」"
+	CASE "強気口上1", "姉御肌口上1", "ボーイッシュ口上1"
+		CALL MESSAGE_BOX,@"「……嘴就是扫帚……♥ 包皮里藏的……我全舔出来……咽下去……♥ 满意没……♥」"
+	CASE "生真面目口上1", "堅物口上1", "気品口上1"
+		CALL MESSAGE_BOX,@"「……口内清创……♥ 包皮垢……已随唾液吞咽……♥ 主观服务评分……请您反馈……♥」"
+	CASE "懦弱口上1", "非敬語幼め口上1"
+		CALL MESSAGE_BOX,@"「……我……直接……用嘴……扫……♥ 垢……也会咽下去……♥ 会不会……还是做得不够……♥」"
+	CASE "知心口上1"
+		CALL MESSAGE_BOX,@"「……全交给我……♥ 舌底……把垢卷走……我咽了……♥ 你还嫌哪一步没到位……就说……♥」"
+	CASE "仇恨口上1"
+		CALL MESSAGE_BOX,@"「……含到底……连垢一起……♥ 你还想挑刺……我就再扫一遍……♥」"
+	CASE "愚忠口上1"
+		CALL MESSAGE_BOX,@"「……包皮垢……属下……卷舌刮净……皆已咽下……♥ 若仍不净……属下愿再侍一遍……♥」"
+	CASE "無口口上1"
+		CALL MESSAGE_BOX,@"「……唔……♥」\n（舌背顶着包皮内侧刮过……喉结滚下去……一点声响也不漏……）"
+	CASEELSE
+		CALL MESSAGE_BOX,@"「……张嘴……就好……♥ 垢……我也会……用嘴……清干净……咽下去……♥」"
+	ENDSELECT
+ENDSELECT
+RETURN
+
+
+;拜访等不经 KOJO_PRINT 时：地文后立刻口上+打印+标记消费
+@PHIMOSIS_FIRST_ORAL_VISIT_KOJO_AND_FINISH
+SIF !TFLAG:包茎口上待播
+	RETURN
+CALL PHIMOSIS_FIRST_ORAL_KOJO_FILL(TFLAG:包茎口上待播)
+TFLAG:包茎口上待播 = 0
+CFLAG:本场景包茎口交前戏已消费 = 1
+SIF MESSAGE_COUNT && FLAG:口上显示 && CFLAG:口上显示
+	CALL MESSAGE_PRINT
+RETURN

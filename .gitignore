@@ -5,3 +5,10 @@ UserData/
 **/*.ERB.bak
 _scan_kojo.py
 _scan_out.txt
+
+# Kojo MESSAGE_BOX extraction / translation batches（见 scripts/kojo_*）
+out/
+
+# Python
+__pycache__/
+*.pyc

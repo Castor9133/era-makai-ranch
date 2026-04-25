@@ -1,4 +1,4 @@
-﻿
+
 ; ======================================
 ; 口上统一入口
 ; ARGS:0 场景；ARGS:1/2 用于更细分
@@ -19,6 +19,35 @@ SIF !FLAG:口上显示 || !CFLAG:口上显示
 ; 播口上时从行首开始
 SIF !LINEISEMPTY()
 	PRINTL
+
+; 包茎・本场景首次口交前戏（地文已播、MESSAGE 仍空时填入）
+IF ARGS:0 == "调教命令" && ARGS:1 == "口交" && ARGS:2 == "执行" && TFLAG:包茎口上待播 > 0
+	CALL PHIMOSIS_FIRST_ORAL_KOJO_FILL(TFLAG:包茎口上待播)
+	TFLAG:包茎口上待播 = 0
+	CFLAG:本场景包茎口交前戏已消费 = 1
+ENDIF
+
+; 家庭浴池：素股洗会阴／仅「乳推洗背」分支的乳交（执行瞬间走性格分组共用口上）
+IF ARGS:0 == "调教命令" && ARGS:2 == "执行" && TFLAG:浴室 && ARGS:1 == "素股"
+	CALL KOJO_SHARE_BATH_WASH_PENIS_SERVICE("素股")
+	SIF MESSAGE_COUNT
+		CALL MESSAGE_PRINT
+	RETURN
+ENDIF
+IF ARGS:0 == "调教命令" && ARGS:2 == "执行" && TFLAG:浴室 && ARGS:1 == "乳交" && TFLAG:浴池洗背乳推执行
+	CALL KOJO_SHARE_BATH_WASH_PENIS_SERVICE("乳交")
+	SIF MESSAGE_COUNT
+		CALL MESSAGE_PRINT
+	RETURN
+ENDIF
+
+; 手指 TEQUIP 継続（ARGS:1=Tequip 名称；装備 SOURCE 側から KOJO_PRINT「调教命令」,…,「继续」）
+IF ARGS:0 == "调教命令" && ARGS:2 == "继续" && GROUPMATCH(ARGS:1,"Ｖ指插入中","Ａ指插入中","口内搅舌中","压舌探喉中")
+	CALL KOJO_SHARE_FINGER_TEQUIP_CONTINUE(ARGS:1)
+	SIF MESSAGE_COUNT
+		CALL MESSAGE_PRINT
+	RETURN
+ENDIF
 
 ; 载入对应口上
 ; 用字符串判断好写，但数据量偏大；若成问题再改数值索引

@@ -1,0 +1,38 @@
+
+;浴槽内キス→任意で舌弄り
+@BATHLOOM_KISS
+
+;娘は頬キスのみ（弄舌なし）
+IF GROUPMATCH(CSTR:状态／主人公的孩子,"成长中","成长后")
+	CALL VISIT_KISS
+	RETURN
+ENDIF
+
+CALL VISIT_KISS
+
+PRINTL
+PRINTL [0] 用手指玩弄她的舌头…
+PRINTL [99] 就这样结束
+BINPUT
+SELECTCASE RESULT
+CASE 0
+	CALL BATHLOOM_KISS_TONGUE_PLAY
+ENDSELECT
+RETURN
+
+
+
+@BATHLOOM_KISS_TONGUE_PLAY
+
+CALL MANYL(5)
+PRINTFORMW 你托起她的下颌，指腹沿着舌面缓缓按压……她呜咽着想合唇，却只换来更多津液。
+PRINTFORMW 指尖捏住舌尖轻轻一拧，水声混着喘息；热气扑在你腕间，她却乖顺地张大些，任你玩弄。
+SOURCE:爱情 += 900
+SOURCE:耻辱 += 700
+SOURCE:屈辱 += 500
+SOURCE:学习 += 600
+SOURCE:不洁 += 300
+CALL SOURCE_CHECK
+TFLAG:亲密互动次数 ++
+PRINTW
+RETURN

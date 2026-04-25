@@ -124,10 +124,11 @@ SIF !RESULT
 LOSEBASE:气力 += 10
 SOURCE:异形恐惧 += 500
 SOURCE:已用时间 = 1
-TEQUIP:触手口交 = 1
-SIF !FLAG:主人公的触手也是主人公
-	M_PENIS = 触手
-RETURN 1
+	TEQUIP:触手口交 = 1
+	SIF !FLAG:主人公的触手也是主人公
+		M_PENIS = 触手
+	SOURCE:Ｍ快感／触手 += 520
+	RETURN 1
 
 
 
@@ -143,10 +144,11 @@ ENDIF
 LOSEBASE:气力 += 10
 SOURCE:异形恐惧 += 500
 SOURCE:已用时间 = 1
-TEQUIP:触手深喉 = 1
-SIF !FLAG:主人公的触手也是主人公
-	M_PENIS = 触手
-RETURN 1
+	TEQUIP:触手深喉 = 1
+	SIF !FLAG:主人公的触手也是主人公
+		M_PENIS = 触手
+	SOURCE:Ｍ快感／触手 += 800
+	RETURN 1
 
 
 

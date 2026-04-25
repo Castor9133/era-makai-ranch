@@ -1,4 +1,4 @@
-﻿
+
 ;調教の継続用メッセージ
 ;ARGS→継続中コマンド
 @SEX_MESSAGE(ARGS)
@@ -169,6 +169,7 @@ CALL ONOMATOPOEIA("活塞运动","Ａ")
 SELECTCASE ARGS
 CASE "乳交"
 	PRINTFORML %CALLNAME%用%SLANG_B()%刺激着%CALLNAME:0%的%SLANG_PENIS()%
+	CALL ONOMATOPOEIA("活塞运动","乳交")
 CASE "强制乳交"
 	IF ABL:胸围大小 < BUSTSIZE_普乳
 		PRINTFORML %CALLNAME%的%SLANG_B()%摩擦着%SLANG_PENIS()%…
@@ -178,6 +179,7 @@ CASE "强制乳交"
 	CALL ONOMATOPOEIA("活塞运动","乳交")
 CASEELSE
 	PRINTFORML %CALLNAME%用%SLANG_B()%刺激着%CALLNAME:0%的%SLANG_PENIS()%
+	CALL ONOMATOPOEIA("活塞运动","乳交")
 ENDSELECT
 
 
@@ -189,6 +191,37 @@ ENDSELECT
 SELECTCASE ARGS
 CASE "口交"
 	PRINTFORML %CALLNAME%在吮吸%CALLNAME:0%的%SLANG_PENIS()%…
+CASE "刺激龟头"
+	IF TALENT:羞辱兴奋 && TFLAG:镜子PLAY && ITEM:519 > 0
+		PRINTFORML 镜子里连她舌尖的发抖都一览无遗；她索性把羞耻当作调料，专在系带那一小段来回拖曳，逼出一颗颗清泪…
+	ELSEIF ＃陷落状态／恋慕以上＃
+		SELECTCASE RAND:3
+		CASE 0
+			PRINTFORML %CALLNAME%抬眼确认角度，舌尖像尺规一样贴着冠状沟描边，铃口偶尔被啄一下，让你腰眼跟着抽紧…
+		CASE 1
+			PRINTFORML 口型收得很小，像怕牙齿坏事；却把那点敏肉裹得更准，涎水把前端涂得晶亮…
+		CASEELSE
+			PRINTFORML 她一边舔一边记你的呼吸——你乱一拍，她就加重半分，像个坏心眼的回应…
+		ENDSELECT
+	ELSE
+		SELECTCASE RAND:2
+		CASE 0
+			PRINTFORML “啾…啧…”细碎的水声里，她眼神躲闪，却仍把舌尖钉在最欺负人的那一厘…
+		CASEELSE
+			PRINTFORML %CALLNAME%喉间一声含糊的呜咽——不知是被气味呛到，还是被自己顺从的模样呛到…
+		ENDSELECT
+	ENDIF
+CASE "真空口交"
+	IF EXP:经验次数／主人公／Ｍ性交 >= 40
+		SELECTCASE RAND:2
+		CASE 0
+			PRINTFORML 双颊深陷出两道弧，负压像要把前端吞进喉口前的最后一寸；每一次松口都像故意留下半拍空白，再猛地收紧…
+		CASEELSE
+			PRINTFORML 她把吸力控制在“刚好发酸”的边缘，涎水顺着下巴淌到你腹上，冰火交替…
+		ENDSELECT
+	ELSE
+		PRINTFORML %CALLNAME%还不太会把负压续航，腮帮抖得厉害，却仍学着把一口空气挤干净，像要把“熟练”两个字咬碎吞下去…
+	ENDIF
 CASE "触手口交"
 	SELECTCASE RAND:6
 	CASE 0
@@ -205,8 +238,27 @@ CASE "触手口交"
 		PRINTFORML %CALLNAME%被迫张大嘴承接触手，舌尖徒劳地推着那黏滑的侵入物…
 	ENDSELECT
 CASE "深喉"
-	PRINTFORML 把%SLANG_PENIS()%砸在%CALLNAME%的嘴上…
-	CALL ONOMATOPOEIA("活塞运动","Ｍ")
+	PRINTFORML 把%SLANG_PENIS()%压在%CALLNAME%的嘴上…
+	CALL ONOMATOPOEIA_DEEP_THROAT
+	IF TALENT:深喉嗜好 && (＃陷落状态／恋慕以上＃ || CFLAG:洗脑)
+		SELECTCASE RAND:3
+		CASE 0
+			PRINTFORML “咕…噜…呜…”窒息把话语碾成不成形的节拍；%CALLNAME%眼角含泪，瞳仁却湿亮，像在溺水里抓住唯一的浮木——你的视线…
+		CASE 1
+			PRINTFORML 涎水顺着下颌滴落，喉结滚动得像要把自己也一并咽下；她每一次干呕反射都被硬生生驯服成迎合…
+		CASEELSE
+			PRINTFORML 顶到最深时她眼前发白，却仍努力把舌根放低，仿佛怕牙齿冒犯到你——又像怕自己不配承受这份填满…
+		ENDSELECT
+	ELSEIF !＃陷落状态／屈服以上＃
+		SELECTCASE RAND:2
+		CASE 0
+			PRINTFORML 喉咙痉挛把入侵顶回去半寸，又被迫张开；她眼神像刀子，泪水却把锋芒泡软…
+		CASEELSE
+			PRINTFORML “呕…呃…”胃液泛上来又被压下去；她指甲抠破掌心，像在跟身体谈判…
+		ENDSELECT
+	ELSE
+		PRINTFORML 咳与涎缠在一起；她抬不起头，只能用睫毛承接泪水，像在等你宣判下一记深浅…
+	ENDIF
 	IF TALENT:处女 && TALENT:深喉嗜好
 		PRINTFORML 反复的顶弄中，%CALLNAME%脑子里满是用喉咙总好过用下面，至少不会怀孕，而且甚至自己还有了一点点快感。然后把屈辱与快感一并吞进胃里。
 	ENDIF
@@ -227,7 +279,7 @@ CASE "触手深喉"
 	CASEELSE
 		PRINTFORML 黏滑的触手在%CALLNAME%深喉里搅动，每一次深入都像要把胃袋也一并填满…
 	ENDSELECT
-	CALL ONOMATOPOEIA("活塞运动","Ｍ")
+	CALL ONOMATOPOEIA_DEEP_THROAT
 	IF TALENT:处女 && TALENT:深喉嗜好
 		PRINTFORML 异物塞进喉咙的屈辱里，%CALLNAME%竟荒谬地觉得——至少不是下面被破开——喉结滚动着把触手黏液一并咽下。
 	ENDIF

@@ -26,6 +26,9 @@ ELSEIF CFLAG:崩坏 && !CFLAG:洗脑
 ENDIF
 
 SELECTCASE ARGS:0
+CASE "身体"
+	CALL KOJO_GENERAL_虔诚1_EXCRETION_BODY(ARGS:1, ARGS:2)
+	RETURN
 CASE "例文"
 	CALL MESSAGE_BOX,@"「【虔诚1】已设置。\n罪与罚、祈祷与忏悔；越陷落越把快感神圣化。」"
 
@@ -222,4 +225,26 @@ RETURN
 @KOJO_GENERAL_虔诚1_TRAIN(ARGS:0,ARGS:1,ARGS:2,ARGS:3)
 CALL KOJO_GENERAL_虔诚口上1_TRAIN(ARGS:0,ARGS:1,ARGS:2,ARGS:3)
 RETURN
+
+;--------------------------------------------
+; 排泄羞耻／身体（本口上专用）
+;--------------------------------------------
+@KOJO_GENERAL_虔诚1_EXCRETION_BODY(ARGS:0, ARGS:1)
+SELECTCASE ARGS:0
+CASE "排泄事故"
+	SELECTCASE ARGS:1
+	CASE "肠"
+		CALL MESSAGE_BOX,@"「……神啊……宽恕这不堪的肉体……」"
+	CASE "尿"
+		CALL MESSAGE_BOX,@"「……失禁……是试炼……我……承受……」"
+	CASEELSE
+		CALL MESSAGE_BOX,@"「……」"
+	ENDSELECT
+CASE "放尿主动"
+	CALL MESSAGE_BOX,@"「……在您面前……卸下羞耻……」"
+CASE "灌肠妊娠求饶"
+	CALL MESSAGE_BOX,@"「……请怜悯未出世的生命……灌肠……求您收回……」"
+CASEELSE
+ENDSELECT
+RETURN 1
 

@@ -42,6 +42,9 @@ ENDIF
 
 
 SELECTCASE ARGS:0
+CASE "身体"
+	CALL KOJO_GENERAL_強気1_EXCRETION_BODY(ARGS:1, ARGS:2)
+	RETURN
 CASE "例文"
 	CALL MESSAGE_BOX,@"「【汎用强气口上1】已设置」\n「素质【害羞】有一点分支哦」"
 
@@ -746,4 +749,26 @@ CASE "战斗"
 	ENDSELECT
 
 ENDSELECT
+
+;--------------------------------------------
+; 排泄羞耻／身体（本口上专用）
+;--------------------------------------------
+@KOJO_GENERAL_強気1_EXCRETION_BODY(ARGS:0, ARGS:1)
+SELECTCASE ARGS:0
+CASE "排泄事故"
+	SELECTCASE ARGS:1
+	CASE "肠"
+		CALL MESSAGE_BOX,@"「……可恶……夹不住了……别、别盯着我看啊……！」"
+	CASE "尿"
+		CALL MESSAGE_BOX,@"「……啧……居然……漏出来了……」"
+	CASEELSE
+		CALL MESSAGE_BOX,@"「……」"
+	ENDSELECT
+CASE "放尿主动"
+	CALL MESSAGE_BOX,@"「……知道了……排就排……你可别拿这个当把柄笑话我……」"
+CASE "灌肠妊娠求饶"
+	CALL MESSAGE_BOX,@"「喂……都这样了还灌？！孩子还要不要紧了……算我求你，停手……」"
+CASEELSE
+ENDSELECT
+RETURN 1
 

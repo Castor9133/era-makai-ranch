@@ -734,6 +734,8 @@ SIF !RESULT
 	RETURN 0
 
 ;口に入ってるとダメ
+SIF TEQUIP:舌锻口塞
+	RETURN 0
 SIF TFLAG:Ｍ装备
 	RETURN 0
 SIF GETBIT(＃体位制限／Ｍ插入＃)
@@ -754,6 +756,8 @@ SIF TFLAG:Ｐ使用BIT
 	RETURN 0
 
 ;Ｍ装備はダメだけど強制開口器の場合だけOK
+SIF TEQUIP:舌锻口塞
+	RETURN 0
 SIF TEQUIP:强制开口器
 	RETURN 1
 SIF TFLAG:Ｍ装备
@@ -1342,7 +1346,109 @@ SIF TEQUIP:强制开口器
 	RETURN 1
 SIF !ITEM:强制开口器
 	RETURN 0
+SIF TEQUIP:舌锻口塞
+	RETURN 0
 SIF TFLAG:Ｍ装备
+	RETURN 0
+RETURN 1
+
+
+
+;肛勾（牧场口便器线）
+@COM_ABLE224
+SIF !GETBIT(＃表示指令／道具＃) || !GETBIT(＃表示指令／Ａ刺激＃)
+	RETURN 0
+SIF GETBIT(＃Ｐ使用／Ｍ插入＃) || GETBIT(＃Ｐ使用／乳交＃)
+	RETURN 0
+SIF TEQUIP:手淫 || TEQUIP:授乳手交
+	RETURN 0
+SIF TEQUIP:肛勾
+	RETURN 1
+SIF !ITEM:肛勾
+	RETURN 0
+SIF TEQUIP:肛塞 || TEQUIP:尾塞 || TEQUIP:肛用震动棒
+	RETURN 0
+SIF TFLAG:Ａ装备
+	RETURN 0
+SIF !TFLAG:Ａ露出
+	RETURN 0
+SIF !TEQUIP:强制开口器 && !TFLAG:Ｍ装备
+	RETURN 0
+RETURN 1
+
+
+;贞操带
+@COM_ABLE225
+SIF !GETBIT(＃表示指令／道具＃)
+	RETURN 0
+SIF GETBIT(＃Ｐ使用／Ｍ插入＃) || GETBIT(＃Ｐ使用／乳交＃)
+	RETURN 0
+SIF TEQUIP:手淫 || TEQUIP:授乳手交
+	RETURN 0
+SIF TEQUIP:贞操带
+	RETURN 1
+SIF !ITEM:贞操带
+	RETURN 0
+SIF TEQUIP:尿道塞
+	RETURN 0
+SIF TFLAG:Ｖ装备
+	RETURN 0
+RETURN 1
+
+
+;尾塞
+@COM_ABLE226
+SIF !GETBIT(＃表示指令／道具＃) || !GETBIT(＃表示指令／Ａ刺激＃)
+	RETURN 0
+SIF GETBIT(＃Ｐ使用／Ｍ插入＃) || GETBIT(＃Ｐ使用／乳交＃)
+	RETURN 0
+SIF TEQUIP:手淫 || TEQUIP:授乳手交
+	RETURN 0
+SIF TEQUIP:尾塞
+	RETURN 1
+SIF !ITEM:尾塞
+	RETURN 0
+SIF TEQUIP:肛塞 || TEQUIP:肛勾 || TEQUIP:肛用震动棒
+	RETURN 0
+SIF TFLAG:Ａ装备
+	RETURN 0
+SIF !TFLAG:Ａ露出
+	RETURN 0
+RETURN 1
+
+
+;舌锻口塞
+@COM_ABLE227
+SIF !GETBIT(＃表示指令／道具＃) || !GETBIT(＃表示指令／Ｍ刺激＃)
+	RETURN 0
+SIF TEQUIP:手淫 || TEQUIP:授乳手交
+	RETURN 0
+SIF TEQUIP:舌锻口塞
+	RETURN 1
+SIF !ITEM:舌锻口塞
+	RETURN 0
+SIF TEQUIP:强制开口器 || TEQUIP:口枷 || TEQUIP:口塞球
+	RETURN 0
+SIF TFLAG:Ｍ装备
+	RETURN 0
+RETURN 1
+
+
+;灌肠（排泄羞耻）
+@COM_ABLE223
+SIF !GETBIT(＃表示指令／道具＃) || !GETBIT(＃表示指令／Ａ刺激＃)
+	RETURN 0
+SIF GETBIT(＃Ｐ使用／Ｍ插入＃) || GETBIT(＃Ｐ使用／乳交＃)
+	RETURN 0
+SIF TEQUIP:手淫 || TEQUIP:授乳手交
+	RETURN 0
+SIF !ITEM:灌肠工具套装
+	RETURN 0
+SIF !ITEM:灌肠技术
+	RETURN 0
+SIF ABL:Ａ扩张 < 2
+	RETURN 0
+SIF !TFLAG:Ａ露出
 	RETURN 0
 RETURN 1
 

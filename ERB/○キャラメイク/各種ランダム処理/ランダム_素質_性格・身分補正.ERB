@@ -157,6 +157,36 @@ CASE "温厚"
 	SIF RAND:100 < 20
 		TALENT:自尊心低 = 1
 
+CASE "温柔大姐姐"
+	TALENT:难以越过的底线 = 1
+	TALENT:保守的 = 1
+	SIF RAND:100 < 55
+		TALENT:献身的 = 1
+	SIF RAND:100 < 45
+		TALENT:谦虚 = 1
+	SIF RAND:100 < 50
+		TALENT:害羞 = 1
+	SIF RAND:100 < 35
+		TALENT:坦率 = 1
+	SIF RAND:100 < 25
+		TALENT:自尊心高 = 1
+
+CASE "闷骚小姐姐"
+	TALENT:自制力 = 1
+	TALENT:保守的 = 1
+	SIF RAND:100 < 50
+		TALENT:喜欢读书 = 1
+	SIF RAND:100 < 55
+		TALENT:性知识丰富 = 1
+	SIF RAND:100 < 40
+		TALENT:害羞 = 1
+	SIF RAND:100 < 35
+		TALENT:好奇心 = 1
+	SIF RAND:100 < 20
+		TALENT:否定快感 = 1
+	SIF RAND:100 < 30
+		TALENT:贞操观念 = 1
+
 CASE "無口"
 	TALENT:老实 = 1
 	IF RAND:100 < 20

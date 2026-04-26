@@ -7,6 +7,16 @@
 SELECTCASE ARGS:2
 CASE "执行"
 	SELECTCASE ARGS:1
+	CASE "接吻"
+		CALL MESSAGE_BOX,@"「遵命。接吻侍奉：唇舌与呼吸同步，请您放松下颌。」"
+		CALL MESSAGE_BOX,@"「若需放慢或加深，请以指节轻叩我肩两下为信。」"
+		CALL MESSAGE_BOX,@"「深吻时：我会注意不让牙齿相碰；嗯……请您舌尖再用些力，搅动也可以再深一点。」"
+		CALL MESSAGE_BOX,@"「在您鼻息平稳前，我会跟随您的节奏；若感到牙齿碰到，请立刻用眼神示意我放慢。」"
+	CASE "舔舐脸"
+		CALL MESSAGE_BOX,@"「遵命。面部舔舐：力度以不牵拉皮肤为上限。」"
+	CASE "舔舐耳","舔舐腋"
+		CALL MESSAGE_BOX,@"「遵命。耳／腋舔舐：我会分段停顿，避免过度刺激。」"
+
 	CASE "手淫","授乳手交"
 		CALL MESSAGE_BOX,@"「遵命。将为您进行手部侍奉……♥」"
 		CALL MESSAGE_BOX,@"「若您想更快些……请用眼神示意……我会立刻调整。」"
@@ -19,7 +29,7 @@ CASE "执行"
 		CALL KOJO_SHARE_ADVANCED_TRAIN_DISPATCH(ARGS:1, ARGS:2)
 
 	CASE "正常位","后背位","对面坐位","背面坐位","骑乘位","对面立位","背面立位","强制骑乘位","背面骑乘位"
-		CALL MESSAGE_BOX,@"「遵命。将以身体侍奉……请您把重心交给我。」"
+		CALL KOJO_CHS_VPOS_女仆口上1(ARGS:1, ARGS:2)
 
 	CASE "足交"
 		CALL MESSAGE_BOX,@"「遵命。将以足部侍奉……我会控制力度与节奏。」"
@@ -39,7 +49,12 @@ CASE "执行"
 	ENDSELECT
 
 CASE "继续"
-	CALL MESSAGE_BOX,@"「继续服务中……我会按您最舒服的节奏引导。」"
+	SELECTCASE ARGS:1
+	CASE "正常位","后背位","对面坐位","背面坐位","骑乘位","对面立位","背面立位","强制骑乘位","背面骑乘位"
+		CALL KOJO_CHS_VPOS_女仆口上1(ARGS:1, ARGS:2)
+	CASEELSE
+		CALL MESSAGE_BOX,@"「继续服务中……我会按您最舒服的节奏引导。」"
+	ENDSELECT
 
 CASE "移除"
 	SELECTCASE ARGS:1

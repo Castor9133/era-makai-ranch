@@ -761,10 +761,10 @@ CASE "舔阴蒂","舔阴道","刺激龟头","真空口交","肛门指揉按摩",
 	CALL KOJO_SHARE_ADVANCED_TRAIN_DISPATCH(ARGS:1, ARGS:2)
 
 CASE "正常位","后背位","对面坐位","背面坐位","骑乘位","背面骑乘位","对面立位","背面立位","强制骑乘位"
-	CALL KOJO_GENERAL_慇懃用台词1_TRAIN_INSIDE("Ｖ性交",ARGS:2)
+	CALL KOJO_GENERAL_慇懃用台词1_TRAIN_INSIDE("Ｖ性交",ARGS:2,ARGS:1)
 
 CASE "Ａ正常位","Ａ后背位","Ａ对面坐位","Ａ背面坐位","Ａ骑乘位","Ａ背面骑乘位","Ａ对面立位","Ａ背面立位","强制Ａ骑乘位"
-	CALL KOJO_GENERAL_慇懃用台词1_TRAIN_INSIDE("Ａ性交",ARGS:2)
+	CALL KOJO_GENERAL_慇懃用台词1_TRAIN_INSIDE("Ａ性交",ARGS:2,ARGS:1)
 	
 CASE "素股"
 	SELECTCASE ARGS:2
@@ -1571,7 +1571,7 @@ ENDSELECT
 
 
 
-@KOJO_GENERAL_慇懃用台词1_TRAIN_INSIDE(ARGS:1,ARGS:2)
+@KOJO_GENERAL_慇懃用台词1_TRAIN_INSIDE(ARGS:1,ARGS:2,ARGS:3)
 
 
 
@@ -1581,6 +1581,8 @@ CASE "Ｖ性交"
 	CASE "执行"
 		SIF SOURCE:处女丧失
 			RETURN
+		SIF STRLENS(ARGS:3) > 0
+			CALL KOJO_JP_VPOS_HINT_慇懃1(ARGS:3)
 		IF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／恋慕以上＃
 			CALL MESSAGE_BOX,@"「%SWEET_MASTER_CALL()%♥♥…请不要客气，尽管插入吧♥♥」"
 			CALL MESSAGE_BOX,@"「あぁ…♥ %MASTER_CALL()%的%PENIS_CALL()%要进来了…♥♥」"
@@ -1593,6 +1595,8 @@ CASE "Ｖ性交"
 			CALL MESSAGE_BOX,@"「呜呜…真是屈辱啊…」"
 		ENDIF
 	CASE "继续"
+		SIF STRLENS(ARGS:3) > 0
+			CALL KOJO_JP_VPOS_HINT_慇懃1(ARGS:3)
 		IF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／恋慕以上＃
 			CALL MESSAGE_BOX,@"「啊♥ 啊♥ %SWEET_MASTER_CALL()%♥ 真的非常舒服呢♥♥♥」"
 			CALL MESSAGE_BOX,@"「おっ♥ おっ♥ 被这么猛地插的话，我会马上就到的♥♥ んんっ♥♥」"
@@ -1618,6 +1622,8 @@ CASE "Ａ性交"
 	CASE "执行"
 		SIF SOURCE:Ａ处女丧失
 			RETURN
+		SIF STRLENS(ARGS:3) > 0
+			CALL KOJO_JP_VPOS_HINT_慇懃1(ARGS:3)
 		IF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／恋慕以上＃
 			CALL MESSAGE_BOX,@"「おっ♥…おぉ…♥ %ANAL_CALL()%被强行打开了…♥♥」"
 			CALL MESSAGE_BOX,@"「はあぁぁ♥♥ %ANAL_CALL()%里进来了%PENIS_CALL()%啊♥♥♥」"
@@ -1639,6 +1645,8 @@ CASE "Ａ性交"
 			ENDIF
 		ENDIF
 	CASE "继续"
+		SIF STRLENS(ARGS:3) > 0
+			CALL KOJO_JP_VPOS_HINT_慇懃1(ARGS:3)
 		IF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／恋慕以上＃
 			CALL MESSAGE_BOX,@"「啊♥ 啊♥ %SWEET_MASTER_CALL()%♥ 真的非常舒服呢♥♥♥」"
 			CALL MESSAGE_BOX,@"「おっ♥ おっ♥ 被这么猛地插的话，我会马上就到的♥♥ んんっ♥♥」"

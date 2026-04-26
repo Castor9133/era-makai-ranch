@@ -42,6 +42,9 @@ ELSEIF CFLAG:崩坏 && !CFLAG:洗脑
 ENDIF
 
 SELECTCASE ARGS:0
+CASE "身体"
+	CALL KOJO_GENERAL_元気っ子1_EXCRETION_BODY(ARGS:1, ARGS:2)
+	RETURN
 CASE "例文"
 	{
 	CALL MESSAGE_BOX,@"「【通用活泼女孩开场白1】已设置好！」\n
@@ -697,4 +700,26 @@ CASE "战斗"
 	ENDSELECT
 
 ENDSELECT
+
+;--------------------------------------------
+; 排泄羞耻／身体（本口上专用）
+;--------------------------------------------
+@KOJO_GENERAL_元気っ子1_EXCRETION_BODY(ARGS:0, ARGS:1)
+SELECTCASE ARGS:0
+CASE "排泄事故"
+	SELECTCASE ARGS:1
+	CASE "肠"
+		CALL MESSAGE_BOX,@"「呜哇……！？不行不行……还是出来了啦……！」"
+	CASE "尿"
+		CALL MESSAGE_BOX,@"「……啊……糟糕……全漏了……」"
+	CASEELSE
+		CALL MESSAGE_BOX,@"「……」"
+	ENDSELECT
+CASE "放尿主动"
+	CALL MESSAGE_BOX,@"「……好、好啦……在你面前尿……只有一次哦……！」"
+CASE "灌肠妊娠求饶"
+	CALL MESSAGE_BOX,@"「……肚子里还有小不点耶……灌肠那种……先饶了我嘛……！」"
+CASEELSE
+ENDSELECT
+RETURN 1
 

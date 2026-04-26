@@ -12,6 +12,9 @@ CALL SLEEP_NIKUKABE
 ;1日1回系フラグをリセット・母乳回復
 CALL RESET_DAY_FLAG
 
+;排泄羞耻：膀胱日次・冷却等
+TRYCALL EXCRETION_DAILY_ALL
+
 ;日付+1して週など計算
 DAY ++
 TIME = 0

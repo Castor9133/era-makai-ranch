@@ -187,6 +187,24 @@ PRINTL 还可以送走不需要的奴隶（≒角色删除）。
 
 
 
+;奶牛牧场称号（口便器养成线里程碑）
+@MILESTONE_CHECK_933
+
+SIF CMATCH(CFLAG:乳牛, 1) < 3
+	RETURN 0
+SIF FLAG:母乳出货总量 < 30000
+	RETURN 0
+SIF FLAG:魔界等级／奶农业 < 3
+	RETURN 0
+RETURN 1
+
+
+@MILESTONE_REWARD_933
+
+PRINTL 人类牧场的搾乳与奉仕管线终于对齐：口喉训练、栓具习惯与出货数字一并抬头。
+PRINTL 魔界农协与行会侧开始用「奶牛牧场」称呼你的马卡道据点——既是称号，也是订单优先级。
+CALL PRINTL_WORD_COLOR,@"【奶牛牧场】称号已解锁（里程碑 No.133）。","浅蓝色"
+PRINTL （贡献 pt 已按惯例加算。）
 
 
 

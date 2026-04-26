@@ -18,6 +18,8 @@ CALL SHOW_BUDGET(1)
 CALL SHOW_LOAN
 PRINTFORML 电池追加消费予定額：%VALUE_DIGIT(MONEY:电池追加消耗金额)%G 
 PRINTFORML 贡献ポイント：%VALUE_DIGIT(MONEY:贡献PT)%pt 
+SIF FLAG:933 > 0
+	CALL PRINTL_WORD_COLOR,@"【奶牛牧场】称号已解锁（里程碑达成日：第{FLAG:933}天）","浅蓝色"
 
 ;倍増ボーナス中ならここで
 SIF FLAG:结算金额加倍剩余天数

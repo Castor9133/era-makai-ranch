@@ -52,6 +52,9 @@ ENDIF
 
 
 SELECTCASE ARGS:0
+CASE "身体"
+	CALL KOJO_GENERAL_非敬語幼め1_EXCRETION_BODY(ARGS:1, ARGS:2)
+	RETURN
 CASE "例文"
 	; 口上设定界面用例文
 	{
@@ -1481,4 +1484,26 @@ CASE "战斗"
 	
 	ENDSELECT
 ENDSELECT
+
+;--------------------------------------------
+; 排泄羞耻／身体（本口上专用）
+;--------------------------------------------
+@KOJO_GENERAL_非敬語幼め1_EXCRETION_BODY(ARGS:0, ARGS:1)
+SELECTCASE ARGS:0
+CASE "排泄事故"
+	SELECTCASE ARGS:1
+	CASE "肠"
+		CALL MESSAGE_BOX,@"「……呜呜……出来了……停不下来……好可怕……」"
+	CASE "尿"
+		CALL MESSAGE_BOX,@"「……不要看……尿、尿出来了……呜呜……」"
+	CASEELSE
+		CALL MESSAGE_BOX,@"「……」"
+	ENDSELECT
+CASE "放尿主动"
+	CALL MESSAGE_BOX,@"「……要、要在您面前尿……好害羞……腿在抖……」"
+CASE "灌肠妊娠求饶"
+	CALL MESSAGE_BOX,@"「……会伤到宝宝的……求您……别灌了……我会乖乖的……」"
+CASEELSE
+ENDSELECT
+RETURN 1
 

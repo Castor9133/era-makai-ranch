@@ -80,7 +80,11 @@ SETBIT ＃里程碑达成／奴隶捕获＃
 SIF CFLAG:追踪对象 != 2
 	RETURN
 PRINTFORML 将被捕获的%CALLNAME%作为奴隶接收。
-PRINTFORML 在接收期间，似乎被哥布林们轮奸了{CFLAG:轮奸次数}次。
+IF CFLAG:哥布林捕获_无轮奸
+	PRINTFORML 行会战后传讯里勾过「禁止轮奸」的补充条款；%CALLNAME%在押送期间只被拘禁，未被哥布林侵犯。
+ELSE
+	PRINTFORML 在接收期间，似乎被哥布林们轮奸了{CFLAG:轮奸次数}次。
+ENDIF
 CALL SLAVE_RECEIVE_COMMON
 
 

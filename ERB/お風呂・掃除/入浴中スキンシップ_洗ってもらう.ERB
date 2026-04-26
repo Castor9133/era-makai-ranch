@@ -374,11 +374,11 @@ TFLAG:亲密互动次数 ++
 ; 浴槽素股洗会阴で射精した直後の一言（性格別）。地文は調教と同系の PRINT_EJACULATION_MESSAGE を再利用
 @BATHLOOM_SUMATA_EJAC_GRP
 #FUNCTION
-IF GROUPMATCH(CSTR:使用口上,"慇懃口上1","女仆口上1","大和抚子口上1","虔诚口上1","妹系口上1","天然口上1","人妻口上1")
+IF GROUPMATCH(CSTR:使用口上,"慇懃口上1","温柔大姐姐1","女仆口上1","大和抚子口上1","虔诚口上1","妹系口上1","天然口上1","人妻口上1")
 	RETURNF 1
 ELSEIF GROUPMATCH(CSTR:使用口上,"強気口上1","姉御肌口上1","ボーイッシュ口上1")
 	RETURNF 2
-ELSEIF GROUPMATCH(CSTR:使用口上,"生真面目口上1","堅物口上1","気品口上1")
+ELSEIF GROUPMATCH(CSTR:使用口上,"生真面目口上1","堅物口上1","気品口上1","闷骚小姐姐1")
 	RETURNF 3
 ELSEIF GROUPMATCH(CSTR:使用口上,"懦弱口上1","非敬語幼め口上1")
 	RETURNF 4
@@ -403,7 +403,11 @@ CASE 1
 CASE 2
 	PRINTFORMW 「……哈……♥ 洗澡洗到射……♥ 你……还真不挑地方……♥」
 CASE 3
-	PRINTFORMW 「……股间射精……确认……♥ 量……黏度……我都记下了……♥」
+	IF CSTR:使用口上 == "闷骚小姐姐1"
+		PRINTFORMW 「……体外释放……但观测条件不理想……♥ 黏度、体积、扩散半径……我都记了……♥ 你……别装作在看蒸汽……♥」
+	ELSE
+		PRINTFORMW 「……股间射精……确认……♥ 量……黏度……我都记下了……♥」
+	ENDIF
 CASE 4
 	PRINTFORMW 「……呜……♥ 烫……♥ 可是……洗、洗干净了吗……♥」
 CASE 5

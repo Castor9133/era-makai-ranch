@@ -17,6 +17,8 @@ SIF !PLAYER_PENIS
 IF !ARG
 	;処女結界での判定の代わりに破壊が可能かを有効フラグで判断する
 	;入ってたらNG
+	SIF TEQUIP:贞操带
+		RETURN 0
 	SIF TFLAG:处女结界有效 || TFLAG:Ｖ装备 || !TFLAG:Ｖ露出 || !GETBIT(＃表示指令／Ｖ刺激＃)
 		RETURN 0
 ELSE

@@ -758,10 +758,10 @@ CASE "舔阴蒂","舔阴道","刺激龟头","真空口交","肛门指揉按摩",
 	CALL KOJO_SHARE_ADVANCED_TRAIN_DISPATCH(ARGS:1, ARGS:2)
 
 CASE "正常位","后背位","对面坐位","背面坐位","骑乘位","背面骑乘位","对面立位","背面立位","强制骑乘位"
-	CALL KOJO_GENERAL_ボーイッシュ用口上1_TRAIN_INSIDE("Ｖ性交",ARGS:2)
+	CALL KOJO_GENERAL_ボーイッシュ用口上1_TRAIN_INSIDE("Ｖ性交",ARGS:2,ARGS:1)
 
 CASE "Ａ正常位","Ａ后背位","Ａ对面坐位","Ａ背面坐位","Ａ骑乘位","Ａ背面骑乘位","Ａ对面立位","Ａ背面立位","强制Ａ骑乘位"
-	CALL KOJO_GENERAL_ボーイッシュ用口上1_TRAIN_INSIDE("Ａ性交",ARGS:2)
+	CALL KOJO_GENERAL_ボーイッシュ用口上1_TRAIN_INSIDE("Ａ性交",ARGS:2,ARGS:1)
 	
 CASE "素股"
 	SELECTCASE ARGS:2
@@ -1573,7 +1573,7 @@ ENDSELECT
 
 
 
-@KOJO_GENERAL_ボーイッシュ用口上1_TRAIN_INSIDE(ARGS:1,ARGS:2)
+@KOJO_GENERAL_ボーイッシュ用口上1_TRAIN_INSIDE(ARGS:1,ARGS:2,ARGS:3)
 
 SELECTCASE ARGS:1
 CASE "Ｖ性交"
@@ -1581,6 +1581,8 @@ CASE "Ｖ性交"
 	CASE "执行"
 		SIF SOURCE:处女丧失
 			RETURN
+		SIF STRLENS(ARGS:3) > 0
+			CALL KOJO_JP_VPOS_HINT_ボーイッシュ用口上1(ARGS:3)
 		IF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／恋慕以上＃
 			CALL MESSAGE_BOX,@"「%SWEET_MASTER_CALL()%♥♥…遠慮なく突きこんでくれよなぁ♥♥」"
 			CALL MESSAGE_BOX,@"「あぁ…♥ %MASTER_CALL()%的%PENIS_CALL()%が入ってくる…♥♥」"
@@ -1593,6 +1595,8 @@ CASE "Ｖ性交"
 			CALL MESSAGE_BOX,@"「ぐぅぅ…屈辱だっての…」"
 		ENDIF
 	CASE "继续"
+		SIF STRLENS(ARGS:3) > 0
+			CALL KOJO_JP_VPOS_HINT_ボーイッシュ用口上1(ARGS:3)
 		IF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／恋慕以上＃
 			CALL MESSAGE_BOX,@"「啊♥ 啊♥ %SWEET_MASTER_CALL()%♥ %VAGINA_CALL()%気持ちいいっ♥♥♥」"
 			CALL MESSAGE_BOX,@"「おっ♥ おっ♥ そんなに突かれたら、すぐイっちまうっ♥♥ んんっ♥♥」"
@@ -1618,6 +1622,8 @@ CASE "Ａ性交"
 	CASE "执行"
 		SIF SOURCE:Ａ处女丧失
 			RETURN
+		SIF STRLENS(ARGS:3) > 0
+			CALL KOJO_JP_VPOS_HINT_ボーイッシュ用口上1(ARGS:3)
 		IF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／恋慕以上＃
 			CALL MESSAGE_BOX,@"「おっ♥…おぉ…♥ %ANAL_CALL()%がこじ開けられてる…♥♥」"
 			CALL MESSAGE_BOX,@"「はあぁぁ♥♥ %ANAL_CALL()%着%PENIS_CALL()%きたぁ♥♥♥」"
@@ -1639,6 +1645,8 @@ CASE "Ａ性交"
 			ENDIF
 		ENDIF
 	CASE "继续"
+		SIF STRLENS(ARGS:3) > 0
+			CALL KOJO_JP_VPOS_HINT_ボーイッシュ用口上1(ARGS:3)
 		IF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／恋慕以上＃
 			CALL MESSAGE_BOX,@"「啊♥ 啊♥ %SWEET_MASTER_CALL()%♥ %ANAL_CALL()%気持ちいいっ♥♥♥」"
 			CALL MESSAGE_BOX,@"「ふおぉ♥♥ %PENIS_CALL()%で%ANAL_CALL()%をほじられて感じるぅっ♥♥」"

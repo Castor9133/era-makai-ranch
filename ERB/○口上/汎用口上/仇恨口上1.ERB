@@ -27,6 +27,9 @@ ELSEIF CFLAG:崩坏 && !CFLAG:洗脑
 ENDIF
 
 SELECTCASE ARGS:0
+CASE "身体"
+	CALL KOJO_GENERAL_仇恨1_EXCRETION_BODY(ARGS:1, ARGS:2)
+	RETURN
 CASE "例文"
 	CALL MESSAGE_BOX,@"「【仇恨1】已设置。\n怨毒、咬牙切齿；恋慕走扭曲路线：越爽越恨，越恨越想要。」"
 
@@ -230,4 +233,26 @@ RETURN
 @KOJO_GENERAL_仇恨1_TRAIN(ARGS:0,ARGS:1,ARGS:2,ARGS:3)
 CALL KOJO_GENERAL_仇恨口上1_TRAIN(ARGS:0,ARGS:1,ARGS:2,ARGS:3)
 RETURN
+
+;--------------------------------------------
+; 排泄羞耻／身体（本口上专用）
+;--------------------------------------------
+@KOJO_GENERAL_仇恨1_EXCRETION_BODY(ARGS:0, ARGS:1)
+SELECTCASE ARGS:0
+CASE "排泄事故"
+	SELECTCASE ARGS:1
+	CASE "肠"
+		CALL MESSAGE_BOX,@"「……混账……这种屈辱……我记住了……」"
+	CASE "尿"
+		CALL MESSAGE_BOX,@"「……杀了我……也别想我求你原谅……」"
+	CASEELSE
+		CALL MESSAGE_BOX,@"「……」"
+	ENDSELECT
+CASE "放尿主动"
+	CALL MESSAGE_BOX,@"「……排尿……命令……执行……仅此而已。」"
+CASE "灌肠妊娠求饶"
+	CALL MESSAGE_BOX,@"「……孩子是无辜的。……你要折磨的是我——灌肠，住手。」"
+CASEELSE
+ENDSELECT
+RETURN 1
 

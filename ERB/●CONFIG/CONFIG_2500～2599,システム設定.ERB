@@ -14,6 +14,14 @@ NEXT
 PRINTL
 PRINTL [70] 随机角色的状态隐藏设定
 PRINTL [71] 基于身高的游戏限制设定
+PRINTL [72] 排泄描写／灌肠粪便简短（肠忍不住地文）
+CALL PRINT_ONOFF(FLAG:排泄描写／灌肠粪便简短)
+PRINTL [73] 榨乳口便器牧场养成（恭顺倍率／计数总开关）
+CALL PRINT_ONOFF(FLAG:牧场口便器玩法启用)
+PRINTL [74] 生理期／月经日计数推进（占位）
+CALL PRINT_ONOFF(FLAG:生理期系统启用)
+PRINTL [75] 调教绝顶管理（无绝顶连击）
+CALL PRINT_ONOFF(FLAG:牧场绝顶管理启用)
 
 
 
@@ -44,6 +52,22 @@ CASE 70	;ランダムキャラのステータス隠蔽設定
 	CALL HIDE_RANDOM_STATUS_CONFIG
 CASE 71	;身長によるプレイ制限設定
 	CALL HEIGHT_PLAY_LIMIT_CONFIG
+CASE 72
+	PRINTL ON：肠忍不住等地文可出现极短「粪便+臭气」一句。OFF：淡化污物描写（默认）。
+	CALL ASK_ONOFF
+	FLAG:排泄描写／灌肠粪便简短 = RESULT
+CASE 73
+	PRINTL ON：调教中按口便器／栓具习惯叠恭顺・屈服倍率，并累计 CFLAG。OFF：关闭（默认）。
+	CALL ASK_ONOFF
+	FLAG:牧场口便器玩法启用 = RESULT
+CASE 74
+	PRINTL ON：日结推进生理周期日（占位）。OFF：关闭（默认）。
+	CALL ASK_ONOFF
+	FLAG:生理期系统启用 = RESULT
+CASE 75
+	PRINTL ON：调教结束若本回合无绝顶则叠「绝顶服从／寸止连击」。OFF：关闭（默认）。
+	CALL ASK_ONOFF
+	FLAG:牧场绝顶管理启用 = RESULT
 CASEELSE
 	CALL CHANGE_CONFIG_SYSTEM_NAME(ARG)
 ENDSELECT

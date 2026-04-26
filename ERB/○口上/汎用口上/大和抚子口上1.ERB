@@ -26,6 +26,9 @@ ELSEIF CFLAG:崩坏 && !CFLAG:洗脑
 ENDIF
 
 SELECTCASE ARGS:0
+CASE "身体"
+	CALL KOJO_GENERAL_大和抚子1_EXCRETION_BODY(ARGS:1, ARGS:2)
+	RETURN
 CASE "例文"
 	CALL MESSAGE_BOX,@"「【大和抚子1】已设置。\n敬语、顾礼、羞耻也先把话说对；陷落后会更献身地服侍。」"
 
@@ -119,6 +122,19 @@ CASE "射精"
 	ENDIF
 
 CASE "搾乳"
+	SELECTCASE ARGS:1
+	CASE "牧场口便器"
+		SIF !FLAG:牧场口便器玩法启用
+			RETURN
+		IF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／隶属＃
+			CALL MESSAGE_BOX,@"「……妾身……连口喉之礼亦算在牧课之内……御命如此……只得从……」"
+		ELSEIF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……连这等名分都写在册上……妾身……只盼御前……莫嫌失仪……」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……名目虽辱……妾身……仍当克己……」"
+		ENDIF
+		RETURN
+	ENDSELECT
 	IF SOURCE:母乳漏出
 		CALL MESSAGE_BOX,@"「……失礼……胸口……自己……」"
 		RETURN
@@ -224,11 +240,33 @@ CASE "访问"
 		ENDIF
 	CASE "终止妊娠"
 		CALL MESSAGE_BOX,@"「……终止妊娠。此事沉重，但若是您的决定……我会配合。」"
+	CASE "排泄尿急"
+		CALL MESSAGE_BOX,@"「……失礼……若方便……请容妾身……告退片刻……」"
+		CALL MESSAGE_BOX,@"「……并非怠慢……只是……身子的规矩……不由人……」"
+	CASE "侍奉口爆终了"
+		SELECTCASE ARGS:2
+		CASE "忍住"
+			CALL MESSAGE_BOX,@"「……遵命……铃口仍在颤……妾身含着……不敢妄动……」"
+		CASE "咽下"
+			CALL MESSAGE_BOX,@"「……已……尽数咽下……若您还要妾身侍立……妾身在此……」"
+		CASEELSE
+		ENDSELECT
 	CASEELSE
 	ENDSELECT
 
 CASE "事件"
-	CALL MESSAGE_BOX,@"「……发生什么事了吗？若我能帮上忙，请吩咐我。」"
+	SELECTCASE ARGS:1
+	CASE "牧场绝顶管理"
+		SIF !FLAG:牧场口便器玩法启用 || !FLAG:牧场绝顶管理启用
+			RETURN
+		IF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……整场未得释放……妾身明白……这是主上的管教……妾身……只敢把声息……再敛一敛……」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……寸止之苦……妾身领受了……求主上……莫要再试妾身的限度……」"
+		ENDIF
+	CASEELSE
+		CALL MESSAGE_BOX,@"「……发生什么事了吗？若我能帮上忙，请吩咐我。」"
+	ENDSELECT
 
 CASE "肉体改造"
 	CALL MESSAGE_BOX,@"「……身子要变样了么。虽惶恐……但我会努力适应。」"
@@ -250,4 +288,30 @@ RETURN
 @KOJO_GENERAL_大和抚子1_TRAIN(ARGS:0,ARGS:1,ARGS:2,ARGS:3)
 CALL KOJO_GENERAL_大和抚子口上1_TRAIN(ARGS:0,ARGS:1,ARGS:2,ARGS:3)
 RETURN
+
+;--------------------------------------------
+; 排泄羞耻／身体（本口上专用）
+;--------------------------------------------
+@KOJO_GENERAL_大和抚子1_EXCRETION_BODY(ARGS:0, ARGS:1)
+SELECTCASE ARGS:0
+CASE "排泄事故"
+	SELECTCASE ARGS:1
+	CASE "肠"
+		CALL MESSAGE_BOX,@"「……呜……竟在御前……如此失态……」"
+	CASE "尿"
+		CALL MESSAGE_BOX,@"「……万分惭愧……污了您的眼……」"
+	CASEELSE
+		CALL MESSAGE_BOX,@"「……」"
+	ENDSELECT
+CASE "放尿主动"
+	CALL MESSAGE_BOX,@"「……若这是命……妾身……只得从命……」"
+CASE "灌肠妊娠求饶"
+	CALL MESSAGE_BOX,@"「……腹中骨肉……尚幼……灌肠之事……恳请三思……」"
+CASE "高蓄尿"
+	CALL MESSAGE_BOX,@"「……尿意……顶得妾身……腰都软了……御前失态……万勿见怪……」"
+CASE "羞耻调教链"
+	CALL MESSAGE_BOX,@"「……身子还被羞耻牵着……妾身……连呼吸都不敢放重……」"
+CASEELSE
+ENDSELECT
+RETURN 1
 

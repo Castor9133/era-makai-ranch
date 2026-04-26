@@ -1,7 +1,7 @@
 
 ;==========================================
 ; 拜访・[18] 亲热一下（手→口→足→结尾可选口内射精或忍住）
-; 独立地文：不经过 KOJO_PRINT／调教 SOURCE_CHECK；须恋慕或隶属、且奴隶上下内衣已装备（街市购入后更衣）见 GATE
+; 独立地文、不经调教 SOURCE_CHECK；收尾处 **`KOJO_PRINT("访问","侍奉口爆终了",…)`** 接泛用口上。须恋慕或隶属、且奴隶上下内衣已装备（街市购入后更衣）见 GATE
 ;==========================================
 
 @VISIT_SERVE_CLIMAX_GATE
@@ -22,10 +22,12 @@ RETURNF 1
 
 @VISIT_SERVE_CLIMAX_GRP
 #FUNCTION
-IF GROUPMATCH(CSTR:使用口上,"慇懃口上1","女仆口上1","大和抚子口上1","虔诚口上1","妹系口上1","天然口上1","人妻口上1")
+IF GROUPMATCH(CSTR:使用口上,"慇懃口上1","温柔大姐姐1","女仆口上1","大和抚子口上1","虔诚口上1","妹系口上1","天然口上1","人妻口上1")
 	RETURNF 1
 ELSEIF GROUPMATCH(CSTR:使用口上,"強気口上1","姉御肌口上1","ボーイッシュ口上1")
 	RETURNF 2
+ELSEIF CSTR:使用口上 == "闷骚小姐姐1"
+	RETURNF 9
 ELSEIF GROUPMATCH(CSTR:使用口上,"生真面目口上1","堅物口上1","気品口上1")
 	RETURNF 3
 ELSEIF GROUPMATCH(CSTR:使用口上,"懦弱口上1","非敬語幼め口上1")
@@ -56,6 +58,9 @@ CASE 2
 CASE 3
 	PRINTFORML 「……收到。手→口→足，收尾按您方才点定的那档。」%CALLNAME%复述得像报工序，笔尖似的视线却在你小腹上划了一下。
 	PRINTFORML 她指尖在太阳穴按了按，低声补一句：「……该咽的一滴不漏；该收住的……也不许我失手。」
+CASE 9
+	PRINTFORML %CALLNAME%推了推并不存在的眼镜，语气平得像在读摘要：「……手、口、足——三步。误差来源主要是你中途改需求。」
+	PRINTFORML 她停半拍，补一句冷到骨子里的：「……放心，我不会把你的急，写成我的学术污点。」
 CASE 4
 	PRINTFORML 「……真的可以吗……？」%CALLNAME%指尖碰到就先缩半寸，又怯怯握住：「那、那我……会尽量……不弄脏……」
 	PRINTFORML 她睫毛抖得厉害，却把掌心完整地贴上去，像把勇气垫在你皮肤下面。
@@ -141,6 +146,8 @@ CASE 2
 	CALL VISIT_SERVE_TX_GRP2(ARG)
 CASE 3
 	CALL VISIT_SERVE_TX_GRP3(ARG)
+CASE 9
+	CALL VISIT_SERVE_TX_GRP9(ARG)
 CASE 4
 	CALL VISIT_SERVE_TX_GRP4(ARG)
 CASE 5
@@ -173,6 +180,8 @@ ADD_SP = LIMIT(ADD_SP, 80, MAXBASE:气力)
 ADD_EP = LIMIT(ADD_EP, 40, MAXBASE:灵力)
 ADD_MP = LIMIT(ADD_MP, 40, MAXBASE:魔力)
 
+LOCAL:99 = TFLAG:侍奉口爆不射精
+
 BASE:体力 = LIMIT(BASE:体力 + ADD_HP, 0, MAXBASE:体力)
 BASE:气力 = LIMIT(BASE:气力 + ADD_SP, 0, MAXBASE:气力)
 BASE:灵力 = LIMIT(BASE:灵力 + ADD_EP, 0, MAXBASE:灵力)
@@ -195,6 +204,11 @@ ELSE
 	PRINTFORML 精液的热度贴上舌面时她闭了闭眼，喉肌两下便咽净；唇角只剩一道白痕，被她迅速舔去。
 	PRINTFORML %CALLNAME%呼气里混着咸腥与皂粉似的余味，额发贴在鬓角，替你理平衣襟下摆时指尖还有些颤。
 ENDIF
+
+SIF LOCAL:99
+	TRYCALL KOJO_PRINT("访问", "侍奉口爆终了", "忍住", "")
+SIF !LOCAL:99
+	TRYCALL KOJO_PRINT("访问", "侍奉口爆终了", "咽下", "")
 
 CFLAG:时刻限制／侍奉口爆 = 1
 CFLAG:时刻限制／Ｈ = 1
@@ -271,6 +285,29 @@ ELSE
 		PRINTFORMW %CALLNAME%像执行流程一样用手、口、足依次刺激；最后关头你收住，她抿唇点头，只剩耳朵出卖了她。
 	ELSE
 		PRINTFORMW %CALLNAME%像执行流程一样用手、口、足依次刺激；最后口内射精时她仍旧体面地咽下，只剩耳朵出卖了她。
+	ENDIF
+ENDIF
+RETURN 1
+
+
+
+;--------------------------------------------------
+; ⑨ 闷骚小姐姐：冷幽默（学者口吻、吐槽像审稿意见、越体面越刻薄）
+@VISIT_SERVE_TX_GRP9(ARG)
+IF ARG
+	PRINTFORMW %CALLNAME%先把手心焐热，像在预热仪器：「……别紧张，我不是在安慰你——我是在降低测量噪声。」
+	PRINTFORMW 轮到口腔时她含得认真，却抽空抬眼：「……口感数据主观性很强，建议你少发表意见，多给样本。」
+	PRINTFORMW 足尖贴上来那瞬她足弓一绷，仍嘴硬：「……足部介入属于非常规路径——但你既然点了，我就当补充材料。」
+	IF TFLAG:侍奉口爆不射精
+		PRINTFORMW 你收住那下，她沉默两秒，像在等统计显著性消失：「……行。未释放。」随后把唇边的湿意抹掉，「……这算阴性结果。别得意，阴性也很烦。」
+	ELSE
+		PRINTFORMW 最后她咽得干净，抬头像交作业：「……回收率 100%。」停一拍又补刀，「……下次想改 protocol，请提前发邮件——口头变更我不认。」
+	ENDIF
+ELSE
+	IF TFLAG:侍奉口爆不射精
+		PRINTFORMW %CALLNAME%按流程用手、口、足把你推到唇边；你收住时她只「嗯」了一声，像在勾选「实验中止」。
+	ELSE
+		PRINTFORMW %CALLNAME%按流程用手、口、足把你推到极限；咽下后她擦嘴角，语气淡得像在写致谢：「……数据已归档。你负责别把它外传。」
 	ENDIF
 ENDIF
 RETURN 1

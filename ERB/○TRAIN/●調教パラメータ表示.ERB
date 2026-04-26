@@ -52,6 +52,32 @@ CALL PRINT_COLORBAR(PALAM:Ａ快感,10000,10,BARCOLORSET("紫"),RESULT:1)
 PRINTFORM  Lv{ABL:Ａ感觉,2} <{ABL:Ａ敏感度,3}\%>　
 CALL PRINT_PALAM2("失意",0)
 PRINTL
+SETCOLOR 0x888888
+PRINTFORM 　蓄尿 {CFLAG:膀胱蓄尿,4}／10000　忍耐 {CFLAG:膀胱忍耐_当前,4}
+SIF CFLAG:膀胱蓄尿 >= 8200
+	PRINTFORM （失禁风险高）
+ELSEIF CFLAG:膀胱蓄尿 >= 6500
+	PRINTFORM （憋尿吃紧）
+ELSEIF CFLAG:膀胱蓄尿 >= 4800
+	PRINTFORM （尿意明显）
+SIF CFLAG:排泄_灌肠无肛塞忍耐中
+	PRINTFORM 　〔灌肠·无肛塞 {CFLAG:排泄_肠已连续忍耐回合}/{CFLAG:排泄_肠忍耐预算回合}
+SIF CFLAG:排泄_灌肠无肛塞忍耐中 && CFLAG:排泄_肠忍耐预算回合 > 0
+	IF CFLAG:排泄_肠已连续忍耐回合 * 100 >= CFLAG:排泄_肠忍耐预算回合 * 78
+		PRINTFORM ·已近极限〕
+	ELSEIF CFLAG:排泄_肠已连续忍耐回合 * 100 >= CFLAG:排泄_肠忍耐预算回合 * 50
+		PRINTFORM ·越来越难夹住〕
+	ELSEIF CFLAG:排泄_肠已连续忍耐回合 >= 2
+		PRINTFORM ·腹坠加重〕
+	ELSE
+		PRINTFORM 〕
+	ENDIF
+SIF CFLAG:排泄_灌肠无肛塞忍耐中 && CFLAG:排泄_肠忍耐预算回合 < 1
+	PRINTFORM 〕
+SIF CFLAG:排泄_羞耻调教余回合 > 0
+	PRINTFORM 　〔羞耻调教余{CFLAG:排泄_羞耻调教余回合}回合·本指令耻辱/屈服额外叠乘〕
+RESETCOLOR
+PRINTL
 PRINTL
 CALL SHOW_MARK_LIST
 CALL PRINT_SOME_DRINK

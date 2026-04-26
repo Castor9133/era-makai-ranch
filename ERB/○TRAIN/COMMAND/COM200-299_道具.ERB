@@ -163,6 +163,10 @@ RETURN 1
 @COM212
 ;強制開口器
 
+IF TEQUIP:舌锻口塞
+	PRINTFORMW 请先卸下舌锻口塞。
+	RETURN
+ENDIF
 IF TEQUIP:SELECTCOM
 	TRYCALLFORM COM{SELECTCOM}_REMOVE
 	TRYCALLFORM COM{SELECTCOM}_REMOVE_MESSAGE
@@ -188,6 +192,14 @@ IF TEQUIP:肛用震动棒
 	PRINTFORMW 请先卸下肛用震动棒。
 	RETURN
 ENDIF
+IF TEQUIP:尾塞
+	PRINTFORMW 请先卸下尾塞。
+	RETURN
+ENDIF
+IF TEQUIP:肛勾
+	PRINTFORMW 请先卸下肛勾。
+	RETURN
+ENDIF
 IF !TFLAG:Ａ露出
 	PRINTFORMW 需要使%SAVESTR:标识／肛门%露出。
 	RETURN
@@ -195,6 +207,20 @@ ENDIF
 IF !ITEM:肛塞
 	PRINTFORMW 没有持有＜肛塞＞。
 	RETURN
+ENDIF
+; 灌肠后硬撑途中用肛塞封住：结算忍耐并清除无肛塞链（避免仍吃 1.10 体力）
+IF CFLAG:排泄_灌肠无肛塞忍耐中
+	LOCAL = CFLAG:排泄_肠已连续忍耐回合
+	SIF LOCAL >= 1
+		SOURCE:恭顺 += 50 + LOCAL * 18 + CFLAG:排泄_肠内残液档位 * 25
+	SIF LOCAL >= 1
+		SOURCE:屈服 += 28 + LOCAL * 10 + CFLAG:排泄_肠内残液档位 * 12
+	SIF LOCAL >= 3
+		SOURCE:Ａ快感 += 40 + CFLAG:排泄_肠内残液档位 * 12
+	CFLAG:排泄_灌肠无肛塞忍耐中 = 0
+	CFLAG:排泄_肠忍耐预算回合 = 0
+	CFLAG:排泄_肠已连续忍耐回合 = 0
+	TFLAG:排泄_无肛塞上回合幸存 = 0
 ENDIF
 LOSEBASE:气力 += 8
 LOSEBASE:体力 += 22
@@ -221,6 +247,10 @@ IF TEQUIP:尿道塞
 ENDIF
 IF TEQUIP:阴蒂跳蛋 || TEQUIP:阴蒂吸引器
 	PRINTFORMW 请先卸下阴蒂部位的器具。
+	RETURN
+ENDIF
+IF TEQUIP:贞操带
+	PRINTFORMW 贞操带与尿道塞互斥，请先卸下其中之一。
 	RETURN
 ENDIF
 IF !TFLAG:Ｃ露出
@@ -251,6 +281,182 @@ EXP:(SELECTCOM +1000) ++
 EX:尿道调教经验 += 1
 RETURN 1
 
+
+
+@COM213_REMOVE
+TEQUIP:肛塞 = 0
+RETURN 1
+
+
+@COM214_REMOVE
+TEQUIP:尿道塞 = 0
+RETURN 1
+
+
+@COM224_REMOVE
+TEQUIP:肛勾 = 0
+RETURN 1
+
+
+@COM225_REMOVE
+TEQUIP:贞操带 = 0
+RETURN 1
+
+
+@COM226_REMOVE
+TEQUIP:尾塞 = 0
+RETURN 1
+
+
+@COM227_REMOVE
+TEQUIP:舌锻口塞 = 0
+RETURN 1
+
+
+@COM224
+;肛勾（开口器或口部侍奉中：后庭牵拉感；与肛塞／尾塞互斥）
+
+IF TEQUIP:肛勾
+	TRYCALLFORM COM224_REMOVE
+	TRYCALLFORM COM224_REMOVE_MESSAGE
+	RETURN 1
+ENDIF
+IF TEQUIP:肛塞 || TEQUIP:尾塞
+	PRINTFORMW 请先卸下肛塞或尾塞。
+	RETURN
+ENDIF
+IF TEQUIP:肛用震动棒
+	PRINTFORMW 请先卸下肛用震动棒。
+	RETURN
+ENDIF
+IF !TFLAG:Ａ露出
+	PRINTFORMW 需要使%SAVESTR:标识／肛门%露出。
+	RETURN
+ENDIF
+IF !ITEM:肛勾
+	PRINTFORMW 没有持有＜肛勾＞。
+	RETURN
+ENDIF
+IF !TEQUIP:强制开口器 && !TFLAG:Ｍ装备
+	PRINTFORMW 需要口部无法闭合或正被口部侍奉（强制开口器、口交／深喉等）才能装上肛勾。
+	RETURN
+ENDIF
+LOSEBASE:气力 += 10
+LOSEBASE:体力 += 20
+SOURCE:屈辱 += 520
+SOURCE:耻辱 += 480
+SOURCE:恭顺 += 200
+SOURCE:痛苦 += 380
+SOURCE:支配 += 200
+SOURCE:已用时间 = 1
+SIF TEQUIP:强制开口器
+	TIMES SOURCE:耻辱, 1.08
+TEQUIP:肛勾 = 1
+TRYCALLFORM COM224_MESSAGE
+EXP:(SELECTCOM +1000) ++
+RETURN 1
+
+
+@COM225
+;贞操带（封锁Ｖ插入；与尿道塞互斥）
+
+IF TEQUIP:贞操带
+	TRYCALLFORM COM225_REMOVE
+	TRYCALLFORM COM225_REMOVE_MESSAGE
+	RETURN 1
+ENDIF
+IF TEQUIP:尿道塞
+	PRINTFORMW 请先卸下尿道塞。
+	RETURN
+ENDIF
+IF !ITEM:贞操带
+	PRINTFORMW 没有持有＜贞操带＞。
+	RETURN
+ENDIF
+LOSEBASE:气力 += 12
+LOSEBASE:体力 += 14
+SOURCE:屈辱 += 480
+SOURCE:耻辱 += 420
+SOURCE:恭顺 += 240
+SOURCE:淫欲 += 160
+SOURCE:Ｃ疼痛 += 200
+SOURCE:已用时间 = 1
+TEQUIP:贞操带 = 1
+TRYCALLFORM COM225_MESSAGE
+EXP:(SELECTCOM +1000) ++
+RETURN 1
+
+
+@COM226
+;尾塞（展示肛；与肛塞／肛勾互斥）
+
+IF TEQUIP:尾塞
+	TRYCALLFORM COM226_REMOVE
+	TRYCALLFORM COM226_REMOVE_MESSAGE
+	RETURN 1
+ENDIF
+IF TEQUIP:肛塞 || TEQUIP:肛勾
+	PRINTFORMW 请先卸下肛塞或肛勾。
+	RETURN
+ENDIF
+IF TEQUIP:肛用震动棒
+	PRINTFORMW 请先卸下肛用震动棒。
+	RETURN
+ENDIF
+IF !TFLAG:Ａ露出
+	PRINTFORMW 需要使%SAVESTR:标识／肛门%露出。
+	RETURN
+ENDIF
+IF !ITEM:尾塞
+	PRINTFORMW 没有持有＜尾塞＞。
+	RETURN
+ENDIF
+LOSEBASE:气力 += 8
+LOSEBASE:体力 += 20
+SOURCE:屈辱 += 400
+SOURCE:耻辱 += 420
+SOURCE:恭顺 += 200
+SOURCE:痛苦 += 280
+SOURCE:支配 += 170
+SOURCE:已用时间 = 1
+TEQUIP:尾塞 = 1
+TRYCALLFORM COM226_MESSAGE
+EXP:(SELECTCOM +1000) ++
+RETURN 1
+
+
+@COM227
+;舌锻口塞（封唇压舌：口上应以呜咽／鼻音为主；禁止含真人阴茎的口交／深喉；与强制开口器等口具互斥）
+
+IF TEQUIP:舌锻口塞
+	TRYCALLFORM COM227_REMOVE
+	TRYCALLFORM COM227_REMOVE_MESSAGE
+	RETURN 1
+ENDIF
+IF TEQUIP:强制开口器 || TEQUIP:口枷 || TEQUIP:口塞球
+	PRINTFORMW 请先卸下强制开口器、口枷或口塞球。
+	RETURN
+ENDIF
+IF TFLAG:Ｍ装备
+	PRINTFORMW 口部已被其他器具占用。
+	RETURN
+ENDIF
+IF !ITEM:舌锻口塞
+	PRINTFORMW 没有持有＜舌锻口塞＞。
+	RETURN
+ENDIF
+LOSEBASE:气力 += 8
+LOSEBASE:体力 += 10
+SOURCE:屈辱 += 360
+SOURCE:耻辱 += 300
+SOURCE:恭顺 += 180
+SOURCE:Ｍ快感 += 120
+SOURCE:已用时间 = 1
+TEQUIP:舌锻口塞 = 1
+TRYCALLFORM COM227_MESSAGE
+EXP:(SELECTCOM +1000) ++
+CFLAG:口腔习惯练度 = MIN(CFLAG:口腔习惯练度 + 1, 1000)
+RETURN 1
 
 
 @COM216
@@ -351,6 +557,8 @@ SOURCE:Ｃ疼痛 += 600
 SOURCE:已用时间 = 1
 EX:尿道调教经验 += 1
 CALL SOURCE_MIRROR_PLAY_APPLY("放尿")
+TRYCALL BLADDER_VOID
+TRYCALL KOJO_PRINT("身体", "放尿主动", "", "")
 RETURN 1
 
 
@@ -374,6 +582,151 @@ SOURCE:屈辱 += 3800
 SOURCE:Ｃ疼痛 += 900
 SOURCE:已用时间 = 1
 EX:尿道调教经验 += 2
+TRYCALL BLADDER_VOID
+TRYCALL KOJO_PRINT("身体", "放尿主动", "", "")
+RETURN 1
+
+
+
+@COM223
+;灌肠（排泄羞耻：液体／肛塞／忍耐／预算）
+
+IF !TFLAG:Ａ露出
+	PRINTFORMW 需要先使%SAVESTR:标识／肛门%露出。
+	RETURN
+ENDIF
+IF !ITEM:灌肠工具套装
+	PRINTFORMW 没有持有＜灌肠工具套装＞。（成人商店·调教用品页）
+	RETURN
+ENDIF
+IF !ITEM:灌肠技术
+	PRINTFORMW 尚未习得调教能力＜灌肠技术＞（开发·习得·调教 AP）。
+	RETURN
+ENDIF
+IF ABL:Ａ扩张 < 2
+	PRINTFORMW %CALLNAME%的%SAVESTR:标识／肛门%尚紧，至少需要＜Ａ扩张 2＞后再尝试灌肠。
+	RETURN
+ENDIF
+
+PRINTL 灌肠——请选择灌入液体。
+PRINTFORML [0] 灌肠油（所持 {ITEM:灌肠油}）
+IF CFLAG:预计出货母乳量 >= CUP_MILK
+	PRINTFORML [1] 出货冷藏母乳（该奴隶可扣 {CUP_MILK}%MILK_COUNTING()% ，余 {CFLAG:预计出货母乳量}%MILK_COUNTING()%）
+ENDIF
+PRINTL [99] 取消
+BINPUT
+LOCAL:10 = -1
+SELECTCASE RESULT
+CASE 0
+	IF !ITEM:灌肠油
+		PRINTFORMW 没有＜灌肠油＞。
+		RETURN
+	ENDIF
+	LOCAL:10 = 0
+CASE 1
+	IF CFLAG:预计出货母乳量 < CUP_MILK
+		PRINTFORMW 出货冷藏母乳不足{CUP_MILK}%MILK_COUNTING()%。
+		RETURN
+	ENDIF
+	LOCAL:10 = 1
+CASEELSE
+	RETURN 1
+ENDSELECT
+
+; 孕早期（妊娠超 30 日后排泄加重段）：为胎儿求饶，玩家可选择是否继续（未扣液体前可安全中止）
+IF EXCRETION_IS_EARLY_PREG_EXCRETION()
+	PRINTL
+	PRINTFORML %CALLNAME%护着小腹，声音发颤……似乎非常担心灌肠会伤到腹中的孩子。
+	TRYCALL KOJO_PRINT("身体", "灌肠妊娠求饶", "", "")
+	PRINTL [0] 中止灌肠（不消耗灌肠油／母乳）
+	PRINTL [1] 仍要灌肠
+	BINPUT
+	SIF !RESULT
+		RETURN 1
+ENDIF
+
+SELECTCASE LOCAL:10
+CASE 0
+	ITEM:灌肠油 --
+	CFLAG:排泄_灌肠液种类 = 0
+CASE 1
+	CFLAG:预计出货母乳量 -= CUP_MILK
+	CFLAG:排泄_灌肠液种类 = 1
+	SIF MARK:魔力母乳体质
+		CFLAG:排泄_灌肠液种类 = 2
+	; 母乳灌肠：微量气力／魔力回复（奴隶）
+	FIX = 100 + ABL:母乳浓度 * 50
+	HEAL = CUP_MILK * FIX / 1000
+	HEAL -= HEAL % 10
+	BASE:气力 = LIMIT(BASE:气力 + HEAL, 0, MAXBASE:气力)
+	IF CFLAG:排泄_灌肠液种类 == 2
+		HEAL = CUP_MILK * (ABL:母乳浓度 + 1)
+		BASE:灵力 = LIMIT(BASE:灵力 + HEAL, 0, MAXBASE:灵力)
+	ENDIF
+ENDSELECT
+
+SOURCE:已用时间 = 1
+LOSEBASE:气力 += 18
+LOSEBASE:体力 += 25
+SOURCE:屈辱 += 650
+SOURCE:耻辱 += 520
+SOURCE:痛苦 += 900
+SOURCE:Ａ疼痛 += 700
+SOURCE:恭顺 += 180
+SOURCE:支配 += 120
+PRINTFORML 你将温热的液体缓缓注入%CALLNAME%的%SAVESTR:标识／肛门%深处……她绷紧腹肌，肠壁被撑得发胀。
+CFLAG:排泄_肠内残液档位 = LIMIT(CFLAG:排泄_肠内残液档位 + 1, 0, 3)
+CFLAG:膀胱_腹压负担 = MIN(CFLAG:膀胱_腹压负担 + 120, 500)
+
+PRINTL
+PRINTL 灌完后如何处理？
+PRINTL [0] 塞入肛塞封住（需持有肛塞，且未装肛用震动棒）
+PRINTL [1] 不塞肛塞——让她自己忍（每回合体力消耗↑，有忍不住风险）
+PRINTL [99] 仅结束本指令（不推荐）
+BINPUT
+SELECTCASE RESULT
+CASE 0
+	IF TEQUIP:肛用震动棒
+		PRINTFORMW 请先卸下肛用震动棒。
+		RETURN 1
+	ENDIF
+	IF TEQUIP:肛塞
+		PRINTFORMW 已经塞着肛塞了。
+		RETURN 1
+	ENDIF
+	IF !ITEM:肛塞
+		PRINTFORMW 没有持有＜肛塞＞。
+		RETURN 1
+	ENDIF
+	IF !TFLAG:Ａ露出
+		PRINTFORMW 需要使%SAVESTR:标识／肛门%露出。
+		RETURN 1
+	ENDIF
+	ITEM:肛塞 --
+	LOSEBASE:气力 += 8
+	LOSEBASE:体力 += 22
+	SOURCE:屈辱 += 450
+	SOURCE:耻辱 += 350
+	SOURCE:恭顺 += 220
+	SOURCE:痛苦 += 300
+	SOURCE:支配 += 180
+	TEQUIP:肛塞 = 1
+	CFLAG:排泄_灌肠无肛塞忍耐中 = 0
+	CFLAG:排泄_肠忍耐预算回合 = 0
+	CFLAG:排泄_肠已连续忍耐回合 = 0
+	PRINTFORMW 肛塞推入，将灌肠液封在肠内……
+CASE 1
+	CFLAG:排泄_灌肠无肛塞忍耐中 = 1
+	CALL EXCRETION_BOWEL_BUDGET_INIT
+	PRINTFORMW 你没有塞住她——%CALLNAME%只能夹紧%SAVESTR:标识／肛门%，在羞耻中硬撑。
+CASEELSE
+	RETURN 1
+ENDSELECT
+
+EXP:0:经验次数／主人公／灌肠 += 1
+LOCAL = 1 + ITEM:灌肠技术 / 3
+SIF ABL:0:施虐癖 < 99
+	ABL:0:施虐癖 = LIMIT(ABL:0:施虐癖 + LOCAL, 0, 99)
 RETURN 1
 
 

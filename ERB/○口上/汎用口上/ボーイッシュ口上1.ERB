@@ -53,6 +53,9 @@ ELSEIF CFLAG:崩坏 && !CFLAG:洗脑
 ENDIF
 
 SELECTCASE ARGS:0
+CASE "身体"
+	CALL KOJO_GENERAL_男孩子气1_EXCRETION_BODY(ARGS:1, ARGS:2)
+	RETURN
 CASE "例文"
 	{
 	CALL MESSAGE_BOX,@"「【泛用假小子口上1】装好了啦。」
@@ -1058,4 +1061,26 @@ CASE "战斗"
 		CALL MESSAGE_BOX,@"「…行…还能打…！」"
 	ENDSELECT
 ENDSELECT
+
+;--------------------------------------------
+; 排泄羞耻／身体（本口上专用）
+;--------------------------------------------
+@KOJO_GENERAL_男孩子气1_EXCRETION_BODY(ARGS:0, ARGS:1)
+SELECTCASE ARGS:0
+CASE "排泄事故"
+	SELECTCASE ARGS:1
+	CASE "肠"
+		CALL MESSAGE_BOX,@"「……靠……真出来了……别笑啊……！」"
+	CASE "尿"
+		CALL MESSAGE_BOX,@"「……妈的……漏了……」"
+	CASEELSE
+		CALL MESSAGE_BOX,@"「……」"
+	ENDSELECT
+CASE "放尿主动"
+	CALL MESSAGE_BOX,@"「……行行行……尿就尿……你转过去一点行不行……」"
+CASE "灌肠妊娠求饶"
+	CALL MESSAGE_BOX,@"「……喂……肚子里还揣着一个呢……灌肠你想干嘛……算我求你行不行……」"
+CASEELSE
+ENDSELECT
+RETURN 1
 

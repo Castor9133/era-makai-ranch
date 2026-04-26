@@ -26,6 +26,9 @@ ELSEIF CFLAG:崩坏 && !CFLAG:洗脑
 ENDIF
 
 SELECTCASE ARGS:0
+CASE "身体"
+	CALL KOJO_GENERAL_妹系1_EXCRETION_BODY(ARGS:1, ARGS:2)
+	RETURN
 CASE "例文"
 	CALL MESSAGE_BOX,@"「【妹系1】已设置。\n爱撒娇、黏人、嘴硬也会靠过来；陷落后更像乖孩子求奖励。」"
 
@@ -238,4 +241,26 @@ RETURN
 @KOJO_GENERAL_妹系1_TRAIN(ARGS:0,ARGS:1,ARGS:2,ARGS:3)
 CALL KOJO_GENERAL_妹系口上1_TRAIN(ARGS:0,ARGS:1,ARGS:2,ARGS:3)
 RETURN
+
+;--------------------------------------------
+; 排泄羞耻／身体（本口上专用）
+;--------------------------------------------
+@KOJO_GENERAL_妹系1_EXCRETION_BODY(ARGS:0, ARGS:1)
+SELECTCASE ARGS:0
+CASE "排泄事故"
+	SELECTCASE ARGS:1
+	CASE "肠"
+		CALL MESSAGE_BOX,@"「……哥哥……别看……出来了啦……」"
+	CASE "尿"
+		CALL MESSAGE_BOX,@"「……呜呜……尿出来了……好丢脸……」"
+	CASEELSE
+		CALL MESSAGE_BOX,@"「……」"
+	ENDSELECT
+CASE "放尿主动"
+	CALL MESSAGE_BOX,@"「……要在哥哥面前尿……心脏快跳出来了……」"
+CASE "灌肠妊娠求饶"
+	CALL MESSAGE_BOX,@"「……宝宝还在肚子里……灌肠好可怕……可以不要吗……？」"
+CASEELSE
+ENDSELECT
+RETURN 1
 

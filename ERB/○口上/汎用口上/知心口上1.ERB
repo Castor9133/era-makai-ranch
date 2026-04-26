@@ -16,18 +16,21 @@ ELSEIF CFLAG:崩坏 && !CFLAG:洗脑
 	ELSEIF GROUPMATCH(ARGS:1,"洗脑触手","崩坏")
 	ELSE
 		IF NOWEX:总绝顶
-			CALL MESSAGE_BOX,@"「……别怕……♥ 我会继续引导你……更舒服……♥」"
-			CALL MESSAGE_BOX,@"「……看你的眼神……我就知道你还想要……♥」"
+			CALL MESSAGE_BOX,@"「……别怕……♥ 我、我跟着%MASTER_CALL()%……再轻一点……♥」"
+			CALL MESSAGE_BOX,@"「……看%MASTER_CALL()%的眼神……我、我只敢猜%MASTER_CALL()%还想要……♥」"
 		ELSE
-			CALL MESSAGE_BOX,@"「……嗯……我懂。你现在需要休息一下。」"
+			CALL MESSAGE_BOX,@"「……嗯……我懂……%MASTER_CALL()%先歇一歇……我听%MASTER_CALL()%的……」"
 		ENDIF
 		RETURN
 	ENDIF
 ENDIF
 
 SELECTCASE ARGS:0
+CASE "身体"
+	CALL KOJO_GENERAL_知心1_EXCRETION_BODY(ARGS:1, ARGS:2)
+	RETURN
 CASE "例文"
-	CALL MESSAGE_BOX,@"「【知心1】已设置。\n温柔善解人意、助手属性明显；陷落后会主动引导你怎样更舒服，一个眼神就能懂你想要什么。」"
+	CALL MESSAGE_BOX,@"「【知心1】已设置。\n善观察、会说话，但位阶上仍是奴隶：不敢擅自带节奏，只敢跟着主人／牧主的步调配合。\n陷落后：体贴仍在，用语改成请示与顺从——「%MASTER_CALL()%若想要……我跟」「求%MASTER_CALL()%慢一点」。」"
 
 CASE "调教命令"
 	CALL KOJO_GENERAL_知心1_TRAIN(ARGS:0,ARGS:1,ARGS:2,ARGS:3)
@@ -35,21 +38,21 @@ CASE "调教命令"
 CASE "绝顶"
 	;深喉中的高潮（新增：深喉性癖相关口上）
 	SIF TEQUIP:深喉
-		CALL MESSAGE_BOX,@"「咳……♥ 没事，放松……我会把节奏放慢……你只要跟着呼吸……♥」"
+		CALL MESSAGE_BOX,@"「咳……♥ ……求%MASTER_CALL()%松一松……我、我顺着%MASTER_CALL()%给的空档……换气……♥」"
 	SIF TEQUIP:深喉
-		CALL MESSAGE_BOX,@"「……对，就这样……把羞耻也说出来……我会接住你所有反应……♥」"
+		CALL MESSAGE_BOX,@"「……嗯……羞耻……全从声音里漏出来了……我、我只敢承着……♥」"
 	IF ＃陷落状态／恋慕以上＃
-		CALL MESSAGE_BOX,@"「……要到了，对吗……♥ 呼吸跟着我……别憋着……♥」"
-		CALL MESSAGE_BOX,@"「我知道你现在最想要什么……交给我……♥」"
+		CALL MESSAGE_BOX,@"「……要到了……对吗……♥ 呼吸……我跟%MASTER_CALL()%的节拍……别憋着……♥」"
+		CALL MESSAGE_BOX,@"「……我、我不敢说全懂……只想着……把身子给%MASTER_CALL()%……♥」"
 	ELSEIF ＃陷落状态／屈服以上＃
-		CALL MESSAGE_BOX,@"「……别紧张……我会慢一点……♥」"
+		CALL MESSAGE_BOX,@"「……别紧张……我慢一点……听%MASTER_CALL()%的……♥」"
 	ELSE
 		CALL MESSAGE_BOX,@"「……不行……别、别这样……」"
 	ENDIF
 	SIF NOWEX:Ａ绝顶
 		IF TALENT:Ａ名器 || TALENT:肛门嗜好 || ABL:Ａ感觉 >= 3
 			CALL MESSAGE_BOX,@"「……%ANAL_CALL()%……！？　痛……可是……深处……像被牵着走……♥」"
-			CALL MESSAGE_BOX,@"「……别慌……呼吸……对……把奇怪的感觉……说出来……♥」"
+			CALL MESSAGE_BOX,@"「……深处……又刺又麻……我说不清……求%MASTER_CALL()%……别笑我……♥」"
 		ELSE
 			CALL MESSAGE_BOX,@"「……%ANAL_CALL()%……好痛……先停……我需要……缓一下……」"
 			CALL MESSAGE_BOX,@"「……只有那里……太勉强了……」"
@@ -57,118 +60,151 @@ CASE "绝顶"
 	SIF NOWEX:Ｕ绝顶
 		IF TEQUIP:尿道塞 || TFLAG:尿道装备
 			SIF TALENT:尿道敏感 || EX:尿道调教经验 >= 15
-				CALL MESSAGE_BOX,@"「……尿道塞顶着会更敏感……麻意上来时别躲……告诉我……♥」"
+				CALL MESSAGE_BOX,@"「……塞子顶着那里……麻一上来……我、我腿都软了……只敢哼给%MASTER_CALL()%听……♥」"
 			SIF !(TALENT:尿道敏感 || EX:尿道调教经验 >= 15)
-				CALL MESSAGE_BOX,@"「……那东西让你痛了……先停一下……我帮你把紧张松开……」"
+				CALL MESSAGE_BOX,@"「……胀得难受……求%MASTER_CALL()%先停一下……我、我缓口气……」"
 		ELSE
 			SIF TALENT:尿道敏感 || EX:尿道调教经验 >= 15
-				CALL MESSAGE_BOX,@"「……把刺痛和发软分开说……我听着……别怕……♥」"
+				CALL MESSAGE_BOX,@"「……刺痛和发软……全缠在一块……我分不清……求%MASTER_CALL()%……温柔一点……♥」"
 			SIF !(TALENT:尿道敏感 || EX:尿道调教经验 >= 15)
-				CALL MESSAGE_BOX,@"「……太胀太刺就停……我不想你硬撑……」"
+				CALL MESSAGE_BOX,@"「……太胀太刺……求%MASTER_CALL()%停……我、我真撑不住了……」"
 		ENDIF
 
 CASE "射精"
 	IF SOURCE:膣内射精经验
 		IF ＃陷落状态／恋慕以上＃
-			CALL MESSAGE_BOX,@"「……没关系，我会帮你稳住……先别动……♥」"
-			CALL MESSAGE_BOX,@"「里面很热……嗯……我会好好接住……♥」"
+			CALL MESSAGE_BOX,@"「……没关系……我帮%MASTER_CALL()%稳住……先别动……♥」"
+			CALL MESSAGE_BOX,@"「里面很热……嗯……我、我受着……♥」"
 		ELSE
-			CALL MESSAGE_BOX,@"「……别射在里面……」"
+			CALL MESSAGE_BOX,@"「……求%MASTER_CALL()%……别射在里面……」"
 		ENDIF
 	ELSEIF SOURCE:尻穴射精经验
 		IF ＃陷落状态／恋慕以上＃
-			CALL MESSAGE_BOX,@"「……后面也满了……♥ 别急，我会帮你缓下来……」"
-			CALL MESSAGE_BOX,@"「……先别动。对……呼吸跟着我……」"
+			CALL MESSAGE_BOX,@"「……后面也满了……♥ 别急……我帮%MASTER_CALL()%缓下来……」"
+			CALL MESSAGE_BOX,@"「……先别动……对……我跟%MASTER_CALL()%呼吸……」"
 		ELSE
-			CALL MESSAGE_BOX,@"「……慢一点……先确认你不会疼……」"
+			CALL MESSAGE_BOX,@"「……慢一点……求%MASTER_CALL()%……让我确认%MASTER_CALL()%也还好……」"
 		ENDIF
 	ELSEIF SOURCE:精饮经验
 		IF ＃陷落状态／恋慕以上＃
-			CALL MESSAGE_BOX,@"「……咽下去了……♥ 你刚才发抖了，我知道你很舒服……」"
-			CALL MESSAGE_BOX,@"「……别勉强。你想继续的话，眨一下眼就好……♥」"
+			CALL MESSAGE_BOX,@"「……咽下去了……♥ %MASTER_CALL()%刚才发抖……我、我只敢猜%MASTER_CALL()%很舒服……」"
+			CALL MESSAGE_BOX,@"「……别勉强……%MASTER_CALL()%若想继续……眨一下眼……我跟……♥」"
 		ELSE
 			CALL MESSAGE_BOX,@"「咳……咳……没事，慢慢来……」"
 		ENDIF
 	ELSEIF TEQUIP:手淫
 		IF ＃陷落状态／恋慕以上＃
-			CALL MESSAGE_BOX,@"「……弄在我手上了……♥ 没关系，我会擦干净……」"
-			CALL MESSAGE_BOX,@"「……我知道你还想要。我会按你舒服的方式继续……♥」"
+			CALL MESSAGE_BOX,@"「……弄在我手上了……♥ 没关系……我擦干净……」"
+			CALL MESSAGE_BOX,@"「……我、我只敢猜%MASTER_CALL()%还想要……按%MASTER_CALL()%舒服的方式……继续……♥」"
 		ELSE
-			CALL MESSAGE_BOX,@"「……我会清理干净。你先缓一缓。」"
+			CALL MESSAGE_BOX,@"「……我会清理干净……%MASTER_CALL()%先缓一缓……」"
 		ENDIF
 	ELSEIF SOURCE:股间射精
-		CALL MESSAGE_BOX,@"「……弄在身上了。没事，我来帮你擦干净。」"
-		CALL MESSAGE_BOX,@"「……你现在想要的是拥抱，对吗？我懂。」"
+		CALL MESSAGE_BOX,@"「……弄在身上了……没事……我来擦……」"
+		CALL MESSAGE_BOX,@"「……%MASTER_CALL()%……想要抱一下吗……我、我只敢猜……」"
 	ELSEIF SOURCE:乳房射精
-		CALL MESSAGE_BOX,@"「……在胸口了。别慌，我会慢慢擦干净，你先稳住呼吸。」"
-		CALL MESSAGE_BOX,@"「……眼神别躲。嗯……我知道你很满足。」"
+		CALL MESSAGE_BOX,@"「……在胸口了……别慌……我慢慢擦……%MASTER_CALL()%先稳住呼吸……」"
+		CALL MESSAGE_BOX,@"「……眼神别躲……嗯……我不敢说懂……只觉得%MASTER_CALL()%……很满足……」"
 	ELSEIF SOURCE:颜面射精
-		CALL MESSAGE_BOX,@"「……脸上了。闭眼，别揉。我会帮你擦干净。」"
-		CALL MESSAGE_BOX,@"「……好了。先缓一缓，呼吸跟着我。」"
+		CALL MESSAGE_BOX,@"「……脸上了……闭眼……别揉……我帮%MASTER_CALL()%擦……」"
+		CALL MESSAGE_BOX,@"「……好了……先缓一缓……我跟%MASTER_CALL()%的呼吸……」"
 	ENDIF
 
 CASE "搾乳"
+	SELECTCASE ARGS:1
+	CASE "牧场口便器"
+		SIF !FLAG:牧场口便器玩法启用
+			RETURN
+		IF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……被当成牧场的零件……连胸和嘴都算进产量里……我、我只敢跟着%MASTER_CALL()%的规矩……♥」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……连这种称呼都写进日程里……我听……但请别笑我太狼狈……」"
+		ENDIF
+		RETURN
+	ENDSELECT
 	IF SOURCE:母乳漏出
-		CALL MESSAGE_BOX,@"「……自己漏出来了……没关系，我会帮你擦干净。」"
+		CALL MESSAGE_BOX,@"「……自己漏出来了……没关系……我帮%MASTER_CALL()%擦……」"
 		RETURN
 	ENDIF
 	IF ＃陷落状态／恋慕以上＃
-		CALL MESSAGE_BOX,@"「嗯……♥ 这样会更舒服，对吗？我会帮你找到最合适的力度……♥」"
-		CALL MESSAGE_BOX,@"「你肩膀放松了……我知道这样刚好……♥」"
+		CALL MESSAGE_BOX,@"「嗯……♥ 这样……会更舒服吗……我、我只敢一点点试……♥」"
+		CALL MESSAGE_BOX,@"「……%MASTER_CALL()%肩膀松了……我、我只敢猜这样刚好……♥」"
 	ELSE
-		CALL MESSAGE_BOX,@"「……我会慢一点。哪里不舒服就摇头。」"
+		CALL MESSAGE_BOX,@"「……我会慢一点……哪里不舒服……求%MASTER_CALL()%摇头……」"
 	ENDIF
 
 CASE "抽出"
-	CALL MESSAGE_BOX,@"「……腿软了。来，靠着我……先把呼吸放慢。」"
-	CALL MESSAGE_BOX,@"「……别硬撑。我会扶着你，等你舒服了再动。」"
+	CALL MESSAGE_BOX,@"「……抽出去那一下……腿都软了……想先挨着%MASTER_CALL()%……把呼吸找回来……」"
+	CALL MESSAGE_BOX,@"「……%MASTER_CALL()%若还愿意……就让我扶一会儿……我听%MASTER_CALL()%的……」"
 
 CASE "阴茎称呼变更"
-	CALL MESSAGE_BOX,@"「……好。我记住你的喜好了。之后我会用你想听的称呼。」"
+	CALL MESSAGE_BOX,@"「……好……我记住了……之后……只用%MASTER_CALL()%想听的称呼……」"
 
 CASE "膣称呼变更"
-	CALL MESSAGE_BOX,@"「……嗯。我懂。你喜欢更直白的叫法，对吗？我会照做。」"
+	CALL MESSAGE_BOX,@"「……嗯……%MASTER_CALL()%喜欢更直白的叫法……我、我照做……」"
 
 CASE "肛门称呼变更"
-	CALL MESSAGE_BOX,@"「……我知道了。你一个眼神，我就会用你想听的称呼。」"
+	CALL MESSAGE_BOX,@"「……我知道了……%MASTER_CALL()%一个眼神……我就换%MASTER_CALL()%想听的称呼……」"
 
 CASE "吸欧派"
 	SELECTCASE ARGS:1
 	CASE "开始"
-		CALL MESSAGE_BOX,@"「……慢慢来。你现在更想放松，对吗？我会抱住你。」"
+		CALL MESSAGE_BOX,@"「……慢慢来……%MASTER_CALL()%若想放松……我、我抱着%MASTER_CALL()%……」"
 	CASE "结束"
-		CALL MESSAGE_BOX,@"「……好了。胸口还在发热……先休息一下。」"
+		CALL MESSAGE_BOX,@"「……好了……胸口还热……先歇一歇……听%MASTER_CALL()%的……」"
 	ENDSELECT
 
 CASE "访问"
 	SELECTCASE ARGS:1
 	CASE "入口"
 		IF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／隶属＃
-			CALL MESSAGE_BOX,@"「你进我房间了。把我留在这间屋里这件事…我会当成契约，认真记住。」"
+			CALL MESSAGE_BOX,@"「……%MASTER_CALL()%进我房间了……把我留在这儿……我、我不敢忘……会当契约记……」"
 		ELSEIF ＃陷落状态／恋慕以上＃
-			CALL MESSAGE_BOX,@"「你进房间了。你不必急着解释——你需要我，这就够了。」"
+			CALL MESSAGE_BOX,@"「……%MASTER_CALL()%进来了……我不敢追问%MASTER_CALL()%要什么……能……让我陪着……就好……」"
 		ELSEIF ＃陷落状态／陷落以上＃
-			CALL MESSAGE_BOX,@"「你进房间了。长话短说，先把最要紧的那口气理顺。」"
+			CALL MESSAGE_BOX,@"「……%MASTER_CALL()%进房间了……我不敢多话……先、先把气理顺……我听%MASTER_CALL()%的……」"
 		ELSEIF ＃陷落状态／屈服以上＃
-			CALL MESSAGE_BOX,@"「你进房间了。我会克制距离；你说停，我就停。」"
+			CALL MESSAGE_BOX,@"「……%MASTER_CALL()%进房间了……我克制距离……%MASTER_CALL()%说停……我就停……」"
 		ELSE
-			CALL MESSAGE_BOX,@"「你进我房间了。若只是来试探我的底线，那我们就先把话说明白。」"
+			CALL MESSAGE_BOX,@"「……%MASTER_CALL()%进我房间了……我、我不敢试探%MASTER_CALL()%……只求……别把我只当消遣……」"
 		ENDIF
+	CASE "排泄尿急"
+		CALL MESSAGE_BOX,@"「……%MASTER_CALL()%……若、若您不赶时间……洗手间……我、我自己去一下就好……」"
+		CALL MESSAGE_BOX,@"「……别盯着我腿……我、我会更忍不住……」"
+	CASE "侍奉口爆终了"
+		SELECTCASE ARGS:2
+		CASE "忍住"
+			CALL MESSAGE_BOX,@"「……嗯……铃口还在跳……我含着……等%MASTER_CALL()%……收好了……」"
+		CASE "咽下"
+			CALL MESSAGE_BOX,@"「……咽干净了……%MASTER_CALL()%若还想靠着我喘口气……我在这儿……」"
+		CASEELSE
+		ENDSELECT
 	CASEELSE
 	ENDSELECT
 
 CASE "事件"
-	CALL MESSAGE_BOX,@"「……发生什么了？先看着我。嗯……我会带你一步步处理。」"
+	SELECTCASE ARGS:1
+	CASE "牧场绝顶管理"
+		SIF !FLAG:牧场口便器玩法启用 || !FLAG:牧场绝顶管理启用
+			RETURN
+		IF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……一整场都没让去……我懂……这是%MASTER_CALL()%的规矩……我只敢把呼吸……再放慢一点……」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……寸止……我记下了……求%MASTER_CALL()%……别把我逼到说不出话……」"
+		ENDIF
+	CASEELSE
+		CALL MESSAGE_BOX,@"「……发生什么了……先看着我……嗯……我、我只敢跟着%MASTER_CALL()%的步子……」"
+	ENDSELECT
 
 CASE "肉体改造"
-	CALL MESSAGE_BOX,@"「……身体要改变了。别怕，我会陪你适应新的感觉与节奏。」"
+	CALL MESSAGE_BOX,@"「……身子要变了……我怕……求%MASTER_CALL()%……让我跟着%MASTER_CALL()%的步调适应……」"
 
 CASE "战斗"
 	SELECTCASE ARGS:1
 	CASE "攻击"
-		CALL MESSAGE_BOX,@"「我上了。你呼吸别乱，我会护住你。」"
+		CALL MESSAGE_BOX,@"「我上了……%MASTER_CALL()%呼吸别乱……我、我护着%MASTER_CALL()%……」"
 	CASE "被击中"
-		CALL MESSAGE_BOX,@"「……没事。先稳住。你现在需要的是冷静。」"
+		CALL MESSAGE_BOX,@"「……没事……先稳住……求%MASTER_CALL()%……冷静……」"
 	CASEELSE
 	ENDSELECT
 
@@ -177,9 +213,9 @@ CASE "日程"
 	CASE "调教"
 		SELECTCASE ARGS:2
 		CASE "开始调教"
-			CALL MESSAGE_BOX,@"「……先看着我。嗯……你现在有点紧张，我会带着你放松。」"
+			CALL MESSAGE_BOX,@"「……先看着我……嗯……%MASTER_CALL()%若紧张……我、我只敢慢慢陪%MASTER_CALL()%放松……」"
 		CASE "调教结束"
-			CALL MESSAGE_BOX,@"「辛苦了。先慢慢呼吸……我会照顾你到舒服为止。」"
+			CALL MESSAGE_BOX,@"「辛苦了……慢慢呼吸……我、我侍候到%MASTER_CALL()%舒服……」"
 		ENDSELECT
 	CASEELSE
 	ENDSELECT
@@ -191,4 +227,30 @@ RETURN
 @KOJO_GENERAL_知心1_TRAIN(ARGS:0,ARGS:1,ARGS:2,ARGS:3)
 CALL KOJO_GENERAL_知心口上1_TRAIN(ARGS:0,ARGS:1,ARGS:2,ARGS:3)
 RETURN
+
+;--------------------------------------------
+; 排泄羞耻／身体（本口上专用）
+;--------------------------------------------
+@KOJO_GENERAL_知心1_EXCRETION_BODY(ARGS:0, ARGS:1)
+SELECTCASE ARGS:0
+CASE "排泄事故"
+	SELECTCASE ARGS:1
+	CASE "肠"
+		CALL MESSAGE_BOX,@"「……哈啊……连%MASTER_CALL()%也……看见我最难看的样子了……」"
+	CASE "尿"
+		CALL MESSAGE_BOX,@"「……真是的……这种时候……别用这种眼神看我啦……」"
+	CASEELSE
+		CALL MESSAGE_BOX,@"「……」"
+	ENDSELECT
+CASE "放尿主动"
+	CALL MESSAGE_BOX,@"「……在%MASTER_CALL()%面前……连这个都照做……我还真是没救了呢……」"
+CASE "灌肠妊娠求饶"
+	CALL MESSAGE_BOX,@"「……求%MASTER_CALL()%……孩子要紧……灌肠……能不能先算了……我听%MASTER_CALL()%的……」"
+CASE "高蓄尿"
+	CALL MESSAGE_BOX,@"「……小腹……绷得好紧……%MASTER_CALL()%……我、我只敢小声说……别笑我……」"
+CASE "羞耻调教链"
+	CALL MESSAGE_BOX,@"「……排泄的事还被您攥在手里……我每动一下……都像在提醒您……」"
+CASEELSE
+ENDSELECT
+RETURN 1
 

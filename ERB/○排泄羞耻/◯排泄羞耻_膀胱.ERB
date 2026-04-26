@@ -1,0 +1,378 @@
+;-------------------------------------------------
+; 排泄羞耻 · 膀胱条与肠忍耐预算（初版）
+;-------------------------------------------------
+
+@BLADDER_VOID
+;放尿・入浴排尿・准许排泄等：大幅削减蓄尿并略恢复忍耐；与计划一致清零肠忍耐与羞耻调教余回合
+SIF TARGET < 1
+	RETURN
+CFLAG:膀胱蓄尿 = MAX(CFLAG:膀胱蓄尿 - 7500, 0)
+CFLAG:膀胱忍耐_当前 = MIN(CFLAG:膀胱忍耐_当前 + 800, 8000)
+CFLAG:膀胱_腹压负担 = MAX(CFLAG:膀胱_腹压负担 - 150, 0)
+CFLAG:排泄_灌肠无肛塞忍耐中 = 0
+CFLAG:排泄_肠内残液档位 = 0
+CFLAG:排泄_肠忍耐预算回合 = 0
+CFLAG:排泄_肠已连续忍耐回合 = 0
+CFLAG:排泄_羞耻调教余回合 = 0
+CFLAG:排泄_灌肠液种类 = 0
+CFLAG:排泄_短期耻辱档 = 0
+RETURN 1
+
+
+@EXCRETION_BOWEL_BUDGET_INIT
+;无肛塞忍耐开始时算一次「能忍几回合」
+SIF TARGET < 1
+	RETURN
+LOCAL = 2 + ABL:Ａ扩张 / 2
+LOCAL += (BASE:气力 + BASE:体力) / 8000
+SIF TALENT:胆怯
+	LOCAL -= 1
+SIF TALENT:刚强
+	LOCAL += 1
+LOCAL += (NO:TARGET + DAY) % 3
+CFLAG:排泄_肠忍耐预算回合 = LIMIT(LOCAL, 1, 12)
+CFLAG:排泄_肠已连续忍耐回合 = 0
+RETURN 1
+
+
+@EXCRETION_TRAIN_PRE
+;每指令 SOURCE_CHECK 前：肠回合标记复位、蓄尿被动增长
+SIF !TFLAG:调教中 || TARGET < 1
+	RETURN
+TFLAG:排泄_肠本回合已推进 = 0
+;上一指令结束时仍夹着：仅在本指令也有「有时间的调教」时结算 SOURCE，避免无时间指令吞掉奖励
+SIF SOURCE:已用时间 && TFLAG:排泄_无肛塞上回合幸存
+	CALL EXCRETION_APPLY_HOLD_SURVIVE_BONUS
+	TFLAG:排泄_无肛塞上回合幸存 = 0
+SIF !SOURCE:已用时间
+	RETURN
+;腹压略推高蓄尿
+CFLAG:膀胱蓄尿 = LIMIT(CFLAG:膀胱蓄尿 + 100 + CFLAG:膀胱_腹压负担 / 20, 0, 10000)
+;高蓄尿／羞耻链：偶发口上（不刷屏）
+SIF CFLAG:膀胱蓄尿 >= 7200 && RAND:100 < 14
+	TRYCALL KOJO_PRINT("身体", "高蓄尿", "", "")
+SIF CFLAG:排泄_羞耻调教余回合 > 0 && CFLAG:膀胱蓄尿 >= 4000 && RAND:100 < 10
+	TRYCALL KOJO_PRINT("身体", "羞耻调教链", "", "")
+RETURN 1
+
+
+@EXCRETION_TRAIN_POST
+;SOURCE_UP 之后：无肛塞忍耐回合推进／预算用尽→肠事故
+SIF !TFLAG:调教中 || TARGET < 1
+	RETURN
+SIF !CFLAG:排泄_灌肠无肛塞忍耐中
+	RETURN
+SIF TFLAG:排泄_肠本回合已推进
+	RETURN
+TFLAG:排泄_无肛塞上回合幸存 = 0
+TFLAG:排泄_肠本回合已推进 = 1
+CFLAG:排泄_肠已连续忍耐回合 += 1
+IF CFLAG:排泄_肠已连续忍耐回合 >= CFLAG:排泄_肠忍耐预算回合
+	CALL EXCRETION_ACCIDENT, 2
+	CFLAG:排泄_灌肠无肛塞忍耐中 = 0
+	CFLAG:排泄_肠内残液档位 = 0
+	CFLAG:排泄_肠忍耐预算回合 = 0
+	CFLAG:排泄_肠已连续忍耐回合 = 0
+	CFLAG:膀胱_腹压负担 = MAX(CFLAG:膀胱_腹压负担 - 200, 0)
+	RETURN
+ENDIF
+;未到预算：低概率提前失守（随已连续回合升高）。
+;第1回合不测随机，避免「刚开忍耐条就判失守」的挫败感；基础概率与斜率略降。
+LOCAL = 3 + CFLAG:排泄_肠已连续忍耐回合 * 3
+SIF LOCAL > 38
+	LOCAL = 38
+IF CFLAG:排泄_肠忍耐预算回合 > 1 && CFLAG:排泄_肠已连续忍耐回合 >= 2 && RAND:100 < LOCAL
+	CALL EXCRETION_ACCIDENT, 2
+	CFLAG:排泄_灌肠无肛塞忍耐中 = 0
+	CFLAG:排泄_肠内残液档位 = 0
+	CFLAG:排泄_肠忍耐预算回合 = 0
+	CFLAG:排泄_肠已连续忍耐回合 = 0
+	CFLAG:膀胱_腹压负担 = MAX(CFLAG:膀胱_腹压负担 - 200, 0)
+ENDIF
+SIF CFLAG:排泄_灌肠无肛塞忍耐中
+	CALL EXCRETION_BOWEL_STANDING_TENSION_LINE
+	TFLAG:排泄_无肛塞上回合幸存 = 1
+RETURN 1
+
+
+@EXCRETION_DAILY_ALL
+;一日结束：全员蓄尿略增、忍耐恢复、饮水计数清零、冷却递减
+FOR LOCAL, 1, CHARANUM
+	TARGET = LOCAL
+	CFLAG:膀胱蓄尿 = LIMIT(CFLAG:膀胱蓄尿 + 350 + CFLAG:膀胱_腹压负担 / 10, 0, 10000)
+	CFLAG:膀胱忍耐_当前 = MIN(CFLAG:膀胱忍耐_当前 + 400, 8000)
+	;习惯憋尿：基础忍耐极慢成长（与当日饮水计数无关；饮水在日结前已计入蓄尿）
+	LOCAL:1 = 1
+	SIF CFLAG:膀胱蓄尿 >= 6500
+		LOCAL:1 += 1
+	SIF CFLAG:排泄_羞耻调教余回合 > 0 || CFLAG:排泄_灌肠无肛塞忍耐中
+		LOCAL:1 += 1
+	SIF CFLAG:膀胱_漏尿累计 >= 4
+		LOCAL:1 += 1
+	CFLAG:膀胱忍耐_基础 = MIN(CFLAG:膀胱忍耐_基础 + LOCAL:1, 5000)
+	CFLAG:膀胱_当日饮水计数 = 0
+	SIF CFLAG:排泄_事故冷却回合 > 0
+		CFLAG:排泄_事故冷却回合 -= 1
+	SIF CFLAG:排泄_羞耻调教余回合 > 0
+		CFLAG:排泄_羞耻调教余回合 -= 1
+	SIF CFLAG:排泄_短期耻辱档 > 0
+		CFLAG:排泄_短期耻辱档 -= 1
+	TRYCALL RANCHORAL_MENSTRUAL_DAILY_TICK
+NEXT
+TARGET = 0
+RETURN 1
+
+
+@EXCRETION_TRAIN_END_SESSION
+;调教结束：清除跨回合肠忍耐（羞耻调教余回合保留递减）
+TFLAG:排泄_调教开场孕肚已描写 = 0
+TFLAG:排泄_无肛塞上回合幸存 = 0
+FOR LOCAL, 1, CHARANUM
+	TARGET = LOCAL
+	SIF CFLAG:排泄_灌肠无肛塞忍耐中 && CFLAG:排泄_肠已连续忍耐回合 >= 1
+		CALL EXCRETION_TRAIN_END_HELD_PAYOUT
+	CFLAG:排泄_灌肠无肛塞忍耐中 = 0
+	CFLAG:排泄_肠忍耐预算回合 = 0
+	CFLAG:排泄_肠已连续忍耐回合 = 0
+NEXT
+TARGET = 0
+RETURN 1
+
+
+@BLADDER_TRY_URINE_ACCIDENT
+;蓄尿过高时概率尿失禁（冷却中跳过）
+SIF TARGET < 1
+	RETURN 0
+SIF CFLAG:排泄_事故冷却回合 > 0
+	RETURN 0
+;濒临失禁短抉择（7500～8199、有耗时指令、低概率；角落减压可跳过本回合失禁掷骰）
+SIF CFLAG:膀胱蓄尿 >= 7500 && CFLAG:膀胱蓄尿 < 8200 && SOURCE:已用时间 && RAND:100 < 15
+	CALL EXCRETION_BLADDER_NEARMISS_CHOICE
+SIF CFLAG:膀胱蓄尿 < 8200
+	RETURN 0
+LOCAL = CFLAG:膀胱忍耐_当前 + CFLAG:膀胱忍耐_基础 / 2
+SIF LOCAL < 1
+	LOCAL = 1
+; 孕早期（妊娠超 30 日后排泄加重段）：憋尿有效忍耐大幅下降（易失禁）
+SIF EXCRETION_IS_EARLY_PREG_EXCRETION()
+	LOCAL = MAX(LOCAL * 38 / 100, 1)
+SIF RAND:(LOCAL + 200) > LOCAL
+	RETURN 0
+CALL EXCRETION_ACCIDENT, 1
+CFLAG:膀胱蓄尿 = 500
+CFLAG:排泄_事故冷却回合 = 2
+CFLAG:膀胱_漏尿累计 += 1
+CFLAG:排泄_上次失禁日 = DAY
+RETURN 1
+
+
+;-------------------------------------------------
+; 无肛塞忍耐：本回合未失守时，按「已忍/预算」灰字提示（调教内）
+;-------------------------------------------------
+@EXCRETION_BOWEL_STANDING_TENSION_LINE
+#DIM 已忍
+#DIM 予算
+SIF TARGET < 1
+	RETURN
+SIF !CFLAG:排泄_灌肠无肛塞忍耐中
+	RETURN
+已忍 = CFLAG:排泄_肠已连续忍耐回合
+予算 = CFLAG:排泄_肠忍耐预算回合
+SIF 予算 < 1
+	RETURN
+SETCOLOR 0x888888
+IF 已忍 >= 予算 - 1 && 予算 > 1
+	PRINTFORML …再撑一回合就到极限，她掐着臀肉不敢松劲……
+ELSEIF 已忍 * 100 >= 予算 * 72
+	PRINTFORML …腹里坠得发疼，失守像下一秒就会冲垮矜持……
+ELSEIF 已忍 >= 2 && 已忍 * 100 >= 予算 * 38
+	PRINTFORML …灌下去的液体催着腹鸣，每动一下都像在催她垮掉……
+ENDIF
+RESETCOLOR
+RETURN 1
+
+
+;-------------------------------------------------
+; 无肛塞：上一有时间的指令未失守 → 本指令叠 SOURCE（恭顺・屈服；残液档略加成）
+;-------------------------------------------------
+@EXCRETION_APPLY_HOLD_SURVIVE_BONUS
+SIF TARGET < 1
+	RETURN
+SIF !CFLAG:排泄_灌肠无肛塞忍耐中
+	RETURN
+LOCAL = CFLAG:排泄_肠已连续忍耐回合
+SIF LOCAL < 1
+	RETURN
+LOCAL:1 = 40 + LOCAL * 12 + CFLAG:排泄_肠内残液档位 * 22
+SIF LOCAL:1 > 260
+	LOCAL:1 = 260
+SOURCE:恭顺 += LOCAL:1
+LOCAL:2 = 18 + LOCAL * 6 + CFLAG:排泄_肠内残液档位 * 12
+SIF LOCAL:2 > 130
+	LOCAL:2 = 130
+SOURCE:屈服 += LOCAL:2
+SIF LOCAL >= 4
+	SOURCE:Ａ快感 += 35 + CFLAG:排泄_肠内残液档位 * 15
+RETURN 1
+
+
+;-------------------------------------------------
+; 调教结束时尚在无肛塞夹住：场外微奖励（不再走 SOURCE_UP）
+;-------------------------------------------------
+@EXCRETION_TRAIN_END_HELD_PAYOUT
+SIF TARGET < 1
+	RETURN
+LOCAL = CFLAG:排泄_肠已连续忍耐回合
+SIF LOCAL < 1
+	RETURN
+SETCOLOR 0x888888
+PRINTFORML …调教告一段落，%CALLNAME%仍死死夹着后穴，冷汗未干——至少撑到了散场。
+RESETCOLOR
+LOCAL:1 = 70 + LOCAL * 14 + CFLAG:排泄_肠内残液档位 * 20
+SIF LOCAL:1 > 320
+	LOCAL:1 = 320
+PALAM:恭顺 += LOCAL:1
+LOCAL:2 = 35 + LOCAL * 8
+SIF LOCAL:2 > 160
+	LOCAL:2 = 160
+PALAM:屈服 += LOCAL:2
+RETURN 1
+
+
+;-------------------------------------------------
+; 非调教 UI：一行浓缩（日程/简易状态）
+;-------------------------------------------------
+@PRINT_EXCRETION_COMPACT_STATUS
+SIF TARGET < 1
+	RETURN
+SIF CFLAG:膀胱蓄尿 < 2000 && CFLAG:膀胱_腹压负担 < 30 && !CFLAG:排泄_灌肠无肛塞忍耐中 && CFLAG:排泄_羞耻调教余回合 < 1 && CFLAG:排泄_事故冷却回合 < 1
+	RETURN
+SETCOLOR 0x888888
+PRINTFORM 　排泄：蓄尿{CFLAG:膀胱蓄尿,4}／10000
+SIF CFLAG:膀胱_腹压负担 > 0
+	PRINTFORM 　腹压{CFLAG:膀胱_腹压负担,3}
+SIF CFLAG:排泄_灌肠无肛塞忍耐中
+	PRINTFORM 　〔灌肠·无肛塞{CFLAG:排泄_肠已连续忍耐回合,2}/{CFLAG:排泄_肠忍耐预算回合,2}〕
+SIF CFLAG:排泄_羞耻调教余回合 > 0
+	PRINTFORM 　羞耻链余{CFLAG:排泄_羞耻调教余回合,2}回合
+SIF CFLAG:排泄_事故冷却回合 > 0
+	PRINTFORM 　排泄冷却{CFLAG:排泄_事故冷却回合,2}回合
+RESETCOLOR
+PRINTL
+RETURN 1
+
+
+;-------------------------------------------------
+; 营养饮料／访问给予饮料：叠当日饮水计数 + 蓄尿，略削当前忍耐
+;-------------------------------------------------
+@EXCRETION_VISIT_BLADDER_HOOK
+;访问入口：高蓄尿时偶发灰字 + 口上（与调教分流）
+SIF TARGET < 1
+	RETURN
+SIF CFLAG:膀胱蓄尿 < 5200
+	RETURN
+SIF RAND:100 > 22
+	RETURN
+PRINTL
+SETCOLOR 0x888888
+PRINTFORML %CALLNAME%悄悄并紧了腿，指腹在裙缝边无意识地蹭了一下又停住……像是尿意顶得太狠，又不敢开口。
+RESETCOLOR
+TRYCALL KOJO_PRINT("访问", "排泄尿急", "", "")
+RETURN 1
+
+
+@EXCRETION_BLADDER_ON_NUTRITION_DRINK
+SIF TARGET < 1
+	RETURN
+CFLAG:膀胱_当日饮水计数 = MIN(CFLAG:膀胱_当日饮水计数 + 1, 99)
+LOCAL = 380 + CFLAG:膀胱_当日饮水计数 * 55
+SIF LOCAL > 1100
+	LOCAL = 1100
+CFLAG:膀胱蓄尿 = LIMIT(CFLAG:膀胱蓄尿 + LOCAL, 0, 10000)
+CFLAG:膀胱忍耐_当前 = MAX(CFLAG:膀胱忍耐_当前 - 70, 0)
+RETURN 1
+
+
+;-------------------------------------------------
+; SOURCE_UP 之后：腹压／羞耻链／绝顶／灌肠系指令对「膀胱忍耐_当前」的消耗
+;-------------------------------------------------
+@EXCRETION_BLADDER_TRAIN_AFTER_SOURCE
+SIF !TFLAG:调教中 || TARGET < 1
+	RETURN
+SIF !SOURCE:已用时间
+	RETURN
+LOCAL = 0
+SIF CFLAG:膀胱_腹压负担 > 50
+	LOCAL += 22 + CFLAG:膀胱_腹压负担 / 28
+SIF CFLAG:排泄_羞耻调教余回合 > 0
+	LOCAL += 8 + CFLAG:排泄_羞耻调教余回合 * 2
+SIF NOWEX:总绝顶 > 0
+	LOCAL += 48
+SIF GROUPMATCH(SELECTCOM, 220, 221, 223)
+	LOCAL += 16
+SIF EXCRETION_SHAME_CHAIN_EXTRA_COM(SELECTCOM) && CFLAG:排泄_羞耻调教余回合 > 0
+	LOCAL += 12
+SIF LOCAL < 1
+	RETURN
+SIF LOCAL > 230
+	LOCAL = 230
+CFLAG:膀胱忍耐_当前 = MAX(CFLAG:膀胱忍耐_当前 - LOCAL, 0)
+RETURN 1
+
+
+;-------------------------------------------------
+; 濒临失禁：短抉择（接准许排泄或角落减压）
+;-------------------------------------------------
+@EXCRETION_BLADDER_NEARMISS_CHOICE
+PRINTL
+SETCOLOR 0x888888
+PRINTFORML %CALLNAME%的小腹绷得发硬，尿意顶着括约肌乱颤——再拖下去恐怕连体面都保不住。
+RESETCOLOR
+PRINTL [0] 让她去角落急促解决（尿意大减，但羞辱加深）
+PRINTL [1] 命令她硬撑到底（削当前忍耐，仍可能失禁）
+PRINTL [2] 准许她去排泄（与平常「主人公准许」相同）
+PRINTL [99] 先不插手
+BINPUT
+SELECTCASE RESULT
+CASE 0
+	CFLAG:膀胱蓄尿 = MAX(CFLAG:膀胱蓄尿 - 2600, 0)
+	SOURCE:耻辱 += 520
+	SOURCE:屈辱 += 300
+	PRINTFORML 她蜷进角落，衣料窸窣与水声混成一声呜咽……回来时腿缝还在抖。
+CASE 1
+	CFLAG:膀胱忍耐_当前 = MAX(CFLAG:膀胱忍耐_当前 - 240, 0)
+	PRINTFORML 她咬住下唇点头，腿根绷成一线，汗沿着大腿内侧滑下去。
+CASE 2
+	CALL EXCRETION_PERMITTED_RELEASE
+CASEELSE
+ENDSELECT
+RETURN 1
+
+
+;-------------------------------------------------
+; 详细状态「基础状态」页：多行说明
+;-------------------------------------------------
+@PRINT_SLAVE_EXCRETION_DETAIL_BLOCK
+SIF TARGET < 1
+	RETURN
+SIF CFLAG:膀胱蓄尿 < 800 && CFLAG:膀胱_腹压负担 < 1 && !CFLAG:排泄_灌肠无肛塞忍耐中 && CFLAG:排泄_羞耻调教余回合 < 1 && CFLAG:排泄_事故冷却回合 < 1 && CFLAG:膀胱_漏尿累计 < 1
+	RETURN
+PRINTL 　《 排泄・憋尿 》
+SETCOLOR 0x888888
+PRINTFORML 　蓄尿：{CFLAG:膀胱蓄尿,5}／10000　当前忍耐：{CFLAG:膀胱忍耐_当前,5}　基础忍耐：{CFLAG:膀胱忍耐_基础,5}
+SIF CFLAG:膀胱_腹压负担 > 0
+	PRINTFORML 　腹压负担（灌肠等）：{CFLAG:膀胱_腹压负担,4}／500
+SIF CFLAG:排泄_灌肠无肛塞忍耐中
+	PRINTFORML 　灌肠后无肛塞：已忍 {CFLAG:排泄_肠已连续忍耐回合,3}／预算 {CFLAG:排泄_肠忍耐预算回合,3} 回合（调教内继续有时间的指令会推进；越高越危险）
+SIF CFLAG:排泄_羞耻调教余回合 > 0
+	PRINTFORML 　羞耻调教余：{CFLAG:排泄_羞耻调教余回合,3} 回合（排泄事故链叠层，准许排泄或入浴排尿等可清）
+SIF CFLAG:排泄_事故冷却回合 > 0
+	PRINTFORML 　排泄事故冷却：{CFLAG:排泄_事故冷却回合,3} 回合（其间尿失禁检定跳过）
+SIF CFLAG:膀胱蓄尿 >= 8200
+	PRINTFORML 　※蓄尿已很高，调教中有失禁风险（见调教画面灰字条）。
+ELSEIF CFLAG:膀胱蓄尿 >= 6500
+	PRINTFORML 　※蓄尿偏高，憋尿吃紧；可准许排泄或入浴等减轻。
+ENDIF
+RESETCOLOR
+PRINTL
+RETURN 1

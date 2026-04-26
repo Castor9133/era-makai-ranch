@@ -7,11 +7,26 @@
 SELECTCASE ARGS:2
 CASE "执行"
 	SELECTCASE ARGS:1
-	CASE "接吻","舔舐脸","舔舐耳","舔舐腋"
+	CASE "接吻"
 		IF ＃陷落状态／恋慕以上＃
-			CALL MESSAGE_BOX,@"「……请、请别看我这么贪心……♥」"
+			CALL MESSAGE_BOX,@"「……吻上来……像把誓约浸透……♥ ……我……却仍想承接……♥」"
+			CALL MESSAGE_BOX,@"「……别看……我太贪心地合眼……♥」"
+			CALL MESSAGE_BOX,@"「……请勿让齿相碰……♥ 嗯……嗯……舌……再深些纠缠……♥」"
+			CALL MESSAGE_BOX,@"「……深吻令我沉沦……♥ ……便……请连这沉沦……一并接纳……♥」"
 		ELSE
 			CALL MESSAGE_BOX,@"「……住手……这样是不洁……」"
+		ENDIF
+	CASE "舔舐脸"
+		IF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……舔脸……像把羞耻……涂开……♥」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……脸……不行……」"
+		ENDIF
+	CASE "舔舐耳","舔舐腋"
+		IF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……耳……会酥……♥ ……腋下……更……像堕落……♥」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……不要……」"
 		ENDIF
 
 	CASE "口交","触手口交"
@@ -25,11 +40,7 @@ CASE "执行"
 		CALL KOJO_SHARE_ADVANCED_TRAIN_DISPATCH(ARGS:1, ARGS:2)
 
 	CASE "正常位","后背位","对面坐位","背面坐位","骑乘位","对面立位","背面立位","强制骑乘位","背面骑乘位"
-		IF ＃陷落状态／恋慕以上＃
-			CALL MESSAGE_BOX,@"「……这是惩罚……我愿承受……♥」"
-		ELSE
-			CALL MESSAGE_BOX,@"「不要……别把我拖下去……！」"
-		ENDIF
+		CALL KOJO_CHS_VPOS_虔诚口上1(ARGS:1, ARGS:2)
 
 	CASE "足交"
 		IF ＃陷落状态／恋慕以上＃
@@ -52,7 +63,12 @@ CASE "执行"
 	ENDSELECT
 
 CASE "继续"
-	CALL MESSAGE_BOX,@"「……请继续……让我学会顺从……」"
+	SELECTCASE ARGS:1
+	CASE "正常位","后背位","对面坐位","背面坐位","骑乘位","对面立位","背面立位","强制骑乘位","背面骑乘位"
+		CALL KOJO_CHS_VPOS_虔诚口上1(ARGS:1, ARGS:2)
+	CASEELSE
+		CALL MESSAGE_BOX,@"「……请继续……让我学会顺从……」"
+	ENDSELECT
 
 CASE "移除"
 	SELECTCASE ARGS:1

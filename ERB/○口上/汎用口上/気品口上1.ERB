@@ -1,9 +1,7 @@
 ﻿
 ; 参考了无口口上。
-; 概念：「温柔大姐姐」
-; 编号暂用占位。
+; 概念：「气品／气质」——比纯「温柔」更带一点骨子里的端正，故定名 [气品口上1]。
 ; 基于原创「缘」口上去除固有名等改编。
-; 比纯「温柔」更带一点骨子里的端正，故定名 [气品口上1]。
 ; 彻底堕落后自然谈不上「气品」，那是另一套表现。
 
 ; ======================================
@@ -45,6 +43,9 @@ ELSEIF CFLAG:崩坏 && !CFLAG:洗脑
 ENDIF
 
 SELECTCASE ARGS:0
+CASE "身体"
+	CALL KOJO_GENERAL_気品1_EXCRETION_BODY(ARGS:1, ARGS:2)
+	RETURN
 CASE "例文"
 	{
 	CALL MESSAGE_BOX,@"「【汎用气品口上1】已设置。将以此显示」\n
@@ -745,4 +746,26 @@ CASE "战斗"
 	ENDSELECT
 
 ENDSELECT
+
+;--------------------------------------------
+; 排泄羞耻／身体（本口上专用）
+;--------------------------------------------
+@KOJO_GENERAL_気品1_EXCRETION_BODY(ARGS:0, ARGS:1)
+SELECTCASE ARGS:0
+CASE "排泄事故"
+	SELECTCASE ARGS:1
+	CASE "肠"
+		CALL MESSAGE_BOX,@"「……竟……落到这般田地……」"
+	CASE "尿"
+		CALL MESSAGE_BOX,@"「……失礼了……」"
+	CASEELSE
+		CALL MESSAGE_BOX,@"「……」"
+	ENDSELECT
+CASE "放尿主动"
+	CALL MESSAGE_BOX,@"「……如您所愿……」"
+CASE "灌肠妊娠求饶"
+	CALL MESSAGE_BOX,@"「……为子嗣计……灌肠……请作罢。」"
+CASEELSE
+ENDSELECT
+RETURN 1
 

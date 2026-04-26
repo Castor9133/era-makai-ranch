@@ -1,9 +1,7 @@
 
 ; 参考了无口口上。
-; 概念：「温柔大姐姐」
-; 编号暂用占位。
+; 概念：「气品／气质」——比纯「温柔」更带一点骨子里的端正，故定名 [气品口上1]。
 ; 基于原创「缘」口上去除固有名等改编。
-; 比纯「温柔」更带一点骨子里的端正，故定名 [气品口上1]。
 ; 彻底堕落后谈不上「气品」，那是另一套表现。
 
 ; ======================================
@@ -410,10 +408,10 @@ CASE "舔阴蒂","舔阴道","刺激龟头","真空口交","肛门指揉按摩",
 	CALL KOJO_SHARE_ADVANCED_TRAIN_DISPATCH(ARGS:1, ARGS:2)
 
 CASE "正常位","后背位","对面坐位","背面坐位","骑乘位","背面骑乘位","对面立位","背面立位","强制骑乘位"
-	CALL KOJO_GENERAL_気品1_TRAIN_INSIDE("Ｖ性交",ARGS:2)
+	CALL KOJO_GENERAL_気品1_TRAIN_INSIDE("Ｖ性交",ARGS:2,ARGS:1)
 
 CASE "Ａ正常位","Ａ后背位","Ａ对面坐位","Ａ背面坐位","Ａ骑乘位","Ａ背面骑乘位","Ａ对面立位","Ａ背面立位","强制Ａ骑乘位"
-	CALL KOJO_GENERAL_気品1_TRAIN_INSIDE("Ａ性交",ARGS:2)
+	CALL KOJO_GENERAL_気品1_TRAIN_INSIDE("Ａ性交",ARGS:2,ARGS:1)
 	
 CASE "素股"
 CASE "口交"
@@ -839,7 +837,7 @@ ENDSELECT
 
 
 
-@KOJO_GENERAL_気品1_TRAIN_INSIDE(ARGS:1,ARGS:2)
+@KOJO_GENERAL_気品1_TRAIN_INSIDE(ARGS:1,ARGS:2,ARGS:3)
 
 SELECTCASE ARGS:1
 CASE "Ｖ性交"
@@ -848,6 +846,8 @@ CASE "Ｖ性交"
 	
 	SELECTCASE ARGS:2
 	CASE "继续"
+		SIF STRLENS(ARGS:3) > 0
+			CALL KOJO_JP_VPOS_HINT_気品1(ARGS:3)
 		IF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／隶属＃
 			CALL MESSAGE_BOX,@"「要到达了♥♥ %VAGINA_CALL()%♥♥ %PENIS_CALL()%太多了♥♥」"
 		ELSEIF ＃陷落状态／恋慕以上＃
@@ -859,6 +859,8 @@ CASE "Ｖ性交"
 		ENDIF
 	
 	CASE "执行"
+		SIF STRLENS(ARGS:3) > 0
+			CALL KOJO_JP_VPOS_HINT_気品1(ARGS:3)
 		IF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／恋慕以上＃
 			CALL MESSAGE_BOX,@"「%VAGINA_CALL()%♥ %SELF_CALL()%的%VAGINA_CALL()%♥ 搞得一团糟呀♥♥♥」"
 		ELSEIF ＃陷落状态／屈服以上＃
@@ -868,6 +870,7 @@ CASE "Ｖ性交"
 		ENDIF
 	
 	ENDSELECT
+
 ENDSELECT
 
 

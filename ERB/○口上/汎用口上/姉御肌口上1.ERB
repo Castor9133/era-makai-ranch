@@ -44,6 +44,9 @@ ENDIF
 
 
 SELECTCASE ARGS:0
+CASE "身体"
+	CALL KOJO_GENERAL_姉御肌1_EXCRETION_BODY(ARGS:1, ARGS:2)
+	RETURN
 CASE "例文"
 	;口上設定画面で出すための例文
 	{
@@ -1605,4 +1608,26 @@ CASE "战斗"
 	ENDSELECT
 
 ENDSELECT
+
+;--------------------------------------------
+; 排泄羞耻／身体（本口上专用）
+;--------------------------------------------
+@KOJO_GENERAL_姉御肌1_EXCRETION_BODY(ARGS:0, ARGS:1)
+SELECTCASE ARGS:0
+CASE "排泄事故"
+	SELECTCASE ARGS:1
+	CASE "肠"
+		CALL MESSAGE_BOX,@"「……啧……居然在这种地方失守……」"
+	CASE "尿"
+		CALL MESSAGE_BOX,@"「……别看……姐姐也会难为情……」"
+	CASEELSE
+		CALL MESSAGE_BOX,@"「……」"
+	ENDSELECT
+CASE "放尿主动"
+	CALL MESSAGE_BOX,@"「……行啊……让你看着排……满意了？」"
+CASE "灌肠妊娠求饶"
+	CALL MESSAGE_BOX,@"「……喂，里面还揣着一个呢……灌肠？你心真够大的，收手。」"
+CASEELSE
+ENDSELECT
+RETURN 1
 

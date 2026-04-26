@@ -7,81 +7,129 @@
 SELECTCASE ARGS:2
 CASE "执行"
 	SELECTCASE ARGS:1
-	CASE "接吻","舔舐脸","舔舐耳","舔舐腋"
+	CASE "接吻"
 		IF ＃陷落状态／恋慕以上＃
-			CALL MESSAGE_BOX,@"「……对，就这样。你想更深一点，对吗……♥」"
-			CALL MESSAGE_BOX,@"「别躲……我会很温柔。嗯……呼吸跟上。」"
+			CALL MESSAGE_BOX,@"「……接吻就专心接吻嘛……♥ ……手一乱动，我、我就只敢小声嘟囔了……♥」"
+			CALL MESSAGE_BOX,@"「……别躲开……让我跟着%MASTER_CALL()%的呼吸……嗯……」"
+			CALL MESSAGE_BOX,@"「……舌头要是伸过来……先、先要合上%MASTER_CALL()%的节拍……♥ ……浅、深、浅……我跟着%MASTER_CALL()%走……♥」"
+			CALL MESSAGE_BOX,@"「……牙齿别磕到……一磕就分心……♥ 嗯……再用力搅也没关系……我乖乖受着……♥」"
 		ELSE
-			CALL MESSAGE_BOX,@"「……别怕。我会慢一点。」"
+			CALL MESSAGE_BOX,@"「……别怕……我放慢些……听%MASTER_CALL()%的……」"
+		ENDIF
+	CASE "舔舐脸"
+		IF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……舔脸这一下……就像在确认……%MASTER_CALL()%今天累不累……♥」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……脸……求%MASTER_CALL()%……赏我留一点点距离……」"
+		ENDIF
+	CASE "舔舐耳","舔舐腋"
+		IF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……耳朵……一舔到，我就只会说真话了……♥ ……腋下……更是危险得紧……♥」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……那里……我会绷紧的……求%MASTER_CALL()%……慢一点……」"
 		ENDIF
 
 	CASE "口交","触手口交"
 		IF ＃陷落状态／恋慕以上＃
-			CALL MESSAGE_BOX,@"「我知道你想要更快……但先别急。我会先让你更舒服……♥」"
-			CALL MESSAGE_BOX,@"「……嗯。你眯眼了，是想更深一点……我懂……♥」"
+			CALL MESSAGE_BOX,@"「……%MASTER_CALL()%如果想更快……我不敢拦……先、先容我把%MASTER_CALL()%含稳当……♥」"
+			CALL MESSAGE_BOX,@"「……嗯……%MASTER_CALL()%眯起眼了……我、我只敢猜%MASTER_CALL()%是想要更深……♥」"
 		ELSE
-			CALL MESSAGE_BOX,@"「……放松。只要你不难受，我就会继续。」"
+			CALL MESSAGE_BOX,@"「……%MASTER_CALL()%不觉得难受……我就接着来……全听%MASTER_CALL()%的……」"
 		ENDIF
 
 	CASE "手淫","授乳手交"
 		IF ＃陷落状态／恋慕以上＃
-			CALL MESSAGE_BOX,@"「别忍着。你现在想要的是这个节奏……对吧……♥」"
-			CALL MESSAGE_BOX,@"「看你肩膀的力道就知道……我会放轻一点。」"
+			CALL MESSAGE_BOX,@"「……不用忍着……我、我顺着%MASTER_CALL()%想要的节奏来……♥」"
+			CALL MESSAGE_BOX,@"「……看着%MASTER_CALL()%的肩膀……我、我只敢再把力道放轻些……」"
 		ELSE
-			CALL MESSAGE_BOX,@"「……我会照顾你的反应。哪里不舒服就点头。」"
+			CALL MESSAGE_BOX,@"「……我一直盯着%MASTER_CALL()%的反应……哪里不舒服……求%MASTER_CALL()%点个头……」"
 		ENDIF
 
 	CASE "足交"
 		IF ＃陷落状态／恋慕以上＃
-			CALL MESSAGE_BOX,@"「……用脚也可以。你现在更敏感，我会更轻……♥」"
+			CALL MESSAGE_BOX,@"「……用脚也可以……%MASTER_CALL()%要是更敏感……我只敢更轻地碰……♥」"
 		ELSE
-			CALL MESSAGE_BOX,@"「……我会小心，不会让你不适。」"
+			CALL MESSAGE_BOX,@"「……我会极小心……绝不敢让%MASTER_CALL()%有半点不适……」"
 		ENDIF
 
 	CASE "舔阴蒂","舔阴道","刺激龟头","真空口交","肛门指揉按摩","玩弄阴唇","G点指压","阴道指奸","肛门指奸","尿道口指弄","尿道口指奸","口内搅舌","压舌探喉"
 		CALL KOJO_SHARE_ADVANCED_TRAIN_DISPATCH(ARGS:1, ARGS:2)
 
 	CASE "正常位","后背位","对面坐位","背面坐位","骑乘位","对面立位","背面立位","强制骑乘位","背面骑乘位"
-		IF ＃陷落状态／恋慕以上＃
-			CALL MESSAGE_BOX,@"「……嗯，进来。先停一下……对，适应了再动……♥」"
-			CALL MESSAGE_BOX,@"「看你的眼神……我知道你想要更深……我会引导你。」"
-		ELSE
-			CALL MESSAGE_BOX,@"「……慢一点。先让我确认你不会疼。」"
-		ENDIF
+		CALL KOJO_CHS_VPOS_知心口上1(ARGS:1, ARGS:2)
 
 	CASE "肛塞"
 		IF ＃陷落状态／恋慕以上＃
-			CALL MESSAGE_BOX,@"「……要装肛塞，对吗？我会先让你放松，再慢慢来。」"
+			CALL MESSAGE_BOX,@"「……要装肛塞……对吗……我先试着放松……再听%MASTER_CALL()%慢慢来……」"
 		ELSE
-			CALL MESSAGE_BOX,@"「……慢一点。先确认你不会不适。」"
+			CALL MESSAGE_BOX,@"「……慢一点……求%MASTER_CALL()%……让我跟得上%MASTER_CALL()%的节奏……」"
 		ENDIF
 
 	CASE "尿道塞"
 		IF ＃陷落状态／恋慕以上＃
-			CALL MESSAGE_BOX,@"「……这是更敏感的地方。我会控制节奏，你只要看着我。」"
+			CALL MESSAGE_BOX,@"「……这儿更敏感……我不敢擅自带快……%MASTER_CALL()%看着我呢……」"
 		ELSE
-			CALL MESSAGE_BOX,@"「……我会很慢。你有一点不舒服就立刻停。」"
+			CALL MESSAGE_BOX,@"「……我会很慢很慢……%MASTER_CALL()%有一丝不舒服……我就停……全听%MASTER_CALL()%的……」"
 		ENDIF
+
+	CASE "肛勾"
+		IF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……后面被勾住……嘴又合不拢……我只能……把重量交给%MASTER_CALL()%……♥」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……别拉太急……我听口令……一步一来……」"
+		ENDIF
+
+	CASE "贞操带"
+		CALL MESSAGE_BOX,@"「……胯间被锁住了……插入那边……先交给%MASTER_CALL()%决定……我听……」"
+
+	CASE "尾塞"
+		IF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……尾巴……好羞耻……但我会……把腰稳住给%MASTER_CALL()%看……♥」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……别笑那条尾巴……我、我已经很努力了……」"
+		ENDIF
+
+	CASE "舌锻口塞"
+		CALL MESSAGE_BOX,@"「……唔……呜呜……嗯嗯……」（口被塞满，吐字全碎在喉咙里，只剩含糊的呜咽和求饶似的鼻音）"
 
 	CASE "深喉","触手深喉"
 		CALL KOJO_SHARE_ADVANCED_TRAIN_DISPATCH(ARGS:1, ARGS:2)
 
 	CASEELSE
-		CALL MESSAGE_BOX,@"「好。%ARGS:1%……我会按你舒服的方式带着你。」"
+		CALL MESSAGE_BOX,@"「好……%ARGS:1%……我照着%MASTER_CALL()%觉得舒服的法子……跟着来……」"
 	ENDSELECT
 
 CASE "继续"
-	CALL MESSAGE_BOX,@"「继续。呼吸、腰、手……我都会帮你调整。」"
-	CALL MESSAGE_BOX,@"「别勉强。你一个眼神，我就会换到你想要的方式。」"
+	SELECTCASE ARGS:1
+	CASE "肛勾","尾塞"
+		CALL MESSAGE_BOX,@"「……后面……一直坠着……我、我只敢小声说……别突然拉链条……」"
+	CASE "贞操带"
+		CALL MESSAGE_BOX,@"「……锁着的地方……每动一下都提醒我在被管……我只敢跟着%MASTER_CALL()%……」"
+	CASE "舌锻口塞"
+		CALL MESSAGE_BOX,@"「……嗯咕……唔……哈……」（每动一下舌面就顶到塞具，只能从嘴角漏出涎水，连一句完整的话都挤不出来）"
+	CASE "正常位","后背位","对面坐位","背面坐位","骑乘位","对面立位","背面立位","强制骑乘位","背面骑乘位"
+		CALL KOJO_CHS_VPOS_知心口上1(ARGS:1, ARGS:2)
+	CASEELSE
+		CALL MESSAGE_BOX,@"「……继续……呼吸、腰、手的动静，我都跟着%MASTER_CALL()%……不敢乱带节奏……」"
+		CALL MESSAGE_BOX,@"「……别勉强……%MASTER_CALL()%只消一个眼神……我就换……」"
+	ENDSELECT
 
 CASE "移除"
 	SELECTCASE ARGS:1
 	CASE "肛塞"
-		CALL MESSAGE_BOX,@"「……好了，肛塞取下了。先别急着动，呼吸跟着我。」"
+		CALL MESSAGE_BOX,@"「……好了，肛塞取出来了。先别急着动……我顺着%MASTER_CALL()%的呼吸来……」"
 	CASE "尿道塞"
-		CALL MESSAGE_BOX,@"「……取下了。嗯，放松……我会看着你，直到不适消下去。」"
+		CALL MESSAGE_BOX,@"「……取下来了……嗯……放松些……我只敢这么守着……等那股不适退下去……」"
+	CASE "肛勾"
+		CALL MESSAGE_BOX,@"「……钩子松了……后面……先别碰……让我缓一口气……」"
+	CASE "贞操带"
+		CALL MESSAGE_BOX,@"「……锁卸下来了……胯间……还有点发麻……我跟着%MASTER_CALL()%慢慢走……」"
+	CASE "尾塞"
+		CALL MESSAGE_BOX,@"「……尾巴没了……可羞耻还在……我先靠着%MASTER_CALL()%一会儿……」"
+	CASE "舌锻口塞"
+		CALL MESSAGE_BOX,@"「……舌头……能动了……我先把口水擦干净……别笑……」"
 	CASEELSE
-		CALL MESSAGE_BOX,@"「……好了，先缓一缓。你现在需要的是放松。」"
+		CALL MESSAGE_BOX,@"「……好了……先缓口气……听%MASTER_CALL()%的吩咐……」"
 	ENDSELECT
 
 CASEELSE

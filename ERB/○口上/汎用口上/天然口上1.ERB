@@ -26,6 +26,9 @@ ELSEIF CFLAG:崩坏 && !CFLAG:洗脑
 ENDIF
 
 SELECTCASE ARGS:0
+CASE "身体"
+	CALL KOJO_GENERAL_天然1_EXCRETION_BODY(ARGS:1, ARGS:2)
+	RETURN
 CASE "例文"
 	CALL MESSAGE_BOX,@"「【天然1】已设置。\n慢半拍、会错意、认真说傻话；越认真越好笑。」"
 
@@ -182,4 +185,26 @@ RETURN
 @KOJO_GENERAL_天然1_TRAIN(ARGS:0,ARGS:1,ARGS:2,ARGS:3)
 CALL KOJO_GENERAL_天然口上1_TRAIN(ARGS:0,ARGS:1,ARGS:2,ARGS:3)
 RETURN
+
+;--------------------------------------------
+; 排泄羞耻／身体（本口上专用）
+;--------------------------------------------
+@KOJO_GENERAL_天然1_EXCRETION_BODY(ARGS:0, ARGS:1)
+SELECTCASE ARGS:0
+CASE "排泄事故"
+	SELECTCASE ARGS:1
+	CASE "肠"
+		CALL MESSAGE_BOX,@"「诶诶……？！出来了……？！呜哇……好、好丢脸……」"
+	CASE "尿"
+		CALL MESSAGE_BOX,@"「……啊……不知不觉……就……」"
+	CASEELSE
+		CALL MESSAGE_BOX,@"「……」"
+	ENDSELECT
+CASE "放尿主动"
+	CALL MESSAGE_BOX,@"「……要尿了吗……？在你面前……好害羞哦……」"
+CASE "灌肠妊娠求饶"
+	CALL MESSAGE_BOX,@"「肚子里面还有宝宝……灌肠会不会挤到它呀……？可以不要吗……？」"
+CASEELSE
+ENDSELECT
+RETURN 1
 

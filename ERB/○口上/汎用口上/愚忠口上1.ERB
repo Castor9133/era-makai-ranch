@@ -25,6 +25,9 @@ ELSEIF CFLAG:崩坏 && !CFLAG:洗脑
 ENDIF
 
 SELECTCASE ARGS:0
+CASE "身体"
+	CALL KOJO_GENERAL_愚忠1_EXCRETION_BODY(ARGS:1, ARGS:2)
+	RETURN
 CASE "例文"
 	CALL MESSAGE_BOX,@"「【愚忠1】已设置。\n不问对错只求服从；献身＝证明忠诚。」"
 
@@ -240,4 +243,26 @@ RETURN
 @KOJO_GENERAL_愚忠1_TRAIN(ARGS:0,ARGS:1,ARGS:2,ARGS:3)
 CALL KOJO_GENERAL_愚忠口上1_TRAIN(ARGS:0,ARGS:1,ARGS:2,ARGS:3)
 RETURN
+
+;--------------------------------------------
+; 排泄羞耻／身体（本口上专用）
+;--------------------------------------------
+@KOJO_GENERAL_愚忠1_EXCRETION_BODY(ARGS:0, ARGS:1)
+SELECTCASE ARGS:0
+CASE "排泄事故"
+	SELECTCASE ARGS:1
+	CASE "肠"
+		CALL MESSAGE_BOX,@"「……属下……失态了……」"
+	CASE "尿"
+		CALL MESSAGE_BOX,@"「……万分抱歉……弄脏了……」"
+	CASEELSE
+		CALL MESSAGE_BOX,@"「……」"
+	ENDSELECT
+CASE "放尿主动"
+	CALL MESSAGE_BOX,@"「……遵命……排尿……执行……」"
+CASE "灌肠妊娠求饶"
+	CALL MESSAGE_BOX,@"「……请为少主着想……灌肠……恳请收回成命……」"
+CASEELSE
+ENDSELECT
+RETURN 1
 

@@ -1,0 +1,227 @@
+; ======================================
+; 泛用口上（性格：闷骚小姐姐）
+; 表面一本正经、措辞偏书面，带理工/人文研究生式「学者风范」；爱引用、下定义、开伦理玩笑；对性好奇、俏皮、闷骚。
+; 陷落前抗拒拒绝；陷落后逐渐把各类调教当成「和你相处的一环」。
+; 口上識別名：闷骚小姐姐1（Str.csv 6121）
+; 许可证：CC BY-NC
+; ======================================
+
+@KOJO_GENERAL_INDEX_闷骚小姐姐1(ARGS:0,ARGS:1,ARGS:2,ARGS:3)
+
+IF TFLAG:Ｍ装备
+	CALL KOJO_GENERAL_MOUTH_SHACKLE_1(ARGS:0,ARGS:1,ARGS:2,ARGS:3)
+	RETURN
+ELSEIF CFLAG:崩坏 && !CFLAG:洗脑
+	IF GROUPMATCH(ARGS:0,"例文")
+	ELSEIF GROUPMATCH(ARGS:1,"洗脑触手","崩坏")
+	ELSE
+		IF NOWEX:总绝顶
+			CALL MESSAGE_BOX,@"「……假说……被推翻……♥ ……样本……失控……♥」"
+			CALL MESSAGE_BOX,@"「……别记录……♥ ……求你别写进笔记……♥」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……我……还算……在控制组吗……」"
+		ENDIF
+		RETURN
+	ENDIF
+ENDIF
+
+SELECTCASE ARGS:0
+CASE "身体"
+	CALL KOJO_GENERAL_闷骚小姐姐1_EXCRETION_BODY(ARGS:1, ARGS:2)
+	RETURN
+CASE "例文"
+	CALL MESSAGE_BOX,@"「【闷骚小姐姐1】已设置。\n地文／口上基调：学者风范——略像写论文或答辩：变量、对照组、显著性、修订版协议、脚注式吐槽；把身体反应当「数据」「样本」「可重复性很差的实验」。\n陷落前：抗拒时会搬「伦理审查」「边界」「知情同意」，像在开组会怼你。\n陷落后：逐渐承认「和你做这些……算相处的一环吧」，仍嘴硬两句，但会主动配合、甚至半开玩笑地复盘「刚才那次……算 Phase 2」「结论先行……证据后补」。」"
+
+CASE "身体事件"
+	SELECTCASE ARGS:1
+	CASE "产後初调"
+		IF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……产后复训？行，我把静养期记录带来了——你别装没看见。……过来，让我先量你脉搏，再谈别的。」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……从医学伦理上讲，产后立刻高强度调教需要充分告知风险。……你现在的说明，不够。」"
+		ENDIF
+	CASE "妊娠性事初回"
+		IF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……阳性。……别瞪眼睛，我不是在写论文结论——我是在通知共同作者。」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……我怀孕了。……请你用成年人方式回答：你打算负哪一段责任？」"
+		ENDIF
+	CASE "妊娠性事"
+		CALL MESSAGE_BOX,@"「……体力曲线掉得厉害……观测如此……不敢跟%MASTER_CALL()%讨价还价……只求……若要继续……给一点缓冲……」"
+	CASE "妊娠调教谨慎开场"
+		IF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……怀着还来……我嘴上会抱怨，但数据不骗人——我会来，是因为我信你不会把我当成『只来这一次』就算完的那种人。」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……为什么非得今天……我心里打了一万次补丁……嘴上只敢说……好赖皮……可%MASTER_CALL()%开口了……我不敢拒……只敢……偷偷记一笔账……」"
+		ENDIF
+	ENDSELECT
+
+CASE "调教命令"
+	CALL KOJO_GENERAL_闷骚小姐姐1_TRAIN(ARGS:0,ARGS:1,ARGS:2,ARGS:3)
+
+CASE "绝顶"
+	SIF TEQUIP:深喉
+		CALL MESSAGE_BOX,@"「……气道……阻力……不对……♥ ……这不在……预习范围……♥」"
+	IF ＃陷落状态／恋慕以上＃
+		CALL MESSAGE_BOX,@"「……结论推翻……♥ ……变量全是你……♥」"
+		CALL MESSAGE_BOX,@"「……下次……把对照组也带上……♥ ……开玩笑的……别停……♥」"
+		CALL MESSAGE_BOX,@"「……噪声太大……♥ ……显著性……全写你脸上了……♥」"
+	ELSEIF ＃陷落状态／屈服以上＃
+		CALL MESSAGE_BOX,@"「……我认输……♥ ……别再让我论证了……♥」"
+	ELSE
+		CALL MESSAGE_BOX,@"「……这、这不合理……♥ ……身体……别擅自出结论……！」"
+	ENDIF
+
+CASE "射精"
+	IF SOURCE:膣内射精经验
+		IF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……内射……♥ ……行，样本我收下了……♥ ……回头写进「与你有关的异常数据」……♥」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……里面不行——！……你这是单方面更改实验协议……！」"
+		ENDIF
+	ELSEIF SOURCE:尻穴射精经验
+		IF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……后面也……♥ ……好，附录章……加一页……♥」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……后面……驳回。……理由不用我写满一页吧。」"
+		ENDIF
+	ELSEIF SOURCE:精饮经验
+		IF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……咽下去了……♥ ……口感数据……列入私人档案……♥」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……这不在……预注册实验里……！」"
+		ENDIF
+	ELSEIF TEQUIP:手淫
+		IF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……弄在手上……♥ ……行，我帮你做……误差分析……♥」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……手部刺激……也要写进知情同意书……！」"
+		ENDIF
+	ELSE
+		IF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……射了……♥ ……我签收……♥ ……备注：超预期……♥」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……单方面……结题……！」"
+		ENDIF
+	ENDIF
+
+CASE "访问"
+	SELECTCASE ARGS:1
+	CASE "入口"
+		IF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……进。茶在桌上——先喝，再说话。……我可不想照顾一个低血糖的笨蛋。」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……有事？……三句话。超出部分请发书面摘要。」"
+		ENDIF
+	CASE "摸头"
+		IF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……摸头算奖励还是惩罚？……算了，我允许你把我当一会儿猫。」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……手。……我在工作，别干扰被试。」"
+		ENDIF
+	CASE "接吻"
+		IF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……吻可以。……但我要备注：这是自愿样本，不是胁迫数据。」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……驳回。……除非你先通过「为什么要吻我」的口头答辩。」"
+		ENDIF
+	CASE "排泄尿急"
+		CALL MESSAGE_BOX,@"「……别误会。……这是生理噪声……不是求关注。」"
+		CALL MESSAGE_BOX,@"「……洗手间。……现在。……否则数据集要脏。」"
+	CASE "侍奉口爆终了"
+		SELECTCASE ARGS:2
+		CASE "忍住"
+			CALL MESSAGE_BOX,@"「……阴性对照……行。……铃口还在跳……我登记为未释放。」"
+		CASE "咽下"
+			CALL MESSAGE_BOX,@"「……回收率 100%。……备注：口感主观……但我不吐嘈了……♥」"
+		CASEELSE
+		ENDSELECT
+	CASEELSE
+	ENDSELECT
+
+CASE "搾乳"
+	SELECTCASE ARGS:1
+	CASE "牧场口便器"
+		SIF !FLAG:牧场口便器玩法启用
+			RETURN
+		IF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……把『口喉』写进产线 KPI……行，我签补充协议了……♥」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……牧场把样本用途扩写到这种粒度……伦理委员会会疯的。」"
+		ENDIF
+		RETURN
+	ENDSELECT
+	IF SOURCE:母乳漏出
+		CALL MESSAGE_BOX,@"「……漏了……别记进正式表……算测量噪声……」"
+		RETURN
+	ENDIF
+	IF ＃陷落状态／恋慕以上＃
+		CALL MESSAGE_BOX,@"「……搾乳数据……上升沿很陡……♥ ……你负责别把我当一次性耗材……♥」"
+	ELSE
+		CALL MESSAGE_BOX,@"「……胸口的输出……别用『顺便』两个字概括……」"
+	ENDIF
+
+CASE "战斗"
+	SELECTCASE ARGS:1
+	CASE "攻击"
+		CALL MESSAGE_BOX,@"「……让开。……我来算弹道。」"
+		CALL MESSAGE_BOX,@"「……先建坐标系……再谈输出。」"
+	CASE "被击中"
+		CALL MESSAGE_BOX,@"「……误差范围内……还站得住……」"
+		CALL MESSAGE_BOX,@"「……样本损伤……可接受……继续。」"
+	CASEELSE
+	ENDSELECT
+
+CASE "事件"
+	SELECTCASE ARGS:1
+	CASE "牧场绝顶管理"
+		SIF !FLAG:牧场口便器玩法启用 || !FLAG:牧场绝顶管理启用
+			RETURN
+		IF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……整场零绝顶……对照组是我发抖的腿……♥ ……结论写你脸上：你故意的……♥」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……寸止协议……单方面生效了……我要写异议书……」"
+		ENDIF
+	CASEELSE
+	ENDSELECT
+
+CASEELSE
+ENDSELECT
+RETURN
+
+
+@KOJO_GENERAL_闷骚小姐姐1_TRAIN(ARGS:0,ARGS:1,ARGS:2,ARGS:3)
+CALL KOJO_GENERAL_闷骚小姐姐口上1_TRAIN(ARGS:0,ARGS:1,ARGS:2,ARGS:3)
+RETURN
+
+
+;--------------------------------------------
+; 排泄羞耻／身体（学者口吻 + 闷骚破功）
+;--------------------------------------------
+@KOJO_GENERAL_闷骚小姐姐1_EXCRETION_BODY(ARGS:0, ARGS:1)
+SELECTCASE ARGS:0
+CASE "排泄事故"
+	SELECTCASE ARGS:1
+	CASE "肠"
+		CALL MESSAGE_BOX,@"「……可重复性……为零……！……这是事故样本……别、别拍照……！」"
+	CASE "尿"
+		CALL MESSAGE_BOX,@"「……对照组……崩了……！……别看……这是异常值……！」"
+	CASEELSE
+		CALL MESSAGE_BOX,@"「……」"
+	ENDSELECT
+CASE "放尿主动"
+	IF ＃陷落状态／恋慕以上＃
+		CALL MESSAGE_BOX,@"「……好……当着你的面……把「羞耻」也纳入数据集……♥」"
+		CALL MESSAGE_BOX,@"「……公开数据集……♥ ……我会……匿名化处理……才怪……♥」"
+	ELSE
+		CALL MESSAGE_BOX,@"「……排尿要在目击下进行？……你的伦理审查……是不是漏交了？」"
+	ENDIF
+CASE "灌肠妊娠求饶"
+	CALL MESSAGE_BOX,@"「……从胎儿安全角度——我请求中止灌肠。……这不是撒娇，是正式异议。」"
+CASE "高蓄尿"
+	CALL MESSAGE_BOX,@"「……膀胱压强……超阈值了……你再盯着我……我会把尴尬写成脚注……」"
+CASE "羞耻调教链"
+	CALL MESSAGE_BOX,@"「……排泄羞耻链……还在生效……我每个动作都像在交审稿意见……」"
+CASEELSE
+ENDSELECT
+RETURN 1

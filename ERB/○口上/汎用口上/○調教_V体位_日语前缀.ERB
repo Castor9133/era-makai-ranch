@@ -1,0 +1,197 @@
+; 阴道／肛门插入时的体位差分前缀（日语泛用口上）
+; ARGS:0 = TRAINNAME（正常位／Ａ正常位 等）。恋慕・乳牛・洗脑・隶属 时额外一句，避免九体位同一套话。
+; 由 *_TRAIN_INSIDE に ARGS:3 として渡す
+
+@KOJO_JP_VPOS_HINT_慇懃1(ARGS:0)
+SIF !(CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／恋慕以上＃ || ＃陷落状态／隶属＃)
+	RETURN
+SELECTCASE ARGS:0
+CASE "正常位"
+	CALL MESSAGE_BOX,@"「正面から…♥ 見つめ合うと、素直になるでしょ…♥」"
+CASE "后背位"
+	CALL MESSAGE_BOX,@"「後ろは…♥ 見えない分だけ、声が正直で…っ♥」"
+CASE "对面坐位"
+	CALL MESSAGE_BOX,@"「座って抱えるの…♥ 太ももが熱くなるの分かる…♥」"
+CASE "背面坐位"
+	CALL MESSAGE_BOX,@"「背中で感じるの…♥ 逃げ場ないのに安心しちゃう…♥」"
+CASE "骑乘位"
+	CALL MESSAGE_BOX,@"「上に跨るの…♥ これ、主導権もらってるみたい…♥」"
+CASE "背面骑乘位","强制骑乘位"
+	CALL MESSAGE_BOX,@"「逆さまになんて…♥ 恥ずかしいのに腰が止まらないの…♥」"
+CASE "对面立位"
+	CALL MESSAGE_BOX,@"「立ったまま正面…♥ 足首が震えちゃう…♥」"
+CASE "背面立位"
+	CALL MESSAGE_BOX,@"「後ろから立って…♥ 壁、かして…っ♥」"
+CASE "Ａ正常位","Ａ后背位","Ａ对面坐位","Ａ背面坐位","Ａ骑乘位","Ａ对面立位","Ａ背面立位","强制Ａ骑乘位","Ａ背面骑乘位"
+	CALL MESSAGE_BOX,@"「お尻の体勢で入り角が違うの…♥ ばれるからね…っ♥」"
+ENDSELECT
+RETURN
+
+@KOJO_JP_VPOS_HINT_強気1(ARGS:0)
+SIF !(CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／恋慕以上＃ || ＃陷落状态／隶属＃)
+	RETURN
+SELECTCASE ARGS:0
+CASE "正常位"
+	CALL MESSAGE_BOX,@"「正面なんて…♥ 余計泣き声出るの分かってんでしょ…っ♥」"
+CASE "后背位"
+	CALL MESSAGE_BOX,@"「後ろは逃がさないって顔でしょ…♥ 上等…っ♥」"
+CASE "对面坐位"
+	CALL MESSAGE_BOX,@"「座って腰振るとか…♥ はしたない…♥」"
+CASE "背面坐位"
+	CALL MESSAGE_BOX,@"「背中合わせとか…♥ ズルい…全部伝わる…っ♥」"
+CASE "骑乘位"
+	CALL MESSAGE_BOX,@"「上？♥ 負け惜しみくらいさせなよ…っ♥」"
+CASE "背面骑乘位","强制骑乘位"
+	CALL MESSAGE_BOX,@"「逆からなんて…♥ は、最悪…♥ 止まんないけど…っ♥」"
+CASE "对面立位"
+	CALL MESSAGE_BOX,@"「立って正面…♥ 膝が笑う前に決めてよ…っ♥」"
+CASE "背面立位"
+	CALL MESSAGE_BOX,@"「後ろ立ち…♥ 不利すぎるっての…っ♥」"
+CASE "Ａ正常位","Ａ后背位","Ａ对面坐位","Ａ背面坐位","Ａ骑乘位","Ａ对面立位","Ａ背面立位","强制Ａ骑乘位","Ａ背面骑乘位"
+	CALL MESSAGE_BOX,@"「尻の角度変えるつもり？♥ …認めるけどさ…っ♥」"
+ENDSELECT
+RETURN
+
+@KOJO_JP_VPOS_HINT_生真面目1(ARGS:0)
+SIF !(CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／恋慕以上＃ || ＃陷落状态／隶属＃)
+	RETURN
+SELECTCASE ARGS:0
+CASE "正常位"
+	CALL MESSAGE_BOX,@"「正面だと…♥ 表情がバレるの嫌ですけど…っ♥」"
+CASE "后背位"
+	CALL MESSAGE_BOX,@"「後ろは…視界がなくて、分からなくなります…っ♥」"
+CASE "对面坐位"
+	CALL MESSAGE_BOX,@"「座ると…支え方が変わります…♥」"
+CASE "背面坐位"
+	CALL MESSAGE_BOX,@"「背中で伝わるのは…鼓動だけでいいのに…っ♥」"
+CASE "骑乘位"
+	CALL MESSAGE_BOX,@"「上になっても乱れないように…頑張ります…♥」"
+CASE "背面骑乘位","强制骑乘位"
+	CALL MESSAGE_BOX,@"「逆は…羞恥が先に…っ♥」"
+CASE "对面立位"
+	CALL MESSAGE_BOX,@"「立位は重心が…難しいです…っ♥」"
+CASE "背面立位"
+	CALL MESSAGE_BOX,@"「後ろで立つのは…バランスが…っ♥」"
+CASE "Ａ正常位","Ａ后背位","Ａ对面坐位","Ａ背面坐位","Ａ骑乘位","Ａ对面立位","Ａ背面立位","强制Ａ骑乘位","Ａ背面骑乘位"
+	CALL MESSAGE_BOX,@"「後ろの穴のお話です…♥ 体勢ごとに深さが違うんです…っ♥」"
+ENDSELECT
+RETURN
+
+@KOJO_JP_VPOS_HINT_非敬語幼め1(ARGS:0)
+SIF !(CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／恋慕以上＃ || ＃陷落状态／隶属＃)
+	RETURN
+SELECTCASE ARGS:0
+CASE "正常位"
+	CALL MESSAGE_BOX,@"「正面だと照れるの分かってでしょ…っ♥」"
+CASE "后背位"
+	CALL MESSAGE_BOX,@"「後ろはドキドキが増すやつ～っ♥」"
+CASE "对面坐位"
+	CALL MESSAGE_BOX,@"「座ってくっつく～♥ 腰引いちゃダメ～♥」"
+CASE "背面坐位"
+	CALL MESSAGE_BOX,@"「背中で感じるの反則でしょ～っ♥」"
+CASE "骑乘位"
+	CALL MESSAGE_BOX,@"「上に乗るの初めて感覚～♥」"
+CASE "背面骑乘位","强制骑乘位"
+	CALL MESSAGE_BOX,@"「逆さま～♥ でこぼこ苦手～♥」"
+CASE "对面立位"
+	CALL MESSAGE_BOX,@"「立って正面～♥ 転んだら叱らないでね～♥」"
+CASE "背面立位"
+	CALL MESSAGE_BOX,@"「後ろで立つなんて～♥ 足爪子できるかな～♥」"
+CASE "Ａ正常位","Ａ后背位","Ａ对面坐位","Ａ背面坐位","Ａ骑乘位","Ａ对面立位","Ａ背面立位","强制Ａ骑乘位","Ａ背面骑乘位"
+	CALL MESSAGE_BOX,@"「お尻の体勢で『やば』が変わるんだって～っ♥」"
+ENDSELECT
+RETURN
+
+@KOJO_JP_VPOS_HINT_姉御肌1(ARGS:0)
+SIF !(CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／恋慕以上＃ || ＃陷落状态／隶属＃)
+	RETURN
+SELECTCASE ARGS:0
+CASE "正常位"
+	CALL MESSAGE_BOX,@"「正面は…大人の付き合いって感じね…っ♥」"
+CASE "后背位"
+	CALL MESSAGE_BOX,@"「後ろは支配されてるみたいで…悪くない…っ♥」"
+CASE "对面坐位"
+	CALL MESSAGE_BOX,@"「座って脚で囲むの…逃がさないってことでしょ…♥」"
+CASE "背面坐位"
+	CALL MESSAGE_BOX,@"「背中預けるの…信用してるってことよ…っ♥」"
+CASE "骑乘位"
+	CALL MESSAGE_BOX,@"「上に乗るなら…ちゃんと見てなさい…っ♥」"
+CASE "背面骑乘位","强制骑乘位"
+	CALL MESSAGE_BOX,@"「逆は…腰の使い方見せたくないのに…っ♥」"
+CASE "对面立位"
+	CALL MESSAGE_BOX,@"「立って…崩れたら捕まえて…っ♥」"
+CASE "背面立位"
+	CALL MESSAGE_BOX,@"「後ろ立ち…足元見せないのが恥ずかしい…っ♥」"
+CASE "Ａ正常位","Ａ后背位","Ａ对面坐位","Ａ背面坐位","Ａ骑乘位","Ａ对面立位","Ａ背面立位","强制Ａ骑乘位","Ａ背面骑乘位"
+	CALL MESSAGE_BOX,@"「尻なら角度が命でしょ…っ♥」"
+ENDSELECT
+RETURN
+
+@KOJO_JP_VPOS_HINT_ボーイッシュ用口上1(ARGS:0)
+SIF !(CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／恋慕以上＃ || ＃陷落状态／隶属＃)
+	RETURN
+SELECTCASE ARGS:0
+CASE "正常位"
+	CALL MESSAGE_BOX,@"「正面からとか…照れるって分かってんでしょ…っ♥」"
+CASE "后背位"
+	CALL MESSAGE_BOX,@"「背後は…声出すの我慢できなくなる…っ♥」"
+CASE "对面坐位"
+	CALL MESSAGE_BOX,@"「座って腰使うの反則…っ♥」"
+CASE "背面坐位"
+	CALL MESSAGE_BOX,@"「背中で圧かけられるの…逃げられない…っ♥」"
+CASE "骑乘位"
+	CALL MESSAGE_BOX,@"「上？…負けてないからな…っ♥」"
+CASE "背面骑乘位","强制骑乘位"
+	CALL MESSAGE_BOX,@"「逆は…はしたないって言わせない…っ♥」"
+CASE "对面立位"
+	CALL MESSAGE_BOX,@"「立って正面…足元見んな…っ♥」"
+CASE "背面立位"
+	CALL MESSAGE_BOX,@"「後ろ立ち…膝が生意気…っ♥」"
+CASE "Ａ正常位","Ａ后背位","Ａ对面坐位","Ａ背面坐位","Ａ骑乘位","Ａ对面立位","Ａ背面立位","强制Ａ骑乘位","Ａ背面骑乘位"
+	CALL MESSAGE_BOX,@"「アナルの体勢替えて焦らすの禁止…っ♥」"
+ENDSELECT
+RETURN
+
+@KOJO_JP_VPOS_HINT_無口1(ARGS:0)
+SIF !(CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／恋慕以上＃ || ＃陷落状态／隶属＃)
+	RETURN
+SELECTCASE ARGS:0
+CASE "正常位"
+	CALL MESSAGE_BOX,@"「…………（目が合って、吐息だけ揺れた）……♥」"
+CASE "后背位"
+	CALL MESSAGE_BOX,@"「…………（頷き、指先で君の手を探した）……♥」"
+CASE "对面坐位","背面坐位"
+	CALL MESSAGE_BOX,@"「…………（座って膝の力が抜けた）……♥」"
+CASE "骑乘位","背面骑乘位","强制骑乘位"
+	CALL MESSAGE_BOX,@"「…………（腰だけ小さく動いて視線を逸らした）……♥」"
+CASE "对面立位","背面立位"
+	CALL MESSAGE_BOX,@"「…………（壁に手をつき、靴先が擦れた）……♥」"
+CASE "Ａ正常位","Ａ后背位","Ａ对面坐位","Ａ背面坐位","Ａ骑乘位","Ａ对面立位","Ａ背面立位","强制Ａ骑乘位","Ａ背面骑乘位"
+	CALL MESSAGE_BOX,@"「…………（肩が跳ねて、喉だけで小さく肯定した）……♥」"
+ENDSELECT
+RETURN
+
+@KOJO_JP_VPOS_HINT_気品1(ARGS:0)
+SIF !(CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／恋慕以上＃ || ＃陷落状态／隶属＃)
+	RETURN
+SELECTCASE ARGS:0
+CASE "正常位"
+	CALL MESSAGE_BOX,@"「正面から…♥ 礼儀と本能が喧嘩します…っ♥」"
+CASE "后背位"
+	CALL MESSAGE_BOX,@"「後ろは…静かに崩れ落ちます…っ♥」"
+CASE "对面坐位"
+	CALL MESSAGE_BOX,@"「座して寄り添うのは…雅ではなく…甘い…っ♥」"
+CASE "背面坐位"
+	CALL MESSAGE_BOX,@"「背を預けるのは…覚悟があるということ…っ♥」"
+CASE "骑乘位"
+	CALL MESSAGE_BOX,@"「上は…見栄えと快楽の両立です…っ♥」"
+CASE "背面骑乘位","强制骑乘位"
+	CALL MESSAGE_BOX,@"「逆は…品が散るのに止まれない…っ♥」"
+CASE "对面立位"
+	CALL MESSAGE_BOX,@"「立って正面…姿勢だけは綺麗に…っ♥」"
+CASE "背面立位"
+	CALL MESSAGE_BOX,@"「後ろ立ち…声だけは抑えます…っ♥」"
+CASE "Ａ正常位","Ａ后背位","Ａ对面坐位","Ａ背面坐位","Ａ骑乘位","Ａ对面立位","Ａ背面立位","强制Ａ骑乘位","Ａ背面骑乘位"
+	CALL MESSAGE_BOX,@"「後ろの作法まで…変えるのは不公平です…っ♥」"
+ENDSELECT
+RETURN

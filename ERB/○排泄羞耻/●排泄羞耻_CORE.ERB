@@ -1,0 +1,208 @@
+;-------------------------------------------------
+; 排泄羞耻 · 核心（初版）
+; EXCRETION_ACCIDENT ARG: 1=尿意外 2=肠忍不住（非失败→羞耻调教链）
+; EXCRETION_PERMITTED_RELEASE … 主人公准许的排泄（厕所／镜子把尿式／便盆）
+; FLAG:排泄描写／灌肠粪便简短=1 时肠型地文更露骨；0 仍写喷出与臭气但不点明「粪便」字样
+; 灌肠液种类后续可接 CFLAG/CSTR；此处统称「灌肠液」
+; 排泄后：奴隶自净一句（全性格共通），避免地文暗示主人公舔／触碰刚排过的尿道口与肛门
+;-------------------------------------------------
+
+@EXCRETION_SHAME_CHAIN_EXTRA_COM(ARG)
+;羞耻调教余回合链：SOURCE_UP 耻辱／屈服叠乘时额外加权的指令（避免魔法数字散落）
+#FUNCTION
+SIF GROUPMATCH(ARG, 213, 214, 217, 218, 220, 221, 223)
+	RETURNF 1
+RETURNF 0
+
+
+@GETEXCRETION_SHAME_TIER
+;镜子 PLAY 等用：0～5 档位（失禁风险／公开羞辱链）
+#FUNCTION
+#DIM TIER
+TIER = 0
+SIF TARGET > 0 && CFLAG:排泄_羞耻调教余回合 > 0
+	TIER += 2
+SIF TARGET > 0 && CFLAG:排泄_灌肠无肛塞忍耐中
+	TIER += 1
+SIF TARGET > 0 && CFLAG:膀胱蓄尿 >= 7000
+	TIER += 1
+SIF TARGET > 0 && CFLAG:排泄_短期耻辱档 >= 2
+	TIER += 1
+RETURNF TIER
+
+
+@EXCRETION_IS_EARLY_PREG_EXCRETION
+;孕早期（妊娠超过 30 天后的排泄系加重段）：魔界妊娠日>30；人类妊娠日数>30（非触手）；触手妊娠末 93～94 日
+#FUNCTION
+SIF CFLAG:魔界_妊娠S == 1 && CFLAG:魔界_妊娠日 > 30
+	RETURNF 1
+SIF CFLAG:妊娠日数 > 30 && CFLAG:妊娠日数 < 91
+	RETURNF 1
+SIF CFLAG:妊娠日数 >= 93 && CFLAG:妊娠日数 < 95
+	RETURNF 1
+RETURNF 0
+
+
+@EXCRETION_PREGNANCY_BELLY_DAY_FOR_DESC
+;调教开场孕肚描写用「妊娠经过天数」：魔界用妊娠日；人类长档用妊娠日数；触手末段用虚读日
+#FUNCTION
+#DIM D
+D = 0
+IF CFLAG:魔界_妊娠S == 1 && CFLAG:魔界_妊娠日 > 30
+	D = CFLAG:魔界_妊娠日
+ELSEIF CFLAG:妊娠日数 > 30 && CFLAG:妊娠日数 < 91
+	D = CFLAG:妊娠日数
+ELSEIF CFLAG:妊娠日数 >= 93 && CFLAG:妊娠日数 < 95
+	D = 32 + (CFLAG:妊娠日数 - 93) * 12
+ENDIF
+RETURNF D
+
+
+@EXCRETION_TRAIN_OPEN_PREGNANCY_DESC
+;进入调教 UI 首屏：孕肚一句 + 模糊孕周提示（不显示精确天数）
+SIF TARGET < 1
+	RETURN
+SIF TFLAG:排泄_调教开场孕肚已描写
+	RETURN
+LOCAL = EXCRETION_PREGNANCY_BELLY_DAY_FOR_DESC()
+SIF LOCAL <= 0
+	RETURN
+PRINTL
+SETCOLOR 0x888888
+PRINTFORM %CALLNAME%的小腹
+IF LOCAL <= 40
+	PRINTFORML 微微隆起，衣料下能看出一点柔软的弧线。
+	PRINTFORML （怀孕已超过一个月，尚处需多加留神的早段。）
+ELSEIF LOCAL <= 55
+	PRINTFORML 渐渐显形，腰带与裙褶被轻轻顶起。
+	PRINTFORML （又过了不少日子，孕态在衣下愈发藏不住了。）
+ELSEIF LOCAL <= 75
+	PRINTFORML 明显隆起，动作间能感到坠坠的分量。
+	PRINTFORML （孕肚已颇显眼，像是进入了更要小心的时期。）
+ELSEIF LOCAL <= 100
+	PRINTFORML 饱满地圆着，呼吸间肚皮也随之一紧一松。
+	PRINTFORML （腹部隆起已很深，一举一动都带着孕身的沉重感。）
+ELSE
+	PRINTFORML 高高隆起，连遮掩都显得勉强。
+	PRINTFORML （任谁都能看出是重身子的阶段了……请手下留情。）
+ENDIF
+RESETCOLOR
+TFLAG:排泄_调教开场孕肚已描写 = 1
+RETURN 1
+
+
+@EXCRETION_SLAVE_SELF_CLEAN_AFTER_RELEASE
+PRINTFORML %CALLNAME%用纸巾与湿巾自己擦净腿间、尿道口和肛周，包好污物丢开，整理好才转回来。
+RETURN 1
+
+
+@EXCRETION_ACCIDENT(ARG)
+#DIM ACC_TYPE
+ACC_TYPE = ARG
+SIF !ACC_TYPE
+	RETURN 0
+SIF TFLAG:排泄检定中
+	RETURN 0
+TFLAG:排泄检定中 = 1
+
+SELECTCASE ACC_TYPE
+CASE 1
+	; 尿：意外向
+	SOURCE:不洁 += 3500
+	SOURCE:耻辱 += 4200
+	SOURCE:屈辱 += 2800
+	CFLAG:排泄_短期耻辱档 = LIMIT(CFLAG:排泄_短期耻辱档 + 1, 0, 8)
+	PRINTFORML %CALLNAME%失禁了，温热的液体顺着腿间淌下……
+	CALL EXCRETION_SLAVE_SELF_CLEAN_AFTER_RELEASE
+CASE 2
+	; 肠：忍不住（非失败）→ 更高耻辱 + 羞耻调教余回合
+	SELECTCASE CFLAG:排泄_灌肠液种类
+	CASE 0
+		LOCALS = 灌肠油
+	CASE 1
+		LOCALS = 母乳
+	CASE 2
+		LOCALS = 魔力母乳
+	CASEELSE
+		LOCALS = 灌肠液
+	ENDSELECT
+	SOURCE:不洁 += 6500
+	SOURCE:耻辱 += 9500
+	SOURCE:屈辱 += 5200
+	TIMES SOURCE:耻辱, 1.25
+	CFLAG:排泄_羞耻调教余回合 = LIMIT(CFLAG:排泄_羞耻调教余回合 + 3 + CFLAG:排泄_肠内残液档位, 0, 30)
+	IF FLAG:排泄描写／灌肠粪便简短
+		PRINTFORML %CALLNAME%再也夹不住——粪便搅着方才灌入体内的%LOCALS%，从%SAVESTR:标识／肛门%里猛地喷了出来，黄浊溅上腿根，憋久的臭气一下子冲开。
+		PRINTFORML %CALLNAME%羞耻得浑身发抖，后穴却仍一阵阵痉挛着排空……（非失败：进入羞耻调教链。）
+	ELSE
+		PRINTFORML %CALLNAME%再也夹不住，糊状污物混着%LOCALS%从%SAVESTR:标识／肛门%喷涌而出，身下狼藉一片，秽臭扑鼻。
+		PRINTFORML 羞耻的喘息断断续续，腰还塌着收不回来……
+	ENDIF
+	CFLAG:排泄_灌肠液种类 = 0
+	CFLAG:排泄_短期耻辱档 = LIMIT(CFLAG:排泄_短期耻辱档 + 3, 0, 8)
+	CALL EXCRETION_SLAVE_SELF_CLEAN_AFTER_RELEASE
+CASEELSE
+	TFLAG:排泄检定中 = 0
+	RETURN 0
+ENDSELECT
+
+SELECTCASE ACC_TYPE
+CASE 1
+	TRYCALL KOJO_PRINT("身体", "排泄事故", "尿", "")
+CASE 2
+	TRYCALL KOJO_PRINT("身体", "排泄事故", "肠", "")
+ENDSELECT
+TFLAG:排泄检定中 = 0
+RETURN 1
+
+
+@EXCRETION_PERMITTED_RELEASE
+; 主人公准许：去调教室附带厕所／有立镜时可选对镜把尿式排出或便盆
+PRINTFORML 你准许%CALLNAME%在调教场所解决排泄。
+PRINTL [0] 去调教室旁的洗手间
+IF ITEM:调教立镜
+	PRINTL [1] 使用调教立镜：对着镜子、以把尿的姿势排尿／排出（高羞耻）
+	PRINTL [2] 使用便盆，在房内排泄
+ENDIF
+PRINTL [99] 取消
+BINPUT
+SELECTCASE RESULT
+CASE 0
+	PRINTFORML %CALLNAME%快步走进洗手间……片刻后水声与换气声传来。
+	CALL EXCRETION_SLAVE_SELF_CLEAN_AFTER_RELEASE
+CASE 1
+	SIF !ITEM:调教立镜
+		RETURN 0
+	IF TFLAG:镜子PLAY
+		PRINTFORML 立镜前，你让%CALLNAME%以把尿似的姿势解脱……镜中一览无余，羞耻令她发抖。
+	ELSE
+		PRINTFORML 虽有调教立镜，但这回合未开启镜子PLAY；%CALLNAME%低头钻进洗手间解决。
+	ENDIF
+	CALL EXCRETION_SLAVE_SELF_CLEAN_AFTER_RELEASE
+CASE 2
+	SIF !ITEM:调教立镜
+		RETURN 0
+	PRINTFORML 便盆承接了排泄……%CALLNAME%在房内涨红了脸收拾干净。
+	CALL EXCRETION_SLAVE_SELF_CLEAN_AFTER_RELEASE
+CASEELSE
+	RETURN 0
+ENDSELECT
+
+CALL EXCRETION_PERMITTED_RELEASE_PAYOUT
+TRYCALL BLADDER_VOID
+RETURN 1
+
+
+@EXCRETION_PERMITTED_RELEASE_PAYOUT
+; 准许排泄后：服从与安心（非 SOURCE_UP 路径，直接 PALAM）
+SIF TARGET < 1
+	RETURN
+LOCAL = 55 + CFLAG:排泄_羞耻调教余回合 * 4
+SIF LOCAL > 150
+	LOCAL = 150
+PALAM:恭顺 += LOCAL
+LOCAL = 25 + CFLAG:排泄_羞耻调教余回合 * 2
+SIF LOCAL > 70
+	LOCAL = 70
+PALAM:屈服 += LOCAL
+RETURN 1

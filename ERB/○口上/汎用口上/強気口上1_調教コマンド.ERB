@@ -28,9 +28,9 @@ CASE "揉胸","育乳按摩","浓厚母乳按摩","乳罐按摩"
 		ELSEIF ＃陷落状态／屈服以上＃
 			CALL MESSAGE_BOX,@"「哎呀♥ %SELF_CALL()%的胸部被喜欢得不得了呢♥」"
 		ELSEIF TALENT:害羞 && TFLAG:Ｎ露出
-			CALL MESSAGE_BOX,@"「停止！　别碰%SELF_CALL()%的胸部！」"
+			CALL MESSAGE_BOX,@"「等等等等！别碰胸……！……嘴上是这么说……身子……还不是由%MASTER_CALL()%……」"
 		ELSE
-			CALL MESSAGE_BOX,@"「别碰！　不要碰%SELF_CALL()%的胸部！」"
+			CALL MESSAGE_BOX,@"「别碰……！……我、我不是说不从……只是……太羞了……！」"
 		ENDIF
 		RETURN
 	ENDIF
@@ -68,16 +68,16 @@ CASE "揉胸","育乳按摩","浓厚母乳按摩","乳罐按摩"
 		SIF ABL:胸围大小 >= BUSTSIZE_丰乳
 			CALL MESSAGE_BOX,@"「停下♥ 不要把胸部当玩具啊♥ 停下啊♥」"
 		SIF ABL:Ｂ敏感度 >= 150
-			CALL MESSAGE_BOX,@"「敏感的地方♥ 被摆弄，你想怎么样啊♥ 啊呜♥」"
+			CALL MESSAGE_BOX,@"「敏感的地方♥ 被这样弄……好赖皮……♥ 啊呜♥」"
 	
 	ELSE
 		CALL MESSAGE_BOX,@"「感觉到什么了！」"
 		SIF !EX:总绝顶
-			CALL MESSAGE_BOX,@"「咕、呜呜！　 我，不会输的！」"
+			CALL MESSAGE_BOX,@"「咕、呜呜……嘴、嘴硬而已……才没在跟%MASTER_CALL()%较劲啦……！」"
 		SIF TFLAG:眼罩
 			CALL MESSAGE_BOX,@"「如果不蒙住眼睛，什么都做不了吧！」"
 		SIF TFLAG:拘束BIT
-			CALL MESSAGE_BOX,@"「把女孩子捆绑起来，真是最差劲的事情！」"
+			CALL MESSAGE_BOX,@"「把女孩子绑起来……太耍赖了……！……可绑都绑了……哼……」"
 	ENDIF
 	
 CASE "榨乳"
@@ -126,7 +126,7 @@ CASE "榨乳"
 			SIF TFLAG:眼罩
 				CALL MESSAGE_BOX,@"「蒙上眼睛真是差劲！」"
 			SIF TFLAG:拘束BIT
-				CALL MESSAGE_BOX,@"「把女孩子捆起来，真是最差劲的！」"
+				CALL MESSAGE_BOX,@"「捆女孩子……好过分……！……我、我只敢嘴上凶一句……」"
 		ENDIF
 	ENDIF
 
@@ -424,10 +424,10 @@ CASE "舔阴蒂","舔阴道","刺激龟头","真空口交","肛门指揉按摩",
 	CALL KOJO_SHARE_ADVANCED_TRAIN_DISPATCH(ARGS:1, ARGS:2)
 
 CASE "正常位","后背位","对面坐位","背面坐位","骑乘位","背面骑乘位","对面立位","背面立位","强制骑乘位"
-	CALL KOJO_GENERAL_強気1_TRAIN_INSIDE("Ｖ性交",ARGS:2)
+	CALL KOJO_GENERAL_強気1_TRAIN_INSIDE("Ｖ性交",ARGS:2,ARGS:1)
 
 CASE "Ａ正常位","Ａ后背位","Ａ对面坐位","Ａ背面坐位","Ａ骑乘位","Ａ背面骑乘位","Ａ对面立位","Ａ背面立位","强制Ａ骑乘位"
-	CALL KOJO_GENERAL_強気1_TRAIN_INSIDE("Ａ性交",ARGS:2)
+	CALL KOJO_GENERAL_強気1_TRAIN_INSIDE("Ａ性交",ARGS:2,ARGS:1)
 	
 CASE "素股"
 CASE "口交"
@@ -807,7 +807,7 @@ CASE "淫纹赋予"
 CASE "洗脑触手"
 	SELECTCASE ARGS:2
 	CASE "开始"
-		CALL MESSAGE_BOX,@"「无论发生什么绝对不会输───\n　呜哇！　嘟噜！？　哦，哦哈♥ 啊♥ 啊♥ 啊啊啊～♥ 」"
+		CALL MESSAGE_BOX,@"「嘴上说绝不认输───\n　呜哇！　嘟噜！？　哦，哦哈♥ 啊♥ 啊♥ 啊啊啊～♥ 」"
 		CALL MESSAGE_BOX,@"「什什么♥ 什么鬼♥ 我的♥ 我的身体♥ 谢克斯♥\n　不知道♥ 啊啊啊～♥ 」"
 		CALL MESSAGE_BOX,@"「返回来了啊啊啊♥ %SELF_CALL()%不是%SELF_CALL()%，\n　啊♥ 啊♥ 啊♥ 啊♥ 啊啊啊～♥♥♥」"
 	
@@ -864,7 +864,7 @@ ENDSELECT
 
 
 
-@KOJO_GENERAL_強気1_TRAIN_INSIDE(ARGS:1,ARGS:2)
+@KOJO_GENERAL_強気1_TRAIN_INSIDE(ARGS:1,ARGS:2,ARGS:3)
 
 SELECTCASE ARGS:1
 CASE "Ｖ性交"
@@ -873,6 +873,8 @@ CASE "Ｖ性交"
 	
 	SELECTCASE ARGS:2
 	CASE "继续"
+		SIF STRLENS(ARGS:3) > 0
+			CALL KOJO_JP_VPOS_HINT_強気1(ARGS:3)
 		IF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／隶属＃
 			CALL MESSAGE_BOX,@"「%VAGINA_CALL()%的最深处♥♥ 轻轻地♥♥ 正在亲吻哦♥♥」"
 		ELSEIF ＃陷落状态／恋慕以上＃
@@ -884,6 +886,8 @@ CASE "Ｖ性交"
 		ENDIF
 	
 	CASE "执行"
+		SIF STRLENS(ARGS:3) > 0
+			CALL KOJO_JP_VPOS_HINT_強気1(ARGS:3)
 		IF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／隶属＃
 			CALL MESSAGE_BOX,@"「被%PENIS_CALL()%不断顶进呀♥ 好满呀♥ %SELF_CALL()%的%VAGINA_CALL()%♥ 好满呀♥」"
 		ELSEIF ＃陷落状态／屈服以上＃

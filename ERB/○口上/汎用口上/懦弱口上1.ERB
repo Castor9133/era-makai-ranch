@@ -31,6 +31,9 @@ ELSEIF CFLAG:崩坏 && !CFLAG:洗脑
 ENDIF
 
 SELECTCASE ARGS:0
+CASE "身体"
+	CALL KOJO_GENERAL_懦弱1_EXCRETION_BODY(ARGS:1, ARGS:2)
+	RETURN
 CASE "例文"
 	CALL MESSAGE_BOX,@"「【懦弱1】已设置。\n第一人称：%CSTR:第一人称%　对主人公：%CSTR:主人公的称呼／陷落前%\n未陷落：恳求、退缩、偶尔道歉；陷落：顺从、示弱、不知所措，多句近义随机。」"
 
@@ -334,3 +337,26 @@ RETURN
 @KOJO_GENERAL_懦弱1_TRAIN(ARGS:0,ARGS:1,ARGS:2,ARGS:3)
 CALL KOJO_GENERAL_懦弱口上1_TRAIN(ARGS:0,ARGS:1,ARGS:2,ARGS:3)
 RETURN
+
+;--------------------------------------------
+; 排泄羞耻／身体（本口上专用）
+;--------------------------------------------
+@KOJO_GENERAL_懦弱1_EXCRETION_BODY(ARGS:0, ARGS:1)
+SELECTCASE ARGS:0
+CASE "排泄事故"
+	SELECTCASE ARGS:1
+	CASE "肠"
+		CALL MESSAGE_BOX,@"「……呜呜……停、停不下来……」"
+	CASE "尿"
+		CALL MESSAGE_BOX,@"「……对不起……对不起……」"
+	CASEELSE
+		CALL MESSAGE_BOX,@"「……」"
+	ENDSELECT
+CASE "放尿主动"
+	CALL MESSAGE_BOX,@"「……好、好害羞……要尿了……」"
+CASE "灌肠妊娠求饶"
+	CALL MESSAGE_BOX,@"「……求您……别灌了……孩子会……会不舒服的……」"
+CASEELSE
+ENDSELECT
+RETURN 1
+

@@ -11,9 +11,15 @@ CASE "执行"
 		CALL MESSAGE_BOX,@"「这是……胸部检查吗……？啊……♥」"
 		CALL MESSAGE_BOX,@"「力度记录：现在是……温柔模式……对吗……？」"
 
-	CASE "接吻","舔舐脸","舔舐耳","舔舐腋"
-		CALL MESSAGE_BOX,@"「……诶？这是……确认气味的步骤……？」"
-		CALL MESSAGE_BOX,@"「……嗯……我会配合……呼吸也要配合吗……♥」"
+	CASE "接吻"
+		CALL MESSAGE_BOX,@"「步骤：接吻——非气味路径……备注：走唇舌协议……♥」"
+		CALL MESSAGE_BOX,@"「……好……我跟你的呼吸表……♥」"
+		CALL MESSAGE_BOX,@"「子步骤：避齿；变量=舌。备注：别磕到牙……♥ 嗯……舌头搅动……请再狠一档……♥」"
+		CALL MESSAGE_BOX,@"「收束检查：牙没磕到……节奏……还能再跟紧一点……♥」"
+	CASE "舔舐脸"
+		CALL MESSAGE_BOX,@"「步骤：面部舔舐……警告：我会笑场……♥」"
+	CASE "舔舐耳","舔舐腋"
+		CALL MESSAGE_BOX,@"「步骤：耳／腋……备注：痒度会指数上升……♥」"
 
 	CASE "口交","触手口交"
 		CALL MESSAGE_BOX,@"「用嘴……明白了。我会先含住……然后……嗯……♥」"
@@ -32,7 +38,7 @@ CASE "执行"
 		CALL KOJO_SHARE_ADVANCED_TRAIN_DISPATCH(ARGS:1, ARGS:2)
 
 	CASE "正常位","后背位","对面坐位","背面坐位","骑乘位","对面立位","背面立位","强制骑乘位","背面骑乘位"
-		CALL MESSAGE_BOX,@"「插入步骤开始……啊……♥ ……需要我抱紧吗？」"
+		CALL KOJO_CHS_VPOS_天然口上1(ARGS:1, ARGS:2)
 
 	CASE "肛塞"
 		CALL MESSAGE_BOX,@"「后方装着……明白。我要先深呼吸……」"
@@ -45,7 +51,12 @@ CASE "执行"
 	ENDSELECT
 
 CASE "继续"
-	CALL MESSAGE_BOX,@"「继续步骤……好的。我会照刚才那样做……」"
+	SELECTCASE ARGS:1
+	CASE "正常位","后背位","对面坐位","背面坐位","骑乘位","对面立位","背面立位","强制骑乘位","背面骑乘位"
+		CALL KOJO_CHS_VPOS_天然口上1(ARGS:1, ARGS:2)
+	CASEELSE
+		CALL MESSAGE_BOX,@"「继续步骤……好的。我会照刚才那样做……」"
+	ENDSELECT
 
 CASE "移除"
 	SELECTCASE ARGS:1

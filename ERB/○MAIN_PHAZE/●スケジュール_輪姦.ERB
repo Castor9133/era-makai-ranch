@@ -7,6 +7,9 @@ FINDCHARA CFLAG:追踪对象,2
 SIF RESULT <= 0
 	RETURN
 TARGET = RESULT
+; 玩家曾指示「禁止轮奸」则不再于日程中重复执行
+SIF CFLAG:哥布林捕获_无轮奸
+	RETURN
 CALL RINKAN_SLAVE
 
 
@@ -24,9 +27,11 @@ CALL RINKAN_SLAVE_STRIP_LINGERIE
 ;輪姦するゴブリンの数
 ;処女結界でちっぱいだと6～12
 GOBLINS = 6 *CFLAG:追踪人数 +RAND:8
-SIF ABL:胸围大小 < BUSTSIZE_普乳 && TALENT:处女结界
+SIF ABL:胸围大小 < BUSTSIZE_普乳 && (TALENT:处女结界 || CFLAG:哥布林捕获_保留处女 || CFLAG:哥布林捕获_结界破处失败)
 	GOBLINS = 6 +RAND:7
 CALL RINKAN_SLAVE_BEGIN_MESSAGE
+SIF CFLAG:哥布林捕获_结界破处失败
+	PALAM:恐怖 = LIMIT(PALAM:恐怖 + 400, 0, PALAM_MAX)
 FOR LOCAL,0,GOBLINS
 	CALL RINKAN_SLAVE_SOURCE
 	SIF !LOCAL
@@ -49,6 +54,12 @@ CALL CAPITULATION_JUDGE
 CFLAG:轮奸次数 += GOBLINS
 EXP:执行次数／被轮奸 ++
 EXP:区间执行次数／被轮奸 ++
+; 魔界妊娠パッチ：膣内凌辱相当の回数で受孕判定（避孕指示時はスキップ）
+IF !CFLAG:哥布林捕获_避孕 && !CFLAG:哥布林捕获_保留处女 && !TALENT:处女结界 && GOBLINS > 0
+	{
+	LOCAL = LIMIT(GOBLINS * 6, 6, 72)
+	TRYCALL PREGNANCY_ON_V_CREAMPIE, LOCAL
+	}
 SIF !SOURCE:目的变更
 	PRINTW
 DRAWLINE
@@ -77,20 +88,30 @@ TFLAG:哥布林轮奸 = 1
 
 ;苦痛がえらいことになるので初期セット(地の文的に初回は低め)
 IF CFLAG:轮奸次数
-	SIF !TALENT:处女结界
+	SIF !TALENT:处女结界 && !CFLAG:哥布林捕获_保留处女
 		PALAM:Ｖ润滑 = 5000
 	PALAM:Ａ润滑 = 10000
 ELSE
-	SIF !TALENT:处女结界
+	SIF !TALENT:处女结界 && !CFLAG:哥布林捕获_保留处女
 		PALAM:Ｖ润滑 = 500
 	PALAM:Ａ润滑 = 500
 ENDIF
 
-;処女喪失判定出すために必要
+;処女喪失判定（Ｖ装备）：保留处女＝不插；处女结界且传讯「允许破处」＝哥布林破界失败→仍不插阴道
 TFLAG:Ａ装备 = 1
-SIF !TALENT:处女结界
-	TFLAG:Ｖ装备 = 1
+TFLAG:Ｖ装备 = 0
+CFLAG:哥布林捕获_结界破处失败 = 0
+SIF !CFLAG:哥布林捕获_保留处女
+	{
+	IF TALENT:处女结界
+		CFLAG:哥布林捕获_结界破处失败 = 1
+	ELSE
+		TFLAG:Ｖ装备 = 1
+	ENDIF
+	}
 
+SIF CFLAG:哥布林捕获_结界破处失败
+	PALAM:Ａ润滑 = LIMIT(PALAM:Ａ润滑 + 3500, 0, PALAM_MAX)
 
 
 ;服が破れてない場合まず破く処理
@@ -131,11 +152,19 @@ SOURCE:Ｂ快感／魔族 = 500
 SOURCE:Ｎ快感／魔族 = 500
 SOURCE:Ｃ快感／魔族 = 500
 SOURCE:Ａ快感／魔族 = 600
-IF TALENT:处女结界
+IF TALENT:处女结界 || CFLAG:哥布林捕获_保留处女
 	SOURCE:耻辱 = 300
 	SOURCE:屈辱 = 500
 	SOURCE:不洁 = 300
 	SOURCE:支配 = 500
+	SIF CFLAG:哥布林捕获_结界破处失败
+		{
+		SOURCE:屈辱 += 250
+		SOURCE:支配 += 200
+		SOURCE:不洁 += 200
+		SOURCE:Ａ快感／魔族 += 280
+		SOURCE:Ｃ快感／魔族 += 120
+		}
 ELSE
 	SOURCE:Ｖ快感／魔族 = 600
 	SOURCE:耻辱 = 500
@@ -147,7 +176,7 @@ ENDIF
 
 ;射精経験は処理を簡略化するため直接EXPに加算
 LOCAL = 0
-IF !TALENT:处女结界
+IF !TALENT:处女结界 && !CFLAG:哥布林捕获_保留处女
 	PLEASURE = 100 + ABL:膣内射精中毒 *20 + MARK:膣内射精中毒 *100 + MARK:榨精淫穴 *200 + MARK:精液便女 *300
 	EXP:膣内射精经验 += PLEASURE
 	SOURCE:Ｖ快感 += PLEASURE

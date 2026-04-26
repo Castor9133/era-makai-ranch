@@ -38,6 +38,9 @@ ENDIF
 
 
 SELECTCASE ARGS:0
+CASE "身体"
+	CALL KOJO_GENERAL_堅物1_EXCRETION_BODY(ARGS:1, ARGS:2)
+	RETURN
 CASE "例文"
 	CALL MESSAGE_BOX,@"「已设置【通用正经口上1】。将以这种方式显示」\n「有对应于素质【羞涩】的差异之类的」"
 
@@ -566,7 +569,7 @@ CASE "访问"
 
 	CASE "停止泌乳"
 		IF CFLAG:魔界_妊娠S == 1 || CFLAG:魔界_妊娠S == 2
-			CALL MESSAGE_BOX,@"「……在妊娠中或产后初期停止泌乳，我不建议。若这是命令，我会执行，但请慎重。」"
+			CALL MESSAGE_BOX,@"「……在这节骨眼要停奶……我心里怕……可轮不到我说不。若您执意……我照做……只求……别当儿戏……」"
 		ELSEIF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／隶属＃
 			CALL MESSAGE_BOX,@"「明白。按牧场规程执行停止泌乳即可。之后我会避免一切促乳行为。」"
 		ELSEIF ＃陷落状态／恋慕以上＃
@@ -756,4 +759,26 @@ CASE "战斗"
 		CALL MESSAGE_BOX,@"「…呜呜呜 …绝对会报仇的…！」"
 	ENDSELECT
 ENDSELECT
+
+;--------------------------------------------
+; 排泄羞耻／身体（本口上专用）
+;--------------------------------------------
+@KOJO_GENERAL_堅物1_EXCRETION_BODY(ARGS:0, ARGS:1)
+SELECTCASE ARGS:0
+CASE "排泄事故"
+	SELECTCASE ARGS:1
+	CASE "肠"
+		CALL MESSAGE_BOX,@"「……不可……原谅自己的松懈……」"
+	CASE "尿"
+		CALL MESSAGE_BOX,@"「……失禁……记录进耻辱里……」"
+	CASEELSE
+		CALL MESSAGE_BOX,@"「……」"
+	ENDSELECT
+CASE "放尿主动"
+	CALL MESSAGE_BOX,@"「……排尿……收到……执行……」"
+CASE "灌肠妊娠求饶"
+	CALL MESSAGE_BOX,@"「……医学上……孕身不宜灌肠……请撤回。」"
+CASEELSE
+ENDSELECT
+RETURN 1
 

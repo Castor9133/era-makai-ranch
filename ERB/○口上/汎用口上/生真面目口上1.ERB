@@ -51,6 +51,9 @@ ENDIF
 
 
 SELECTCASE ARGS:0
+CASE "身体"
+	CALL KOJO_GENERAL_生真面目1_EXCRETION_BODY(ARGS:1, ARGS:2)
+	RETURN
 CASE "例文"
 	;口上設定画面で出すための例文
 	{
@@ -70,33 +73,33 @@ CASE "身体事件"
 		ELSEIF ＃陷落状态／屈服以上＃
 			CALL MESSAGE_BOX,@"「……是。我知道……这具身体、又一次只能放在您的秤上。请不要……在提及孩子时……太过分。」"
 		ELSE
-			CALL MESSAGE_BOX,@"「……在产后尚未完全复原的阶段还要接受调教，从常识而言并不正当。可既然身处此地……我会服从命令。」"
+			CALL MESSAGE_BOX,@"「……产后还没养好……却要调教……我、我不敢说这样妥当……既在这里……只有从命……求您……手下留情……」"
 		ENDIF
 	CASE "妊娠性事初回"
 		IF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／隶属＃
-			CALL MESSAGE_BOX,@"「妊娠经诊察已可确认。若牧场仍要求对孕体行调教，从规则上……我亦只有配合。但请把强度……限制在可承受范围。」"
+			CALL MESSAGE_BOX,@"「……已诊明有孕。牧场还要对怀着身子的我调教……我不敢违……只求……别推过我能挨住的边……」"
 		ELSEIF ＃陷落状态／恋慕以上＃
 			CALL MESSAGE_BOX,@"「月信已断、体征也……能确定是怀上了。被您这样召来，我……会紧张。请至少……别压到腹前。」"
 		ELSE
-			CALL MESSAGE_BOX,@"「……已确证有孕。若仍要行房，是您的命令。我会照做。但请理解：这不是推荐在医学意义上安全无虞的行为。」"
+			CALL MESSAGE_BOX,@"「……已确证有孕。若仍要行房……是您的命令……我照做……不敢拿医学话压您……只求……别逞狠……」"
 		ENDIF
 	CASE "妊娠性事"
 		IF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／隶属＃
-			CALL MESSAGE_BOX,@"「孕中体力与气力的自然恢复会受限……若仍要验奶与验身兼行，请把指令拆细，我才能维持最低限度的配合。」"
+			CALL MESSAGE_BOX,@"「……孕期气力薄……若验奶与验身非做不可……求您……把一件件拆开……我……才跟得上……」"
 		ELSE
 			CALL MESSAGE_BOX,@"「……今天身体沉得很。若您坚持，请缩短时间。腹中的情况……不是我能用道理说服自己的。」"
 		ENDIF
 	CASE "妊娠调教谨慎开场"
 		IF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／隶属＃
-			CALL MESSAGE_BOX,@"「妊娠已可确认。若本日亦须调教，从风险管理上，请您在强度与时段上同时顾及母体与胎児——%SELF_CALL()%会配合，但望您收束在可预期范围内。」"
+			CALL MESSAGE_BOX,@"「……确认有孕……今日还要调教的话……我嘴笨……只求……力气与时候……都轻些、短些……我配合……不敢替您定规矩……」"
 		ELSEIF ＃陷落状态／恋慕以上＃
 			CALL MESSAGE_BOX,@"「%MASTER_CALL()%……%SELF_CALL()%会爱惜自己，也会把腹中那位放在心上。请……比平日再轻些，%SELF_CALL()%会跟您道谢的。」"
 		ELSEIF ＃陷落状态／陷落以上＃
 			CALL MESSAGE_BOX,@"「这阶段不该逞强。若您非做不可，请给%SELF_CALL()%留条喘气的余地——对您、对未出世的孩子，都算留余地。」"
 		ELSEIF ＃陷落状态／屈服以上＃
-			CALL MESSAGE_BOX,@"「……%SELF_CALL()%知罪，亦知险。还请您在动手前……想到不止%SELF_CALL()%一人在受。」"
+			CALL MESSAGE_BOX,@"「……%SELF_CALL()%知罪，亦知险……求您在动手前……想一想……不止%SELF_CALL()%一人在挨……」"
 		ELSE
-			CALL MESSAGE_BOX,@"「在妊娠仍被带到这里，是命令。%SELF_CALL()%不辩。但请您知悉：过当的伤害并不只落在%SELF_CALL()%一人身上。」"
+			CALL MESSAGE_BOX,@"「……怀着仍被带到这里……是命令……%SELF_CALL()%不辩……只……敢说一声……过重了……肚里那位也会疼……」"
 		ENDIF
 	ENDSELECT
 
@@ -1474,4 +1477,26 @@ CASE "战斗"
 	
 	ENDSELECT
 ENDSELECT
+
+;--------------------------------------------
+; 排泄羞耻／身体（本口上专用）
+;--------------------------------------------
+@KOJO_GENERAL_生真面目1_EXCRETION_BODY(ARGS:0, ARGS:1)
+SELECTCASE ARGS:0
+CASE "排泄事故"
+	SELECTCASE ARGS:1
+	CASE "肠"
+		CALL MESSAGE_BOX,@"「……失态了……这种模样……不该被看到的……」"
+	CASE "尿"
+		CALL MESSAGE_BOX,@"「……失禁……是我的耻辱……」"
+	CASEELSE
+		CALL MESSAGE_BOX,@"「……」"
+	ENDSELECT
+CASE "放尿主动"
+	CALL MESSAGE_BOX,@"「……命令排尿……我明白了。……会服从。」"
+CASE "灌肠妊娠求饶"
+	CALL MESSAGE_BOX,@"「……从胎儿安全考虑……灌肠应当中止。……拜托您。」"
+CASEELSE
+ENDSELECT
+RETURN 1
 

@@ -1,0 +1,62 @@
+
+;哥布林线战败后：通过行会中继／佣兵契约传讯裁定「轮奸／破处／避孕」（CFLAG:912～914、领取时清零）
+;※ 叙事上你并不在夕方战场现场；选项＝对传讯石／契约栏的远程勾选，由队长照章执行。
+@GOBLIN_CAPTURE_PLAYER_CHOICES
+
+CFLAG:哥布林捕获_无轮奸 = 0
+CFLAG:哥布林捕获_保留处女 = 0
+CFLAG:哥布林捕获_避孕 = 0
+
+PRINTL
+DRAWLINE
+PRINTFORML 夕雾深处传来短促的魔力脉冲——那是行会为佣兵团挂上的「战后处置」中继。你并不在场，但能在水晶里看到%PRINT_MONSTER()%已将%CALLNAME%按倒，涎水与粗喘隔着传影晃成一片杂音。
+PRINTFORML 若不尽快勾选补充条款，按默认雇约他们会「照惯例」处置俘虏……
+PRINTL
+PRINTL 【传讯：战后处置条款】
+PRINTL  [0] 维持雇约默认（允许哥布林按惯例轮奸凌辱）
+PRINTL  [1] 加急条款：只拘禁押送，禁止轮奸（奴隶仍会登记为待领取状态）
+PRINTL
+INPUT
+SIF RESULT == 1
+	CFLAG:哥布林捕获_无轮奸 = 1
+
+SIF CFLAG:哥布林捕获_无轮奸
+	{
+	PRINTFORMW 你在中继上勾选了「禁止肉体凌辱」。片刻后回讯掠过使魔印记：哥布林队长骂骂咧咧，到底还是把人捆牢塞进笼车，一路只碰绳索与锁链。
+	DRAWLINE
+	RETURN
+	}
+
+;阴道／结界：有处女或处女结界时才询问「是否允许破身／破界」
+IF TALENT:处女 || TALENT:处女结界
+	{
+	PRINTL
+	IF TALENT:处女结界
+		PRINTFORML 传影里%CALLNAME%仍被【处女结界】护着私处……要在条款里批准「允许哥布林全力尝试破界并插穴」吗？
+		PRINTFORML （低阶佣兵未必真能破界；若失败，它们往往会暴怒地改凌辱嘴・肛・胸臀等别处。）
+	ELSE
+		PRINTFORML 传影里看得出%CALLNAME%仍是处女……要在条款里批准「夺走第一次（阴道）」吗？
+	ENDIF
+	PRINTL  [0] 批准（对结界＝允许它们硬闯；未必成功）
+	PRINTL  [1] 不批准（只许嘴・肛门・身体外围，不插入阴道）
+	PRINTL
+	INPUT
+	SIF RESULT == 1
+		CFLAG:哥布林捕获_保留处女 = 1
+	}
+
+;避孕：仅在实际会发生阴道内射系凌辱时询问（魔界受孕线用 TRYCALL PREGNANCY_ON_V_CREAMPIE）
+IF !CFLAG:哥布林捕获_保留处女
+	{
+	PRINTL
+	PRINTFORML 传讯栏还有一栏「阴道内处置」……要写明避孕／外射一类的安全义务吗？（影响受孕机会）
+	PRINTL  [0] 不追加（内射仍按魔族惯例，事后可能受孕）
+	PRINTL  [1] 追加义务（避孕／外射，降低本次受孕判定）
+	PRINTL
+	INPUT
+	SIF RESULT == 1
+		CFLAG:哥布林捕获_避孕 = 1
+	}
+
+PRINTL
+DRAWLINE

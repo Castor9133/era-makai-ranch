@@ -1,0 +1,94 @@
+;-------------------------------------------------
+; 榨乳口便器牧场 · 核心钩子（见 docs/榨乳口便器牧场系统.md）
+; FLAG:5011 总开关；5012 生理期；5013 绝顶管理
+;-------------------------------------------------
+
+@GET_RANCHORAL_TRAIN_SOURCE_MUL
+;调教中恭顺／屈服 TIMES 用千分比（1000=不变）
+#FUNCTION
+#DIM M
+M = 1000
+SIF !FLAG:牧场口便器玩法启用
+	RETURNF M
+SIF TARGET < 1
+	RETURNF M
+LOCAL = CFLAG:口便器适性 / 80 + CFLAG:栓具习惯日 / 120
+SIF CFLAG:乳牛
+	LOCAL += 3
+SIF CFLAG:绝顶寸止连续达成 > 2
+	LOCAL += MIN(CFLAG:绝顶寸止连续达成 / 2, 8)
+M += MIN(LOCAL, 120)
+RETURNF M
+
+
+@RANCHORAL_TRAIN_POST_COMMAND
+;有耗时指令结束时：养成计数
+SIF !FLAG:牧场口便器玩法启用
+	RETURN
+SIF !TFLAG:调教中 || TARGET < 1
+	RETURN
+SIF !SOURCE:已用时间
+	RETURN
+SIF TEQUIP:肛塞 || TEQUIP:尿道塞 || TEQUIP:尾塞 || TEQUIP:肛勾 || TEQUIP:贞操带 || TEQUIP:舌锻口塞
+	CFLAG:栓具习惯日 = MIN(CFLAG:栓具习惯日 + 1, 500)
+IF GROUPMATCH(SELECTCOM, 51, 52, 132, 133)
+	CFLAG:口便器适性 = MIN(CFLAG:口便器适性 + 3 + CFLAG:口腔习惯练度 / 200, 1000)
+	CFLAG:口腔习惯练度 = MIN(CFLAG:口腔习惯练度 + 2, 1000)
+ENDIF
+IF GROUPMATCH(SELECTCOM, 50, 53, 54, 55, 56, 57, 58)
+	CFLAG:口便器适性 = MIN(CFLAG:口便器适性 + 2, 1000)
+ENDIF
+RETURN 1
+
+
+@RANCHORAL_LACTATION_SESSION_BONUS
+;搾乳系日程结算后：高适性+有喷乳时微奖励
+SIF !FLAG:牧场口便器玩法启用
+	RETURN
+SIF TARGET < 1
+	RETURN
+SIF CFLAG:口便器适性 < 200
+	RETURN
+SIF !EX:喷乳
+	RETURN
+LOCAL = 8 + CFLAG:口便器适性 / 250
+LOCAL:1 = 4 + CFLAG:栓具习惯日 / 200
+PALAM:恭顺 += LOCAL
+PALAM:屈服 += LOCAL:1
+SIF CFLAG:口便器适性 >= 300
+	TRYCALL KOJO_PRINT("搾乳", "牧场口便器", "", "")
+RETURN 1
+
+
+@RANCHORAL_TRAIN_SESSION_END_ORGASM_TRACK
+;调教结束：轻量「绝顶管理」计数（读 EX:总绝顶，非 NOWEX）
+SIF !FLAG:牧场口便器玩法启用
+	RETURN
+SIF !FLAG:牧场绝顶管理启用
+	RETURN
+SIF TARGET < 1
+	RETURN
+SIF TFLAG:执行指令的次数 < 4
+	RETURN
+LOCAL = CFLAG:绝顶寸止连续达成
+IF !EX:总绝顶
+	CFLAG:绝顶寸止连续达成 = MIN(CFLAG:绝顶寸止连续达成 + 1, 99)
+	CFLAG:绝顶服从练度 = MIN(CFLAG:绝顶服从练度 + 12 + CFLAG:绝顶寸止连续达成 * 2, 1000)
+	SIF CFLAG:绝顶寸止连续达成 > LOCAL && CFLAG:绝顶寸止连续达成 >= 2
+		CALL PRINTL_WORD_COLOR,@"（绝顶管理：本会话未绝顶，连续寸止计数 {CFLAG:绝顶寸止连续达成}）","灰"
+	SIF CFLAG:绝顶寸止连续达成 > LOCAL && CFLAG:绝顶寸止连续达成 >= 3
+		TRYCALL KOJO_PRINT("事件","牧场绝顶管理","","")
+ELSE
+	CFLAG:绝顶寸止连续达成 = MAX(CFLAG:绝顶寸止连续达成 - 2, 0)
+ENDIF
+RETURN 1
+
+
+@RANCHORAL_MENSTRUAL_DAILY_TICK
+;日结：生理期占位（28 日循环）
+SIF !FLAG:生理期系统启用
+	RETURN
+SIF TARGET < 1
+	RETURN
+CFLAG:生理周期日 = (CFLAG:生理周期日 + 1) % 28
+RETURN 1

@@ -74,7 +74,7 @@ SIF MAXBASE:等级 < BASE:等级
 ;奴隷の体力増加
 @SLAVE_HP_UP
 
-;搾り尽くしたことがある・隷属・HP最大値が9900未満が条件
+;搾り尽くしたことがある・隷属・HP最大値がHP_MAX未満が条件
 SIF !EXP:灵力为零 || !＃陷落状态／隶属＃ || MAXBASE:体力 >= HP_MAX
 	RETURN
 CFLAG:灵力蓄积量 += SOURCE:注入灵力量

@@ -41,12 +41,26 @@ CASE "执行"
 			CALL MESSAGE_BOX,@"「……对不起……别碰那里……」"
 		ENDIF
 
-	CASE "接吻","舔舐脸","舔舐耳","舔舐腋"
+	CASE "接吻"
 		IF ＃陷落状态／恋慕以上＃
-			CALL MESSAGE_BOX,@"「……亲的话……♥ %SELF_CALL()%……闭上眼睛……」"
-			CALL MESSAGE_BOX,@"「……%MASTER_CALL()%……靠近的话……%SELF_CALL()%……就、就软了……♥」"
+			CALL MESSAGE_BOX,@"「……亲的话……♥ %SELF_CALL()%……会闭紧眼……♥」"
+			CALL MESSAGE_BOX,@"「……%MASTER_CALL()%……靠太近……%SELF_CALL()%……腿就软了……♥」"
+			CALL MESSAGE_BOX,@"「……舌头若进来……♥ %SELF_CALL()%……会……乖乖让开……♥」"
+			CALL MESSAGE_BOX,@"「……牙齿……别碰到……♥ 嗯……嗯……可以再搅得用力一点……♥ ……闷了……就拍拍背……%SELF_CALL()%……还敢继续……♥」"
 		ELSE
 			CALL MESSAGE_BOX,@"「呜……味道……靠太近了……」"
+			CALL MESSAGE_BOX,@"「……对不起……别亲……」"
+		ENDIF
+	CASE "舔舐脸"
+		IF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……舔脸……好痒……♥ ……%SELF_CALL()%……会笑出来……♥」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……脸……不要……」"
+		ENDIF
+	CASE "舔舐耳","舔舐腋"
+		IF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……耳朵……一舔……%SELF_CALL()%……就站不稳……♥ ……腋下……更……更羞……♥」"
+		ELSE
 			CALL MESSAGE_BOX,@"「……对不起……别舔……」"
 		ENDIF
 
@@ -104,21 +118,7 @@ CASE "执行"
 		CALL KOJO_SHARE_ADVANCED_TRAIN_DISPATCH(ARGS:1, ARGS:2)
 
 	CASE "正常位","后背位","对面坐位","背面坐位","骑乘位","对面立位","背面立位","强制骑乘位","背面骑乘位"
-		IF !EXP:(SELECTCOM+1000)
-			CALL MESSAGE_BOX,@"「第一次……用下面……接%MASTER_CALL()%……%SELF_CALL()%在发抖……」"
-			CALL MESSAGE_BOX,@"「……对不起……好怕……」"
-			RETURN
-		ENDIF
-		IF ＃陷落状态／恋慕以上＃
-			CALL MESSAGE_BOX,@"「……进来……♥ 慢慢的……里面……好满……」"
-			CALL MESSAGE_BOX,@"「……%SELF_CALL()%……只会张开……听%MASTER_CALL()%的……♥」"
-		ELSEIF ＃陷落状态／屈服以上＃
-			CALL MESSAGE_BOX,@"「……插进来……了……♥ ……%SELF_CALL()%会张开腿的……」"
-			CALL MESSAGE_BOX,@"「……随、随便怎样……♥」"
-		ELSE
-			CALL MESSAGE_BOX,@"「痛……轻一点……求你了……」"
-			CALL MESSAGE_BOX,@"「……对不起……」"
-		ENDIF
+		CALL KOJO_CHS_VPOS_懦弱口上1(ARGS:1, ARGS:2)
 
 	CASE "Ａ正常位","Ａ后背位","Ａ对面坐位","Ａ背面坐位","Ａ骑乘位","Ａ对面立位","Ａ背面立位","强制Ａ骑乘位","Ａ背面骑乘位"
 		IF ＃陷落状态／恋慕以上＃
@@ -140,6 +140,8 @@ CASE "执行"
 
 CASE "继续"
 	SELECTCASE ARGS:1
+	CASE "正常位","后背位","对面坐位","背面坐位","骑乘位","对面立位","背面立位","强制骑乘位","背面骑乘位"
+		CALL KOJO_CHS_VPOS_懦弱口上1(ARGS:1, ARGS:2)
 	CASE "足交"
 		IF ＃陷落状态／恋慕以上＃
 			CALL MESSAGE_BOX,@"「……脚……还在动……♥ ……%MASTER_CALL()%……还要吗……♥」"

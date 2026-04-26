@@ -1,0 +1,81 @@
+; ======================================
+; 泛用口上・调教命令（性格：温柔大姐姐）
+; ======================================
+
+@KOJO_GENERAL_温柔大姐姐口上1_TRAIN(ARGS:0,ARGS:1,ARGS:2,ARGS:3)
+
+SELECTCASE ARGS:2
+CASE "执行"
+	SELECTCASE ARGS:1
+	CASE "揉胸","育乳按摩","浓厚母乳按摩","乳罐按摩","胸爱抚","拧乳头"
+		IF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……嗯……♥ 力道……刚好……」"
+			CALL MESSAGE_BOX,@"「……喜欢的话……就多摸一会儿……♥」"
+		ELSEIF ＃陷落状态／屈服以上＃
+			CALL MESSAGE_BOX,@"「……既是调教……我受着……♥」"
+			CALL MESSAGE_BOX,@"「……轻些揉……我怕疼……也盼%MASTER_CALL()%……当我是要养久的……♥」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……不敢拒……只求……别当随手掐的物件……」"
+		ENDIF
+	CASE "接吻"
+		IF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……接吻就好好接吻……♥ ……唇先别溜号去做别的……♥」"
+			CALL MESSAGE_BOX,@"「……过来……换口气……别憋着……♥」"
+			CALL MESSAGE_BOX,@"「……舌探过来……先浅一点……♥ ……我跟着%MASTER_CALL()%绕一圈……再换气……♥」"
+			CALL MESSAGE_BOX,@"「……别碰到牙哦……♥ 嗯……嗯……舌头搅动得再用力一点……♥」"
+		ELSEIF ＃陷落状态／屈服以上＃
+			CALL MESSAGE_BOX,@"「……要吻……我候着……♥ ……求%MASTER_CALL()%……慢些探进来……♥」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……不敢拒……只请……别吓着我……」"
+		ENDIF
+	CASE "舔舐脸"
+		IF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……舔脸算护肤还是算调戏……♥ ……你选一个，我好定罪……♥」"
+		ELSEIF ＃陷落状态／屈服以上＃
+			CALL MESSAGE_BOX,@"「……脸也给舔……我忍着羞……♥ ……轻些……♥」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……脸……还不惯……%MASTER_CALL()%若要……我只敢僵着受……」"
+		ENDIF
+	CASE "舔舐耳","舔舐腋"
+		IF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……耳朵……会漏电……♥ ……腋下也是禁区……你轻点……♥」"
+		ELSEIF ＃陷落状态／屈服以上＃
+			CALL MESSAGE_BOX,@"「……耳下腋底……一碰就软……求%MASTER_CALL()%……怜着点舔……♥」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……那里……我会站不住……求%MASTER_CALL()%……手下留情……」"
+		ENDIF
+	CASE "口交","触手口交"
+		IF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……别急……我慢慢含……♥ 牙齿碰到就说……」"
+		ELSEIF ＃陷落状态／屈服以上＃
+			CALL MESSAGE_BOX,@"「……用嘴侍奉……♥ ……%MASTER_CALL()%吩咐一声……我就含深些……♥」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……张嘴候着……求%MASTER_CALL()%……容我顺口气再……」"
+		ENDIF
+	CASE "舔阴蒂","舔阴道","刺激龟头","真空口交","肛门指揉按摩","玩弄阴唇","G点指压","阴道指奸","肛门指奸","尿道口指弄","尿道口指奸","口内搅舌","压舌探喉"
+		CALL KOJO_SHARE_ADVANCED_TRAIN_DISPATCH(ARGS:1, ARGS:2)
+	CASE "正常位","后背位","对面坐位","背面坐位","骑乘位","对面立位","背面立位","强制骑乘位","背面骑乘位"
+		CALL KOJO_CHS_VPOS_温柔大姐姐1(ARGS:1, ARGS:2)
+	CASE "深喉","触手深喉"
+		CALL KOJO_SHARE_ADVANCED_TRAIN_DISPATCH(ARGS:1, ARGS:2)
+	CASEELSE
+		IF ＃陷落状态／恋慕以上＃
+			CALL MESSAGE_BOX,@"「……好……我听%MASTER_CALL()%的……♥」"
+		ELSEIF ＃陷落状态／屈服以上＃
+			CALL MESSAGE_BOX,@"「……从命……♥ ……只求……调教里……也留一分柔……♥」"
+		ELSE
+			CALL MESSAGE_BOX,@"「……%MASTER_CALL()%吩咐一句……我再照做……」"
+		ENDIF
+	ENDSELECT
+CASE "继续"
+	SELECTCASE ARGS:1
+	CASE "正常位","后背位","对面坐位","背面坐位","骑乘位","对面立位","背面立位","强制骑乘位","背面骑乘位"
+		CALL KOJO_CHS_VPOS_温柔大姐姐1(ARGS:1, ARGS:2)
+	CASEELSE
+		CALL MESSAGE_BOX,@"「……呼吸……跟上……♥」"
+	ENDSELECT
+CASE "移除"
+	CALL MESSAGE_BOX,@"「……好了。……先挨着我缓一口气……若%MASTER_CALL()%肯扶一把……我就借点力气起来……」"
+CASEELSE
+ENDSELECT
+RETURN

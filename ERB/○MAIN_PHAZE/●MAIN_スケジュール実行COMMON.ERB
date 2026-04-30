@@ -40,6 +40,7 @@ SIF CSTR:0:日程 == "调教"
 
 ; 日结束：妊娠/产褥/静养等日次推进（全员）
 TRYCALL PREGNANCY_DAILY_TICK_ALL, 1
+TRYCALL RANCH_TAG_DAILY_ALL, 1
 TRYCALL MAGIC_绝顶育成_DAILY_ALL, 1
 ; 托儿所在日结推进前，建议主工程先统计并设置 FLAG:魔界_可献乳人数（见 ○NURSERY_CORE.ERB）
 TRYCALL NURSERY_DAILY

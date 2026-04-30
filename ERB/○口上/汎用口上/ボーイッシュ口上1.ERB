@@ -949,6 +949,21 @@ CASE "访问"
 		ELSE
 			CALL MESSAGE_BOX,@"「比家畜圈，可像天堂了。…」"
 		ENDIF
+	CASE "侍奉口爆终了"
+		SELECTCASE ARGS:2
+		CASE "忍住"
+			CALL MESSAGE_BOX,@"「……行啊，刹车踩得挺死。……嘴麻了，赔我。」"
+			CALL MESSAGE_BOX,@"「……下次别卡这么极限。」"
+		CASE "咽下"
+			CALL MESSAGE_BOX,@"「……全下去了。……别笑，我真吞了。」"
+			CALL MESSAGE_BOX,@"「……漱口水借我——喂不是你杯子！」"
+		ENDSELECT
+	CASE "揉胸轻抚"
+		CALL MESSAGE_BOX,@"「……揉呗……手酸了喊停。」"
+		CALL MESSAGE_BOX,@"「……当按摩费……记得请喝东西。」"
+	CASE "拥抱嗅闻"
+		CALL MESSAGE_BOX,@"「……背后抱……还挺……押题。」"
+		CALL MESSAGE_BOX,@"「……闻完了让开……热。」"
 	ENDSELECT
 
 CASE "重复事件"
@@ -1083,4 +1098,5 @@ CASE "灌肠妊娠求饶"
 CASEELSE
 ENDSELECT
 RETURN 1
+
 

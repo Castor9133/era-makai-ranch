@@ -303,6 +303,21 @@ CASE "访问"
 	CASE "终止妊娠"
 		CALL MESSAGE_BOX,@"「……要、要终止吗……%SELF_CALL()%……明白了……」"
 		CALL MESSAGE_BOX,@"「……%SELF_CALL()%会配合的……求你……之后也别丢下%SELF_CALL()%……」"
+	CASE "侍奉口爆终了"
+		SELECTCASE ARGS:2
+		CASE "忍住"
+			CALL MESSAGE_BOX,@"「……忍住了吗……？%SELF_CALL()%……嘴里……好空……」"
+			CALL MESSAGE_BOX,@"「……可是……只要%MASTER_CALL()%说停……%SELF_CALL()%就……不敢多喝一口……」"
+		CASE "咽下"
+			CALL MESSAGE_BOX,@"「……咽、咽下去了……%SELF_CALL()%……会乖乖……不浪费……」"
+			CALL MESSAGE_BOX,@"「……喉咙……还在抖……对不起……%SELF_CALL()%会忍住不咳出来……」"
+		ENDSELECT
+	CASE "揉胸轻抚"
+		CALL MESSAGE_BOX,@"「……轻、轻一点揉……%SELF_CALL()%……会站好的……」"
+		CALL MESSAGE_BOX,@"「……不是喂奶……%SELF_CALL()%也知道的……别笑……」"
+	CASE "拥抱嗅闻"
+		CALL MESSAGE_BOX,@"「……从后面……%SELF_CALL()%……躲不掉了……」"
+		CALL MESSAGE_BOX,@"「……鼻尖……好烫……%MASTER_CALL()%……别弄痒我……」"
 	CASEELSE
 	ENDSELECT
 
@@ -359,4 +374,5 @@ CASE "灌肠妊娠求饶"
 CASEELSE
 ENDSELECT
 RETURN 1
+
 

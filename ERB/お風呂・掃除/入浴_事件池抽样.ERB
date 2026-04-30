@@ -1,0 +1,26 @@
+
+; 鸳鸯浴／家庭浴池：入浴中事件抽样（温柔 vs 羞辱，读标签）
+@BATH_EVENT_POOL_TRY
+
+SIF TARGET <= 0 || TARGET >= CHARANUM
+	RETURN
+TFLAG:浴池鸳鸯事件路线 = 0
+LOCAL = 0
+; 身体污渍／妊娠等略提高权重（用已有 PALAM/CFLAG；无则 0）
+SIF PALAM:不快 > 500 || CFLAG:魔界_妊娠S == 1 || CFLAG:魔界_妊娠S == 2
+	LOCAL += 1
+SIF CFLAG:标签_怕洗澡余日 > 0
+	LOCAL += 2
+SIF CFLAG:排泄_短期耻辱档 > 2
+	LOCAL += 1
+SIF RAND:12 >= 5 + LOCAL
+	RETURN
+IF CFLAG:标签_怕洗澡余日 > 0 && !＃陷落状态／恋慕以上＃ && !CFLAG:洗脑 && !CFLAG:乳牛
+	TFLAG:浴池鸳鸯事件路线 = 2
+	PRINTFORML 你把她按在哗哗的水声里，指尖带着不留情的力道搓洗；她缩着肩，像怕被你一眼看穿似的，只敢咬紧下唇。
+ELSE
+	TFLAG:浴池鸳鸯事件路线 = 1
+	PRINTFORML 你放慢动作，任泡沫盖住彼此的轮廓；温热的水淌过她绷紧的肩线，像在替她把白天积的刺一点点化开。
+ENDIF
+PRINTW
+RETURN

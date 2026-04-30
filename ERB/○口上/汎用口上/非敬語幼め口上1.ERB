@@ -1017,6 +1017,21 @@ CASE "访问"
 		ELSE
 			CALL MESSAGE_BOX,@"「和一堆人住？行啦……谁要是偷%SELF_CALL()%零食，%SELF_CALL()%会翻脸的。」"
 		ENDIF
+	CASE "侍奉口爆终了"
+		SELECTCASE ARGS:2
+		CASE "忍住"
+			CALL MESSAGE_BOX,@"「……诶——真的忍住啦？……超～狡猾！」"
+			CALL MESSAGE_BOX,@"「……嘴空空的……你要负责哦！」"
+		CASE "咽下"
+			CALL MESSAGE_BOX,@"「……嗯嗯吞掉啦……不许跟别人说我超会咽！」"
+			CALL MESSAGE_BOX,@"「……咸咸的……可我喜欢～」"
+		ENDSELECT
+	CASE "揉胸轻抚"
+		CALL MESSAGE_BOX,@"「……揉胸要收费的哦～……开玩笑啦……」"
+		CALL MESSAGE_BOX,@"「……不是小朋友喝奶啦！」"
+	CASE "拥抱嗅闻"
+		CALL MESSAGE_BOX,@"「……背后抱……好狡猾……」"
+		CALL MESSAGE_BOX,@"「……闻别人头发……像小狗……」"
 	ENDSELECT
 
 ; 可重复触发的事件用
@@ -1506,4 +1521,5 @@ CASE "灌肠妊娠求饶"
 CASEELSE
 ENDSELECT
 RETURN 1
+
 

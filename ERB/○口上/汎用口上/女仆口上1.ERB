@@ -210,6 +210,21 @@ CASE "访问"
 		ELSE
 			CALL MESSAGE_BOX,@"「好的，%MASTER_CALL()%。若她并非妊娠中……那我就按您说的做，不多添一句。」"
 		ENDIF
+	CASE "侍奉口爆终了"
+		SELECTCASE ARGS:2
+		CASE "忍住"
+			CALL MESSAGE_BOX,@"「……按您的口令收住了。……口周……由女仆收拾干净。」"
+			CALL MESSAGE_BOX,@"「……报告主人：未逾界。」"
+		CASE "咽下"
+			CALL MESSAGE_BOX,@"「……全部咽下。……味道……登记完毕。」"
+			CALL MESSAGE_BOX,@"「……若主人允许……我想为您递上清水。」"
+		ENDSELECT
+	CASE "揉胸轻抚"
+		CALL MESSAGE_BOX,@"「……非授乳的碰触……已记录。……主人请便。」"
+		CALL MESSAGE_BOX,@"「……衣褶会皱……稍后由女仆整理。」"
+	CASE "拥抱嗅闻"
+		CALL MESSAGE_BOX,@"「……体香……若不合主人口味……请斥责。」"
+		CALL MESSAGE_BOX,@"「……此距……逾越侍仆之礼……但……谨从。」"
 	CASEELSE
 	ENDSELECT
 
@@ -257,4 +272,5 @@ CASE "灌肠妊娠求饶"
 CASEELSE
 ENDSELECT
 RETURN 1
+
 

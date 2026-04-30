@@ -25,6 +25,11 @@ SIF TARGET > 0 && CFLAG:排泄_羞耻调教余回合 > 0
 		FIX += 20
 	TIMES SOURCE:屈服, FIX / 1000
 ENDIF
+;拜访标签：亲昵余日存续中，爱情／恭顺微调（仅调教回合）
+SIF TFLAG:调教中 && TARGET > 0 && CFLAG:标签_访客亲昵余日 > 0
+	TIMES SOURCE:爱情, 1045 / 1000
+	TIMES SOURCE:恭顺, 1028 / 1000
+ENDIF
 ;榨乳口便器牧场：恭顺／屈服微量倍率（FLAG:5011）
 IF TFLAG:调教中 && TARGET > 0 && FLAG:牧场口便器玩法启用
 	LOCAL = GET_RANCHORAL_TRAIN_SOURCE_MUL()

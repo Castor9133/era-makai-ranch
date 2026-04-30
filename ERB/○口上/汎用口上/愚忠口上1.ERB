@@ -218,6 +218,21 @@ CASE "访问"
 		CALL MESSAGE_BOX,@"「……收到。停止泌乳。」"
 	CASE "终止妊娠"
 		CALL MESSAGE_BOX,@"「……收到。终止妊娠。」"
+	CASE "侍奉口爆终了"
+		SELECTCASE ARGS:2
+		CASE "忍住"
+			CALL MESSAGE_BOX,@"「……奴……遵命……于寸前收束。」"
+			CALL MESSAGE_BOX,@"「……口を離します。……粗相はいたしません。」"
+		CASE "咽下"
+			CALL MESSAGE_BOX,@"「……戴き申し上げました。……粗末様に。」"
+			CALL MESSAGE_BOX,@"「……奴の舌がお役に立てば……十分です。」"
+		ENDSELECT
+	CASE "揉胸轻抚"
+		CALL MESSAGE_BOX,@"「……奴……领受。……非育子之触……亦不敢辞。」"
+		CALL MESSAGE_BOX,@"「……分寸……惟主子裁断。」"
+	CASE "拥抱嗅闻"
+		CALL MESSAGE_BOX,@"「……主子若检气息……奴……屏息……伺候。」"
+		CALL MESSAGE_BOX,@"「……此身贴近……皆……主恩。」"
 	CASEELSE
 	ENDSELECT
 
@@ -265,4 +280,5 @@ CASE "灌肠妊娠求饶"
 CASEELSE
 ENDSELECT
 RETURN 1
+
 

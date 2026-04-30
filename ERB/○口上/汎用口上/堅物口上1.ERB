@@ -612,6 +612,21 @@ CASE "访问"
 	CASE "宿舍分配"
 		CALL MESSAGE_BOX,@"「大通铺？行。%SELF_CALL()%只睡自己那块。越界就揍。」"
 	
+	CASE "侍奉口爆终了"
+		SELECTCASE ARGS:2
+		CASE "忍住"
+			CALL MESSAGE_BOX,@"「……已按指示终止于唇前。……程序上……无过剩排放。」"
+			CALL MESSAGE_BOX,@"「……记录结束。」"
+		CASE "咽下"
+			CALL MESSAGE_BOX,@"「……咽下完毕。……请、请不要在事后追加评测以外的评论。」"
+			CALL MESSAGE_BOX,@"「……味道数据……我会……忘记。」"
+		ENDSELECT
+	CASE "揉胸轻抚"
+		CALL MESSAGE_BOX,@"「……非泌乳接触……已确认。……无追加异议。」"
+		CALL MESSAGE_BOX,@"「……请……在合理力度内。」"
+	CASE "拥抱嗅闻"
+		CALL MESSAGE_BOX,@"「……拥抱与嗅闻……属亲密域……但……本次准许。」"
+		CALL MESSAGE_BOX,@"「……记录完毕。」"
 	ENDSELECT
 	
 CASE "事件"
@@ -781,4 +796,5 @@ CASE "灌肠妊娠求饶"
 CASEELSE
 ENDSELECT
 RETURN 1
+
 

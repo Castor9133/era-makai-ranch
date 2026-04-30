@@ -571,6 +571,21 @@ CASE "访问"
 	CASE "宿舍分配"
 		CALL MESSAGE_BOX,@"「与众同栖并非体面之所向……然在牧场，亦只余此权宜。%SELF_CALL()%会守夜礼，亦望他人守分寸。」"
 	
+	CASE "侍奉口爆终了"
+		SELECTCASE ARGS:2
+		CASE "忍住"
+			CALL MESSAGE_BOX,@"「……收束得漂亮。……像您这样的人……本该如此自持。」"
+			CALL MESSAGE_BOX,@"「……我便……候于一旁。」"
+		CASE "咽下"
+			CALL MESSAGE_BOX,@"「……尽数承纳。……勿以此……折辱我仅剩的体面。」"
+			CALL MESSAGE_BOX,@"「……味道……我会缄口。」"
+		ENDSELECT
+	CASE "揉胸轻抚"
+		CALL MESSAGE_BOX,@"「……此等举止……失之雅驯……却……由你。」"
+		CALL MESSAGE_BOX,@"「……请……勿作践仅存的一点体面。」"
+	CASE "拥抱嗅闻"
+		CALL MESSAGE_BOX,@"「……拥抱若只为占有……也请……利落。」"
+		CALL MESSAGE_BOX,@"「……气息……太近……会让人……失语。」"
 	ENDSELECT
 	
 CASE "事件"
@@ -768,4 +783,5 @@ CASE "灌肠妊娠求饶"
 CASEELSE
 ENDSELECT
 RETURN 1
+
 

@@ -1012,6 +1012,21 @@ CASE "访问"
 	CASE "宿舍分配"
 		CALL MESSAGE_BOX,@"「宿舍的话……会注意作息与公区的干净。如果被打扰，我会向负责人反映。」"
 	
+	CASE "侍奉口爆终了"
+		SELECTCASE ARGS:2
+		CASE "忍住"
+			CALL MESSAGE_BOX,@"「……确认：未射精。……风险……可控。」"
+			CALL MESSAGE_BOX,@"「……报告到此。」"
+		CASE "咽下"
+			CALL MESSAGE_BOX,@"「……咽下。……核对无误。」"
+			CALL MESSAGE_BOX,@"「……下一个指示。」"
+		ENDSELECT
+	CASE "揉胸轻抚"
+		CALL MESSAGE_BOX,@"「……区分：非授乳刺激。……了解。」"
+		CALL MESSAGE_BOX,@"「……力度……请保持在可承受范围。」"
+	CASE "拥抱嗅闻"
+		CALL MESSAGE_BOX,@"「……体感距离……过近。……但……非禁止事项。」"
+		CALL MESSAGE_BOX,@"「……呼吸与体味……已感知。」"
 	ENDSELECT
 
 ;繰り返し発生するイベントで使う
@@ -1499,4 +1514,5 @@ CASE "灌肠妊娠求饶"
 CASEELSE
 ENDSELECT
 RETURN 1
+
 

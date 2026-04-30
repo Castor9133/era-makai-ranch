@@ -1139,6 +1139,21 @@ CASE "访问"
 		ELSE
 			CALL MESSAGE_BOX,@"「……大房间也好通铺也好，%SELF_CALL()%不挑。只要别在熄灯后搞莫名其妙的巡查就行。」"
 		ENDIF
+	CASE "侍奉口爆终了"
+		SELECTCASE ARGS:2
+		CASE "忍住"
+			CALL MESSAGE_BOX,@"「……停得好。……姐姐在这儿，不会让你更难堪。」"
+			CALL MESSAGE_BOX,@"「……换气。……等一下再逞强。」"
+		CASE "咽下"
+			CALL MESSAGE_BOX,@"「……一滴没剩。……干得不错吧？……过来，让姐擦擦你的汗。」"
+			CALL MESSAGE_BOX,@"「……别臭美……这是姐让着你的。」"
+		ENDSELECT
+	CASE "揉胸轻抚"
+		CALL MESSAGE_BOX,@"「……手……倒是老实点啊……姐姐这儿……不经逗。」"
+		CALL MESSAGE_BOX,@"「……非喂孩子那一套……行，你高兴就好。」"
+	CASE "拥抱嗅闻"
+		CALL MESSAGE_BOX,@"「……抱这么紧……想当树袋熊？」"
+		CALL MESSAGE_BOX,@"「……闻就闻……别咬耳朵。」"
 	ENDSELECT
 
 CASE "重复事件"
@@ -1630,4 +1645,5 @@ CASE "灌肠妊娠求饶"
 CASEELSE
 ENDSELECT
 RETURN 1
+
 

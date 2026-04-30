@@ -131,6 +131,17 @@ ELSE
 	PRINTL [18] 亲热一下（手口足侍弄，结尾可选口内射精或忍住；情趣内衣／精饮滋补）
 ENDIF
 
+IF CFLAG:时刻限制／拜访揉胸轻
+	CALL PRINTL_WORD_COLOR("　此时间带已做过轻揉胸口（非授乳）","灰")
+ELSE
+	PRINTL [19] 轻揉胸口（非授乳，短结算）
+ENDIF
+IF CFLAG:时刻限制／拜访拥抱嗅闻
+	CALL PRINTL_WORD_COLOR("　此时间带已拥抱嗅闻过","灰")
+ELSE
+	PRINTL [20] 强制拥抱与嗅闻（精神／标记类短结算）
+ENDIF
+
 ;母乳体質でなくても授乳要求は一応できる
 IF CFLAG:时刻限制／授乳
 	CALL PRINTL_WORD_COLOR("　此时间已经提出哺乳请求","灰")

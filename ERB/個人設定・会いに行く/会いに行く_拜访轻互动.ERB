@@ -1,0 +1,55 @@
+
+;==========================================
+; 拜访·轻量 H（非完整调教）：揉胸（非授乳）、拥抱嗅闻
+; 与 [10][11] 同层；`SOURCE_CHECK` 收尾；`KOJO_PRINT("访问",…)`
+;==========================================
+
+@VISIT_BREAST_TEASE_NONLACT
+
+SIF CFLAG:时刻限制／拜访揉胸轻
+	RETURN
+CALL RESET_TRAIN_PALAM
+PRINTFORML 你的掌心贴上她胸口，隔着衣料慢揉了一把——既不是吸奶，也不是榨乳，只是把那点柔软往暖意里推。
+PRINTFORML %CALLNAME%喉间漏出很轻的一声，肩线本能地缩了半寸，又强迫自己站定给你碰。
+SOURCE:Ｂ快感／主人公刺激 = 420
+SOURCE:Ｎ快感／主人公刺激 = 180
+SOURCE:耻辱 = 700
+SOURCE:屈辱 = 380
+SOURCE:爱情 = 320
+SOURCE:不洁 = 200
+SIF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／隶属＃
+	SOURCE:恭顺 = 250
+SIF ＃陷落状态／恋慕以上＃
+	SOURCE:爱情 += 200
+CALL SOURCE_CHECK
+CFLAG:时刻限制／拜访揉胸轻 = 1
+CFLAG:时刻限制／Ｈ = 1
+CFLAG:标签_访客亲昵余日 = MAX(CFLAG:标签_访客亲昵余日, 5)
+TFLAG:亲密互动次数 ++
+TRYCALL KOJO_PRINT("访问", "揉胸轻抚", "", "")
+PRINTW
+RETURN
+
+
+@VISIT_EMBRACE_SNIFF
+
+SIF CFLAG:时刻限制／拜访拥抱嗅闻
+	RETURN
+CALL RESET_TRAIN_PALAM
+PRINTFORML 你从背后把她紧箍进怀里，下巴抵住她肩窝；鼻尖蹭过发缝与颈侧，像要把她的皂粉与体温一并记进肺里。
+PRINTFORML %CALLNAME%僵了一瞬，呼吸掠过你腕上皮肤，热得像无处可逃。
+SOURCE:爱情 = 450
+SOURCE:耻辱 = 500
+SOURCE:屈辱 = 320
+SOURCE:支配 = 260
+SOURCE:异形恐惧 = 80
+SIF !＃陷落状态／恋慕以上＃ && !＃陷落状态／隶属＃
+	SOURCE:异形恐惧 += 180
+CALL SOURCE_CHECK
+CFLAG:时刻限制／拜访拥抱嗅闻 = 1
+CFLAG:时刻限制／Ｈ = 1
+CFLAG:标签_访客亲昵余日 = MAX(CFLAG:标签_访客亲昵余日, 5)
+TFLAG:亲密互动次数 ++
+TRYCALL KOJO_PRINT("访问", "拥抱嗅闻", "", "")
+PRINTW
+RETURN

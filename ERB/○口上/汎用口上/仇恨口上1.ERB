@@ -208,6 +208,21 @@ CASE "访问"
 		ENDIF
 	CASE "终止妊娠"
 		CALL MESSAGE_BOX,@"「……终妊。你真敢说得出口。……做吧，反正你也只会这样。」"
+	CASE "侍奉口爆终了"
+		SELECTCASE ARGS:2
+		CASE "忍住"
+			CALL MESSAGE_BOX,@"「……哈……居然忍住了？……玩弄人很爽吗。」"
+			CALL MESSAGE_BOX,@"「……滚开……别贴那么近。」"
+		CASE "咽下"
+			CALL MESSAGE_BOX,@"「……咽了。……恶心。……满意了？」"
+			CALL MESSAGE_BOX,@"「……下次我宁愿咬断。」"
+		ENDSELECT
+	CASE "揉胸轻抚"
+		CALL MESSAGE_BOX,@"「……就这？……拿我泄气呢。」"
+		CALL MESSAGE_BOX,@"「……手拿走。」"
+	CASE "拥抱嗅闻"
+		CALL MESSAGE_BOX,@"「……装什么缠绵。」"
+		CALL MESSAGE_BOX,@"「……闻够了？」"
 	CASEELSE
 	ENDSELECT
 
@@ -255,4 +270,5 @@ CASE "灌肠妊娠求饶"
 CASEELSE
 ENDSELECT
 RETURN 1
+
 

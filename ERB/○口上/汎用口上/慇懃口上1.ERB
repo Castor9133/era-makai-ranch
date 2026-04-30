@@ -969,6 +969,21 @@ CASE "访问"
 		ELSE
 			CALL MESSAGE_BOX,@"「比起畜舍来这里简直就像是天堂……」"
 		ENDIF
+	CASE "侍奉口爆终了"
+		SELECTCASE ARGS:2
+		CASE "忍住"
+			CALL MESSAGE_BOX,@"「……承知。寸前でお収めになられましたね。……口元は、私が整えます。」"
+			CALL MESSAGE_BOX,@"「……仰せのまま、一口も越えませんでした。」"
+		CASE "咽下"
+			CALL MESSAGE_BOX,@"「……戴きました。……ご機嫌よう、とまでは言えませんが……精一杯、務めました。」"
+			CALL MESSAGE_BOX,@"「……お口に残る匂いは……覚えておきます。……♥」"
+		ENDSELECT
+	CASE "揉胸轻抚"
+		CALL MESSAGE_BOX,@"「……胸元は……礼を欠いてはいますが……仰せなら、拒みません。」"
+		CALL MESSAGE_BOX,@"「……授乳ではございませんね……では、戒めに替えてください……♥」"
+	CASE "拥抱嗅闻"
+		CALL MESSAGE_BOX,@"「……匂いまで……覚えさせるつもりですか……♥」"
+		CALL MESSAGE_BOX,@"「……背中に腕……逃げ場、ありません。」"
 	ENDSELECT
 
 CASE "重复事件"
@@ -1104,4 +1119,5 @@ CASE "灌肠妊娠求饶"
 CASEELSE
 ENDSELECT
 RETURN 1
+
 

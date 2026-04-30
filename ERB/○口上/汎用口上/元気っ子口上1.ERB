@@ -528,6 +528,21 @@ CASE "访问"
 			CALL MESSAGE_BOX,@"「『%MASTER_CALL()%』？这样叫就好吗？其实随便啦…」"
 		ENDIF
 	
+	CASE "侍奉口爆终了"
+		SELECTCASE ARGS:2
+		CASE "忍住"
+			CALL MESSAGE_BOX,@"「……哈哈，绷住了？……行啊你！……那我嘴先借你当刹车喽？」"
+			CALL MESSAGE_BOX,@"「……下次不许耍赖半途停太久——我会咬的哦！」"
+		CASE "咽下"
+			CALL MESSAGE_BOX,@"「……呜咕……全咽了……好犯规……舌头都麻了啦！」"
+			CALL MESSAGE_BOX,@"「……喂……看在我这么乖的份上……夸我一句嘛！」"
+		ENDSELECT
+	CASE "揉胸轻抚"
+		CALL MESSAGE_BOX,@"「……喂……偷袭胸算犯规啊……！」"
+		CALL MESSAGE_BOX,@"「……行吧行吧……就当……暖手费！」"
+	CASE "拥抱嗅闻"
+		CALL MESSAGE_BOX,@"「……背后锁这么死……下一步要干嘛啦……」"
+		CALL MESSAGE_BOX,@"「……闻就闻……别哈气！痒死了！」"
 	ENDSELECT
 	
 CASE "事件"
@@ -722,4 +737,5 @@ CASE "灌肠妊娠求饶"
 CASEELSE
 ENDSELECT
 RETURN 1
+
 

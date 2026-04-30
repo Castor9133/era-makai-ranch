@@ -550,6 +550,21 @@ CASE "访问"
 		CALL MESSAGE_BOX,@"「……人、多……%SELF_CALL()%、角落……」"
 		CALL MESSAGE_BOX,@"「……别、看……%SELF_CALL()%、睡相……」"
 	
+	CASE "侍奉口爆终了"
+		SELECTCASE ARGS:2
+		CASE "忍住"
+			CALL MESSAGE_BOX,@"「…………」"
+			CALL MESSAGE_BOX,@"「……嗯。」"
+		CASE "咽下"
+			CALL MESSAGE_BOX,@"「…………」"
+			CALL MESSAGE_BOX,@"「……唔。」"
+		ENDSELECT
+	CASE "揉胸轻抚"
+		CALL MESSAGE_BOX,@"「…………」"
+		CALL MESSAGE_BOX,@"「……嗯……」"
+	CASE "拥抱嗅闻"
+		CALL MESSAGE_BOX,@"「…………」"
+		CALL MESSAGE_BOX,@"「……唔……别……太久……」"
 	ENDSELECT
 	
 CASE "事件"
@@ -775,4 +790,5 @@ CASE "灌肠妊娠求饶"
 CASEELSE
 ENDSELECT
 RETURN 1
+
 

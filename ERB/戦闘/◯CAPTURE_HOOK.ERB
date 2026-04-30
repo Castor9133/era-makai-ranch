@@ -1,0 +1,25 @@
+
+; 战败捕获扩展：规划名 CAPTURE_HOOK_* 的真实现（薄封装）
+; 文档见 docs/开发计划.md §4 实现名映射表
+
+@CAPTURE_HOOK_POST_CREATE
+; 奴隶在牧场侧完成受领初始化后调用（例：○奴隷受け取り処理 SLAVE_RECEIVE_COMMON 末尾）
+; 扩展点：初标签、首夜排队等；勿在此堆长剧情
+SIF CFLAG:轮奸次数 > 2
+	CFLAG:标签_怕洗澡余日 = MAX(CFLAG:标签_怕洗澡余日, 4)
+TRYCALL CAPTURE_FIRST_NIGHT_STUB
+RETURN
+
+@CAPTURE_HOOK_POST_BATTLE_DEFEAT
+; 佣兵战中败北、被掳瞬间（场外）；细标签仍以领入后 POST_CREATE 为准
+RETURN
+
+@CAPTURE_HOOK_POST_ASSIGN
+; 栏位／归属写入后调用（例：牛舍管理 COWSHED_MANAGE_PUTIN 写入 CFLAG:牛舍号码 后）
+; 扩展点：与「入栏」相关的一次性フラグ
+RETURN
+
+@CAPTURE_FIRST_NIGHT_STUB
+; 首夜事件入口占位：后续可改 SELECTCASE / 菜单 / 独立 @；当前不打断受领
+; 可与 CFLAG:捕获日、哥布林轮奸履历等组合触发（具体逻辑后续填）
+RETURN

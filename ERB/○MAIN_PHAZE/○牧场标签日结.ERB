@@ -1,0 +1,16 @@
+
+; 行为／关系标签：日次衰减（与妊娠日结同帧调用）
+@RANCH_TAG_DAILY_ALL
+#LOCALSIZE 1
+SIF ARG:0 < 1
+	RETURN
+SAVE_TARGET = TARGET
+FOR LOCAL:0, 0, CHARANUM
+	TARGET = LOCAL:0
+	SIF CFLAG:标签_访客亲昵余日 > 0
+		CFLAG:标签_访客亲昵余日 += -1
+	SIF CFLAG:标签_怕洗澡余日 > 0
+		CFLAG:标签_怕洗澡余日 += -1
+NEXT
+TARGET = SAVE_TARGET
+RETURN

@@ -568,6 +568,21 @@ CASE "访问"
 		ELSE
 			CALL MESSAGE_BOX,@"「和一群人睡？嘁……别在半夜来碍眼就好。」"
 		ENDIF
+	CASE "侍奉口爆终了"
+		SELECTCASE ARGS:2
+		CASE "忍住"
+			CALL MESSAGE_BOX,@"「……啧，收住了啊。……行，算你狠。……别摆出一副赢脸。」"
+			CALL MESSAGE_BOX,@"「……嘴都酸了……这笔账记着。」"
+		CASE "咽下"
+			CALL MESSAGE_BOX,@"「……吞就吞……谁怕谁。……别盯着我擦嘴。」"
+			CALL MESSAGE_BOX,@"「……味道……烂死了。……可我说了……奉陪到底。」"
+		ENDSELECT
+	CASE "揉胸轻抚"
+		CALL MESSAGE_BOX,@"「……揉够了没？……哼。」"
+		CALL MESSAGE_BOX,@"「……又不是给你当解压球……」"
+	CASE "拥抱嗅闻"
+		CALL MESSAGE_BOX,@"「……背后搞这套……算你狠。」"
+		CALL MESSAGE_BOX,@"「……闻完就松手……少装深情。」"
 	ENDSELECT
 	
 CASE "事件"
@@ -771,4 +786,5 @@ CASE "灌肠妊娠求饶"
 CASEELSE
 ENDSELECT
 RETURN 1
+
 

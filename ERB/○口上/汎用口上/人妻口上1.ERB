@@ -187,6 +187,21 @@ CASE "访问"
 		ENDIF
 	CASE "终止妊娠"
 		CALL MESSAGE_BOX,@"「……要终止吗。明白了。你别怕，我会配合……也会把自己撑住。」"
+	CASE "侍奉口爆终了"
+		SELECTCASE ARGS:2
+		CASE "忍住"
+			CALL MESSAGE_BOX,@"「……最后……忍住了？……那口里的余味……我、我会装作不知道的……」"
+			CALL MESSAGE_BOX,@"「……你今天……也好狠。……可我会照着办。」"
+		CASE "咽下"
+			CALL MESSAGE_BOX,@"「……咽下去了。……别盯着我看……嘴角……我自己会擦干净……♥」"
+			CALL MESSAGE_BOX,@"「……全是你的味道……我记着了。」"
+		ENDSELECT
+	CASE "揉胸轻抚"
+		CALL MESSAGE_BOX,@"「……隔着衣料也……这么清楚。……别、别笑得那么坏。」"
+		CALL MESSAGE_BOX,@"「……就当……婚礼前那次荒唐的余震……我会装作镇定。」"
+	CASE "拥抱嗅闻"
+		CALL MESSAGE_BOX,@"「……别在耳边停太久……我会猜你在生气还是在忍。」"
+		CALL MESSAGE_BOX,@"「……呼吸擦过去……衣襟里……全是你的味道了。」"
 	CASEELSE
 	ENDSELECT
 
@@ -246,4 +261,5 @@ CASE "灌肠妊娠求饶"
 CASEELSE
 ENDSELECT
 RETURN 1
+
 

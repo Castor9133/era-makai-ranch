@@ -126,6 +126,21 @@ CASE "访问"
 		ELSE
 			CALL MESSAGE_BOX,@"「……我不敢躲……只盼……不是一时兴起的作弄……」"
 		ENDIF
+	CASE "侍奉口爆终了"
+		SELECTCASE ARGS:2
+		CASE "忍住"
+			CALL MESSAGE_BOX,@"「……好啊，收住了。……来，靠着我喘两口，别憋着。」"
+			CALL MESSAGE_BOX,@"「……没关系的。……你说了算，我都在。」"
+		CASE "咽下"
+			CALL MESSAGE_BOX,@"「……乖乖咽下去了呢。……真乖……待会给你倒水漱漱口，嗯？」"
+			CALL MESSAGE_BOX,@"「……别害羞……我都接着了，你放松。」"
+		ENDSELECT
+	CASE "揉胸轻抚"
+		CALL MESSAGE_BOX,@"「……好啦……只是揉一下……不会笑话你的。」"
+		CALL MESSAGE_BOX,@"「……慢慢来……手劲我替你收着。」"
+	CASE "拥抱嗅闻"
+		CALL MESSAGE_BOX,@"「……抱这么紧……像要把姐姐藏起来似的。」"
+		CALL MESSAGE_BOX,@"「……头发里……都让你闻遍了……小坏蛋。」"
 	CASEELSE
 	ENDSELECT
 
@@ -169,3 +184,4 @@ CASE "灌肠妊娠求饶"
 CASEELSE
 ENDSELECT
 RETURN 1
+

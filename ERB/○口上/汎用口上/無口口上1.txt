@@ -31,7 +31,7 @@ ELSEIF CFLAG:崩坏 && !CFLAG:洗脑
 				CALL MESSAGE_BOX,@"「啊ー♥♥♥ 啊♥♥♥ ───啊～～～っ♥♥♥♥♥」"
 			ENDIF
 			CALL MESSAGE_BOX,@"「……哦♥ ……呜…………呜…？」"
-			CALL MESSAGE_BOX,@"「……哦♥ おっ♥ 呜♥♥♥」"
+			CALL MESSAGE_BOX,@"「……哦♥ 哦♥ 呜♥♥♥」"
 		ELSE
 			CALL MESSAGE_BOX,@"「啊…啊…」"
 			CALL MESSAGE_BOX,@"「呜…呜…？」"
@@ -77,12 +77,12 @@ CASE "绝顶"
 CASE "射精"
 	IF SOURCE:膣内射精经验
 		IF ABL:膣内射精中毒 >= 10
-			CALL MESSAGE_BOX,@"「はぅぅ…♥ ……肚子里，充满幸福……♥♥"
+			CALL MESSAGE_BOX,@"「哈呜…♥ ……肚子里，充满幸福……♥♥"
 		ELSE
 			IF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／隶属＃
 				CALL MESSAGE_BOX,@"「嗯……♥ ……肚子，很温暖……却快要……♥"
 			ELSEIF ＃陷落状态／恋慕以上＃
-				CALL MESSAGE_BOX,@"「あ…♥ ……肚子是温暖的……♥"
+				CALL MESSAGE_BOX,@"「啊…♥ ……肚子是温暖的……♥"
 			ELSEIF ＃陷落状态／屈服以上＃
 				CALL MESSAGE_BOX,@"「呜……肚子里，温暖的感觉…蔓延着……っ」"
 			ELSE
@@ -129,7 +129,7 @@ CASE "射精"
 	
 	ELSEIF SOURCE:颜面射精
 		IF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／隶属＃
-			CALL MESSAGE_BOX,@"「あ…♥ ……真可惜…………呜…了……♥」"
+			CALL MESSAGE_BOX,@"「啊…♥ ……真可惜…………呜…了……♥」"
 		ELSEIF ＃陷落状态／恋慕以上＃
 			CALL MESSAGE_BOX,@"「啊…♥ ……白色，粘稠的……好多…♥"
 		ELSEIF ＃陷落状态／陷落以上＃

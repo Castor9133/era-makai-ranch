@@ -145,19 +145,49 @@ CALL ONOMATOPOEIA("活塞运动","Ｖ")
 
 
 ;Ａセックス
-;ARGS→継続中コマンド
+;ARGS→継続中コマンド（Train 表记名）
+;・Ａ对面立位／Ａ打桩位：折腿打桩续行
+;・Ａ背面立位：站立后入肛续行
 @A_SEX_MESSAGE(ARGS)
 
-SELECTCASE RAND:4
-CASE 0
-	PRINTFORML %CALLNAME:0%%SLANG_PENIS()%继续侵犯%CALLNAME%的%SLANG_A()%…
-CASE 1
-	PRINTFORML %CALLNAME%一直向%SLANG_H()%的方向用力撞击腰部…
-CASE 2
-	PRINTFORML %SLANG_PENIS()%在%CALLNAME%的%SLANG_A()%不停地进进出出…
-CASE 3
-	PRINTFORML 不断地将%SLANG_PENIS()%插入%CALLNAME%的%SLANG_A()%中…
-ENDSELECT
+IF GROUPMATCH(ARGS, "Ａ打桩位", "Ａ对面立位")
+	SELECTCASE RAND:5
+	CASE 0
+		PRINTFORML 按住折向胸前的腿根往下压，%SLANG_PENIS()%一次次笔直钉进%CALLNAME%朝天的%SLANG_A()%…
+	CASE 1
+		PRINTFORML %CALLNAME%腰臀被折起、腹贴膝窝，离地只有肩胛还着地，%SLANG_A()%里被又深又直地贯穿…
+	CASE 2
+		PRINTFORML 每夯一记膝弯就往锁骨贴近一分，%CALLNAME%的%SLANG_A()%痉挛着绞紧，又被拉开再钉入…
+	CASE 3
+		PRINTFORML %CALLNAME:0%借着体重下压折起的下半身，%SLANG_PENIS()%在%CALLNAME%的%SLANG_A()%里打出短而狠的行程…
+	CASEELSE
+		PRINTFORML 臀肉被推得微微发颤，折腿打的桩位让%SLANG_A()%几乎无处卸力，只能整段吃进抽送…
+	ENDSELECT
+ELSEIF GROUPMATCH(ARGS, "Ａ背面立位")
+	SELECTCASE RAND:5
+	CASE 0
+		PRINTFORML 从后站着钉，%CALLNAME%指尖抠着墙还是发滑，%SLANG_H()%被撞得一颤一颤，%SLANG_A()%却死死衔着%SLANG_PENIS()%…
+	CASE 1
+		PRINTFORML %CALLNAME:0%扣住髋骨从后拽送，站姿把%CALLNAME%的%SLANG_A()%抻得又直又烫，膝窝一阵接一阵发软…
+	CASE 2
+		PRINTFORML 臀缝贴上胯，%SLANG_PENIS()%沿那条线反复楔进%SLANG_A()%深处，%CALLNAME%踮起的脚尖落了又踮…
+	CASE 3
+		PRINTFORML 腰被掰成吃力的弧，%CALLNAME%只顾喘气，肠弯里每一记顶弄都像要顶散架，又酸又狠地往上涌…
+	CASEELSE
+		PRINTFORML 啪啪的撞击里%CALLNAME%肩胛抵不住墙，%SLANG_A()%却被抽送磨得发烫，肛口随着节奏一张一缩…
+	ENDSELECT
+ELSE
+	SELECTCASE RAND:4
+	CASE 0
+		PRINTFORML %CALLNAME:0%%SLANG_PENIS()%继续侵犯%CALLNAME%的%SLANG_A()%…
+	CASE 1
+		PRINTFORML %CALLNAME%一直向%SLANG_H()%的方向用力撞击腰部…
+	CASE 2
+		PRINTFORML %SLANG_PENIS()%在%CALLNAME%的%SLANG_A()%不停地进进出出…
+	CASE 3
+		PRINTFORML 不断地将%SLANG_PENIS()%插入%CALLNAME%的%SLANG_A()%中…
+	ENDSELECT
+ENDIF
 CALL ONOMATOPOEIA("活塞运动","Ａ")
 
 

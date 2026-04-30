@@ -1,0 +1,197 @@
+
+; 早安咬系统：前一晚指定 → 次日晨口交叫醒
+; 文件职责：
+;   @MORNING_WAKEUP_SET    — 前一晚睡前选择早安咬奴隶（NIGHT_PHASE菜单调用）
+;   @MORNING_WAKEUP_CALL   — 当日早执行早安咬口交（MORNING_ACT调用）
+; 口上派发：KOJO_PRINT("日程","早安咬","开始"/"射精"/"继续"/"结束")
+; 注意：早安咬不进入完整调教流程，不设 SELECTCOM，不设 TFLAG 残留
+
+@MORNING_WAKEUP_SET
+; ── 前一晚指定早安咬奴隶 ──
+DRAWLINE
+ALIGNMENT CENTER
+PRINTFORML ＜早安咬指定＞
+ALIGNMENT LEFT
+PRINTFORML 指定明天早上来叫你起床的奴隶吧……
+PRINTFORML （被指定的奴隶会在次日清晨为你做早安口交）
+PRINTL
+
+CALL CHARA_SELECT_ALL
+IF RESULT == -1 || RESULT == 0
+	PRINTFORML 不指定。明天早上就自己醒吧。
+	CFLAG:0:早安咬奴隶ID = 0
+ELSE
+	SAVE_TARGET = RESULT
+	CFLAG:0:早安咬奴隶ID = CFLAG:SAVE_TARGET:ID
+	PRINTFORML 指定了%CALLNAME:SAVE_TARGET%明天早上来早安咬。
+ENDIF
+PRINTW
+RETURN
+
+
+
+@MORNING_WAKEUP_CALL
+; ── 早安咬执行（晨起时由 MORNING_ACT 调用） ──
+#DIM PLAYER_BEFORE
+
+SIF CFLAG:0:早安咬奴隶ID == 0
+	RETURN
+
+; 找到被指定的奴隶
+FINDCHARA CFLAG:ID, CFLAG:0:早安咬奴隶ID
+SIF RESULT <= 0
+	; ID 无效，清除
+	CFLAG:0:早安咬奴隶ID = 0
+	RETURN
+
+TARGET = RESULT
+
+; 体力不足则无法早安咬
+IF !BASE:体力
+	PRINTFORML %CALLNAME%被指定早安咬，但完全没有体力了……\@
+	PRINTFORML \@ 她瘫在房间的角落里，连站都站不起来。早安咬自然无从谈起。
+	CFLAG:0:早安咬奴隶ID = 0
+	TARGET = 0
+	RETURN
+ENDIF
+
+; ── 早安咬叙事 ──
+DRAWLINE
+ALIGNMENT CENTER
+PRINTFORML ＜ 叫 早 ＞
+ALIGNMENT LEFT
+PRINTL
+
+; 保存当前 PLAYER 状态
+PLAYER_BEFORE = PLAYER
+
+; 口交模拟设定
+PLAYER = MASTER
+TEQUIP:深喉PLAYER = 1
+TEQUIP:口枷 = 0
+M_PENIS = PLAYER
+FLAG:补正技巧值 = 1
+PALAM:Ｍ润滑 = 5000
+
+; 地文：早安咬开场
+CALL MORNING_WAKEUP_NARRATIVE
+
+; 口上：早安咬开始
+CALL KOJO_PRINT("日程","早安咬","开始")
+
+; 玩家选择：是否射精
+PRINTL
+PRINTFORML ……持续到射精吗？
+PRINTL  [0] 继续，直到射出来
+PRINTL  [1] 算了，就到这里吧
+PRINTL
+INPUT
+
+IF RESULT == 1
+	; 不射精 —— 早安咬结束
+	CALL KOJO_PRINT("日程","早安咬","结束")
+ELSE
+	; 继续到射精
+	CALL KOJO_PRINT("日程","早安咬","射精")
+
+	; 射精处理
+	CALL MORNING_WAKEUP_CUMSHOT
+
+	; 射精后口上
+	CALL KOJO_PRINT("日程","早安咬","继续")
+ENDIF
+
+; 清理
+TEQUIP:深喉PLAYER = 0
+M_PENIS = 0
+PLAYER = PLAYER_BEFORE
+FLAG:补正技巧值 = 0
+
+; 体力消耗（口交属于轻劳动）
+BASE:体力 = LIMIT(BASE:体力 - 50, 0, BASE:体力)
+; 清洁度下降
+IF !TALENT:洁癖
+	EQUIP:口腔污浊 = 1
+
+; 微弱快感
+SIF RAND:100 < 40
+	SOURCE:快Ｖ ++
+
+; 当天早安咬已完成，清除标记
+CFLAG:0:早安咬奴隶ID = 0
+TARGET = 0
+DRAWLINE
+RETURN
+
+
+
+@MORNING_WAKEUP_NARRATIVE
+; ── 早安咬开场地文 ──
+
+PRINTFORML 天刚蒙蒙亮，房门外传来轻轻的三下叩响。
+PRINTFORML 没等你回应，门闩就被从外面拨开了——是你昨晚指定的人。
+
+IF TALENT:可爱 || TALENT:温顺
+	PRINTFORML %CALLNAME%踮着脚尖走进来，手里端着杯温水。她把杯子放在床头后，小心翼翼地爬上了床沿。
+ELSEIF TALENT:逞强 || TALENT:强势
+	PRINTFORML %CALLNAME%大步走进来，看了一眼还躺在床上的你，嘴角微微一撇。
+ELSEIF GROUPMATCH(CSTR:陷落状态,"恋慕","爱慕","献身")
+	PRINTFORML %CALLNAME%轻手轻脚地推开门，眼睛里已经带着一丝微笑。她跪到床边时，手指有些发抖。
+ELSE
+	PRINTFORML %CALLNAME%安静地走进房间，在床边跪了下来。
+ENDIF
+
+PRINTFORML 她没有说话，只是把脸凑近了被子下面——呼出的热气隔着布料都能感觉到。
+PRINTFORML 然后%SLANG_A()%轻轻含住了尚在晨勃中的%PENIS_CALL()%。
+
+
+
+@MORNING_WAKEUP_CUMSHOT
+; ── 早安咬射精处理 ──
+
+SOURCE:射精 ++
+
+SIF CFLAG:魔界_妊娠判明
+	; 怀孕角色不触发受孕
+	RETURN
+
+; 咽下判定：恋慕以上大概率咽下
+IF GROUPMATCH(CSTR:陷落状态,"恋慕","爱慕","献身")
+	IF RAND:100 < 75
+		IF TARGET > 0
+			CFLAG:生殖腔内精液量 += 50
+			PRINTFORML %CALLNAME%喉头一动，咽了下去。
+		ENDIF
+	ELSE
+		PRINTFORML 白浊从%CALLNAME%嘴角溢出来了一些，但她没有擦。
+		IF !TALENT:洁癖
+			EQUIP:口腔污浊 = 1
+		ENDIF
+	ENDIF
+	RETURN
+ENDIF
+
+; 屈服以上：一半概率咽下
+IF GROUPMATCH(CSTR:陷落状态,"屈服","隶属")
+	IF RAND:100 < 50
+		SIF TARGET > 0
+			CFLAG:生殖腔内精液量 += 30
+		PRINTFORML %CALLNAME%闭着眼，认命般咽了下去。
+	ELSE
+		PRINTFORML %CALLNAME%别过脸去，让精液淌在了地上。
+		IF !TALENT:洁癖
+			EQUIP:口腔污浊 = 1
+		ENDIF
+	ENDIF
+	RETURN
+ENDIF
+
+; 反抗/拒绝：几乎不咽
+IF RAND:100 < 15
+	SIF TARGET > 0
+		CFLAG:生殖腔内精液量 += 20
+	PRINTFORML %CALLNAME%不小心咽下去了一点，随即露出厌恶的表情。
+ELSE
+	PRINTFORML %CALLNAME%立刻偏开头，把精液全都吐了出来。
+	EQUIP:口腔污浊 = 1
+ENDIF

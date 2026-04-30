@@ -1,0 +1,350 @@
+
+@KOJO_JP_VPOS_HINT_人妻1(ARGS:0)
+SIF !(CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／恋慕以上＃ || ＃陷落状态／隶属＃)
+	RETURN
+SELECTCASE ARGS:0
+CASE "正常位"
+	CALL MESSAGE_BOX,@"「正面来……♥ 当成日常也好……身子记得您的习惯……♥」"
+CASE "后背位"
+	CALL MESSAGE_BOX,@"「后面……♥ 您慢点……我怕腰先认输……♥」"
+CASE "对面坐位"
+	CALL MESSAGE_BOX,@"「坐着抱……♥ 腿圈稳……像把家挪到您怀里……♥」"
+CASE "背面坐位"
+	CALL MESSAGE_BOX,@"「背靠您……♥ 这样……连叹气都藏不住……♥」"
+CASE "骑乘位"
+	CALL MESSAGE_BOX,@"「让我在上……♥ 您躺着看就好……我按您喜欢的节奏……♥」"
+CASE "背面骑乘位","强制骑乘位"
+	CALL MESSAGE_BOX,@"「背过去还骑……♥ 羞归羞……可我不想让您等……♥」"
+CASE "对面立位"
+	CALL MESSAGE_BOX,@"「站着面对面……♥ 扶我一下……脚踝会发软……♥」"
+CASE "背面立位"
+	CALL MESSAGE_BOX,@"「从后顶着站……♥ 借墙……也借您的胸口……♥」"
+CASE "Ａ正常位","Ａ后背位","Ａ对面坐位","Ａ背面坐位","Ａ骑乘位","Ａ打桩位","Ａ背面立位","强制Ａ骑乘位","Ａ背面骑乘位"
+	CALL MESSAGE_BOX,@"「后面也换姿势……♥ 深浅一变……我又要重新习惯您……♥」"
+ENDSELECT
+RETURN
+
+@KOJO_JP_VPOS_HINT_仇恨1(ARGS:0)
+SIF !(CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／恋慕以上＃ || ＃陷落状态／隶属＃)
+	RETURN
+SELECTCASE ARGS:0
+CASE "正常位"
+	CALL MESSAGE_BOX,@"「正面……♥ 恨你……可眼睛挪不开……♥」"
+CASE "后背位"
+	CALL MESSAGE_BOX,@"「后面……♥ 看不见你的脸……更想咬点什么……♥」"
+CASE "对面坐位"
+	CALL MESSAGE_BOX,@"「坐着贴……♥ 像把羞辱坐实……♥」"
+CASE "背面坐位"
+	CALL MESSAGE_BOX,@"「背靠你……♥ 连退路都像在嘲笑我……♥」"
+CASE "骑乘位"
+	CALL MESSAGE_BOX,@"「让我在上……♥ 别误会……我只是想控住节奏别输太惨……♥」"
+CASE "背面骑乘位","强制骑乘位"
+	CALL MESSAGE_BOX,@"「反过来……♥ 羞耻和火一起往上冒……♥」"
+CASE "对面立位"
+	CALL MESSAGE_BOX,@"「站着对看……♥ 膝盖别笑我……我恨你……♥」"
+CASE "背面立位"
+	CALL MESSAGE_BOX,@"「从后顶着站……♥ 墙冷你烫……更恨了……♥」"
+CASE "Ａ正常位","Ａ后背位","Ａ对面坐位","Ａ背面坐位","Ａ骑乘位","Ａ打桩位","Ａ背面立位","强制Ａ骑乘位","Ａ背面骑乘位"
+	CALL MESSAGE_BOX,@"「后面也换角度……♥ 连那里都要被你刻形状……♥」"
+ENDSELECT
+RETURN
+
+@KOJO_JP_VPOS_HINT_元気っ子1(ARGS:0)
+SIF !(CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／恋慕以上＃ || ＃陷落状态／隶属＃)
+	RETURN
+SELECTCASE ARGS:0
+CASE "正常位"
+	CALL MESSAGE_BOX,@"「正面来呀……♥ 对视会超害羞但超带劲……♥」"
+CASE "后背位"
+	CALL MESSAGE_BOX,@"「后面偷袭……♥ 心跳要炸啦……♥」"
+CASE "对面坐位"
+	CALL MESSAGE_BOX,@"「坐着贴贴……♥ 腿软了不许笑我……♥」"
+CASE "背面坐位"
+	CALL MESSAGE_BOX,@"「背靠背……♥ 像被整个包住……好作弊……♥」"
+CASE "骑乘位"
+	CALL MESSAGE_BOX,@"「骑上来啦……♥ 今天轮到我把节奏抢走……♥」"
+CASE "背面骑乘位","强制骑乘位"
+	CALL MESSAGE_BOX,@"「倒过来……♥ 凹凸不平好难对付……但好玩……♥」"
+CASE "对面立位"
+	CALL MESSAGE_BOX,@"「站着对看……♥ 摔了要接住我哦……♥」"
+CASE "背面立位"
+	CALL MESSAGE_BOX,@"「从后站着顶……♥ 脚尖酸死了啦……♥」"
+CASE "Ａ正常位","Ａ后背位","Ａ对面坐位","Ａ背面坐位","Ａ骑乘位","Ａ打桩位","Ａ背面立位","强制Ａ骑乘位","Ａ背面骑乘位"
+	CALL MESSAGE_BOX,@"「屁股换姿势……♥ 怪怪的爽也会跟着换档……♥」"
+ENDSELECT
+RETURN
+
+@KOJO_JP_VPOS_HINT_堅物1(ARGS:0)
+SIF !(CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／恋慕以上＃ || ＃陷落状态／隶属＃)
+	RETURN
+SELECTCASE ARGS:0
+CASE "正常位"
+	CALL MESSAGE_BOX,@"「正面……♥ 别指望我表情好看……♥」"
+CASE "后背位"
+	CALL MESSAGE_BOX,@"「后面……♥ 看不见更不想叫给你听……♥」"
+CASE "对面坐位"
+	CALL MESSAGE_BOX,@"「坐着……♥ 力线变了……我会自己稳住……♥」"
+CASE "背面坐位"
+	CALL MESSAGE_BOX,@"「背靠……♥ 别松手……我会判断该不该信你……♥」"
+CASE "骑乘位"
+	CALL MESSAGE_BOX,@"「在上……♥ 不是认输……是接管节奏……♥」"
+CASE "背面骑乘位","强制骑乘位"
+	CALL MESSAGE_BOX,@"「反过来……♥ 更难……但别以为我会逃……♥」"
+CASE "对面立位"
+	CALL MESSAGE_BOX,@"「立位对看……♥ 重心我自己扛……♥」"
+CASE "背面立位"
+	CALL MESSAGE_BOX,@"「后立……♥ 墙借我一下……♥」"
+CASE "Ａ正常位","Ａ后背位","Ａ对面坐位","Ａ背面坐位","Ａ骑乘位","Ａ打桩位","Ａ背面立位","强制Ａ骑乘位","Ａ背面骑乘位"
+	CALL MESSAGE_BOX,@"「后面换角度……♥ 痛和麻分得更清……♥」"
+ENDSELECT
+RETURN
+
+@KOJO_JP_VPOS_HINT_大和抚子1(ARGS:0)
+SIF !(CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／恋慕以上＃ || ＃陷落状态／隶属＃)
+	RETURN
+SELECTCASE ARGS:0
+CASE "正常位"
+	CALL MESSAGE_BOX,@"「正面……♥ 失礼了……目光却离不开您……♥」"
+CASE "后背位"
+	CALL MESSAGE_BOX,@"「从后……♥ 请……稍微顾惜我的呼吸……♥」"
+CASE "对面坐位"
+	CALL MESSAGE_BOX,@"「坐着相依……♥ 像是把礼节也坐化了……♥」"
+CASE "背面坐位"
+	CALL MESSAGE_BOX,@"「把后背交给您……♥ 这是……信与羞一并奉上……♥」"
+CASE "骑乘位"
+	CALL MESSAGE_BOX,@"「由我在上侍奉……♥ 若笨拙……请您包涵……♥」"
+CASE "背面骑乘位","强制骑乘位"
+	CALL MESSAGE_BOX,@"「反身而上……♥ 不成体统……却停不下……♥」"
+CASE "对面立位"
+	CALL MESSAGE_BOX,@"「立着相对……♥ 容我整理一下气息……♥」"
+CASE "背面立位"
+	CALL MESSAGE_BOX,@"「自后而立……♥ 请托住我……莫让我失仪……♥」"
+CASE "Ａ正常位","Ａ后背位","Ａ对面坐位","Ａ背面坐位","Ａ骑乘位","Ａ打桩位","Ａ背面立位","强制Ａ骑乘位","Ａ背面骑乘位"
+	CALL MESSAGE_BOX,@"「后庭亦随体位而变……♥ 这……未免太欺负人……♥」"
+ENDSELECT
+RETURN
+
+@KOJO_JP_VPOS_HINT_天然1(ARGS:0)
+SIF !(CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／恋慕以上＃ || ＃陷落状态／隶属＃)
+	RETURN
+SELECTCASE ARGS:0
+CASE "正常位"
+	CALL MESSAGE_BOX,@"「正面……？♥ 这样算……比较不容易迷路吗……♥」"
+CASE "后背位"
+	CALL MESSAGE_BOX,@"「后面……♥ 咦……原来会这么清楚……♥」"
+CASE "对面坐位"
+	CALL MESSAGE_BOX,@"「坐着抱……♥ 像被装进同一个座位里……♥」"
+CASE "背面坐位"
+	CALL MESSAGE_BOX,@"「背靠……♥ 体温传过来……我脑袋也变慢了……♥」"
+CASE "骑乘位"
+	CALL MESSAGE_BOX,@"「骑上去……♥ 啊……这算不算我在开车……♥」"
+CASE "背面骑乘位","强制骑乘位"
+	CALL MESSAGE_BOX,@"「倒过来……♥ 方向感……不见了……♥」"
+CASE "对面立位"
+	CALL MESSAGE_BOX,@"「站着……♥ 脚软……是不是地心引力变强了……♥」"
+CASE "背面立位"
+	CALL MESSAGE_BOX,@"「后站……♥ 墙……原来这么友好……♥」"
+CASE "Ａ正常位","Ａ后背位","Ａ对面坐位","Ａ背面坐位","Ａ骑乘位","Ａ打桩位","Ａ背面立位","强制Ａ骑乘位","Ａ背面骑乘位"
+	CALL MESSAGE_BOX,@"「后面也换姿势……♥ 好像……连害羞的位置也换了……♥」"
+ENDSELECT
+RETURN
+
+@KOJO_JP_VPOS_HINT_女仆1(ARGS:0)
+SIF !(CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／恋慕以上＃ || ＃陷落状态／隶属＃)
+	RETURN
+SELECTCASE ARGS:0
+CASE "正常位"
+	CALL MESSAGE_BOX,@"「正面侍奉……♥ 视线……请当作验收……♥」"
+CASE "后背位"
+	CALL MESSAGE_BOX,@"「从后……♥ 我会把声音收进职责里……♥」"
+CASE "对面坐位"
+	CALL MESSAGE_BOX,@"「坐姿侍奉……♥ 腿环稳……不让您费第二遍力……♥」"
+CASE "背面坐位"
+	CALL MESSAGE_BOX,@"「背靠主人……♥ 这是……把信任叠在礼仪上……♥」"
+CASE "骑乘位"
+	CALL MESSAGE_BOX,@"「骑侍……♥ 节奏交给您口令……♥」"
+CASE "背面骑乘位","强制骑乘位"
+	CALL MESSAGE_BOX,@"「反身骑侍……♥ 失礼了……但我会完成……♥」"
+CASE "对面立位"
+	CALL MESSAGE_BOX,@"「立侍相对……♥ 扶我一下……以免失态……♥」"
+CASE "背面立位"
+	CALL MESSAGE_BOX,@"「后立侍奉……♥ 请别松手……♥」"
+CASE "Ａ正常位","Ａ后背位","Ａ对面坐位","Ａ背面坐位","Ａ骑乘位","Ａ打桩位","Ａ背面立位","强制Ａ骑乘位","Ａ背面骑乘位"
+	CALL MESSAGE_BOX,@"「后庭亦随体位……♥ 我会……把羞耻也整理进侍奉里……♥」"
+ENDSELECT
+RETURN
+
+@KOJO_JP_VPOS_HINT_妹系1(ARGS:0)
+SIF !(CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／恋慕以上＃ || ＃陷落状态／隶属＃)
+	RETURN
+SELECTCASE ARGS:0
+CASE "正常位"
+	CALL MESSAGE_BOX,@"「正面……♥ 看着我嘛……不许只看下面……♥」"
+CASE "后背位"
+	CALL MESSAGE_BOX,@"「后面……♥ 抓我手……不然我会怕……♥」"
+CASE "对面坐位"
+	CALL MESSAGE_BOX,@"「坐着抱紧……♥ 再近一点……♥」"
+CASE "背面坐位"
+	CALL MESSAGE_BOX,@"「背靠……♥ 像被你整个圈住……好安心……♥」"
+CASE "骑乘位"
+	CALL MESSAGE_BOX,@"「让我骑……♥ 我会努力……别笑我笨……♥」"
+CASE "背面骑乘位","强制骑乘位"
+	CALL MESSAGE_BOX,@"「背过去骑……♥ 好害羞……但你别松……♥」"
+CASE "对面立位"
+	CALL MESSAGE_BOX,@"「站着也要贴……♥ 摔了你要负责……♥」"
+CASE "背面立位"
+	CALL MESSAGE_BOX,@"「后站……♥ 我踮脚……你托我……好不好……♥」"
+CASE "Ａ正常位","Ａ后背位","Ａ对面坐位","Ａ背面坐位","Ａ骑乘位","Ａ打桩位","Ａ背面立位","强制Ａ骑乘位","Ａ背面骑乘位"
+	CALL MESSAGE_BOX,@"「后面也换……♥ 你、你别突然更深……我会哭……♥」"
+ENDSELECT
+RETURN
+
+@KOJO_JP_VPOS_HINT_愚忠1(ARGS:0)
+SIF !(CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／恋慕以上＃ || ＃陷落状态／隶属＃)
+	RETURN
+SELECTCASE ARGS:0
+CASE "正常位"
+	CALL MESSAGE_BOX,@"「正面接令……♥ 目标锁定：服从与快感……执行中……♥」"
+CASE "后背位"
+	CALL MESSAGE_BOX,@"「后入接令……♥ 视野关闭……其余感官上调……♥」"
+CASE "对面坐位"
+	CALL MESSAGE_BOX,@"「坐姿接令……♥ 支撑点已调整……♥」"
+CASE "背面坐位"
+	CALL MESSAGE_BOX,@"「背靠接令……♥ 把后背交付即视为授权……♥」"
+CASE "骑乘位"
+	CALL MESSAGE_BOX,@"「骑乘接令……♥ 节奏模块切换为自律……♥」"
+CASE "背面骑乘位","强制骑乘位"
+	CALL MESSAGE_BOX,@"「反骑接令……♥ 羞耻参数上升……仍执行……♥」"
+CASE "对面立位"
+	CALL MESSAGE_BOX,@"「立位对位……♥ 平衡模块请求辅助……♥」"
+CASE "背面立位"
+	CALL MESSAGE_BOX,@"「后立接令……♥ 请固定支撑点……♥」"
+CASE "Ａ正常位","Ａ后背位","Ａ对面坐位","Ａ背面坐位","Ａ骑乘位","Ａ打桩位","Ａ背面立位","强制Ａ骑乘位","Ａ背面骑乘位"
+	CALL MESSAGE_BOX,@"「后庭换姿……♥ 指令集更新……继续执行……♥」"
+ENDSELECT
+RETURN
+
+@KOJO_JP_VPOS_HINT_懦弱1(ARGS:0)
+SIF !(CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／恋慕以上＃ || ＃陷落状态／隶属＃)
+	RETURN
+SELECTCASE ARGS:0
+CASE "正常位"
+	CALL MESSAGE_BOX,@"「正面……♥ 别看太细……我会缩起来……♥」"
+CASE "后背位"
+	CALL MESSAGE_BOX,@"「后面……♥ 我、我会乖……请轻一点……♥」"
+CASE "对面坐位"
+	CALL MESSAGE_BOX,@"「坐着……♥ 太近……我声音会抖……♥」"
+CASE "背面坐位"
+	CALL MESSAGE_BOX,@"「背靠……♥ 我把自己交给您……求您温柔……♥」"
+CASE "骑乘位"
+	CALL MESSAGE_BOX,@"「让我在上……♥ 我会慢……别催……♥」"
+CASE "背面骑乘位","强制骑乘位"
+	CALL MESSAGE_BOX,@"「反过来……♥ 我更怕……但、但我会忍……♥」"
+CASE "对面立位"
+	CALL MESSAGE_BOX,@"「站着……♥ 腿软……扶我……对不起……♥」"
+CASE "背面立位"
+	CALL MESSAGE_BOX,@"「后站……♥ 别放开……我会倒……♥」"
+CASE "Ａ正常位","Ａ后背位","Ａ对面坐位","Ａ背面坐位","Ａ骑乘位","Ａ打桩位","Ａ背面立位","强制Ａ骑乘位","Ａ背面骑乘位"
+	CALL MESSAGE_BOX,@"「后面也换……♥ 会、会更奇怪……对不起……♥」"
+ENDSELECT
+RETURN
+
+@KOJO_JP_VPOS_HINT_温柔大姐姐1(ARGS:0)
+SIF !(CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／恋慕以上＃ || ＃陷落状态／隶属＃)
+	RETURN
+SELECTCASE ARGS:0
+CASE "正常位"
+	CALL MESSAGE_BOX,@"「正面来……♥ 让我看着你把呼吸放慢……♥」"
+CASE "后背位"
+	CALL MESSAGE_BOX,@"「从后……♥ 把手给我……我替你数节拍……♥」"
+CASE "对面坐位"
+	CALL MESSAGE_BOX,@"「坐着抱……♥ 累了就靠我……别硬撑……♥」"
+CASE "背面坐位"
+	CALL MESSAGE_BOX,@"「背靠着我……♥ 我托着你……也托着自己……♥」"
+CASE "骑乘位"
+	CALL MESSAGE_BOX,@"「让我在上……♥ 你躺着享福……我来出力……♥」"
+CASE "背面骑乘位","强制骑乘位"
+	CALL MESSAGE_BOX,@"「背过去还骑……♥ 羞的话……就咬我肩膀……♥」"
+CASE "对面立位"
+	CALL MESSAGE_BOX,@"「站着也别逞强……♥ 扶墙也行……扶我也行……♥」"
+CASE "背面立位"
+	CALL MESSAGE_BOX,@"「后站……♥ 踮酸了就停一停……我听着……♥」"
+CASE "Ａ正常位","Ａ后背位","Ａ对面坐位","Ａ背面坐位","Ａ骑乘位","Ａ打桩位","Ａ背面立位","强制Ａ骑乘位","Ａ背面骑乘位"
+	CALL MESSAGE_BOX,@"「后面换姿势……♥ 疼就说……我帮你把话说明白……♥」"
+ENDSELECT
+RETURN
+
+@KOJO_JP_VPOS_HINT_知心1(ARGS:0)
+SIF !(CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／恋慕以上＃ || ＃陷落状态／隶属＃)
+	RETURN
+SELECTCASE ARGS:0
+CASE "正常位"
+	CALL MESSAGE_BOX,@"「正面……♥ 我懂你想确认什么……♥」"
+CASE "后背位"
+	CALL MESSAGE_BOX,@"「后面……♥ 你手一探我就知道你要深还是浅……♥」"
+CASE "对面坐位"
+	CALL MESSAGE_BOX,@"「坐着贴……♥ 心跳别藏……我听得到……♥」"
+CASE "背面坐位"
+	CALL MESSAGE_BOX,@"「背靠……♥ 你想省力……我也想让你靠……♥」"
+CASE "骑乘位"
+	CALL MESSAGE_BOX,@"「让我在上……♥ 你想看我自己把自己送走……对吧……♥」"
+CASE "背面骑乘位","强制骑乘位"
+	CALL MESSAGE_BOX,@"「反过来……♥ 害羞是饵……你上钩了……♥」"
+CASE "对面立位"
+	CALL MESSAGE_BOX,@"「站着对看……♥ 眼神别躲……我接着……♥」"
+CASE "背面立位"
+	CALL MESSAGE_BOX,@"「后站……♥ 你托我一下……我就敢更放肆……♥」"
+CASE "Ａ正常位","Ａ后背位","Ａ对面坐位","Ａ背面坐位","Ａ骑乘位","Ａ打桩位","Ａ背面立位","强制Ａ骑乘位","Ａ背面骑乘位"
+	CALL MESSAGE_BOX,@"「后面也换……♥ 你想试哪一段舒服……我陪你找……♥」"
+ENDSELECT
+RETURN
+
+@KOJO_JP_VPOS_HINT_虔诚1(ARGS:0)
+SIF !(CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／恋慕以上＃ || ＃陷落状态／隶属＃)
+	RETURN
+SELECTCASE ARGS:0
+CASE "正常位"
+	CALL MESSAGE_BOX,@"「正面承纳……♥ 若这是试炼……我献上呼吸……♥」"
+CASE "后背位"
+	CALL MESSAGE_BOX,@"「从后……♥ 把背脊当作祭坛……请您刻下印记……♥」"
+CASE "对面坐位"
+	CALL MESSAGE_BOX,@"「坐着相依……♥ 像祷告贴近神龛……♥」"
+CASE "背面坐位"
+	CALL MESSAGE_BOX,@"「背靠您……♥ 我把软弱也一并献上……♥」"
+CASE "骑乘位"
+	CALL MESSAGE_BOX,@"「骑侍……♥ 我愿以腰为钟摆……为您计数……♥」"
+CASE "背面骑乘位","强制骑乘位"
+	CALL MESSAGE_BOX,@"「反身……♥ 羞耻亦是献祭的一部分……♥」"
+CASE "对面立位"
+	CALL MESSAGE_BOX,@"「立而相对……♥ 请扶住我……免得我失敬……♥」"
+CASE "背面立位"
+	CALL MESSAGE_BOX,@"「后立承纳……♥ 墙与您之间……我选您……♥」"
+CASE "Ａ正常位","Ａ后背位","Ａ对面坐位","Ａ背面坐位","Ａ骑乘位","Ａ打桩位","Ａ背面立位","强制Ａ骑乘位","Ａ背面骑乘位"
+	CALL MESSAGE_BOX,@"「后庭亦随体位而开……♥ 若这是罚……我领……♥」"
+ENDSELECT
+RETURN
+
+@KOJO_JP_VPOS_HINT_闷骚小姐姐1(ARGS:0)
+SIF !(CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／恋慕以上＃ || ＃陷落状态／隶属＃)
+	RETURN
+SELECTCASE ARGS:0
+CASE "正常位"
+	CALL MESSAGE_BOX,@"「正面……♥ 变量最少……表情别打码……♥」"
+CASE "后背位"
+	CALL MESSAGE_BOX,@"「后面……♥ 噪声会变大……我尽量控制在可接受范围……♥」"
+CASE "对面坐位"
+	CALL MESSAGE_BOX,@"「坐姿……♥ 接触面积上升……效率不错……♥」"
+CASE "背面坐位"
+	CALL MESSAGE_BOX,@"「背靠……♥ 热传导很诚实……♥」"
+CASE "骑乘位"
+	CALL MESSAGE_BOX,@"「骑乘位……♥ 控制权暂借我……验收别迟到……♥」"
+CASE "背面骑乘位","强制骑乘位"
+	CALL MESSAGE_BOX,@"「反骑……♥ 羞耻属于预期内偏差……♥」"
+CASE "对面立位"
+	CALL MESSAGE_BOX,@"「立位对位……♥ 重心漂移……请求支撑……♥」"
+CASE "背面立位"
+	CALL MESSAGE_BOX,@"「后立……♥ 别让我一个人和地心引力谈判……♥」"
+CASE "Ａ正常位","Ａ后背位","Ａ对面坐位","Ａ背面坐位","Ａ骑乘位","Ａ打桩位","Ａ背面立位","强制Ａ骑乘位","Ａ背面骑乘位"
+	CALL MESSAGE_BOX,@"「后庭换姿……♥ 这属于扩展实验……我记日志……♥」"
+ENDSELECT
+RETURN

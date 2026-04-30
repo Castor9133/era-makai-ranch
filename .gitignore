@@ -12,3 +12,8 @@ out/
 # Python
 __pycache__/
 *.pyc
+
+# 本地扫描输出（勿入库）
+tools/_kana_messagebox_hits.txt
+tools/_kana_scan.txt
+toolsaneugin_HEAD.txt

@@ -1,0 +1,837 @@
+
+; 日常随机奴隶互动叙事
+; 无机械效果，纯世界观和人物塑造
+; @SLAVE_INTERACTION_DAILY
+;
+; v2.0 重写 —— 原生中文、口语化、性格突出
+; 事件类型：
+;   1. 闲聊·家常 (18%)  2. 闲聊·产奶 (12%)  3. 闲聊·怀孕 (10%)
+;   4. 闲聊·主人 (10%)  5. 互助·劳作 (10%)  6. 闲聊·过往 (8%)
+;   7. 冲突·嘴仗 (8%)   8. 安慰·共情 (7%)   9. 闲聊·逃跑 (5%)
+;  10. 比较·嫉妒 (5%)  11. 沉默·默契 (5%)  12. 闲聊·种族 (2%)
+
+@SLAVE_INTERACTION_DAILY
+#DIM CHARA_LIST
+#DIM A_ID
+#DIM B_ID
+#DIM STORE_TARGET
+#DIM EVT
+
+; 每日触发概率 25%
+SIF RAND:100 >= 25
+	RETURN
+
+; 收集所有奴隶（跳过 0 号主角）
+SLAVE_COUNT = 0
+FOR A_ID, 1, CHARANUM
+	IF CSTR:A_ID:种族 != ""
+		SLAVE_COUNT ++
+	ENDIF
+NEXT
+
+SIF SLAVE_COUNT < 2
+	RETURN
+
+; 随机选两个不同的奴隶
+A_ID = 0
+WHILE A_ID == 0
+	A_ID = RAND:CHARANUM
+	SIF CSTR:A_ID:种族 == ""
+		A_ID = 0
+WEND
+
+B_ID = 0
+WHILE B_ID == 0 || B_ID == A_ID
+	B_ID = RAND:CHARANUM
+	SIF CSTR:B_ID:种族 == ""
+		B_ID = 0
+	ELSEIF B_ID == A_ID
+		B_ID = 0
+WEND
+
+STORE_TARGET = TARGET
+
+; ── 辅助判定宏：判断A或B是否符合某条件 ──
+#DEFINE IS_COW_A   (CFLAG:A_ID:乳牛 || CFLAG:A_ID:洗脑)
+#DEFINE IS_COW_B   (CFLAG:B_ID:乳牛 || CFLAG:B_ID:洗脑)
+#DEFINE IS_PREG_A  (CFLAG:A_ID:魔界_妊娠判明)
+#DEFINE IS_PREG_B  (CFLAG:B_ID:魔界_妊娠判明)
+#DEFINE IS_MILK_A  (BASE:A_ID:母乳生产力 > 0)
+#DEFINE IS_MILK_B  (BASE:B_ID:母乳生产力 > 0)
+#DEFINE HAS_FALLEN_A (GROUPMATCH(CSTR:A_ID:陷落状态,"恋慕","爱慕","献身","隶属"))
+#DEFINE HAS_FALLEN_B (GROUPMATCH(CSTR:B_ID:陷落状态,"恋慕","爱慕","献身","隶属"))
+#DEFINE HAS_YIELDED_A (GROUPMATCH(CSTR:A_ID:陷落状态,"屈服"))
+#DEFINE HAS_YIELDED_B (GROUPMATCH(CSTR:B_ID:陷落状态,"屈服"))
+
+; ── 选事件 ──
+; 优先排除不适用的，然后加权随机
+EVT = 0
+
+; 如果有产奶者，增加产奶话题权重
+IF IS_MILK_A || IS_MILK_B || IS_COW_A || IS_COW_B
+	EVT = RAND:100
+	IF EVT < 12
+		EVT = 2  ; 产奶
+	ELSEIF EVT < 22
+		EVT = 0  ; 继续随机
+	ELSE
+		EVT = 0
+	ENDIF
+ELSE
+	EVT = RAND:100
+ENDIF
+
+; 如果有怀孕者
+IF EVT == 0 && (IS_PREG_A || IS_PREG_B)
+	EVT = RAND:100
+	IF EVT < 12
+		EVT = 3  ; 怀孕
+	ENDIF
+ENDIF
+
+; 最终随机事件
+IF EVT == 0
+	EVT = RAND:100
+	IF EVT < 18
+		EVT = 1  ; 家常
+	ELSEIF EVT < 28
+		EVT = 4  ; 主人
+	ELSEIF EVT < 38
+		EVT = 5  ; 互助
+	ELSEIF EVT < 46
+		EVT = 6  ; 过往
+	ELSEIF EVT < 54
+		EVT = 7  ; 嘴仗
+	ELSEIF EVT < 61
+		EVT = 8  ; 安慰
+	ELSEIF EVT < 66
+		EVT = 9  ; 逃跑
+	ELSEIF EVT < 71
+		EVT = 10 ; 嫉妒
+	ELSEIF EVT < 76
+		EVT = 11 ; 沉默
+	ELSEIF EVT < 83
+		EVT = 12 ; 种族
+	ELSE
+		EVT = 1  ; 默认家常
+	ENDIF
+ENDIF
+
+DRAWLINE
+
+; ============================================================
+;  事件 1: 闲聊·家常 —— 最日常的对话，展现性格和关系
+; ============================================================
+IF EVT == 1
+	; 先看陷落状态差异
+	IF HAS_FALLEN_A != HAS_FALLEN_B
+		; 一方陷落一方未陷落的对比
+		IF HAS_FALLEN_A
+			; A陷落了
+			CALL KOJO_SLAVE_INTERACTION_FAMILY_FALLEN(A_ID, B_ID)
+		ELSE
+			; B陷落了
+			CALL KOJO_SLAVE_INTERACTION_FAMILY_FALLEN(B_ID, A_ID)
+		ENDIF
+	; 双方都产奶
+	ELSEIF IS_MILK_A && IS_MILK_B
+		CALL KOJO_SLAVE_INTERACTION_FAMILY_MILK(A_ID, B_ID)
+	; 双方都是奶牛化
+	ELSEIF IS_COW_A && IS_COW_B
+		CALL KOJO_SLAVE_INTERACTION_FAMILY_DOUBLECOW(A_ID, B_ID)
+	; 同种族
+	ELSEIF CSTR:A_ID:种族 == CSTR:B_ID:种族
+		CALL KOJO_SLAVE_INTERACTION_FAMILY_SAMERACE(A_ID, B_ID)
+	; 跨种族
+	ELSE
+		CALL KOJO_SLAVE_INTERACTION_FAMILY_CROSSRACE(A_ID, B_ID)
+	ENDIF
+ENDIF
+
+; ============================================================
+;  事件 2: 闲聊·产奶 —— 关于挤奶、涨奶、奶牛身份的对话
+; ============================================================
+IF EVT == 2
+	; 双方都产奶
+	IF IS_MILK_A && IS_MILK_B
+		CALL KOJO_SLAVE_INTERACTION_MILK_BOTH(A_ID, B_ID)
+	; A产奶B不产
+	ELSEIF IS_MILK_A
+		CALL KOJO_SLAVE_INTERACTION_MILK_ONE(A_ID, B_ID)
+	; B产奶A不产
+	ELSE
+		CALL KOJO_SLAVE_INTERACTION_MILK_ONE(B_ID, A_ID)
+	ENDIF
+ENDIF
+
+; ============================================================
+;  事件 3: 闲聊·怀孕 —— 孕期话题
+; ============================================================
+IF EVT == 3
+	IF IS_PREG_A && IS_PREG_B
+		CALL KOJO_SLAVE_INTERACTION_PREG_BOTH(A_ID, B_ID)
+	ELSEIF IS_PREG_A
+		CALL KOJO_SLAVE_INTERACTION_PREG_ONE(A_ID, B_ID)
+	ELSE
+		CALL KOJO_SLAVE_INTERACTION_PREG_ONE(B_ID, A_ID)
+	ENDIF
+ENDIF
+
+; ============================================================
+;  事件 4: 闲聊·主人 —— 关于玩家/主人的闲聊
+; ============================================================
+IF EVT == 4
+	IF HAS_FALLEN_A && HAS_FALLEN_B
+		CALL KOJO_SLAVE_INTERACTION_MASTER_BOTHLOVE(A_ID, B_ID)
+	ELSEIF HAS_FALLEN_A || HAS_FALLEN_B
+		CALL KOJO_SLAVE_INTERACTION_MASTER_ONELOVE(A_ID, B_ID)
+	ELSE
+		CALL KOJO_SLAVE_INTERACTION_MASTER_NEITHER(A_ID, B_ID)
+	ENDIF
+ENDIF
+
+; ============================================================
+;  事件 5: 互助·劳作 —— 一起干活时的互动
+; ============================================================
+IF EVT == 5
+	; 体力差异
+	IF BASE:A_ID:体力 < 500 && BASE:B_ID:体力 >= 1000
+		CALL KOJO_SLAVE_INTERACTION_HELP(A_ID, B_ID, B_ID)  ; B帮A
+	ELSEIF BASE:B_ID:体力 < 500 && BASE:A_ID:体力 >= 1000
+		CALL KOJO_SLAVE_INTERACTION_HELP(B_ID, A_ID, A_ID)  ; A帮B
+	ELSE
+		CALL KOJO_SLAVE_INTERACTION_HELP_NEUTRAL(A_ID, B_ID)
+	ENDIF
+ENDIF
+
+; ============================================================
+;  事件 6: 闲聊·过往 —— 说起被抓来之前的生活
+; ============================================================
+IF EVT == 6
+	CALL KOJO_SLAVE_INTERACTION_PAST(A_ID, B_ID)
+ENDIF
+
+; ============================================================
+;  事件 7: 冲突·嘴仗 —— 吵架
+; ============================================================
+IF EVT == 7
+	CALL KOJO_SLAVE_INTERACTION_FIGHT(A_ID, B_ID)
+ENDIF
+
+; ============================================================
+;  事件 8: 安慰·共情 —— 互相安慰
+; ============================================================
+IF EVT == 8
+	CALL KOJO_SLAVE_INTERACTION_COMFORT(A_ID, B_ID)
+ENDIF
+
+; ============================================================
+;  事件 9: 闲聊·逃跑 —— 谈论逃跑
+; ============================================================
+IF EVT == 9
+	CALL KOJO_SLAVE_INTERACTION_ESCAPE(A_ID, B_ID)
+ENDIF
+
+; ============================================================
+;  事件 10: 比较·嫉妒 —— 攀比和嫉妒
+; ============================================================
+IF EVT == 10
+	CALL KOJO_SLAVE_INTERACTION_JEALOUSY(A_ID, B_ID)
+ENDIF
+
+; ============================================================
+;  事件 11: 沉默·默契 —— 不需要语言的交流
+; ============================================================
+IF EVT == 11
+	CALL KOJO_SLAVE_INTERACTION_SILENCE(A_ID, B_ID)
+ENDIF
+
+; ============================================================
+;  事件 12: 闲聊·种族 —— 种族特色互动（稀有事件）
+; ============================================================
+IF EVT == 12
+	CALL KOJO_SLAVE_INTERACTION_RACE(A_ID, B_ID)
+ENDIF
+
+PRINTL
+
+TARGET = STORE_TARGET
+RETURN
+
+
+; ============================================================
+;  以下为各事件的具体实现子函数
+;  参数: (发言者ID, 回应者ID) 或 (奴隶A_ID, 奴隶B_ID)
+;  CALLNAME:X, CSTR:X:种族, CSTR:X:陷落状态 获取角色信息
+; ============================================================
+
+
+; ── 家常·一方陷落一方未陷落 ──
+@KOJO_SLAVE_INTERACTION_FAMILY_FALLEN(FALLEN_ID, NOTFALLEN_ID)
+#DIM FALLEN_ID
+#DIM NOTFALLEN_ID
+
+PRINTFORML %CALLNAME:FALLEN_ID%在走廊拐角碰见了%CALLNAME:NOTFALLEN_ID%。两人平时话不多，但今天%CALLNAME:FALLEN_ID%先开了口。
+PRINTL
+
+IF IS_COW:FALLEN_ID
+	; 陷落方是奶牛
+	PRINTFORML 「你今天也要挤奶吗？我那边排得挺满……不过习惯了也就那样。」
+	IF HAS_FALLEN:NOTFALLEN_ID == 0 && HAS_YIELDED:NOTFALLEN_ID == 0
+		; 未陷落方还在抵抗
+		PRINTFORML %CALLNAME:NOTFALLEN_ID%盯着她看了两秒，嘴角不太自然地抿了一下。
+		PRINTFORML 「……你变了。以前你不是这样的。」
+		PRINTFORML %CALLNAME:FALLEN_ID%愣了一下，然后笑了笑——那个笑说不上是苦涩还是释然。
+		PRINTFORML 「是啊，变了。这里待久了，谁都会变。你也一样——早晚的事。」
+	ELSE
+		PRINTFORML %CALLNAME:NOTFALLEN_ID%点了点头，声音不大：「排满就排满吧……反正都是干活，哪个不是干。」
+	ENDIF
+ELSEIF IS_PREG:FALLEN_ID
+	PRINTFORML %CALLNAME:FALLEN_ID%扶着腰，走路已经有些吃力了。%CALLNAME:NOTFALLEN_ID%下意识伸手扶了她一把。
+	PRINTFORML 「谢了。这肚子一天比一天沉……也不知道到时候会怎样。」
+	IF HAS_FALLEN:NOTFALLEN_ID == 0 && HAS_YIELDED:NOTFALLEN_ID == 0
+		PRINTFORML 「……你就不在意吗？是谁的孩子都不知道，就这样……」
+		PRINTFORML %CALLNAME:FALLEN_ID%摇了摇头：「在意有什么用。现在我只在意这孩子能不能平安生下来。」
+		PRINTFORML 两个人都沉默了。走廊里只有%SLAVE_CALLNAME_WIND%的风声。
+	ELSE
+		PRINTFORML 「会没事的。」%CALLNAME:NOTFALLEN_ID%说这话时自己都不太信，但总要有人说。
+	ENDIF
+ELSE
+	PRINTFORML 「你今天气色不错。」%CALLNAME:FALLEN_ID%说。
+	IF HAS_FALLEN:NOTFALLEN_ID == 0 && HAS_YIELDED:NOTFALLEN_ID == 0
+		PRINTFORML %CALLNAME:NOTFALLEN_ID%防备地看了她一眼：「什么意思。」
+		PRINTFORML 「没什么意思。就随口一说。以前我也这样——看谁都像敌人。后来发现，这里真正的敌人不多，全是倒霉蛋。」
+		PRINTFORML %CALLNAME:NOTFALLEN_ID%没有回答，但眼神里的戒备淡了些许。
+	ELSE
+		PRINTFORML 「你也是。」%CALLNAME:NOTFALLEN_ID%回答得很简短，但语气里没有敌意。
+	ENDIF
+ENDIF
+
+
+; ── 家常·双方产奶 ──
+@KOJO_SLAVE_INTERACTION_FAMILY_MILK(A_ID, B_ID)
+#DIM A_ID
+#DIM B_ID
+
+PRINTFORML 挤奶房外面，%CALLNAME:A_ID%和%CALLNAME:B_ID%正好撞见。两人胸口都还微微发涨——刚挤完一轮。
+
+IF IS_COW:A_ID && IS_COW:B_ID
+	; 双方都是奶牛化
+	PRINTFORML %CALLNAME:A_ID%拍了拍自己胸口，笑了一声：「今天产了多少？」
+	PRINTFORML %CALLNAME:B_ID%比了个数字。%CALLNAME:A_ID%吹了声口哨：「行啊你，比我多。」
+	PRINTFORML 「多有什么用，又不是给自己喝的。」%CALLNAME:B_ID%说着往墙上一靠。
+	PRINTFORML 「那倒是。不过挤完以后舒服多了——早上胀得跟石头似的。」
+	PRINTL
+	PRINTFORML 两人相视一笑，那是只有产奶牛才懂的默契。
+ELSEIF IS_COW:A_ID
+	PRINTFORML %CALLNAME:A_ID%揉了揉胸口：「你也来挤奶？」
+	PRINTFORML %CALLNAME:B_ID%点点头，有些不好意思：「……胀得睡不着。以前从来没有过这种体验。」
+	PRINTFORML %CALLNAME:A_ID%一副过来人的表情：「没事，慢慢就习惯了。我以前也以为会很奇怪，现在觉得跟吃饭喝水差不多。」
+	PRINTFORML 「……你变了真多。」
+	PRINTFORML 「嘿嘿，你也会的。」
+ELSE
+	PRINTFORML %CALLNAME:A_ID%看见%CALLNAME:B_ID%也在揉胸口，忍不住笑了：「你也胀？」
+	PRINTFORML %CALLNAME:B_ID%脸一红：「别笑！……疼死了，你倒是好像很享受。」
+	PRINTFORML 「享受谈不上，但总比憋着强。你没发现吗，挤完以后整个人都轻了。」
+	PRINTFORML %CALLNAME:B_ID%想了想，竟然没法反驳。
+ENDIF
+
+
+; ── 家常·双方奶牛化 ──
+@KOJO_SLAVE_INTERACTION_FAMILY_DOUBLECOW(A_ID, B_ID)
+#DIM A_ID
+#DIM B_ID
+
+PRINTFORML 牧场角落的水槽边，%CALLNAME:A_ID%和%CALLNAME:B_ID%正在洗刷挤奶桶。桶里还残留着奶香。
+
+IF HAS_FALLEN:A_ID && HAS_FALLEN:B_ID
+	PRINTFORML 「今天主人夸我产奶稳定了。」%CALLNAME:A_ID%说话时眼睛都在发光。
+	PRINTFORML %CALLNAME:B_ID%不服气地哼了一声：「那是你昨天偷吃了我那份饲料！明天换我，肯定比你多。」
+	PRINTFORML 「行啊，比比看。输的人给赢的人刷一周的桶。」
+	PRINTFORML 「一言为定。」两人隔着水槽击了个掌，泡沫溅了一身。
+ELSE
+	PRINTFORML %CALLNAME:A_ID%低头刷着桶，声音闷闷的：「你说……外面的人要是看到咱们现在这副样子，会怎么想。」
+	PRINTFORML %CALLNAME:B_ID%手上的动作停了一下，然后继续刷：「大概会觉得我们很惨吧。但其实……」
+	PRINTFORML 「其实什么？」
+	PRINTFORML %CALLNAME:B_ID%想了想，把桶扣在水槽边沥水：「其实也没那么惨。有吃的，有地方睡，也不用打仗。除了每天被挤奶这点——」
+	PRINTFORML 「……你就不能让我自欺欺人一会儿吗。」%CALLNAME:A_ID%把抹布甩进了水槽。
+ENDIF
+
+
+; ── 家常·同种族 ──
+@KOJO_SLAVE_INTERACTION_FAMILY_SAMERACE(A_ID, B_ID)
+#DIM A_ID
+#DIM B_ID
+
+PRINTFORML 两个%CSTR:A_ID:种族%的女人在劳作间隙碰上了。同族相见，总有些说不清的感觉——既亲近，又尴尬。
+
+IF HAS_FALLEN:A_ID && HAS_FALLEN:B_ID
+	PRINTFORML 「你也是%CSTR:A_ID:种族%的？在这牧场里同族不多了。」
+	PRINTFORML 「可不是。以前在族里的时候三天两头聚会，现在……就剩咱俩了。」
+	PRINTFORML 「剩咱俩就够了。至少跟你能说几句不用解释的话。」
+	PRINTFORML %CALLNAME:B_ID%笑了一下：「也是。有些话跟外族说了她们也听不懂。」
+ELSEIF HAS_FALLEN:A_ID || HAS_FALLEN:B_ID
+	IF HAS_FALLEN:A_ID
+		PRINTFORML %CALLNAME:A_ID%看见同族，眼神亮了一下：「你……还好吗？」
+	ELSE
+		PRINTFORML %CALLNAME:B_ID%看见同族，眼神亮了一下：「你……还好吗？」
+	ENDIF
+	PRINTFORML 「还行吧。至少活着。」回答的人语气平淡，但同族听得出来，平淡下面压着很多东西。
+ELSE
+	PRINTFORML 两人对视了一眼，谁都没先说话。最后还是%CALLNAME:A_ID%打破了沉默：「你也是被哥布林抓来的？」
+	PRINTFORML %CALLNAME:B_ID%点头，又摇头：「算是吧。过程不想说了。」
+	PRINTFORML 「嗯。都懂。不问了。」
+	PRINTFORML 沉默了一阵，但这种沉默并不难受——同族之间，有时候不用太多话。
+ENDIF
+
+
+; ── 家常·跨种族 ──
+@KOJO_SLAVE_INTERACTION_FAMILY_CROSSRACE(A_ID, B_ID)
+#DIM A_ID
+#DIM B_ID
+
+PRINTFORML %CSTR:A_ID:种族%的%CALLNAME:A_ID%和%CSTR:B_ID:种族%的%CALLNAME:B_ID%今天难得坐在一起歇了口气。
+
+IF HAS_FALLEN:A_ID && HAS_FALLEN:B_ID
+	PRINTFORML %CALLNAME:A_ID%递了杯水过去：「喝点吧。看你也累得够呛。」
+	PRINTFORML %CALLNAME:B_ID%接过来喝了一口，长长地出了口气：「谢了。这地方唯一的好处就是水还不错。」
+	PRINTFORML 「是吧。以前在族里听说过你们%CSTR:B_ID:种族%，没想到第一次打交道是在这种地方。」
+	PRINTFORML 「彼此彼此。不过也不算坏——至少你不是来抓我的。」
+ELSE
+	IF CSTR:A_ID:种族 == "牛角族"
+		PRINTFORML %CALLNAME:A_ID%晃了晃头，角差点撞到棚顶：「你们%CSTR:B_ID:种族%的都这么娇小吗？」
+		PRINTFORML %CALLNAME:B_ID%抬头看了看她头上的角，往后退了半步：「不是我们娇小，是你太高了……而且那对角真的有点吓人。」
+		PRINTFORML %CALLNAME:A_ID%把角收了收：「不好意思，习惯了。其实这角在干活的时候挺碍事的，老撞东西。」
+	ELSEIF CSTR:B_ID:种族 == "牛角族"
+		PRINTFORML %CALLNAME:B_ID%晃了晃头，角差点撞到棚顶：「你们%CSTR:A_ID:种族%的都这么娇小吗？」
+		PRINTFORML %CALLNAME:A_ID%抬头看了看她头上的角，往后退了半步：「不是我们娇小，是你太高了……而且那对角真的有点吓人。」
+		PRINTFORML %CALLNAME:B_ID%把角收了收：「不好意思，习惯了。其实这角在干活的时候挺碍事的，老撞东西。」
+	ELSEIF CSTR:A_ID:种族 == "妖精" || CSTR:A_ID:种族 == "妖精族" || CSTR:A_ID:种族 == "妖精型"
+		PRINTFORML %CALLNAME:A_ID%的翅膀在背后微微颤动：「你冷吗？我可以扇点暖风——翅膀白长的，就这点用。」
+		PRINTFORML %CALLNAME:B_ID%愣了一下，然后轻轻地说了句：「不用……但谢了。」
+	ELSEIF CSTR:B_ID:种族 == "妖精" || CSTR:B_ID:种族 == "妖精族" || CSTR:B_ID:种族 == "妖精型"
+		PRINTFORML %CALLNAME:B_ID%的翅膀在背后微微颤动：「你冷吗？我可以扇点暖风——翅膀白长的，就这点用。」
+		PRINTFORML %CALLNAME:A_ID%愣了一下，然后轻轻地说了句：「不用……但谢了。」
+	ELSE
+		PRINTFORML 「你们%CSTR:B_ID:种族%的那个——」%CALLNAME:A_ID%比划了一下，「角？翅膀？耳？算了当我没问。」
+		PRINTFORML %CALLNAME:B_ID%被她笨拙的好奇心逗得嘴角动了一下：「想问就问吧，又不会吃了你。我们%CSTR:B_ID:种族%又不是吃人的。」
+	ENDIF
+ENDIF
+
+
+; ── 产奶·双方 ──
+@KOJO_SLAVE_INTERACTION_MILK_BOTH(A_ID, B_ID)
+#DIM A_ID
+#DIM B_ID
+
+PRINTFORML 傍晚的挤奶房里，%CALLNAME:A_ID%和%CALLNAME:B_ID%正等着下一轮挤奶。空气中弥漫着一股淡淡的奶香。
+
+IF IS_COW:A_ID && IS_COW:B_ID
+	PRINTFORML %CALLNAME:A_ID%把挤奶桶往地上一墩，大大咧咧地说：「知道吗，我现在觉得当奶牛比当人轻松。」
+	PRINTFORML %CALLNAME:B_ID%白了她一眼：「你那是脑子被挤坏了。」
+	PRINTFORML 「才没有。你看——不用思考，不用害怕，每天就吃、睡、产奶。以前在外面天天提心吊胆，现在呢？桶一满，任务完成。」
+	PRINTFORML %CALLNAME:B_ID%沉默了一会儿，忽然叹了口气：「……妈的，好像有点道理。」
+ELSEIF IS_COW:A_ID
+	PRINTFORML %CALLNAME:A_ID%已经开始自己按摩乳房了——手法娴熟得像个老手：「你也开始产奶了吧？我跟你说，提前揉开就不那么疼。」
+	PRINTFORML %CALLNAME:B_ID%将信将疑地看着她：「你确定？」
+	PRINTFORML 「骗你干嘛。刚产奶那阵子我疼得想撞墙，后来摸出门道了。」说着就示范起来。
+	PRINTFORML %CALLNAME:B_ID%犹豫了一下，还是跟着学了。两个女人在挤奶房里互相教学，画面看起来竟然有点温馨。
+ELSEIF IS_COW:B_ID
+	PRINTFORML %CALLNAME:B_ID%已经开始自己按摩乳房了：「你也开始产奶了吧？我跟你说，提前揉开就不那么疼。」
+	PRINTFORML %CALLNAME:A_ID%将信将疑地看着她：「你确定？」
+	PRINTFORML 「骗你干嘛。刚产奶那阵子我疼得想撞墙，后来摸出门道了。」
+ELSE
+	PRINTFORML %CALLNAME:A_ID%捂着胸口，愁眉苦脸：「胀死了。你说为什么非得是咱们产奶——」
+	PRINTFORML %CALLNAME:B_ID%揉着自己的胸，比了个噤声的手势：「嘘。别提为什么。想太多更难受。」
+	PRINTFORML %CALLNAME:A_ID%撇了撇嘴，但没再问了。两个人就这么安安静静地揉着胀痛的胸口，等挤奶机器启动。
+ENDIF
+
+
+; ── 产奶·一方 ──
+@KOJO_SLAVE_INTERACTION_MILK_ONE(MILK_ID, NOMILK_ID)
+#DIM MILK_ID
+#DIM NOMILK_ID
+
+PRINTFORML %CALLNAME:MILK_ID%刚挤完一轮，走路时还下意识护着胸口。%CALLNAME:NOMILK_ID%在旁边干活，忍不住多看了两眼。
+
+IF IS_COW:MILK_ID
+	PRINTFORML %CALLNAME:NOMILK_ID%犹豫了好一阵，终于开口：「那个……挤奶疼吗？」
+	PRINTFORML %CALLNAME:MILK_ID%回头看着她，嘴角一歪：「疼倒不疼，就是胀。胀得你满脑子只想着一件事——赶紧把奶弄出去。」
+	PRINTFORML 「……听起来像上瘾。」
+	PRINTFORML %CALLNAME:MILK_ID%想了想，没有反驳。
+ELSE
+	PRINTFORML %CALLNAME:NOMILK_ID%小声问：「你那个……奶水，是自然来的还是被弄了什么东西？」
+	PRINTFORML %CALLNAME:MILK_ID%苦笑了一下：「你问我我问谁。反正某天醒来胸前就胀得不行，然后就这样了。」
+	PRINTFORML %CALLNAME:NOMILK_ID%下意识低头看了看自己胸口，咽了口口水。
+	PRINTFORML %CALLNAME:MILK_ID%拍了拍她的肩：「别怕。等你也有了，我教你——我刚来那阵连碰都不敢碰。」
+ENDIF
+
+
+; ── 怀孕·双方 ──
+@KOJO_SLAVE_INTERACTION_PREG_BOTH(A_ID, B_ID)
+#DIM A_ID
+#DIM B_ID
+
+PRINTFORML 两个大肚子的女人在树荫下并排坐着，这是牧场里最常见也最奇异的一景。
+
+IF HAS_FALLEN:A_ID && HAS_FALLEN:B_ID
+	PRINTFORML %CALLNAME:A_ID%摸着肚子，忽然笑了：「你说咱俩的孩子以后会不会认识？」
+	PRINTFORML %CALLNAME:B_ID%也笑了：「肯定认识啊。都在这个牧场里长大，想不认识都难。」
+	PRINTFORML 「那你希望是男孩还是女孩？」
+	PRINTFORML 「希望什么希望，健康就行。」%CALLNAME:B_ID%顿了顿，「不过要是女孩，希望别走咱们的老路。」
+	PRINTFORML %CALLNAME:A_ID%的笑容淡了一点，手在肚子上停了：「……是啊。」
+ELSEIF HAS_FALLEN:A_ID
+	PRINTFORML %CALLNAME:A_ID%看着%CALLNAME:B_ID%那明显很紧张的样子，轻声说：「别怕。刚开始都这样——觉得肚子里多了个东西，很恐怖对吧？」
+	PRINTFORML %CALLNAME:B_ID%咬着嘴唇点了点头。
+	PRINTFORML 「慢慢就好了。等它第一次动的时候……」%CALLNAME:A_ID%把手放在自己肚子上，「你会觉得什么都值了。」
+	PRINTFORML %CALLNAME:B_ID%声音有点抖：「你……你真的这么想？」
+	PRINTFORML %CALLNAME:A_ID%点了点头，眼眶有点红。
+ELSE
+	PRINTFORML %CALLNAME:A_ID%看着%CALLNAME:B_ID%：「你的比我的大。」
+	PRINTFORML %CALLNAME:B_ID%没好气地说：「比这个干嘛。又不是什么值得炫耀的事。」
+	PRINTFORML %CALLNAME:A_ID%耸了耸肩：「反正都这样了，不如比着玩。你看我的——踢了。这小王八蛋天天踢。」
+	PRINTFORML %CALLNAME:B_ID%忍不住笑了：「……说自己的孩子是小王八蛋，你这当妈的。」
+ENDIF
+
+
+; ── 怀孕·一方 ──
+@KOJO_SLAVE_INTERACTION_PREG_ONE(PREG_ID, NOPREG_ID)
+#DIM PREG_ID
+#DIM NOPREG_ID
+
+PRINTFORML %CALLNAME:PREG_ID%扶着腰，慢慢走到%CALLNAME:NOPREG_ID%旁边。肚子已经很明显了，走路的姿势也变了。
+
+IF IS_COW:PREG_ID
+	PRINTFORML %CALLNAME:NOPREG_ID%看着她的肚子，不知道该说什么。
+	PRINTFORML %CALLNAME:PREG_ID%自己先开了口：「又怀又产奶，感觉自己都快变成牧场最高效的家畜了。」语气轻松得像在说今天的天气。
+	PRINTFORML %CALLNAME:NOPREG_ID%张了张嘴，最后只说了句：「……你倒是想得开。」
+	PRINTFORML 「想不开还能怎样？总不能一尸两命把自己气死。」
+ELSEIF HAS_FALLEN:PREG_ID
+	PRINTFORML %CALLNAME:NOPREG_ID%帮她搬了个矮凳：「坐会儿吧，看你站都站不稳了。」
+	PRINTFORML %CALLNAME:PREG_ID%坐下时长出一口气：「谢了。这孩子真沉。以前看别人怀孕觉得没什么，轮到自己才知道每一步都像在爬山。」
+	PRINTFORML %CALLNAME:NOPREG_ID%在旁边坐下，犹豫了一下问：「是谁的……你知道吗？」
+	PRINTFORML %CALLNAME:PREG_ID%望着远处，声音很轻：「不知道。也不想知道。知道了又能怎样。」
+ELSE
+	PRINTFORML %CALLNAME:NOPREG_ID%小心翼翼地看了看她的肚子：「……难受吗？」
+	PRINTFORML %CALLNAME:PREG_ID%低头摸了摸鼓起的腹部，眼圈有点红但没哭：「难受的不是身子。」
+	PRINTFORML %CALLNAME:NOPREG_ID%不知道该接什么，只是默默在旁边陪着。风吹过来的时候，她把自己的外衣脱下来搭在了%CALLNAME:PREG_ID%的肩膀上。
+ENDIF
+
+
+; ── 主人·双方恋慕 ──
+@KOJO_SLAVE_INTERACTION_MASTER_BOTHLOVE(A_ID, B_ID)
+#DIM A_ID
+#DIM B_ID
+
+PRINTFORML %CALLNAME:A_ID%和%CALLNAME:B_ID%在走廊里擦肩，一个端着主人换下来的衣物，一个拿着刚擦完的靴子。
+
+PRINTFORML %CALLNAME:A_ID%先开了口，语气轻轻的：「今天……%MASTER_CALL()%跟你说话了吗？」
+PRINTFORML %CALLNAME:B_ID%顿了一下，嘴角藏不住地翘起来：「说了。问我昨晚睡得好不好。就这么一句。」
+PRINTFORML 「那可真好。」%CALLNAME:A_ID%抱紧了手里的衣物，声音低得像自言自语：「上次他摸了一下我的头，我那晚就想了一整夜。」
+PRINTFORML %CALLNAME:B_ID%看着她，忽然笑了：「你完了。」
+PRINTFORML 「是啊。你也是。」
+PRINTL
+PRINTFORML 两个人都没再说话，但各自转过身时，脸上都带着差不多的表情——那种被阳光照到的、说不清道不明的柔软。
+
+
+; ── 主人·一方恋慕 ──
+@KOJO_SLAVE_INTERACTION_MASTER_ONELOVE(A_ID, B_ID)
+#DIM A_ID
+#DIM B_ID
+
+; 先找出谁是恋慕方
+#DIM LOVER_ID
+#DIM NOTLOVER_ID
+LOVER_ID = A_ID
+NOTLOVER_ID = B_ID
+IF HAS_FALLEN:B_ID
+	LOVER_ID = B_ID
+	NOTLOVER_ID = A_ID
+ENDIF
+
+PRINTFORML %CALLNAME:LOVER_ID%做完了今天的活，坐在台阶上发呆——发的是那种嘴角不自觉翘起来的呆。
+
+PRINTFORML %CALLNAME:NOTLOVER_ID%路过时瞥了一眼：「想什么呢，一脸蠢样。」
+PRINTFORML %CALLNAME:LOVER_ID%回过神，脸一下红了：「没、没什么——」
+PRINTFORML %CALLNAME:NOTLOVER_ID%在她旁边坐下来，语气忽然变得认真：「你该不会是……对他？」
+PRINTFORML %CALLNAME:LOVER_ID%没有回答，但红色已经从脸颊蔓延到了耳朵根。
+PRINTFORML %CALLNAME:NOTLOVER_ID%沉默了好一会儿，最后叹了口气：「……算了，你高兴就好。反正这地方能找到高兴的事不容易。」
+
+
+; ── 主人·双方未恋慕 ──
+@KOJO_SLAVE_INTERACTION_MASTER_NEITHER(A_ID, B_ID)
+#DIM A_ID
+#DIM B_ID
+
+PRINTFORML 天气沉闷得像压了一层棉被。%CALLNAME:A_ID%和%CALLNAME:B_ID%都在杂物房躲懒，谁也不想去干下一份活。
+
+PRINTFORML %CALLNAME:A_ID%先开口：「你说……那个人，他到底想怎样。」
+PRINTFORML %CALLNAME:B_ID%把手里一根草秆折成了两半：「谁知道。反正不是来救我们的。」
+IF HAS_YIELDED:A_ID || HAS_YIELDED:B_ID
+	PRINTFORML 「但好像也不是来害我们的。」%CALLNAME:A_ID%补充了一句，语气不太确定。
+	PRINTFORML %CALLNAME:B_ID%把草秆一扔，站了起来：「干活吧。想太多也没用。至少现在有瓦遮头。」
+ELSE
+	PRINTFORML %CALLNAME:A_ID%咬了咬牙：「等有机会——」
+	PRINTFORML %CALLNAME:B_ID%打断了她：「别说了。墙上有耳朵。」
+	PRINTFORML 两个人同时闭嘴。杂物房里只剩下蟋蟀的叫声。
+ENDIF
+
+
+; ── 互助·A帮B ──
+@KOJO_SLAVE_INTERACTION_HELP(HELPED_ID, HELPER_ID, DUMMY)
+#DIM HELPED_ID
+#DIM HELPER_ID
+#DIM DUMMY
+
+PRINTFORML %CALLNAME:HELPED_ID%扶着墙，大口喘气。今天的活太重了，腿都在打颤。
+PRINTFORML %CALLNAME:HELPER_ID%瞥了一眼，放下手里的工具走过去：「剩下的我来。你坐会儿。」
+
+IF HAS_FALLEN:HELPER_ID
+	PRINTFORML 「不用，我还能——」
+	PRINTFORML 「能什么能。脸都白了。逞强给谁看呢——他又不在。」%CALLNAME:HELPER_ID%不由分说地接过她手里的水桶。
+	PRINTFORML %CALLNAME:HELPED_ID%张了张嘴，最后闭上了。她靠着墙慢慢滑坐下来，膝盖都在发抖。
+	PRINTL
+	PRINTFORML %CALLNAME:HELPER_ID%拎着桶走出去几步，回头补了一句：「歇够了记得还我。下回轮到你帮我的时候我可不会客气。」
+ELSEIF HAS_FALLEN:HELPED_ID
+	PRINTFORML %CALLNAME:HELPED_ID%感激地看了她一眼：「谢谢。平时都是帮别人，被人帮还真不习惯。」
+	PRINTFORML %CALLNAME:HELPER_ID%已经开始干活了：「少废话。你今天这状态，不帮你是给自己添麻烦——你倒了活还不是得摊到我头上。」
+	PRINTFORML %CALLNAME:HELPED_ID%笑了笑，没有戳穿她拙劣的借口。
+ELSE
+	PRINTFORML %CALLNAME:HELPED_ID%想拒绝，但手连抬起来的力气都快没了。
+	PRINTFORML %CALLNAME:HELPER_ID%一边干活一边嘟囔：「就当是……你欠我一次。回头你得还。」
+	PRINTFORML %CALLNAME:HELPED_ID%靠在墙上，声音很轻：「嗯。一定还。」
+ENDIF
+
+
+; ── 互助·双方体力均衡 ──
+@KOJO_SLAVE_INTERACTION_HELP_NEUTRAL(A_ID, B_ID)
+#DIM A_ID
+#DIM B_ID
+
+PRINTFORML 今天的活是搬草料。%CALLNAME:A_ID%和%CALLNAME:B_ID%一人一头，抬着沉重的草垛往仓库挪。
+
+PRINTFORML %CALLNAME:A_ID%咬着牙说：「左……左边抬高点……」
+PRINTFORML %CALLNAME:B_ID%调整了一下姿势：「不行，你太重了！——我是说草料太重了！」
+PRINTFORML %CALLNAME:A_ID%被气笑了：「你刚才是不是想骂我胖？」
+PRINTFORML %CALLNAME:B_ID%脸一红：「没有！我真的在说草料！」
+PRINTL
+PRINTFORML 草垛在仓库门口放下的瞬间，两个人同时瘫坐在地上，对视了一眼，然后不约而同地笑了出来。
+PRINTFORML 「下次换人。」%CALLNAME:B_ID%说。
+PRINTFORML 「换人？下次你我还得搭伙，别想跑。」%CALLNAME:A_ID%也笑了。
+
+
+; ── 闲聊·过往 ──
+@KOJO_SLAVE_INTERACTION_PAST(A_ID, B_ID)
+#DIM A_ID
+#DIM B_ID
+
+PRINTFORML 夜晚的牧场安静下来以后，%CALLNAME:A_ID%和%CALLNAME:B_ID%坐在畜棚后面的干草堆上。不知道是谁先提起了过去。
+
+IF IS_COW:A_ID || IS_COW:B_ID
+	IF IS_COW:A_ID
+		PRINTFORML %CALLNAME:A_ID%望着天上的星星：「我以前是个药师。给人看病、配药——那种日子现在想起来跟做梦一样。」
+	ELSE
+		PRINTFORML %CALLNAME:B_ID%望着天上的星星：「我以前是个药师。给人看病、配药——那种日子现在想起来跟做梦一样。」
+	ENDIF
+	PRINTFORML 「现在呢？给人配奶？」接话的人说完自己先笑了。
+	PRINTFORML 「去你的。」说话的人抓起一把干草扔过去。草屑飘了一脸，两个人都笑弯了腰。
+ELSE
+	IF HAS_FALLEN:A_ID || HAS_FALLEN:B_ID
+		PRINTFORML 「我以前住在镇上，开了个小裁缝铺。」第一个开口的人声音很轻，像在说别人的故事。
+		PRINTFORML 「嗯。我以前帮人放羊。」另一个人靠在草堆上，「羊比人好管。羊不会抓你。」
+		PRINTFORML 「会顶你。」
+		PRINTFORML 「那也比被绿皮抓强。」
+		PRINTL
+		PRINTFORML 两个人都笑了，但笑声在夜风里飘不了多远就散了。
+	ELSE
+		PRINTFORML 「你想家吗？」问的人声音很小。
+		PRINTFORML 被问的那个沉默了很久，久到以为她不会回答了。
+		PRINTFORML 「不敢想。一想就——」她没说完。但另一个人懂了。
+	ENDIF
+ENDIF
+
+
+; ── 冲突·嘴仗 ──
+@KOJO_SLAVE_INTERACTION_FIGHT(A_ID, B_ID)
+#DIM A_ID
+#DIM B_ID
+
+PRINTFORML 今天不知道是谁先点了火。等回过神来，%CALLNAME:A_ID%和%CALLNAME:B_ID%已经在院子里对峙了。
+
+IF (IS_COW:A_ID && !IS_COW:B_ID) || (IS_COW:B_ID && !IS_COW:A_ID)
+	IF IS_COW:A_ID
+		PRINTFORML %CALLNAME:B_ID%尖着嗓子：「你挤奶挤傻了吧！今天的水明明是我先打的，你插什么队！」
+		PRINTFORML %CALLNAME:A_ID%也不示弱：「你先打？你桶都没放在龙头下面！我数了三秒你人都不在！」
+	ELSE
+		PRINTFORML %CALLNAME:A_ID%尖着嗓子：「你挤奶挤傻了吧！今天的水明明是我先打的，你插什么队！」
+		PRINTFORML %CALLNAME:B_ID%也不示弱：「你先打？你桶都没放在龙头下面！我数了三秒你人都不在！」
+	ENDIF
+	PRINTFORML 「那是因为我去拿桶了！」
+	PRINTFORML 「那就不叫占位！」
+	PRINTL
+	PRINTFORML 两个人互瞪了足足十秒，最后%CALLNAME:A_ID%一拳捶在墙上，%CALLNAME:B_ID%踢翻了旁边的空桶。然后各自扭头走开，谁都没赢。
+ELSEIF HAS_FALLEN:A_ID && HAS_FALLEN:B_ID
+	PRINTFORML %CALLNAME:A_ID%推了%CALLNAME:B_ID%一把：「你少在主公面前献殷勤了！今天端茶倒水的活是我的！」
+	PRINTFORML %CALLNAME:B_ID%踉跄了一下，也不客气地推回去：「谁规定那是你的活？主公想喝谁倒的茶你管得着吗！」
+	PRINTFORML 「你——！」
+	PRINTFORML 「你什么你！」
+	PRINTL
+	PRINTFORML 两个人在走廊里推推搡搡了好一阵，直到远处传来脚步声才各自散开。但眼神还在隔空厮杀。
+ELSE
+	PRINTFORML %CALLNAME:A_ID%咬了咬牙：「你能不能别老拿那种眼神看我——我没招你吧？」
+	PRINTFORML %CALLNAME:B_ID%冷笑了一声：「这里谁有资格用那种眼神对别人？你倒是说说看。」
+	PRINTFORML 「我说你——」%CALLNAME:A_ID%的声音卡在了喉咙里。因为她自己也说不清楚到底在气什么。
+	PRINTFORML %CALLNAME:B_ID%抱着胳膊等了几秒，见她没说话，转身走了。但走得比平时重，每一步都像在跺地。
+ENDIF
+
+
+; ── 安慰·共情 ──
+@KOJO_SLAVE_INTERACTION_COMFORT(A_ID, B_ID)
+#DIM A_ID
+#DIM B_ID
+
+PRINTFORML %CALLNAME:A_ID%在储藏室角落里发现%CALLNAME:B_ID%的时候，她正抱着膝盖缩在麻袋中间，肩膀一抖一抖地抽着。
+
+IF !HAS_FALLEN:B_ID && !HAS_YIELDED:B_ID
+	; B还完全没屈服，在偷偷哭
+	PRINTFORML %CALLNAME:A_ID%在她旁边蹲下来，什么都没说，只是把一只手放在她背上。
+	PRINTFORML %CALLNAME:B_ID%被碰到的一瞬间僵住了，然后猛地抬起头——眼睛红得像兔子。
+	PRINTFORML 「走开——」
+	PRINTFORML %CALLNAME:A_ID%没有走开。她只是把那只手留在她背上，温温热热的：「哭吧。这儿没人听见。我以前也躲这儿哭过。」
+	PRINTFORML %CALLNAME:B_ID%死死咬着嘴唇，但眼泪止不住。过了很久，她才从牙缝里挤出两个字：「……真的？」
+	PRINTFORML %CALLNAME:A_ID%点了点头。
+ELSEIF IS_PREG:B_ID
+	PRINTFORML %CALLNAME:A_ID%一看就明白了——孕期的情绪说来就来，挡不住。
+	PRINTFORML 她挨着%CALLNAME:B_ID%坐下，肩膀靠了过去：「又来那阵难受了？」
+	PRINTFORML %CALLNAME:B_ID%把脸埋进手臂里，闷声说：「我不知道为什么哭。就是……就是觉得什么都很难。」
+	PRINTFORML %CALLNAME:A_ID%轻轻拍着她的背，像在拍一个摔了跤的小孩：「不是你的问题。是肚子里的那个小东西把你搅的。」
+	PRINTFORML %CALLNAME:B_ID%抽着鼻子抬起脸：「你那时候也这样？」
+	PRINTFORML %CALLNAME:A_ID%笑了：「比你惨。我哭得把挤奶桶都踢翻了。」
+ELSE
+	PRINTFORML %CALLNAME:A_ID%在她旁边坐下来，从兜里掏出一块干粮：「吃吧。今天多领的。」
+	PRINTFORML %CALLNAME:B_ID%没有接，只是把脸埋在膝盖间，肩膀还在抖。
+	PRINTFORML %CALLNAME:A_ID%把干粮放在她膝盖旁边，然后站起来：「吃不吃随你。有个出气的地方总比憋死强。这门我给你虚掩着，没人会进来。」
+	PRINTFORML 她快走到门口时，身后传来一句嗓子哑得几乎听不清的话。
+	PRINTFORML 「%CALLNAME:A_ID%。谢谢。回头——等我好了——我帮你挤一个月的奶。」
+	PRINTFORML %CALLNAME:A_ID%回头笑了笑：「不用一个月。一顿饭就行。」
+
+
+; ── 逃跑话题 ──
+@KOJO_SLAVE_INTERACTION_ESCAPE(A_ID, B_ID)
+#DIM A_ID
+#DIM B_ID
+
+PRINTFORML %CALLNAME:A_ID%和%CALLNAME:B_ID%坐在仓库后面的矮墙下，四周没人。阳光从墙缝里漏进来，照得地上的尘土一清二楚。
+
+IF HAS_FALLEN:A_ID || HAS_FALLEN:B_ID
+	PRINTFORML %CALLNAME:A_ID%压低声音：「你有没有……算了当我没问。」
+	PRINTFORML %CALLNAME:B_ID%侧过头看她，等了几秒：「想过逃跑对吧。我也想过。但后来就不想了。」
+	PRINTFORML 「为什么？」
+	PRINTFORML %CALLNAME:B_ID%把一片枯叶从地上捡起来，慢慢撕成碎片：「因为不知道跑出去以后能去哪儿。外面等着的可能比这里更烂。」
+	PRINTFORML %CALLNAME:A_ID%沉默了。她说的是实话。最难受的那种实话。
+ELSE
+	PRINTFORML %CALLNAME:A_ID%在手心里拿树枝画了个乱七八糟的地图：「你看，畜棚后面有条排水沟，再过去就是围墙豁口——」
+	PRINTFORML %CALLNAME:B_ID%盯着她画的那张"地图"看了很久，然后伸手把它抹平了。
+	PRINTFORML 「你干嘛——」
+	PRINTFORML 「别画。也别说了。」%CALLNAME:B_ID%的声音很平静，「上个月有人跑过。天亮之前就被拖回来了。」
+	PRINTFORML %CALLNAME:A_ID%的脸色变了。手里的树枝「啪」一声折成了两截。
+	PRINTFORML 两个人就那么坐着，直到太阳从墙缝里移开，把影子拖得老长。
+ENDIF
+
+
+; ── 比较·嫉妒 ──
+@KOJO_SLAVE_INTERACTION_JEALOUSY(A_ID, B_ID)
+#DIM A_ID
+#DIM B_ID
+
+IF (HAS_FALLEN:A_ID && !HAS_FALLEN:B_ID) || (HAS_FALLEN:B_ID && !HAS_FALLEN:A_ID)
+	IF HAS_FALLEN:A_ID
+		PRINTFORML %CALLNAME:B_ID%今天不知怎么的，看%CALLNAME:A_ID%干活时嘴边的微笑特别不顺眼。
+	ELSE
+		PRINTFORML %CALLNAME:A_ID%今天不知怎么的，看%CALLNAME:B_ID%干活时嘴边的微笑特别不顺眼。
+	ENDIF
+	PRINTFORML 她把手上的抹布一摔：「你倒是想得开啊。被关在这里还能笑出来——你是不是脑子被门夹了？」
+	PRINTFORML 被骂的那个愣了一下，然后慢慢把手上的活放下。她的声音很平静：「不是想得开。是死心了。死心以后，能笑的地方就多了一点。」
+	PRINTFORML 骂人的那个张了张嘴，发现自己其实不是在气对方——是在气自己。气自己为什么还在意，气自己为什么做不到"死心"。
+	PRINTFORML 她弯腰把抹布捡起来，没再说话。
+ELSEIF IS_PREG:A_ID && !IS_PREG:B_ID
+	PRINTFORML %CALLNAME:B_ID%看着%CALLNAME:A_ID%被人搀着走过院子，手里的扫帚柄捏紧了。
+	PRINTFORML 不是嫉妒怀孩子——谁会嫉妒这种事。是嫉妒她被照顾。怀孕了有人扶，有人问，有人帮她干活。
+	PRINTFORML %CALLNAME:A_ID%经过她身边时，忽然停了下来：「……你是不是觉得不公平。」
+	PRINTFORML %CALLNAME:B_ID%被戳穿了心思，脸一红：「没有——」
+	PRINTFORML %CALLNAME:A_ID%把她的手拉过来放在自己肚子上：「感觉到了吗。不是温柔，是他在踹我。怀这个可不叫优待，叫另一个坑。」
+	PRINTFORML %CALLNAME:B_ID%抽回了手，但脸色缓和了不少。
+ELSE
+	PRINTFORML %CALLNAME:A_ID%瞥了一眼%CALLNAME:B_ID%刚领到的饲料，比她多了一勺。多一勺也是多。
+	PRINTFORML 她忍了一个上午，终于在午休时忍不住了：「你今天怎么多分了一勺。」
+	PRINTFORML %CALLNAME:B_ID%被问得莫名其妙：「什么多一勺——哦你说这个。是我昨天帮厨房搬了三袋面，厨娘多给的。」
+	PRINTFORML %CALLNAME:A_ID%的脸红了：「……不早说。」
+	PRINTFORML %CALLNAME:B_ID%把碟子往中间推了推：「吃吧。分你一半。」
+ENDIF
+
+
+; ── 沉默·默契 ──
+@KOJO_SLAVE_INTERACTION_SILENCE(A_ID, B_ID)
+#DIM A_ID
+#DIM B_ID
+
+PRINTFORML 谁也没有说话。
+
+IF IS_PREG:A_ID && IS_PREG:B_ID
+	PRINTFORML %CALLNAME:A_ID%和%CALLNAME:B_ID%并排躺在畜棚后面的干草堆上，各自摸着各自隆起的肚子。
+	PRINTFORML 偶尔有风吹过，偶尔有鸟叫。两个人都睁着眼睛看棚顶漏下来的光。
+	PRINTFORML 过了很久，%CALLNAME:A_ID%把手伸过去，握住了%CALLNAME:B_ID%的手。
+	PRINTFORML %CALLNAME:B_ID%没有转头，但手指收紧了一点。
+	PRINTL
+	PRINTFORML 不需要说话。在这个地方，能有一个不需要说话的人，就是最大的幸运了。
+ELSEIF HAS_FALLEN:A_ID && HAS_FALLEN:B_ID
+	PRINTFORML %CALLNAME:A_ID%和%CALLNAME:B_ID%一起在水槽边洗衣服。肥皂泡在太阳下闪着彩色的光。
+	PRINTFORML %CALLNAME:A_ID%的衣服上有主人早上打翻的茶渍，%CALLNAME:B_ID%的袖子上沾了其他奴隶挤奶时溅到的奶渍。
+	PRINTFORML 两个人默默地搓着，偶尔把肥皂递给对方，没有说话。
+	PRINTL
+	PRINTFORML 但她们都明白——一起洗同一个人的衣服，这种感觉很奇怪。像是共享了一个不能说出口的秘密。
+ELSE
+	PRINTFORML 两个人不知道对方在想什么，但知道那不是快乐的事。这就够了。
+	PRINTL
+	PRINTFORML 沉默本身已经替她们说了所有的话。
+ENDIF
+
+
+; ── 种族特色互动 ──
+@KOJO_SLAVE_INTERACTION_RACE(A_ID, B_ID)
+#DIM A_ID
+#DIM B_ID
+
+IF CSTR:A_ID:种族 == "牛角族" || CSTR:B_ID:种族 == "牛角族"
+	IF CSTR:A_ID:种族 == "牛角族"
+		PRINTFORML %CALLNAME:A_ID%蹲下来让%CALLNAME:B_ID%摸她的角。%CALLNAME:B_ID%小心翼翼地碰了一下，然后缩回了手。
+	ELSE
+		PRINTFORML %CALLNAME:B_ID%蹲下来让%CALLNAME:A_ID%摸她的角。%CALLNAME:A_ID%小心翼翼地碰了一下，然后缩回了手。
+	ENDIF
+	PRINTFORML 「不疼——你摸那么轻干嘛，又不是豆腐。」
+	PRINTFORML 「我怕碰坏了……」摸角的人又伸手碰了一下，这次大胆了一点，顺着纹路摸了摸。
+	PRINTFORML 「凉凉的。有点像石头，但是光滑的。」
+	PRINTFORML 被摸角的人忽然抖了一下：「别摸根！那里痒。」
+	IF IS_MILK:A_ID || IS_MILK:B_ID || IS_COW:A_ID || IS_COW:B_ID
+		PRINTFORML %CALLNAME:B_ID%缩回手，忽然笑了：「所以你这角……挤奶的时候会碍事吗？」
+		PRINTFORML %CALLNAME:A_ID%翻了个大白眼：「太碍事了。每次挤奶都得歪着脖子，不然角会撞到机器。你问这个干嘛——别笑！」
+	ENDIF
+ELSEIF CSTR:A_ID:种族 == "妖精" || CSTR:A_ID:种族 == "妖精族" || CSTR:B_ID:种族 == "妖精" || CSTR:B_ID:种族 == "妖精族"
+	IF CSTR:A_ID:种族 == "妖精" || CSTR:A_ID:种族 == "妖精族"
+		PRINTFORML %CALLNAME:A_ID%的翅膀在背后展开了一点，透亮的阳光穿过薄薄的翼膜。
+	ELSE
+		PRINTFORML %CALLNAME:B_ID%的翅膀在背后展开了一点，透亮的阳光穿过薄薄的翼膜。
+	ENDIF
+	PRINTFORML 「真好看——」对方忍不住伸手，但手指在离翅膀半寸的地方停住了。
+	PRINTFORML 「可以碰。轻点就行。」长翅膀的人把翅膀收了收，让翼尖刚好够到对方的手。
+	PRINTFORML 「像蜻蜓。」
+	PRINTFORML 「你才是蜻蜓。我是妖精。正经八百的妖精。」
+ELSE
+	PRINTFORML %CSTR:A_ID:种族%的%CALLNAME:A_ID%和%CSTR:B_ID:种族%的%CALLNAME:B_ID%难得有闲心，蹲在院子里各自整着自己的东西。
+
+	PRINTFORML %CALLNAME:A_ID%看了%CALLNAME:B_ID%一眼，忽然问：「你们%CSTR:B_ID:种族%睡觉的时候真的睁一只眼？」
+	PRINTFORML %CALLNAME:B_ID%愣了一下，然后笑了：「谁跟你说的。瞎传。我们跟你们一样——两只眼都闭。做噩梦的时候比你们还惨，因为耳朵太灵了。」
+	PRINTFORML %CALLNAME:A_ID%噢了一声，有点不好意思：「以前只听别人说的……没亲眼见过。」
+	PRINTFORML 「现在亲眼见着了。」%CALLNAME:B_ID%站起来，拍了拍裤子上的土，「怎么样，失望吗？」
+	PRINTFORML %CALLNAME:A_ID%摇了摇头。
+ENDIF

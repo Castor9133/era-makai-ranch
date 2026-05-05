@@ -32,7 +32,7 @@ SIF NOWEX:Ｂ绝顶
 	部位数 += 1
 SIF NOWEX:Ｎ绝顶
 	部位数 += 1
-SIF NOWEX:Ｕ绝顶
+SIF NOWEX:5
 	部位数 += 1
 SIF 部位数 < 1
 	RETURN
@@ -46,7 +46,7 @@ RETURN
 
 
 ; 每 1 游戏日调用一次（与 PREGNANCY_DAILY 同位）
-@MAGIC_绝顶育成_DAILY_ALL
+@MAGIC_绝顶育成_DAILY_ALL, ARG:0
 #LOCALSIZE 1
 #DIM 旧TARGET
 TRYCALL MAGIC_绝顶育成_ENSURE

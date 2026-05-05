@@ -29,7 +29,7 @@ CASE "揉胸","育乳按摩","浓厚母乳按摩","乳罐按摩"
 	; 从此处起按变体分支；分支越多越有趣也越费工。
 	; 分支方式自定，常按好感/陷落等状态分较省事。
 	
-	; 先看是否「首次」：EXP:(SELECTCOM +1000)++ 放在口上显示**之后**执行
+	; 先看是否「首次」：EXP:(SELECTCOM +1000)++ 放在口上表示**之后**执行
 	; 故该值为 0 表示该角色尚未经历过本命令
 	; 细节略，用下方 IF 做首次即可
 	; 隶属乳牛从未揉胸只挤奶…倒也可能
@@ -608,7 +608,7 @@ CASE "舔舐腋"
 CASE "舔舐脸"
 
 CASE "舔阴蒂","舔阴道","刺激龟头","真空口交","肛门指揉按摩","玩弄阴唇","G点指压","阴道指奸","肛门指奸","尿道口指弄","尿道口指奸","口内搅舌","压舌探喉"
-	CALL KOJO_SHARE_ADVANCED_TRAIN_DISPATCH(ARGS:1, ARGS:2)
+	CALL KOJO_SHARE_ADVANCED_TRAIN_DISPATCH, ARGS:1, ARGS:2
 
 CASE "正常位","后背位","对面坐位","背面坐位","骑乘位","背面骑乘位","对面立位","背面立位","强制骑乘位"
 	; 目前一律转调 [Ｖセックス]
@@ -625,7 +625,7 @@ CASE "素股"
 CASE "口交"
 
 CASE "深喉"
-	CALL KOJO_SHARE_ADVANCED_TRAIN_DISPATCH("深喉", ARGS:2)
+	CALL KOJO_SHARE_ADVANCED_TRAIN_DISPATCH, "深喉", ARGS:2
 
 CASE "乳交"
 CASE "强制乳交"

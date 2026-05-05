@@ -44,7 +44,7 @@ CASE "揉胸","育乳按摩","浓厚母乳按摩","乳罐按摩"
 	; 从这里开始按变体细分；分支越多越有趣也越费工
 	; 常见写法：按好感／心境等拆分
 	
-	; 先看是否「首次」：工程在口上显示『之后』执行 EXP:(SELECTCOM+1000)++
+	; 先看是否「首次」：工程在口上表示『之后』执行 EXP:(SELECTCOM+1000)++
 	; 故该值为 0 表示本角色从未受过该指令
 	; 隶属乳牛却从未揉过胸……若一直只榨乳倒也可能
 	; 用 \n 换行；源码里不要用 Enter 直接断行
@@ -192,7 +192,7 @@ CASE "深喉"
 	ENDSELECT
 
 CASE "舔阴蒂","舔阴道","刺激龟头","真空口交","肛门指揉按摩","玩弄阴唇","G点指压","阴道指奸","肛门指奸","尿道口指弄","尿道口指奸","口内搅舌","压舌探喉"
-	CALL KOJO_SHARE_ADVANCED_TRAIN_DISPATCH(ARGS:1, ARGS:2)
+	CALL KOJO_SHARE_ADVANCED_TRAIN_DISPATCH, ARGS:1, ARGS:2
 
 CASE "乳交"
 	SELECTCASE ARGS:2

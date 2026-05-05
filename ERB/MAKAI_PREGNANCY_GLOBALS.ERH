@@ -1,0 +1,29 @@
+; era-makai-ranch: Emuera 全局变量头（仅允许 #DIM / #DIMS / #DEFINE）
+; 妊娠·托儿所「魔界_*」常量与存档数组；调参改下方 #DEFINE 或数组维数后须与 NURSERY 逻辑一致。
+
+#DEFINE 魔界_满胎日_基 140
+#DEFINE 魔界_产褥日_基 60
+#DEFINE 魔界_成長_成年_基 3285
+#DEFINE 魔界_乳児_上_基 1095
+#DEFINE 魔界_流产后_禁调日 14
+#DEFINE 魔界_临产静养日_基 14
+#DEFINE 魔界_产后静养日_基 14
+#DEFINE 魔界_妊娠判明日_基 14
+#DEFINE 魔界_胎数R_三胞 100
+#DEFINE 魔界_胎数R_双胞上 3100
+#DEFINE 魔界_在园最大 5000
+#DEFINE 魔界_每孩日费 400
+#DEFINE 魔界_入托费 8000
+
+#DIM 魔界_有効_满胎, 1
+#DIM 魔界_有効_妊娠判明, 1
+#DIM 魔界_有効_产褥, 1
+#DIM 魔界_有効_临产, 1
+#DIM 魔界_有効_成長_成年, 1
+#DIM 魔界_有効_乳児_上, 1
+#DIM 魔界_有効_临产静养, 1
+#DIM 魔界_有効_产后静养, 1
+
+#DIM SAVEDATA 魔界_在园数, 1
+#DIM SAVEDATA 魔界_子日, 5000
+#DIM SAVEDATA 魔界_子生母, 5000

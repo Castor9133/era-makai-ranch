@@ -56,10 +56,9 @@ EXP:执行次数／被轮奸 ++
 EXP:区间执行次数／被轮奸 ++
 ; 魔界妊娠パッチ：膣内凌辱相当の回数で受孕判定（避孕指示時はスキップ）
 IF !CFLAG:哥布林捕获_避孕 && !CFLAG:哥布林捕获_保留处女 && !TALENT:处女结界 && GOBLINS > 0
-	{
 	LOCAL = LIMIT(GOBLINS * 6, 6, 72)
 	TRYCALL PREGNANCY_ON_V_CREAMPIE, LOCAL
-	}
+ENDIF
 SIF !SOURCE:目的变更
 	PRINTW
 DRAWLINE
@@ -101,14 +100,13 @@ ENDIF
 TFLAG:Ａ装备 = 1
 TFLAG:Ｖ装备 = 0
 CFLAG:哥布林捕获_结界破处失败 = 0
-SIF !CFLAG:哥布林捕获_保留处女
-	{
+IF !CFLAG:哥布林捕获_保留处女
 	IF TALENT:处女结界
 		CFLAG:哥布林捕获_结界破处失败 = 1
 	ELSE
 		TFLAG:Ｖ装备 = 1
 	ENDIF
-	}
+ENDIF
 
 SIF CFLAG:哥布林捕获_结界破处失败
 	PALAM:Ａ润滑 = LIMIT(PALAM:Ａ润滑 + 3500, 0, PALAM_MAX)

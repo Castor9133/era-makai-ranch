@@ -141,6 +141,7 @@
 
 #DIM CONST BUDGET_CAP = 100000				;経費計上の上限
 #DIM CONST DONATION_UNIT = 100000			;寄付時の一口
+#DIM CONST DONATION_UNIT_OKACHI_EARLY = 11000	;岡地街Lv3未満の寄付一口（前期アップ用・中文UIでは「未满Lv3时每口1.1万」）
 
 #DIM CONST FIND_DRAGON_BALL = 30		;龍のタマ基本発見率
 #DIM CONST DRAGON_BALL_CT = -20			;龍のタマ使用後の発見率低下量

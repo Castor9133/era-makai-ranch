@@ -46,16 +46,16 @@ RETURNF 0
 @EXCRETION_PREGNANCY_BELLY_DAY_FOR_DESC
 ;调教开场孕肚描写用「妊娠经过天数」：魔界用妊娠日；人类长档用妊娠日数；触手末段用虚读日
 #FUNCTION
-#DIM D
-D = 0
+#DIM PRBD
+PRBD = 0
 IF CFLAG:魔界_妊娠S == 1 && CFLAG:魔界_妊娠日 > 30
-	D = CFLAG:魔界_妊娠日
+	PRBD = CFLAG:魔界_妊娠日
 ELSEIF CFLAG:妊娠日数 > 30 && CFLAG:妊娠日数 < 91
-	D = CFLAG:妊娠日数
+	PRBD = CFLAG:妊娠日数
 ELSEIF CFLAG:妊娠日数 >= 93 && CFLAG:妊娠日数 < 95
-	D = 32 + (CFLAG:妊娠日数 - 93) * 12
+	PRBD = 32 + (CFLAG:妊娠日数 - 93) * 12
 ENDIF
-RETURNF D
+RETURNF PRBD
 
 
 @EXCRETION_TRAIN_OPEN_PREGNANCY_DESC

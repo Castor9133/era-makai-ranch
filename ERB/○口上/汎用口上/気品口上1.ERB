@@ -1,4 +1,4 @@
-﻿
+
 ; 参考了无口口上。
 ; 概念：「气品／气质」——比纯「温柔」更带一点骨子里的端正，故定名 [气品口上1]。
 ; 基于原创「缘」口上去除固有名等改编。
@@ -32,8 +32,8 @@ ELSEIF CFLAG:崩坏 && !CFLAG:洗脑
 				CALL MESSAGE_BOX,@"「啊♥ 啊♥ 哦啊♥♥♥ 啊啊～♥♥♥」"
 				CALL MESSAGE_BOX,@"「啊哈♥♥♥ 嗨呜呜♥♥♥ 啊呜啊呜啊啊～♥♥♥♥♥」"
 			ENDIF
-			CALL MESSAGE_BOX,@"「おっ♥ おっ♥ 呜♥♥♥」"
-			CALL MESSAGE_BOX,@"「……哦♥ おっ♥ 咳哈♥♥♥」"
+			CALL MESSAGE_BOX,@"「哦♥ 哦♥ 呜♥♥♥」"
+			CALL MESSAGE_BOX,@"「……哦♥ 哦♥ 咳哈♥♥♥」"
 		ELSE
 			CALL MESSAGE_BOX,@"「哈……啊……呜哇……」"
 			CALL MESSAGE_BOX,@"「我……不行……」"
@@ -121,7 +121,7 @@ CASE "绝顶"
 		CALL MESSAGE_BOX,@"「呜呜♥ 不一样♥ 没感觉到哦♥♥♥」"
 		CALL MESSAGE_BOX,@"「呜呜♥ 怎么会这样♥ 没有哦♥♥」"
 	ENDIF
-	SIF NOWEX:Ａ绝顶
+	IF NOWEX:Ａ绝顶
 		IF TALENT:Ａ名器 || TALENT:肛门嗜好 || ABL:Ａ感觉 >= 3
 			CALL MESSAGE_BOX,@"「……呀……！？　%ANAL_CALL()%……深处……像被点燃……好失礼……♥」"
 			CALL MESSAGE_BOX,@"「……居然……用那种地方……让%SELF_CALL()%……♥」"
@@ -129,18 +129,20 @@ CASE "绝顶"
 			CALL MESSAGE_BOX,@"「……住手……！？　%ANAL_CALL()%……好痛……！」"
 			CALL MESSAGE_BOX,@"「……这种……屈辱……！」"
 		ENDIF
-	SIF NOWEX:Ｕ绝顶
+	ENDIF
+	IF NOWEX:5
 		IF TEQUIP:尿道塞 || TFLAG:尿道装备
-			SIF TALENT:尿道敏感 || EX:尿道调教经验 >= 15
+			SIF TALENT:尿道敏感 || EXP:尿道调教经验 >= 15
 				CALL MESSAGE_BOX,@"「……尿道塞竟能把人逼到发颤……♥ 不许……把我弄得这么下贱……♥」"
-			SIF !(TALENT:尿道敏感 || EX:尿道调教经验 >= 15)
+			SIF !(TALENT:尿道敏感 || EXP:尿道调教经验 >= 15)
 				CALL MESSAGE_BOX,@"「……住手……那处被塞住只剩剧痛与尿意……你太无礼了……！」"
 		ELSE
-			SIF TALENT:尿道敏感 || EX:尿道调教经验 >= 15
+			SIF TALENT:尿道敏感 || EXP:尿道调教经验 >= 15
 				CALL MESSAGE_BOX,@"「……那处竟也会发烫……这种反应……可耻……♥」"
-			SIF !(TALENT:尿道敏感 || EX:尿道调教经验 >= 15)
+			SIF !(TALENT:尿道敏感 || EXP:尿道调教经验 >= 15)
 				CALL MESSAGE_BOX,@"「……别再碰尿道……这是屈辱……我不会屈服……！」"
 		ENDIF
+	ENDIF
 	
 CASE "射精"
 	IF SOURCE:膣内射精经验
@@ -148,7 +150,7 @@ CASE "射精"
 			CALL MESSAGE_BOX,@"「%SELF_CALL()%的%VAGINA_CALL()%……♥ 满是%MASTER_CALL()%的精液♥♥♥」"
 		ELSE
 			IF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／隶属＃
-				CALL MESSAGE_BOX,@"「あぁ♥♥ 流出来了♥ 啊呼♥♥♥\n　%MASTER_CALL()%的精液好温暖♥♥ %SELF_CALL()%好幸福啊♥♥♥」"
+				CALL MESSAGE_BOX,@"「啊啊♥♥ 流出来了♥ 啊呼♥♥♥\n　%MASTER_CALL()%的精液好温暖♥♥ %SELF_CALL()%好幸福啊♥♥♥」"
 			ELSEIF ＃陷落状态／恋慕以上＃
 				CALL MESSAGE_BOX,@"「啊哈哈♥ %MASTER_CALL()%的精液充满了%SELF_CALL()%的%VAGINA_CALL()%♥♥♥」"
 			ELSEIF ＃陷落状态／屈服以上＃
@@ -182,7 +184,7 @@ CASE "射精"
 		ELSEIF ＃陷落状态／恋慕以上＃
 			SIF ABL:精液中毒 >= 5
 				CALL MESSAGE_BOX,@"「%SWEET_MASTER_CALL()%♥ 给我精液吧♥ 赐给%SELF_CALL()%吧♥♥♥」"
-			CALL MESSAGE_BOX,@"「はぁん♥ 我会喝好多的♥♥♥」"
+			CALL MESSAGE_BOX,@"「哈嗯♥ 我会喝好多的♥♥♥」"
 		ELSEIF ＃陷落状态／屈服以上＃
 			IF ABL:精液中毒 >= 5
 				CALL MESSAGE_BOX,@"「呼哈……这苦味让人上瘾了♥」"
@@ -245,7 +247,7 @@ CASE "搾乳"
 			CALL MESSAGE_BOX,@"「吸吮着呀♥♥ 乳汁♥ 被欺负了♥♥♥\n　已经感觉到了♥♥♥ 要融化了啊啊啊♥♥♥」"
 		ENDIF
 		SIF GETBIT(＃Ｐ使用／Ｖ插入＃) && NOWEX:Ｖ绝顶 && NOWEX:Ｎ绝顶
-			CALL MESSAGE_BOX,@"「～～～っ♥♥♥ %VAGINA_CALL()%和胸部♥♥♥ あっはぁ♥♥♥\n　随着%PENIS_CALL()%的进出♥ 母乳也一起喷出来了♥♥♥」"
+			CALL MESSAGE_BOX,@"「～～～っ♥♥♥ %VAGINA_CALL()%和胸部♥♥♥ 啊哈啊♥♥♥\n　随着%PENIS_CALL()%的进出♥ 母乳也一起喷出来了♥♥♥」"
 		IF TFLAG:搾乳触手
 			CALL MESSAGE_BOX,@"「呀啊啊啊♥♥ %SELF_CALL()%的胸部啊♥♥♥\n　被触手蹂躏着♥ 变成了触手的饵料啊啊啊♥♥♥」"
 			CALL MESSAGE_BOX,@"「触手不要啊♥♥ %SELF_CALL()%的母乳♥♥♥ 这不是触手的东西啊啊啊♥♥♥ 」"
@@ -253,7 +255,7 @@ CASE "搾乳"
 		SIF SOURCE:魔力吸收量
 			CALL MESSAGE_BOX,@"「哈啊啊～～♥♥♥ %SELF_CALL()%的魔力♥♥ 变成了奶水被吸收了啊♥♥♥」"
 		IF TFLAG:吸奶
-			CALL MESSAGE_BOX,@"「ふふっ♥ 全神贯注地吸吮着♥ 可以吸好多哦♥♥♥」"
+			CALL MESSAGE_BOX,@"「呼呼♥ 全神贯注地吸吮着♥ 可以吸好多哦♥♥♥」"
 			SIF NOWEX:Ｎ绝顶
 				CALL MESSAGE_BOX,@"「嗯哈♥♥♥ %MASTER_CALL()%在用力吮吸♥♥♥ 高潮来了啊♥♥♥♥」"
 		ENDIF
@@ -636,7 +638,7 @@ CASE "事件"
 	CASE "反抗消除"
 		SELECTCASE ARGS:2
 		CASE "体内凌辱中"
-			CALL MESSAGE_BOX,@"「原谅我！　ひぐっ♥ 「原谅我！」　「原谅我吧♥」"
+			CALL MESSAGE_BOX,@"「原谅我！　咿咕♥ 「原谅我！」　「原谅我吧♥」"
 		CASEELSE
 			CALL MESSAGE_BOX,@"我会听从您的命令...所以请不要再做这些可怕的事情了..."
 		ENDSELECT

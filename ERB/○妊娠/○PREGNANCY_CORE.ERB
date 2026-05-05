@@ -1,44 +1,9 @@
 ;======== era-makai-ranch: pregnancy / birth / lactation (pregmod-style patch) ========
 ; 中文：须在 Str/Flag 登记 CFLAG:魔界_* 与 TFLAG:套内精液量，见 PREGNANCY_集成说明.txt。
-; EN: Register CFLAG/TFLAG names or they read as zero. See PREGNANCY_集成说明.txt.
-; 本线妊娠 140 日/产褥 60 日；若 FLAG:魔界_魔素浓郁(建议魔界=1)则各历时折半=成长加倍的体感。须登记 FLAG 名。
-; 幼児(托儿)成长满 9 年(9*365) 成年；前 3 年乳児档与日费。受孕 P% 同前。妊娠需满 魔界_有効_妊娠判明 日(基14，魔素折半) 才 CFLAG:魔界_妊娠判明=1 可确认；此前不强制泌乳。
-; 魔界_产後初调口上済、魔界_妊娠性事口上_初回済 等须登 Str。妊娠中(S==1) 体力/气力 日次不可高于 MAX 的 70%（PREGNANCY_妊娠_体力気力_日次上限；主工程宜在日次回满之后、再对当日历角色调用一次）。`身体事件/妊娠调教谨慎开场` 由 PREGNANCY_妊娠调教_谨慎开场_尝试 调，汎用口上见各性格。
-
-#DIM CONST 魔界_满胎日_基, 1
-#DIM CONST 魔界_产褥日_基, 1
-#DIM CONST 魔界_成長_成年_基, 1
-#DIM CONST 魔界_乳児_上_基, 1
-#DIM CONST 魔界_流产后_禁调日, 1
-#DIM CONST 魔界_临产静养日_基, 1
-#DIM CONST 魔界_产后静养日_基, 1
-#DIM CONST 魔界_妊娠判明日_基, 1
-#DIM 魔界_有効_满胎, 1
-#DIM 魔界_有効_妊娠判明, 1
-#DIM 魔界_有効_产褥, 1
-#DIM 魔界_有効_临产, 1
-#DIM 魔界_有効_成長_成年, 1
-#DIM 魔界_有効_乳児_上, 1
-#DIM 魔界_有効_临产静养, 1
-#DIM 魔界_有効_产后静养, 1
-魔界_满胎日_基 = 140
-魔界_产褥日_基 = 60
-魔界_成長_成年_基 = 9 * 365
-魔界_乳児_上_基 = 3 * 365
-魔界_流产后_禁调日 = 14
-魔界_临产静养日_基 = 14
-魔界_产后静养日_基 = 14
-魔界_妊娠判明日_基 = 14
-; 胎数：万分之一三胞胎(1/10000)、千分之三双胞胎(3/1000)，互斥；用 RAND:1000000 分档
-#DIM CONST 魔界_胎数R_三胞, 1
-#DIM CONST 魔界_胎数R_双胞上, 1
-魔界_胎数R_三胞 = 100
-魔界_胎数R_双胞上 = 100 + 3000
-
-
+; 胎数分档：万分之一三胞胎、千分之三双胞胎，互斥；用 RAND:1000000 分档。
 ; 据「基」日数与 FLAG:魔界_魔素浓郁 刷新有效日(富魔素=历时折半=成长加倍)。妊娠/产褥/终妊/托儿所日结开头各 CALL 一次即可。
 @魔界_魔素_日数_刷新
-#LOCALSIZE 0
+#LOCALSIZE 1
 魔界_有効_满胎 = 魔界_满胎日_基
 魔界_有効_产褥 = 魔界_产褥日_基
 魔界_有効_成長_成年 = 魔界_成長_成年_基
@@ -77,7 +42,7 @@ RETURN
 ; 无套膣内射后调用。Do not call with condom on. / 避孕套装着中は呼ばない。
 ; ARG:0 = this shot volume (suggested scale 0–100; retune to match main game) / 本回内射量
 ;-------------------------------------------------------------------------------
-@PREGNANCY_ON_V_CREAMPIE
+@PREGNANCY_ON_V_CREAMPIE, ARG:0
 #LOCALSIZE 2
 LOCAL:0 = ARG:0
 SIF TALENT:去势
@@ -134,7 +99,7 @@ RETURN
 ;-------------------------------------------------------------------------------
 ; Per day tick. / 每游戏日。 End-of-day or wake. ARG:0 = days passed. / 経過日数
 ;-------------------------------------------------------------------------------
-@PREGNANCY_DAILY_TICK
+@PREGNANCY_DAILY_TICK, ARG:0
 #LOCALSIZE 2
 LOCAL:0 = ARG:0
 SIF LOCAL:0 < 1
@@ -172,7 +137,7 @@ RETURN
 ; Use when the main game has a single day-advance point but no per-character loop.
 ; ARG:0 = days passed (usually 1)
 ;-------------------------------------------------------------------------------
-@PREGNANCY_DAILY_TICK_ALL
+@PREGNANCY_DAILY_TICK_ALL, ARG:0
 #LOCALSIZE 1
 SIF ARG:0 < 1
 	RETURN
@@ -194,14 +159,14 @@ LOCAL:0 = MAXBASE:体力 * 7 / 10
 LOCAL:1 = MAXBASE:气力 * 7 / 10
 SIF BASE:体力 > LOCAL:0
 	BASE:体力 = LOCAL:0
-SIF BASE:気力 > LOCAL:1
-	BASE:気力 = LOCAL:1
+SIF BASE:气力 > LOCAL:1
+	BASE:气力 = LOCAL:1
 RETURN
 
 
 ; 調教开始前：确认妊娠(判明&妊娠中) 的首次性事口上＋低概率随机会话。汎用口上须登 身体事件/妊娠性事初回・妊娠性事
 @PREGNANCY_妊娠_性事口上_尝试
-#LOCALSIZE 0
+#LOCALSIZE 1
 SIF !CFLAG:魔界_妊娠判明
 	RETURN
 SIF CFLAG:魔界_妊娠S != 1
@@ -219,7 +184,7 @@ RETURN
 
 ; 已判明·妊娠中、每次进调教前可播一句：劝主人手下留情、疼惜母体与胎児。汎用口上 `身体事件`/`妊娠调教谨慎开场`；RAND 略降与性事同屏密度
 @PREGNANCY_妊娠调教_谨慎开场_尝试
-#LOCALSIZE 0
+#LOCALSIZE 1
 SIF !CFLAG:魔界_妊娠判明
 	RETURN
 SIF CFLAG:魔界_妊娠S != 1
@@ -268,7 +233,7 @@ RETURN
 
 
 ; ARG:0=本胎女婴数(1-3)。主工程可在此 @ 内扩展「登记独立角色卡」等；有托儿所时每孩 TRYCALL NURSERY_ADD_DAUGHTER, 生母号
-@PREGNANCY_SPAWN_DAUGHTER
+@PREGNANCY_SPAWN_DAUGHTER, ARG:0
 #LOCALSIZE 2
 LOCAL:0 = 1
 SIF ARG:0 > 0
@@ -317,7 +282,7 @@ RETURN
 
 ; 产后静养结束后、首次进调教时由 BEFORE_TRAIN 调；KOJO_PRINT("身体事件","产後初调",,)。说过置 1。
 @PREGNANCY_产後初调_尝试口上
-#LOCALSIZE 0
+#LOCALSIZE 1
 SIF CFLAG:魔界_产後初调口上済
 	RETURN
 SIF CFLAG:魔界_妊娠S != 2
@@ -331,7 +296,7 @@ RETURN
 
 
 ; Condom ejaculation fill. Call from ejac handler. / 避孕套内射精
-@PREGNANCY_CONDOM_EJAC_FILL
+@PREGNANCY_CONDOM_EJAC_FILL, ARG:0
 SIF !TEQUIP:0:避孕套
 	RETURN
 TFLAG:套内精液量 = ARG:0
@@ -403,6 +368,7 @@ ENDIF
 IF LOCAL:0 >= 魔界_有効_临产
 	SIF RAND:100 < 25
 		CALL PREGNANCY_ABORT_临产_双亡
+ENDIF
 SIF !CFLAG:魔界_妊娠S
 	RETURN
 CALL PREGNANCY_ABORT_成活, LOCAL:0
@@ -410,8 +376,8 @@ RETURN
 
 
 ; ARG:0 = 终止前 魔界_妊娠日
-@PREGNANCY_ABORT_成活
-#LOCALSIZE 0
+@PREGNANCY_ABORT_成活, ARG:0
+#LOCALSIZE 1
 CFLAG:魔界_妊娠S = 0
 CFLAG:魔界_妊娠日 = 0
 CFLAG:魔界_妊娠判明 = 0
@@ -431,7 +397,7 @@ RETURN
 
 ; 临产危險期终妊：母体与胎儿均未能保住（主工程可改 TRYCALL 为除名等）
 @PREGNANCY_ABORT_临产_双亡
-#LOCALSIZE 0
+#LOCALSIZE 1
 PRINTFORMW 手术与出血失控……%CALLNAME%与腹中胎儿均未能保住。
 CFLAG:魔界_妊娠S = 0
 CFLAG:魔界_妊娠日 = 0
@@ -466,7 +432,7 @@ RETURN
 ; Call from anywhere you can PRINTFORMW (e.g. dev command / debug menu).
 ;-------------------------------------------------------------------------------
 @PREGNANCY_DEBUG_DUMP
-#LOCALSIZE 0
+#LOCALSIZE 1
 CALL 魔界_魔素_日数_刷新
 PRINTL
 PRINTFORMW [PREG] %CALLNAME%  S={CFLAG:魔界_妊娠S}  妊娠日={CFLAG:魔界_妊娠日}  产后日={CFLAG:魔界_产後日}
@@ -476,7 +442,7 @@ PRINTFORMW [PREG] 魔素浓郁FLAG={FLAG:魔界_魔素浓郁}  托儿所FLAG={FL
 PRINTFORMW [PREG] 有効:满胎={魔界_有効_满胎}  临产起={魔界_有効_临产}  产褥={魔界_有効_产褥}  判明={魔界_有効_妊娠判明}
 PRINTFORMW [PREG] 静养:临产前={魔界_有効_临产静养}  产后={魔界_有効_产后静养}  流产禁调基={魔界_流产后_禁调日}
 PRINTFORMW [PREG] 母乳生产力(BASE)={BASE:母乳生产力}
-PRINTFORMW [PREG] 体力/気力(BASE)={BASE:体力}/{BASE:気力}  MAX={MAXBASE:体力}/{MAXBASE:气力}
+PRINTFORMW [PREG] 体力/气力(BASE)={BASE:体力}/{BASE:气力}  MAX={MAXBASE:体力}/{MAXBASE:气力}
 RETURN
 
 
@@ -484,7 +450,7 @@ RETURN
 ; Debug helper: step days and show diff. Requires developer mode.
 ; ARG:0 = days passed (default 1)
 ;-------------------------------------------------------------------------------
-@PREGNANCY_DEBUG_STEP_DAY
+@PREGNANCY_DEBUG_STEP_DAY, ARG:0
 #LOCALSIZE 1
 SIF !FLAG:开发者模式
 	RETURN
@@ -503,8 +469,8 @@ RETURN
 ; Debug helper: force state for quick verification. Requires developer mode.
 ; ARG:0 = 1 pregnant, 2 postpartum, 0 clear
 ;-------------------------------------------------------------------------------
-@PREGNANCY_DEBUG_FORCE_STATE
-#LOCALSIZE 0
+@PREGNANCY_DEBUG_FORCE_STATE, ARG:0
+#LOCALSIZE 1
 SIF !FLAG:开发者模式
 	RETURN
 SELECTCASE ARG:0

@@ -125,7 +125,7 @@ CASE "绝顶"
 		CALL MESSAGE_BOX,@"「嗯嘎呜♥ 可感受♥ 不到呢喔♥♥♥」"
 		CALL MESSAGE_BOX,@"「噗咕♥ 忍耐吧♥ 给你看看♥ 呜呜呜♥」"
 	ENDIF
-	SIF NOWEX:Ａ绝顶
+	IF NOWEX:Ａ绝顶
 		IF TALENT:Ａ名器 || TALENT:肛门嗜好 || ABL:Ａ感觉 >= 3
 			CALL MESSAGE_BOX,@"「诶诶！？　%ANAL_CALL()%……！？　好痛……可是……深处……好怪……♥」"
 			CALL MESSAGE_BOX,@"「……屁股……也要……去了……！？　骗人……吧……♥」"
@@ -133,14 +133,16 @@ CASE "绝顶"
 			CALL MESSAGE_BOX,@"「好痛！？　屁股……不要……！？　要裂开了啦……！」"
 			CALL MESSAGE_BOX,@"「……讨厌……屁股……好痛……呜呜……」"
 		ENDIF
-	SIF NOWEX:Ｕ绝顶
-		IF TALENT:尿道敏感 || EX:尿道调教经验 >= 15
+	ENDIF
+	IF NOWEX:5
+		IF TALENT:尿道敏感 || EXP:尿道调教经验 >= 15
 			CALL MESSAGE_BOX,@"「诶……！？　尿尿那……也会……好麻……好怪……♥」"
 			CALL MESSAGE_BOX,@"「……又刺又热……要坏掉啦……♥」"
 		ELSE
 			CALL MESSAGE_BOX,@"「好痛……想尿又尿不出……好难受……！」"
 			CALL MESSAGE_BOX,@"「……只有疼……别捅那里啦……」"
 		ENDIF
+	ENDIF
 	
 CASE "射精"
 	IF SOURCE:膣内射精经验
@@ -356,7 +358,7 @@ CASE "日程"
 	ENDSELECT
 
 CASE "阴茎称呼变更"
-	CALL MESSAGE_BOX,@"「『%CSTR:性器称呼／阴茎%』♥ %MASTER_CALL()%の『%CSTR:性器称呼／阴茎%』きもちいいよぉ♥」"
+	CALL MESSAGE_BOX,@"「『%CSTR:性器称呼／阴茎%』♥ %MASTER_CALL()%の『%CSTR:性器称呼／阴茎%』好舒服よぉ♥」"
 	
 CASE "膣称呼变更"
 	CALL MESSAGE_BOX,@"「『%CSTR:性器称呼／膣%』♥ %MASTER_CALL()%的%CSTR:性器称呼／阴茎%に『%CSTR:性器称呼／膣%』おかされてるぅ♥」"
@@ -629,7 +631,7 @@ CASE "事件"
 	CASE "Ａ处女丧失"
 		IF CFLAG:乳牛 || CFLAG:洗脑 || ＃陷落状态／恋慕以上＃
 			IF TALENT:Ａ名器 || TALENT:肛门嗜好 || ABL:Ａ感觉 >= 3
-				CALL MESSAGE_BOX,@"「痛！？　え、でも…%ANAL_CALL()%の奥がピリピリして…変！？　やだやだ…でも…♥」"
+				CALL MESSAGE_BOX,@"「痛っ！？　え、でも…%ANAL_CALL()%の奥がピリピリして…変！？　不要不要…でも…♥」"
 				CALL MESSAGE_BOX,@"「%MASTER_CALL()%的%PENIS_CALL()%……进到%ANAL_CALL()%里了……好痛……可是……怪怪的混进来了……♥」"
 			ELSE
 				CALL MESSAGE_BOX,@"「「%MASTER_CALL()%的%PENIS_CALL()%♥♥♥  %SELF_CALL()%的%ANAL_CALL()%被蹂躏了啦啦啦♥♥」"

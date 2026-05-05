@@ -18,3 +18,58 @@ RETURN 1
 
 
 
+@COM71
+;皮鞭抽打（TFLAG:皮鞭部位 → メッセージ参照）
+
+FIX = 100
+SIF PREVCOM == 71
+	TIMES FIX,1.35
+SIF !TFLAG:皮鞭装备
+	PRINTFORMW 需要先装备皮鞭。
+SIF !TFLAG:皮鞭装备
+	RETURN
+LOSEBASE:体力 += 55 * FIX / 100
+SOURCE:调教者习得 = 380
+SOURCE:耻辱 = 2800 * FIX / 100
+SOURCE:屈辱 = 3800 * FIX / 100
+SOURCE:支配 = 2400 * FIX / 100
+SOURCE:已用时间 = 1
+TFLAG:皮鞭部位 = RAND:6
+SELECTCASE TFLAG:皮鞭部位
+CASE 0
+	SOURCE:Ｂ疼痛 = 4200 * FIX / 100
+	SOURCE:非性感带疼痛 = 1400 * FIX / 100
+CASE 1
+	SOURCE:Ｎ疼痛 = 5600 * FIX / 100
+CASE 2
+	SOURCE:Ｃ疼痛 = 5400 * FIX / 100
+CASE 3
+	SOURCE:Ａ疼痛 = 4800 * FIX / 100
+	SOURCE:非性感带疼痛 = 900 * FIX / 100
+CASE 4
+	SOURCE:非性感带疼痛 = 6200 * FIX / 100
+CASEELSE
+	SOURCE:非性感带疼痛 = 5800 * FIX / 100
+ENDSELECT
+RETURN 1
+
+
+
+@COM72
+;装备皮鞭（メッセージは TFLAG:皮鞭装备）
+; 持有物品 513；用显式武装／收起替代纯翻转，避免连点或状态异常导致「刚装备却判未装备」
+
+SIF !ITEM:513
+	PRINTFORMW 尚未持有皮鞭。（成人商店·调教用品）
+SIF !ITEM:513
+	RETURN
+IF TFLAG:皮鞭装备
+	TFLAG:皮鞭装备 = 0
+ELSE
+	TFLAG:皮鞭装备 = 1
+ENDIF
+SOURCE:已用时间 = 1
+RETURN 1
+
+
+

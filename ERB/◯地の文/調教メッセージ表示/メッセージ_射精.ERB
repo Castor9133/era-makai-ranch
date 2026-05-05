@@ -45,12 +45,16 @@ IF TEQUIP:0:避孕套
 		PRINTFORM %CALLNAME%的%SLANG_V()%中
 	ELSEIF GETBIT(＃Ｐ使用／Ａ插入＃)
 		PRINTFORM %CALLNAME%的%SLANG_A()%中
-	ELSEIF GETBIT(＃Ｐ使用／乳交＃)
-		PRINTFORM 在%CALLNAME%的%SLANG_B()%的乳沟
 	ELSEIF TEQUIP:素股
 		PRINTFORM %CALLNAME%的私处
+	ELSEIF TEQUIP:臀部素股
+		PRINTFORM %CALLNAME%紧夹的臀缝与后腰、后背一线
 	ELSEIF TEQUIP:足交
 		PRINTFORM %CALLNAME%的足底与趾缝间
+	ELSEIF TEQUIP:手淫 || TEQUIP:授乳手交
+		PRINTFORM %CALLNAME%的手掌与指缝间
+	ELSEIF GETBIT(＃Ｐ使用／乳交＃)
+		PRINTFORM 在%CALLNAME%的%SLANG_B()%的乳沟
 	ELSEIF GETBIT(＃Ｐ使用／Ｍ插入＃) || TEQUIP:触手口交 || TEQUIP:触手深喉
 		IF TEQUIP:触手深喉
 			PRINTFORM %CALLNAME%被触手堵满的喉管深处
@@ -99,8 +103,17 @@ ELSEIF SOURCE:股间射精
 		ENDSELECT
 	ELSEIF TEQUIP:素股
 		PRINTFORM %CALLNAME%的私处
-	ELSEIF GETBIT(＃Ｐ使用／Ｖ插入＃)
-		PRINTFORM %SLANG_PENIS()%从%CALLNAME%的%SLANG_V()%拔出后，
+	ELSEIF TEQUIP:臀部素股
+		SELECTCASE RAND:4
+		CASE 0
+			PRINTFORM 仍陷在%CALLNAME%臀缝里的%SLANG_PENIS()%猛地一跳，白浊喷在翘起的臀瓣与股沟深处，上几股顺着腰骶爬上光裸的后背，
+		CASE 1
+			PRINTFORM 最后一绞紧贴着大腿后侧与臀肉，铃口抵着臀缝脉动射精，热精浇满臀沟又沿脊柱两侧淌下，
+		CASE 2
+			PRINTFORM %CALLNAME%绷紧的臀肉把肉棒夹在温软里射精，浊液先糊满臀缝，再顺着后腰与肩胛一线溅开，
+		CASEELSE
+			PRINTFORM 肉棒仍埋在臀缝与腿根之间便释放出来，精液铺在臀瓣上，余温一路抹向腰背后侧，
+		ENDSELECT
 	ELSEIF GETBIT(＃Ｐ使用／Ａ插入＃)
 		PRINTFORM %SLANG_PENIS()%从%CALLNAME%的%SLANG_A()%拔出后，
 	ENDIF

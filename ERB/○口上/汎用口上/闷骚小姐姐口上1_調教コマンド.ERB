@@ -1,5 +1,6 @@
 ; ======================================
-; 泛用口上・调教命令（性格：闷骚小姐姐 · 学者风范 + 闷骚）
+; 泛用口上・调教命令（性格：闷骚的小姐姐）
+; 书卷气、爱讲理、嘴硬心软，修辞偏书面，但落在人与人的边界、羞意与赌气上（少用术语玩梗）。
 ; ======================================
 
 @KOJO_GENERAL_闷骚小姐姐口上1_TRAIN(ARGS:0,ARGS:1,ARGS:2,ARGS:3)
@@ -9,84 +10,84 @@ CASE "执行"
 	SELECTCASE ARGS:1
 	CASE "揉胸","育乳按摩","浓厚母乳按摩","乳罐按摩","胸爱抚","拧乳头"
 		IF ＃陷落状态／恋慕以上＃
-			CALL MESSAGE_BOX,@"「……触觉反馈……很清晰……♥ ……算你通过同行评审……♥」"
-			CALL MESSAGE_BOX,@"「……继续……我记录心率就好……♥」"
-			CALL MESSAGE_BOX,@"「……别问我……为什么脸红……♥ ……这叫……应激性充血……♥」"
+			CALL MESSAGE_BOX,@"「……触感……太清楚了……♥ ……算你……找对地方了……♥」"
+			CALL MESSAGE_BOX,@"「……继续……我、我把呼吸稳住就好……♥」"
+			CALL MESSAGE_BOX,@"「……别问脸为什么烫……♥ ……问就是你掌心……太欺负人……♥」"
 		ELSE
-			CALL MESSAGE_BOX,@"「……胸部不是公共数据集。……撤回你的手，或给出书面理由。」"
+			CALL MESSAGE_BOX,@"「……胸口不是谁都能碰的。……要么松手，要么先说清楚你为什么碰。」"
 		ENDIF
 	CASE "接吻"
 		IF ＃陷落状态／恋慕以上＃
-			CALL MESSAGE_BOX,@"「……接吻……单列一章……♥ ……唇舌段……别串频到别的变量……♥」"
-			CALL MESSAGE_BOX,@"「……别笑……我在校准呼吸周期……♥」"
-			CALL MESSAGE_BOX,@"「……牙齿……别磕到就好……♥ 嗯……嗯……舌头……再贴紧一点……♥」"
-			CALL MESSAGE_BOX,@"「……磕到牙……给你记一笔……♥ ……搅动的力气……我默许你加大了……♥」"
+			CALL MESSAGE_BOX,@"「……接吻就专心接吻……♥ ……别一下一下……又像在想别的事……♥」"
+			CALL MESSAGE_BOX,@"「……别笑……我在匀呼吸……♥」"
+			CALL MESSAGE_BOX,@"「……牙齿……别磕到……♥ 嗯……舌头……再贴紧一点……♥」"
+			CALL MESSAGE_BOX,@"「……磕到了……我要记仇……♥ ……不过……刚才那样搅……我、我没真的生气……♥」"
 		ELSE
-			CALL MESSAGE_BOX,@"「……驳回。……接吻需要双方知情同意——你刚才的预告不足三秒。」"
+			CALL MESSAGE_BOX,@"「……驳回。……这种事要提前说一声——你刚才那一下算偷袭。」"
 		ENDIF
 	CASE "舔舐脸"
 		IF ＃陷落状态／恋慕以上＃
-			CALL MESSAGE_BOX,@"「……舔脸……算皮肤刺激试验……♥ ……对照组是我发烫的耳根……♥」"
+			CALL MESSAGE_BOX,@"「……舔脸……算什么正经……♥ ……分明是欺负我躲不开……♥」"
 		ELSE
-			CALL MESSAGE_BOX,@"「……面部区域……未开放舔舐许可。」"
+			CALL MESSAGE_BOX,@"「……脸也不行。……我准你凑这么近了吗。」"
 		ENDIF
 	CASE "舔舐耳","舔舐腋"
 		IF ＃陷落状态／恋慕以上＃
-			CALL MESSAGE_BOX,@"「……耳廓……高频敏感带……♥ ……腋下……算伦理灰色区……♥」"
+			CALL MESSAGE_BOX,@"「……耳朵……一碰我就酥……♥ ……腋下……你太坏了……♥」"
 		ELSE
-			CALL MESSAGE_BOX,@"「……驳回。……理由：刺激位点与接吻不等价。」"
+			CALL MESSAGE_BOX,@"「……不行。……这和接吻不是一回事，别想混过去。」"
 		ENDIF
 	CASE "口交","触手口交"
 		IF ＃陷落状态／恋慕以上＃
-			CALL MESSAGE_BOX,@"「……含住……♥ ……样本……我会好好处理……♥ ……别写进组会纪要……♥」"
+			CALL MESSAGE_BOX,@"「……含住了……♥ ……我会……好好……♥ ……别拿出去当笑料讲……♥」"
 		ELSE
-			CALL MESSAGE_BOX,@"「……口腔不是实验通道。……要进，就先解释实验目的。」"
+			CALL MESSAGE_BOX,@"「……嘴也不是随便开的门。……要进来，先说你把我当什么。」"
 		ENDIF
 	CASE "舔阴蒂","舔阴道","刺激龟头","真空口交","肛门指揉按摩","玩弄阴唇","G点指压","阴道指奸","肛门指奸","尿道口指弄","尿道口指奸","口内搅舌","压舌探喉"
-		CALL KOJO_SHARE_ADVANCED_TRAIN_DISPATCH(ARGS:1, ARGS:2)
+		CALL KOJO_SHARE_ADVANCED_TRAIN_DISPATCH, ARGS:1, ARGS:2
 	CASE "正常位","后背位","对面坐位","背面坐位","骑乘位","对面立位","背面立位","强制骑乘位","背面骑乘位"
 		CALL KOJO_CHS_VPOS_闷骚小姐姐1(ARGS:1, ARGS:2)
 	CASE "深喉","触手深喉"
-		CALL KOJO_SHARE_ADVANCED_TRAIN_DISPATCH(ARGS:1, ARGS:2)
+		CALL KOJO_SHARE_ADVANCED_TRAIN_DISPATCH, ARGS:1, ARGS:2
 	CASE "肛勾"
-		CALL MESSAGE_BOX,@"「……肛勾……张力方程……我写一半就脸红了……♥ ……别拽链条……我求你用参数说话……♥」"
+		CALL MESSAGE_BOX,@"「……后面……被牵着……光想你手劲我就脸红……♥ ……链子轻点……别猛地一扽……♥」"
 	CASE "贞操带"
-		CALL MESSAGE_BOX,@"「……贞操带……把插入路径物理注销了……行，我认……这是硬件级访问控制。」"
+		CALL MESSAGE_BOX,@"「……这一锁……什么都试不了……行，我认，你是成心把我关在这儿。」"
 	CASE "尾塞"
-		CALL MESSAGE_BOX,@"「……尾饰……观测误差全在脸上……♥ ……别记录我的羞耻曲线……♥」"
+		CALL MESSAGE_BOX,@"「……尾巴这儿……羞都写在脸上……♥ ……别那么盯着看……♥」"
 	CASE "舌锻口塞"
-		CALL MESSAGE_BOX,@"「……唔嗯……！……呜呜……」（想反驳全堵在口塞后面，只剩鼻音与喉鸣；涎水把「变量」全糊成一团）"
+		CALL MESSAGE_BOX,@"「……唔嗯……！……呜呜……」（话全堵在口塞后面，只剩鼻腔里的抗议和压不住的涎水声）"
 	CASEELSE
 		IF ＃陷落状态／恋慕以上＃
-			CALL MESSAGE_BOX,@"「……行……我配合……♥ ……但我要保留吐槽权……♥」"
+			CALL MESSAGE_BOX,@"「……行……我陪你……♥ ……但我保留损你两句的权利……♥」"
 		ELSE
-			CALL MESSAGE_BOX,@"「……拒绝。……先把变量名对齐。」"
+			CALL MESSAGE_BOX,@"「……不行。……先停一下——你得把我当一个人问一句，别装作我已经默许了。」"
 		ENDIF
 	ENDSELECT
 CASE "继续"
 	SELECTCASE ARGS:1
 	CASE "肛勾","尾塞"
-		CALL MESSAGE_BOX,@"「……后向通道……持续负载……♥ ……备注：别突然加张力……♥」"
+		CALL MESSAGE_BOX,@"「……后面……还在被折腾……♥ ……别突然用力……我受不住……♥」"
 	CASE "贞操带"
-		CALL MESSAGE_BOX,@"「……胯间……被策略钉死……♥ ……我申请……口头豁免十秒……♥」"
+		CALL MESSAGE_BOX,@"「……胯间……锁得死死的……♥ ……让我……喘口气……求你了……就十秒……♥」"
 	CASE "舌锻口塞"
-		CALL MESSAGE_BOX,@"「……嗯……哈……唔咕……」（低刺激≠低羞耻——口不能言，显著性全写在发抖的呜咽和止不住的水声里）"
+		CALL MESSAGE_BOX,@"「……嗯……哈……唔咕……」（轻轻的也照样难堪——说不出话，发抖和呜咽全替嘴交代了）"
 	CASE "正常位","后背位","对面坐位","背面坐位","骑乘位","对面立位","背面立位","强制骑乘位","背面骑乘位"
 		CALL KOJO_CHS_VPOS_闷骚小姐姐1(ARGS:1, ARGS:2)
 	CASEELSE
-		CALL MESSAGE_BOX,@"「……继续……Phase 2……♥」"
-		CALL MESSAGE_BOX,@"「……重复测量……提高信度……♥ ……%MASTER_CALL()%……太赖皮了……我明明……不敢反驳……♥」"
+		CALL MESSAGE_BOX,@"「……还来……♥ ……第二回了……♥」"
+		CALL MESSAGE_BOX,@"「……一遍一遍……♥ ……%MASTER_CALL()%……明知道我会嘴硬……还故意……♥」"
 	ENDSELECT
 CASE "移除"
 	SELECTCASE ARGS:1
 	CASE "舌锻口塞"
-		CALL MESSAGE_BOX,@"「……哈啊……咳咳……」（口塞一离嘴先呛出半声呜咽，喘了两口才找回声带）"
-		CALL MESSAGE_BOX,@"「……刚才那段……不算有效口头答辩……设备撤收，数据进私人附录，禁止外传。」"
+		CALL MESSAGE_BOX,@"「……哈啊……咳咳……」（口塞一拿开，先呛出半声，喘了两下才找回调门）"
+		CALL MESSAGE_BOX,@"「……刚才……没说完的……不算吵架啊……这事只准烂在我们俩中间，别往外说。」"
 	CASE "肛勾","贞操带","尾塞"
-		CALL MESSAGE_BOX,@"「……设备撤收……这段我记进私人附录……别公开数据集。」"
+		CALL MESSAGE_BOX,@"「……卸掉了……刚才那段丢人的……我自个记着，你别拿去当人前谈资。」"
 	CASEELSE
-		CALL MESSAGE_BOX,@"「……实验暂停。……我去写两行备注。」"
-		CALL MESSAGE_BOX,@"「……设备撤收……数据……我带走一半……♥」"
+		CALL MESSAGE_BOX,@"「……先停。……我去缓一缓。」"
+		CALL MESSAGE_BOX,@"「……收拾干净……心事……我也带走一半……♥」"
 	ENDSELECT
 CASEELSE
 ENDSELECT

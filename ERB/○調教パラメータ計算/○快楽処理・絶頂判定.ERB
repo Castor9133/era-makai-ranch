@@ -77,10 +77,10 @@ FOR LOCAL,0,6
 	SIF NOWEX:LOCAL
 		SOURCE:触手绝顶经验 += (SOURCE:(LOCAL +130) /2)
 NEXT
-;尿道高潮：阴蒂（Ｃ）绝顶成立且处于尿道责／尿道塞相关语境时，同步记录Ｕ绝顶（用于口上与 EX:Ｕ绝顶次数；不计入上面五部位之外的额外「总绝顶」加算）
+;尿道高潮：阴蒂（Ｃ）绝顶成立且处于尿道责／尿道塞相关语境时，同步记录Ｕ绝顶（`SOURCE_UP` 中累计 `EXP:Ｕ绝顶次数`；不计入上面五部位之外的额外「总绝顶」加算）
 IF NOWEX:Ｃ绝顶
 	IF TEQUIP:尿道塞 || TFLAG:尿道装备 || GROUPMATCH(SELECTCOM, 214, 216, 217, 218, 219, 220, 221)
-		NOWEX:Ｕ绝顶 = NOWEX:Ｃ绝顶
+		NOWEX:5 = NOWEX:Ｃ绝顶
 	ENDIF
 ENDIF
 NOWEX:总绝顶 = SUMARRAY(NOWEX,0,6)

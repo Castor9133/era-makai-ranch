@@ -9,6 +9,11 @@ ELSEIF GETBIT(＃Ｐ使用／Ａ插入＃)
 	CALL A_SEX_MESSAGE(ARGS)
 ELSEIF GETBIT(＃Ｐ使用／乳交＃)
 	CALL B_SEX_MESSAGE(ARGS)
+; 足交中かつ口系以外の明示 ARGS のとき：口内ＭBIT 取り残しでも足或臀素股の描写（活塞と整合）
+ELSEIF TEQUIP:足交 && ARGS != "口交" && ARGS != "刺激龟头" && ARGS != "真空口交" && ARGS != "深喉" && ARGS != "触手口交" && ARGS != "触手深喉"
+	CALL NOT_SEX_MESSAGE("足交")
+ELSEIF TEQUIP:臀部素股 && ARGS != "口交" && ARGS != "刺激龟头" && ARGS != "真空口交" && ARGS != "深喉" && ARGS != "触手口交" && ARGS != "触手深喉"
+	CALL NOT_SEX_MESSAGE("臀部素股")
 ELSEIF GETBIT(＃Ｐ使用／Ｍ插入＃) || TEQUIP:触手口交 || TEQUIP:触手深喉
 	CALL M_SEX_MESSAGE(ARGS)
 ELSE
@@ -329,6 +334,14 @@ CASE "素股"
 		PRINTFORML %CALLNAME%的%SLANG_V()%被%SLANG_PENIS()%摩擦…
 	ELSE
 		PRINTFORML 用%SLANG_PENIS()%摩擦着%CALLNAME%的%SLANG_V()%…
+	ENDIF
+CASE "臀部素股"
+	IF TFLAG:拘束BIT || !TFLAG:奉仕可能 || SELECTCOM == 900
+		SIF TFLAG:拘束BIT
+			PRINT 被束缚了
+		PRINTFORML %SLANG_PENIS()%嵌在%CALLNAME%紧致的臀缝与大腿后侧之间碾磨……肠侧与臀肉夹出一道湿热的软沟，却始终不向内顶开穴口。
+	ELSE
+		PRINTFORML %CALLNAME%反手撑着床沿，把臀缝对准%SLANG_PENIS()%缓缓夹紧又松开，腰肢小幅摆动，像在迎合这记「只准在外」的羞辱式摩擦……
 	ENDIF
 CASE "手淫"
 	PRINTFORML %CALLNAME%用手上下撸着%CALLNAME:0%的%SLANG_PENIS()%…

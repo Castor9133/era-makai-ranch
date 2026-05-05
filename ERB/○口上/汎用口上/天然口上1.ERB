@@ -47,7 +47,7 @@ CASE "绝顶"
 	ELSE
 		CALL MESSAGE_BOX,@"「诶？要去了？……现在吗？……啊……♥」"
 	ENDIF
-	SIF NOWEX:Ａ绝顶
+	IF NOWEX:Ａ绝顶
 		IF TALENT:Ａ名器 || TALENT:肛门嗜好 || ABL:Ａ感觉 >= 3
 			CALL MESSAGE_BOX,@"「诶……？　%ANAL_CALL()%……！？　痛……可是……肚子深处……酥酥的……好怪……♥」"
 			CALL MESSAGE_BOX,@"「……这是……正常的吗……？　啊……♥」"
@@ -55,18 +55,20 @@ CASE "绝顶"
 			CALL MESSAGE_BOX,@"「痛……！？　屁股……不要……要裂开了……！」"
 			CALL MESSAGE_BOX,@"「……好痛……只有痛……」"
 		ENDIF
-	SIF NOWEX:Ｕ绝顶
+	ENDIF
+	IF NOWEX:5
 		IF TEQUIP:尿道塞 || TFLAG:尿道装备
-			SIF TALENT:尿道敏感 || EX:尿道调教经验 >= 15
+			SIF TALENT:尿道敏感 || EXP:尿道调教经验 >= 15
 				CALL MESSAGE_BOX,@"「诶……尿道塞顶着……每次颤一下都更清楚……要到了……♥」"
-			SIF !(TALENT:尿道敏感 || EX:尿道调教经验 >= 15)
+			SIF !(TALENT:尿道敏感 || EXP:尿道调教经验 >= 15)
 				CALL MESSAGE_BOX,@"「好痛……尿道里塞着……这、这真的是正确步骤吗……？」"
 		ELSE
-			SIF TALENT:尿道敏感 || EX:尿道调教经验 >= 15
+			SIF TALENT:尿道敏感 || EXP:尿道调教经验 >= 15
 				CALL MESSAGE_BOX,@"「诶……？这里……又刺又软……是尿意吗……还是别的……♥」"
-			SIF !(TALENT:尿道敏感 || EX:尿道调教经验 >= 15)
+			SIF !(TALENT:尿道敏感 || EXP:尿道调教经验 >= 15)
 				CALL MESSAGE_BOX,@"「像针扎在尿道里……又憋又难受……！」"
 		ENDIF
+	ENDIF
 
 CASE "射精"
 	IF SOURCE:膣内射精经验

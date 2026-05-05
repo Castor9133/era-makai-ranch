@@ -27,7 +27,7 @@ LOCAL = 2 + ABL:Ａ扩张 / 2
 LOCAL += (BASE:气力 + BASE:体力) / 8000
 SIF TALENT:胆怯
 	LOCAL -= 1
-SIF TALENT:刚强
+SIF TALENT:坚强
 	LOCAL += 1
 LOCAL += (NO:TARGET + DAY) % 3
 CFLAG:排泄_肠忍耐预算回合 = LIMIT(LOCAL, 1, 12)
@@ -125,6 +125,9 @@ RETURN 1
 
 @EXCRETION_TRAIN_END_SESSION
 ;调教结束：清除跨回合肠忍耐（羞耻调教余回合保留递减）
+; 本函数内会遍历全体角色，末尾必须恢复为「当前调教奴隶」；勿置 TARGET=0，否则
+; EVENTEND 的 ALL_TEQUIP_REMOVE／CAPITULATION_* 会以主人公为对象，地文会变成「主人公陷落／从口内拔出」等。
+SAVE_TARGET = TARGET
 TFLAG:排泄_调教开场孕肚已描写 = 0
 TFLAG:排泄_无肛塞上回合幸存 = 0
 FOR LOCAL, 1, CHARANUM
@@ -135,7 +138,13 @@ FOR LOCAL, 1, CHARANUM
 	CFLAG:排泄_肠忍耐预算回合 = 0
 	CFLAG:排泄_肠已连续忍耐回合 = 0
 NEXT
-TARGET = 0
+IF SAVE_TARGET > 0
+	TARGET = SAVE_TARGET
+ELSE
+	FINDCHARA CFLAG:ID,CFLAG:0:调教对象ID
+	SIF RESULT > 0
+		TARGET = RESULT
+ENDIF
 RETURN 1
 
 
@@ -368,7 +377,7 @@ SIF CFLAG:排泄_羞耻调教余回合 > 0
 	PRINTFORML 　羞耻调教余：{CFLAG:排泄_羞耻调教余回合,3} 回合（排泄事故链叠层，准许排泄或入浴排尿等可清）
 SIF CFLAG:排泄_事故冷却回合 > 0
 	PRINTFORML 　排泄事故冷却：{CFLAG:排泄_事故冷却回合,3} 回合（其间尿失禁检定跳过）
-SIF CFLAG:膀胱蓄尿 >= 8200
+IF CFLAG:膀胱蓄尿 >= 8200
 	PRINTFORML 　※蓄尿已很高，调教中有失禁风险（见调教画面灰字条）。
 ELSEIF CFLAG:膀胱蓄尿 >= 6500
 	PRINTFORML 　※蓄尿偏高，憋尿吃紧；可准许排泄或入浴等减轻。

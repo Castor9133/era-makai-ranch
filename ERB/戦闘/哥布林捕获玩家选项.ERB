@@ -20,16 +20,14 @@ INPUT
 SIF RESULT == 1
 	CFLAG:哥布林捕获_无轮奸 = 1
 
-SIF CFLAG:哥布林捕获_无轮奸
-	{
+IF CFLAG:哥布林捕获_无轮奸
 	PRINTFORMW 你在中继上勾选了「禁止肉体凌辱」。片刻后回讯掠过使魔印记：哥布林队长骂骂咧咧，到底还是把人捆牢塞进笼车，一路只碰绳索与锁链。
 	DRAWLINE
 	RETURN
-	}
+ENDIF
 
 ;阴道／结界：有处女或处女结界时才询问「是否允许破身／破界」
 IF TALENT:处女 || TALENT:处女结界
-	{
 	PRINTL
 	IF TALENT:处女结界
 		PRINTFORML 传影里%CALLNAME%仍被【处女结界】护着私处……要在条款里批准「允许哥布林全力尝试破界并插穴」吗？
@@ -43,11 +41,10 @@ IF TALENT:处女 || TALENT:处女结界
 	INPUT
 	SIF RESULT == 1
 		CFLAG:哥布林捕获_保留处女 = 1
-	}
+ENDIF
 
 ;避孕：仅在实际会发生阴道内射系凌辱时询问（魔界受孕线用 TRYCALL PREGNANCY_ON_V_CREAMPIE）
 IF !CFLAG:哥布林捕获_保留处女
-	{
 	PRINTL
 	PRINTFORML 传讯栏还有一栏「阴道内处置」……要写明避孕／外射一类的安全义务吗？（影响受孕机会）
 	PRINTL  [0] 不追加（内射仍按魔族惯例，事后可能受孕）
@@ -56,7 +53,7 @@ IF !CFLAG:哥布林捕获_保留处女
 	INPUT
 	SIF RESULT == 1
 		CFLAG:哥布林捕获_避孕 = 1
-	}
+ENDIF
 
 PRINTL
 DRAWLINE

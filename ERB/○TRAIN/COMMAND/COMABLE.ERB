@@ -448,7 +448,7 @@ RETURN 1
 
 ;肛门指揉按摩
 @COM_ABLE134
-SIF !GETBIT(＃显示指令／Ａ刺激＃)
+SIF !GETBIT(＃表示指令／Ａ刺激＃)
 	RETURN 0
 SIF GETBIT(＃Ｐ使用／Ｍ插入＃) || GETBIT(＃Ｐ使用／乳交＃)
 	RETURN 0
@@ -466,7 +466,7 @@ RETURN 0
 
 ;玩弄阴唇
 @COM_ABLE135
-SIF !GETBIT(＃显示指令／Ｃ刺激＃)
+SIF !GETBIT(＃表示指令／Ｃ刺激＃)
 	RETURN 0
 SIF GETBIT(＃Ｐ使用／Ｍ插入＃) || GETBIT(＃Ｐ使用／乳交＃)
 	RETURN 0
@@ -482,7 +482,7 @@ RETURN 0
 
 ;G点指压
 @COM_ABLE136
-SIF !GETBIT(＃显示指令／Ｖ刺激＃)
+SIF !GETBIT(＃表示指令／Ｖ刺激＃)
 	RETURN 0
 SIF TALENT:处女结界
 	RETURN 0
@@ -492,16 +492,16 @@ SIF TEQUIP:手淫 || TEQUIP:授乳手交
 	RETURN 0
 SIF TFLAG:Ｖ装备
 	RETURN 0
-SIF GROUPMATCH(PREVCOM,14,136) || TEQUIP:Ｖ指插入中
-	SIF TFLAG:Ｖ露出
-		RETURN 1
+IF (GROUPMATCH(PREVCOM,14,136) || TEQUIP:Ｖ指插入中) && TFLAG:Ｖ露出
+	RETURN 1
+ENDIF
 RETURN 0
 
 
 
 ;阴道指奸
 @COM_ABLE137
-SIF !GETBIT(＃显示指令／Ｖ刺激＃)
+SIF !GETBIT(＃表示指令／Ｖ刺激＃)
 	RETURN 0
 SIF TALENT:处女结界
 	RETURN 0
@@ -511,16 +511,16 @@ SIF TEQUIP:手淫 || TEQUIP:授乳手交
 	RETURN 0
 SIF TFLAG:Ｖ装备
 	RETURN 0
-SIF GROUPMATCH(PREVCOM,14,136,137) || TEQUIP:Ｖ指插入中
-	SIF TFLAG:Ｖ露出
-		RETURN 1
+IF (GROUPMATCH(PREVCOM,14,136,137) || TEQUIP:Ｖ指插入中) && TFLAG:Ｖ露出
+	RETURN 1
+ENDIF
 RETURN 0
 
 
 
 ;肛门指奸
 @COM_ABLE138
-SIF !GETBIT(＃显示指令／Ａ刺激＃)
+SIF !GETBIT(＃表示指令／Ａ刺激＃)
 	RETURN 0
 SIF !ITEM:污臭无视
 	RETURN 0
@@ -532,16 +532,16 @@ SIF GETBIT(＃Ａ指插入无效＃)
 	RETURN 0
 SIF TFLAG:Ａ装备
 	RETURN 0
-SIF GROUPMATCH(PREVCOM,15,138) || TEQUIP:Ａ指插入中
-	SIF TFLAG:Ａ露出
-		RETURN 1
+IF (GROUPMATCH(PREVCOM,15,138) || TEQUIP:Ａ指插入中) && TFLAG:Ａ露出
+	RETURN 1
+ENDIF
 RETURN 0
 
 
 
 ;尿道口指弄（小指・外口）
 @COM_ABLE139
-SIF !GETBIT(＃显示指令／Ｃ刺激＃)
+SIF !GETBIT(＃表示指令／Ｃ刺激＃)
 	RETURN 0
 SIF TALENT:男性
 	RETURN 0
@@ -551,7 +551,7 @@ SIF TEQUIP:手淫 || TEQUIP:授乳手交
 	RETURN 0
 SIF TFLAG:Ｃ装备
 	RETURN 0
-SIF !(TALENT:尿道敏感 || EX:尿道调教经验 >= 3)
+SIF !(TALENT:尿道敏感 || EXP:尿道调教经验 >= 3)
 	RETURN 0
 SIF TFLAG:Ｃ露出
 	RETURN 1
@@ -561,7 +561,7 @@ RETURN 0
 
 ;尿道口指奸
 @COM_ABLE140
-SIF !GETBIT(＃显示指令／Ｃ刺激＃)
+SIF !GETBIT(＃表示指令／Ｃ刺激＃)
 	RETURN 0
 SIF TALENT:男性
 	RETURN 0
@@ -571,16 +571,16 @@ SIF TEQUIP:手淫 || TEQUIP:授乳手交
 	RETURN 0
 SIF TFLAG:Ｃ装备
 	RETURN 0
-SIF GROUPMATCH(PREVCOM,139,140)
-	SIF TFLAG:Ｃ露出
-		RETURN 1
+IF GROUPMATCH(PREVCOM,139,140) && TFLAG:Ｃ露出
+	RETURN 1
+ENDIF
 RETURN 0
 
 
 
 ;口内搅舌
 @COM_ABLE141
-SIF !GETBIT(＃显示指令／Ｍ刺激＃)
+SIF !GETBIT(＃表示指令／Ｍ刺激＃)
 	RETURN 0
 SIF TEQUIP:口交 || TEQUIP:深喉 || TEQUIP:触手口交 || TEQUIP:触手深喉
 	RETURN 0
@@ -596,7 +596,7 @@ RETURN 0
 
 ;压舌探喉
 @COM_ABLE142
-SIF !GETBIT(＃显示指令／Ｍ刺激＃)
+SIF !GETBIT(＃表示指令／Ｍ刺激＃)
 	RETURN 0
 SIF TEQUIP:口交 || TEQUIP:深喉 || TEQUIP:触手口交 || TEQUIP:触手深喉
 	RETURN 0
@@ -605,6 +605,22 @@ SIF GETBIT(＃Ｐ使用／乳交＃)
 SIF TEQUIP:手淫 || TEQUIP:授乳手交
 	RETURN 0
 SIF GROUPMATCH(PREVCOM,141,142) || TEQUIP:口内搅舌中 || TEQUIP:压舌探喉中
+	RETURN 1
+RETURN 0
+
+
+
+;肛门爱抚（外阴系阴唇玩弄のＡ版・非插入）
+@COM_ABLE143
+SIF !GETBIT(＃表示指令／Ａ刺激＃)
+	RETURN 0
+SIF GETBIT(＃Ｐ使用／Ｍ插入＃) || GETBIT(＃Ｐ使用／乳交＃)
+	RETURN 0
+SIF TEQUIP:手淫 || TEQUIP:授乳手交
+	RETURN 0
+SIF TFLAG:Ａ装备
+	RETURN 0
+SIF TFLAG:Ａ露出
 	RETURN 1
 RETURN 0
 
@@ -719,7 +735,30 @@ SIF GETBIT(＃体位制限／素股＃)
 ;判断微妙なんだけどどっちかに挿さってたらできないかと
 SIF TFLAG:Ｖ装备 || TFLAG:Ａ装备
 	RETURN 0
+SIF TEQUIP:臀部素股
+	RETURN 0
 SIF TFLAG:Ｖ露出
+	RETURN 1
+
+
+
+;臀部素股（Ａ露出・素股と同系。互いに排他）
+@COM_ABLE64
+SIF !GETBIT(＃表示指令／其他＃)
+	RETURN 0
+SIF !PLAYER_PENIS
+	RETURN 0
+SIF !BASE:0:精力
+	RETURN 0
+SIF TFLAG:Ｐ使用BIT
+	RETURN 0
+SIF GETBIT(＃体位制限／素股＃)
+	RETURN 0
+SIF TEQUIP:素股
+	RETURN 0
+SIF TFLAG:Ｖ装备 || TFLAG:Ａ装备
+	RETURN 0
+SIF TFLAG:Ａ露出
 	RETURN 1
 
 

@@ -3,6 +3,10 @@
 ;素股
 ;継続SOURCEが入るのであまりない状態にしとく
 
+SIF TEQUIP:臀部素股
+	PRINTFORMW 与臀部素股侍奉互斥，请先换一种体位或结束当前侍奉。
+SIF TEQUIP:臀部素股
+	RETURN
 SIF !TFLAG:拘束BIT
 	CALL SERVICE_JUDGE
 ;SIF !RESULT && !TFLAG:拘束BIT
@@ -142,6 +146,38 @@ SOURCE:屈辱 += 500
 SOURCE:已用时间 = 1
 TEQUIP:授乳手交 = 1
 CALL PENIS_STAIN_FIX
+RETURN 1
+
+
+
+@COM59
+;足交
+
+CALL SERVICE_JUDGE
+SIF !RESULT
+	RETURN
+SOURCE:屈辱 += 650
+SOURCE:耻辱 += 350
+SOURCE:已用时间 = 1
+TEQUIP:足交 = 1
+CALL PENIS_STAIN_FIX
+RETURN 1
+
+
+
+@COM64
+;臀部素股（臀缝・大腿后侧夹持摩擦、非插入；素股の臀向け版）
+
+SIF TEQUIP:素股
+	PRINTFORMW 与普通素股侍奉互斥，请先结束当前侍奉再换用臀缝摩擦。
+SIF TEQUIP:素股
+	RETURN
+SIF !TFLAG:拘束BIT
+	CALL SERVICE_JUDGE
+SOURCE:耻辱 += 320
+SOURCE:不洁 += 420
+SOURCE:已用时间 = 1
+TEQUIP:臀部素股 = 1
 RETURN 1
 
 

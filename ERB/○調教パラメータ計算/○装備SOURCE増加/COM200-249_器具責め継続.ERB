@@ -109,6 +109,40 @@ SOURCE:支配 += 3000
 
 
 
+@EQUIP_228_CONTINUE
+;乳头夹
+
+LOSEBASE:气力 += 26
+SOURCE:Ｎ疼痛 += 2600
+SOURCE:Ｎ快感／器具 += 1400
+SOURCE:耻辱 += 2200
+SOURCE:屈辱 += 3000
+
+
+
+@EQUIP_229_CONTINUE
+;阴蒂夹
+
+LOSEBASE:气力 += 26
+SOURCE:Ｃ疼痛 += 2600
+SOURCE:Ｃ快感／器具 += 1400
+SOURCE:耻辱 += 2400
+SOURCE:屈辱 += 3200
+
+
+
+@EQUIP_234_CONTINUE
+;肛门拉珠
+
+LOSEBASE:气力 += 14
+LOSEBASE:体力 += 12
+SOURCE:Ａ快感／器具 += 1400
+SOURCE:Ａ疼痛 += 900
+SOURCE:耻辱 += 2400
+SOURCE:屈辱 += 3600
+
+
+
 @EQUIP_212_CONTINUE
 ;強制開口器
 
@@ -149,7 +183,7 @@ IF TEQUIP:尿道塞 && TFLAG:Ｃ露出 && !TEQUIP:阴蒂跳蛋 && !TEQUIP:阴蒂
 	IF TEQUIP:口交 || GETBIT(＃Ｐ使用／Ｖ插入＃) || GETBIT(＃Ｐ使用／Ａ插入＃)
 		SOURCE:Ｃ疼痛 += 400
 		SOURCE:耻辱 += 600
-		EX:尿道调教经验 += 1
+		EXP:尿道调教经验 += 1
 		SIF TALENT:羞辱兴奋
 			TIMES SOURCE:耻辱, 1.06
 		SIF TALENT:尿道敏感

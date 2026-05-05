@@ -187,6 +187,26 @@ SOURCE:触手魔力消耗量 += 30
 CALL SET_STAIN_TARGET("手","触手粘液")
 
 
+
+@EQUIP_117_CONTINUE
+;乳腺侵入触手
+
+LOSEBASE:体力 += 35
+LOSEBASE:气力 += 48
+SOURCE:Ｎ快感／触手 += 4400
+SOURCE:Ｂ快感／触手 += 2400
+SOURCE:Ｎ疼痛 += 900
+SOURCE:耻辱 += 3400
+SOURCE:屈辱 += 4400
+SOURCE:不洁 += 900
+SOURCE:支配 += 2200
+SOURCE:异形恐惧 += 2600
+SOURCE:触手魔力消耗量 += 58
+TFLAG:搾乳刺激 = 1
+CALL SET_STAIN_TARGET("乳头","触手粘液")
+CALL SET_STAIN_TARGET("乳房","触手粘液")
+
+
 @EQUIP_155_CONTINUE
 ;ブラシ触手
 

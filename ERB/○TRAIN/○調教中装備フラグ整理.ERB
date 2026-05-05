@@ -24,7 +24,7 @@ IF TEQUIP:口交 || TEQUIP:深喉
 ENDIF
 SIF TEQUIP:乳交 || TEQUIP:强制乳交 || TEQUIP:纵乳交 || TEQUIP:强制纵乳交
 	SETBIT ＃Ｐ使用／乳交＃
-SIF TEQUIP:素股
+SIF TEQUIP:素股 || TEQUIP:臀部素股
 	SETBIT ＃Ｐ使用／素股＃
 SIF TEQUIP:手淫 || TEQUIP:授乳手交 || TEQUIP:足交
 	SETBIT ＃Ｐ使用／手交＃
@@ -110,4 +110,34 @@ CALL REMOVE_BRUSH
 ;脱衣不可の判定にも使う
 SIF MATCH(TEQUIP,1,100,200) || GETBIT(＃束缚／触手＃)
 	TFLAG:触手装备 = 1
+
+
+;--------------------------------------------------------------------
+;足交解除（@EVENTCOM から呼ぶ）
+;双足侍奉中は阴茎夹在趾间／足弓；改接吻・吸奶・口交・乳交・手交・素股・膣肛插入・触手口／挿入・饮尿等会改阴茎位置或口部专注的指令时，应先解除 TEQUIP:足交 并同步 TFLAG。
+@TRAIN_AUTO_CLEAR_FOOTJOB_ON_COMMAND
+SIF !TFLAG:调教中
+	RETURN
+SIF !TEQUIP:足交
+	RETURN
+SIF SELECTCOM == 59
+	RETURN
+LOCAL = 0
+SIF SELECTCOM >= 20 && SELECTCOM <= 29
+	LOCAL = 1
+SIF SELECTCOM >= 30 && SELECTCOM <= 48
+	LOCAL = 1
+SIF SELECTCOM >= 50 && SELECTCOM <= 58
+	LOCAL = 1
+SIF SELECTCOM == 64
+	LOCAL = 1
+SIF SELECTCOM >= 130 && SELECTCOM <= 133
+	LOCAL = 1
+SIF GROUPMATCH(SELECTCOM, 105, 106, 107, 108, 109, 141, 142, 216, 217, 901)
+	LOCAL = 1
+SIF !LOCAL
+	RETURN
+TEQUIP:足交 = 0
+CALL TEQUIP_ADJUST
+RETURN
 

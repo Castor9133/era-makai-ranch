@@ -42,7 +42,7 @@ MAXBASE:好感度 = BASE_FALLINLOVE_FAV -1
 BASE:好感度 ++
 
 ; 口上总开关或角色口上关闭时须兜底；无专用口上时同理
-IF !FLAG:口上显示 || !CFLAG:口上显示 || !CFLAG:专用设置／事件
+IF !FLAG:口上表示 || !CFLAG:口上表示 || !CFLAG:专用设置／事件
 	PRINTFORMW 呼唤%CALLNAME%，%CALLNAME%踌躇着张开嘴巴…
 	PRINTFORML 来到魔界一筹莫展之际被%CALLNAME:0%捡起表达感谢…
 	PRINTFORML %CALLNAME:0%表达了对%CALLNAME%作为『男性』的喜爱。

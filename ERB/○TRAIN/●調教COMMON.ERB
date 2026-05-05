@@ -215,6 +215,9 @@ MILK_SUCK_PLAYER = %CALLNAME:0%
 ;責めフラグ、刻印フラグを一度OFF
 VARSET TFLAG,0,30,40
 
+;足交与他指令体位互斥（口・插入・手・股间・触手口等）
+CALL TRAIN_AUTO_CLEAR_FOOTJOB_ON_COMMAND
+
 ;あなた調教中は脱衣メッセージ表示常に1
 SOURCE:脱衣消息显示 = 1
 CALL MANYL(5)

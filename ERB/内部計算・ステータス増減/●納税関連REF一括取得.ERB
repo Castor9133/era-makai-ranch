@@ -15,4 +15,20 @@ FLAG_REF:2 = 720
 
 
 
+;--------------------------------------------------
+; 捐赠「一口」金额：冈地街 Lv3 前（FLAG<3）若捐自治体预算则 1.1 万／口，否则沿用 DONATION_UNIT
+; ARG→与寄付菜单 [0]～[8] 相同的类别序号（0 军事 1 科技 2 自治体·冈地街 3 奶农业）
+@GET_DONATION_UNIT_FOR(ARG)
+#FUNCTION
+SIF ARG == 2 && FLAG:魔界等级／冈地街 < 3
+	RETURNF DONATION_UNIT_OKACHI_EARLY
+RETURNF DONATION_UNIT
+
+
+; 主菜单是否点亮「捐赠」：至少握有任意一档的最低一口金额
+@GET_DONATION_MENU_MIN_CASH
+#FUNCTION
+SIF FLAG:魔界等级／冈地街 < 3
+	RETURNF DONATION_UNIT_OKACHI_EARLY
+RETURNF DONATION_UNIT
 

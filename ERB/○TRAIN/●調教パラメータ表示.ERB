@@ -54,15 +54,16 @@ CALL PRINT_PALAM2("失意",0)
 PRINTL
 SETCOLOR 0x888888
 PRINTFORM 　蓄尿 {CFLAG:膀胱蓄尿,4}／10000　忍耐 {CFLAG:膀胱忍耐_当前,4}
-SIF CFLAG:膀胱蓄尿 >= 8200
+IF CFLAG:膀胱蓄尿 >= 8200
 	PRINTFORM （失禁风险高）
 ELSEIF CFLAG:膀胱蓄尿 >= 6500
 	PRINTFORM （憋尿吃紧）
 ELSEIF CFLAG:膀胱蓄尿 >= 4800
 	PRINTFORM （尿意明显）
+ENDIF
 SIF CFLAG:排泄_灌肠无肛塞忍耐中
 	PRINTFORM 　〔灌肠·无肛塞 {CFLAG:排泄_肠已连续忍耐回合}/{CFLAG:排泄_肠忍耐预算回合}
-SIF CFLAG:排泄_灌肠无肛塞忍耐中 && CFLAG:排泄_肠忍耐预算回合 > 0
+IF CFLAG:排泄_灌肠无肛塞忍耐中 && CFLAG:排泄_肠忍耐预算回合 > 0
 	IF CFLAG:排泄_肠已连续忍耐回合 * 100 >= CFLAG:排泄_肠忍耐预算回合 * 78
 		PRINTFORM ·已近极限〕
 	ELSEIF CFLAG:排泄_肠已连续忍耐回合 * 100 >= CFLAG:排泄_肠忍耐预算回合 * 50
@@ -72,6 +73,7 @@ SIF CFLAG:排泄_灌肠无肛塞忍耐中 && CFLAG:排泄_肠忍耐预算回合 
 	ELSE
 		PRINTFORM 〕
 	ENDIF
+ENDIF
 SIF CFLAG:排泄_灌肠无肛塞忍耐中 && CFLAG:排泄_肠忍耐预算回合 < 1
 	PRINTFORM 〕
 SIF CFLAG:排泄_羞耻调教余回合 > 0

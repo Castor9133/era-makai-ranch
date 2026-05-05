@@ -18,7 +18,7 @@ PRINTL
 #DIM PHIM_DONE
 
 PHIM_DONE = 0
-IF PHIMOSIS_PLAYER_HAS_PHIMOSIS && !CFLAG:本场景包茎口交前戏已消费
+IF PHIMOSIS_PLAYER_HAS_PHIMOSIS() && !CFLAG:本场景包茎口交前戏已消费
 	CALL PHIMOSIS_FIRST_ORAL_NARRATIVE(0)
 	PHIM_DONE = 1
 ELSE
@@ -210,6 +210,23 @@ ELSE
 	CASEELSE
 		PRINTFORML 岔开腿抬起双脚，脚跟与趾腹一齐箍住肉柱，黏滑的液体让摩擦变得更加淫靡…
 	ENDSELECT
+ENDIF
+
+
+@COM64_MESSAGE
+;臀部素股（非插入）
+
+IF TEQUIP:素股
+	PRINTFORMW 请先结束普通素股侍奉。
+	RETURN
+PRINTFORM %CALLNAME%
+CALL PENIS_STAIN_MESSAGE
+IF TFLAG:拘束BIT || !TFLAG:奉仕可能
+	SIF TFLAG:拘束BIT
+		PRINT 被束缚了
+	PRINTFORML 的臀缝与大腿后侧只能被动夹紧，%SLANG_PENIS()%在软肉间来回碾磨……你仍停在「外面」，却把她逼出一阵阵发抖的喘息。
+ELSE
+	PRINTFORML %CALLNAME%绷紧翘臀把股沟夹出一道肉沟，%TRAIN_SERVICE()%小幅摆腰，让%SLANG_PENIS()%陷进臀缝滑上滑下……刻意掠过大腿根与会阴的潮热，却不向内顶。
 ENDIF
 
 

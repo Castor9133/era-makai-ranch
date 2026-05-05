@@ -400,7 +400,7 @@ IF ABL:精饮中毒 >= 12 && ABL:精液中毒 >= 12 && !MARK:吞精兽
 ENDIF
 
 ;口便器（重度精饮＋经验）
-IF ABL:精饮中毒 >= 22 && EX:精饮经验 >= 80 && MARK:精饮渇望 && !MARK:口便器
+IF ABL:精饮中毒 >= 22 && EXP:精饮经验 >= 80 && MARK:精饮渇望 && !MARK:口便器
 	MARK:口便器 = 1
 	PRINTFORML %CALLNAME%的嘴已只为承接精液而存在，沦为彻底的口便器…
 	CALL MARK_GET_HEAT("口便器")

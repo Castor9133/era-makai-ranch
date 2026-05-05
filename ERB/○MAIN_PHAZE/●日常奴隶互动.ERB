@@ -43,32 +43,21 @@ WEND
 B_ID = 0
 WHILE B_ID == 0 || B_ID == A_ID
 	B_ID = RAND:CHARANUM
-	SIF CSTR:B_ID:种族 == ""
+	IF CSTR:B_ID:种族 == ""
 		B_ID = 0
 	ELSEIF B_ID == A_ID
 		B_ID = 0
+	ENDIF
 WEND
 
 STORE_TARGET = TARGET
-
-; ── 辅助判定宏：判断A或B是否符合某条件 ──
-#DEFINE IS_COW_A   (CFLAG:A_ID:乳牛 || CFLAG:A_ID:洗脑)
-#DEFINE IS_COW_B   (CFLAG:B_ID:乳牛 || CFLAG:B_ID:洗脑)
-#DEFINE IS_PREG_A  (CFLAG:A_ID:魔界_妊娠判明)
-#DEFINE IS_PREG_B  (CFLAG:B_ID:魔界_妊娠判明)
-#DEFINE IS_MILK_A  (BASE:A_ID:母乳生产力 > 0)
-#DEFINE IS_MILK_B  (BASE:B_ID:母乳生产力 > 0)
-#DEFINE HAS_FALLEN_A (GROUPMATCH(CSTR:A_ID:陷落状态,"恋慕","爱慕","献身","隶属"))
-#DEFINE HAS_FALLEN_B (GROUPMATCH(CSTR:B_ID:陷落状态,"恋慕","爱慕","献身","隶属"))
-#DEFINE HAS_YIELDED_A (GROUPMATCH(CSTR:A_ID:陷落状态,"屈服"))
-#DEFINE HAS_YIELDED_B (GROUPMATCH(CSTR:B_ID:陷落状态,"屈服"))
 
 ; ── 选事件 ──
 ; 优先排除不适用的，然后加权随机
 EVT = 0
 
 ; 如果有产奶者，增加产奶话题权重
-IF IS_MILK_A || IS_MILK_B || IS_COW_A || IS_COW_B
+IF (BASE:A_ID:母乳生产力 > 0) || (BASE:B_ID:母乳生产力 > 0) || (CFLAG:A_ID:乳牛 || CFLAG:A_ID:洗脑) || (CFLAG:B_ID:乳牛 || CFLAG:B_ID:洗脑)
 	EVT = RAND:100
 	IF EVT < 12
 		EVT = 2  ; 产奶
@@ -82,7 +71,7 @@ ELSE
 ENDIF
 
 ; 如果有怀孕者
-IF EVT == 0 && (IS_PREG_A || IS_PREG_B)
+IF EVT == 0 && ((CFLAG:A_ID:魔界_妊娠判明) || (CFLAG:B_ID:魔界_妊娠判明))
 	EVT = RAND:100
 	IF EVT < 12
 		EVT = 3  ; 怀孕
@@ -124,9 +113,9 @@ DRAWLINE
 ; ============================================================
 IF EVT == 1
 	; 先看陷落状态差异
-	IF HAS_FALLEN_A != HAS_FALLEN_B
+	IF GROUPMATCH(CSTR:A_ID:陷落状态,"恋慕","爱慕","献身","隶属") != GROUPMATCH(CSTR:B_ID:陷落状态,"恋慕","爱慕","献身","隶属")
 		; 一方陷落一方未陷落的对比
-		IF HAS_FALLEN_A
+		IF GROUPMATCH(CSTR:A_ID:陷落状态,"恋慕","爱慕","献身","隶属")
 			; A陷落了
 			CALL KOJO_SLAVE_INTERACTION_FAMILY_FALLEN(A_ID, B_ID)
 		ELSE
@@ -134,10 +123,10 @@ IF EVT == 1
 			CALL KOJO_SLAVE_INTERACTION_FAMILY_FALLEN(B_ID, A_ID)
 		ENDIF
 	; 双方都产奶
-	ELSEIF IS_MILK_A && IS_MILK_B
+	ELSEIF (BASE:A_ID:母乳生产力 > 0) && (BASE:B_ID:母乳生产力 > 0)
 		CALL KOJO_SLAVE_INTERACTION_FAMILY_MILK(A_ID, B_ID)
 	; 双方都是奶牛化
-	ELSEIF IS_COW_A && IS_COW_B
+	ELSEIF (CFLAG:A_ID:乳牛 || CFLAG:A_ID:洗脑) && (CFLAG:B_ID:乳牛 || CFLAG:B_ID:洗脑)
 		CALL KOJO_SLAVE_INTERACTION_FAMILY_DOUBLECOW(A_ID, B_ID)
 	; 同种族
 	ELSEIF CSTR:A_ID:种族 == CSTR:B_ID:种族
@@ -153,10 +142,10 @@ ENDIF
 ; ============================================================
 IF EVT == 2
 	; 双方都产奶
-	IF IS_MILK_A && IS_MILK_B
+	IF (BASE:A_ID:母乳生产力 > 0) && (BASE:B_ID:母乳生产力 > 0)
 		CALL KOJO_SLAVE_INTERACTION_MILK_BOTH(A_ID, B_ID)
 	; A产奶B不产
-	ELSEIF IS_MILK_A
+	ELSEIF (BASE:A_ID:母乳生产力 > 0)
 		CALL KOJO_SLAVE_INTERACTION_MILK_ONE(A_ID, B_ID)
 	; B产奶A不产
 	ELSE
@@ -168,9 +157,9 @@ ENDIF
 ;  事件 3: 闲聊·怀孕 —— 孕期话题
 ; ============================================================
 IF EVT == 3
-	IF IS_PREG_A && IS_PREG_B
+	IF (CFLAG:A_ID:魔界_妊娠判明) && (CFLAG:B_ID:魔界_妊娠判明)
 		CALL KOJO_SLAVE_INTERACTION_PREG_BOTH(A_ID, B_ID)
-	ELSEIF IS_PREG_A
+	ELSEIF (CFLAG:A_ID:魔界_妊娠判明)
 		CALL KOJO_SLAVE_INTERACTION_PREG_ONE(A_ID, B_ID)
 	ELSE
 		CALL KOJO_SLAVE_INTERACTION_PREG_ONE(B_ID, A_ID)
@@ -181,9 +170,9 @@ ENDIF
 ;  事件 4: 闲聊·主人 —— 关于玩家/主人的闲聊
 ; ============================================================
 IF EVT == 4
-	IF HAS_FALLEN_A && HAS_FALLEN_B
+	IF GROUPMATCH(CSTR:A_ID:陷落状态,"恋慕","爱慕","献身","隶属") && GROUPMATCH(CSTR:B_ID:陷落状态,"恋慕","爱慕","献身","隶属")
 		CALL KOJO_SLAVE_INTERACTION_MASTER_BOTHLOVE(A_ID, B_ID)
-	ELSEIF HAS_FALLEN_A || HAS_FALLEN_B
+	ELSEIF GROUPMATCH(CSTR:A_ID:陷落状态,"恋慕","爱慕","献身","隶属") || GROUPMATCH(CSTR:B_ID:陷落状态,"恋慕","爱慕","献身","隶属")
 		CALL KOJO_SLAVE_INTERACTION_MASTER_ONELOVE(A_ID, B_ID)
 	ELSE
 		CALL KOJO_SLAVE_INTERACTION_MASTER_NEITHER(A_ID, B_ID)
@@ -274,10 +263,10 @@ RETURN
 PRINTFORML %CALLNAME:FALLEN_ID%在走廊拐角碰见了%CALLNAME:NOTFALLEN_ID%。两人平时话不多，但今天%CALLNAME:FALLEN_ID%先开了口。
 PRINTL
 
-IF IS_COW:FALLEN_ID
+IF (CFLAG:FALLEN_ID:乳牛 || CFLAG:FALLEN_ID:洗脑)
 	; 陷落方是奶牛
 	PRINTFORML 「你今天也要挤奶吗？我那边排得挺满……不过习惯了也就那样。」
-	IF HAS_FALLEN:NOTFALLEN_ID == 0 && HAS_YIELDED:NOTFALLEN_ID == 0
+	IF GROUPMATCH(CSTR:NOTFALLEN_ID:陷落状态,"恋慕","爱慕","献身","隶属") == 0 && GROUPMATCH(CSTR:NOTFALLEN_ID:陷落状态,"屈服") == 0
 		; 未陷落方还在抵抗
 		PRINTFORML %CALLNAME:NOTFALLEN_ID%盯着她看了两秒，嘴角不太自然地抿了一下。
 		PRINTFORML 「……你变了。以前你不是这样的。」
@@ -286,10 +275,10 @@ IF IS_COW:FALLEN_ID
 	ELSE
 		PRINTFORML %CALLNAME:NOTFALLEN_ID%点了点头，声音不大：「排满就排满吧……反正都是干活，哪个不是干。」
 	ENDIF
-ELSEIF IS_PREG:FALLEN_ID
+ELSEIF (CFLAG:FALLEN_ID:魔界_妊娠判明)
 	PRINTFORML %CALLNAME:FALLEN_ID%扶着腰，走路已经有些吃力了。%CALLNAME:NOTFALLEN_ID%下意识伸手扶了她一把。
 	PRINTFORML 「谢了。这肚子一天比一天沉……也不知道到时候会怎样。」
-	IF HAS_FALLEN:NOTFALLEN_ID == 0 && HAS_YIELDED:NOTFALLEN_ID == 0
+	IF GROUPMATCH(CSTR:NOTFALLEN_ID:陷落状态,"恋慕","爱慕","献身","隶属") == 0 && GROUPMATCH(CSTR:NOTFALLEN_ID:陷落状态,"屈服") == 0
 		PRINTFORML 「……你就不在意吗？是谁的孩子都不知道，就这样……」
 		PRINTFORML %CALLNAME:FALLEN_ID%摇了摇头：「在意有什么用。现在我只在意这孩子能不能平安生下来。」
 		PRINTFORML 两个人都沉默了。走廊里只有%SLAVE_CALLNAME_WIND%的风声。
@@ -298,7 +287,7 @@ ELSEIF IS_PREG:FALLEN_ID
 	ENDIF
 ELSE
 	PRINTFORML 「你今天气色不错。」%CALLNAME:FALLEN_ID%说。
-	IF HAS_FALLEN:NOTFALLEN_ID == 0 && HAS_YIELDED:NOTFALLEN_ID == 0
+	IF GROUPMATCH(CSTR:NOTFALLEN_ID:陷落状态,"恋慕","爱慕","献身","隶属") == 0 && GROUPMATCH(CSTR:NOTFALLEN_ID:陷落状态,"屈服") == 0
 		PRINTFORML %CALLNAME:NOTFALLEN_ID%防备地看了她一眼：「什么意思。」
 		PRINTFORML 「没什么意思。就随口一说。以前我也这样——看谁都像敌人。后来发现，这里真正的敌人不多，全是倒霉蛋。」
 		PRINTFORML %CALLNAME:NOTFALLEN_ID%没有回答，但眼神里的戒备淡了些许。
@@ -315,7 +304,7 @@ ENDIF
 
 PRINTFORML 挤奶房外面，%CALLNAME:A_ID%和%CALLNAME:B_ID%正好撞见。两人胸口都还微微发涨——刚挤完一轮。
 
-IF IS_COW:A_ID && IS_COW:B_ID
+IF (CFLAG:A_ID:乳牛 || CFLAG:A_ID:洗脑) && (CFLAG:B_ID:乳牛 || CFLAG:B_ID:洗脑)
 	; 双方都是奶牛化
 	PRINTFORML %CALLNAME:A_ID%拍了拍自己胸口，笑了一声：「今天产了多少？」
 	PRINTFORML %CALLNAME:B_ID%比了个数字。%CALLNAME:A_ID%吹了声口哨：「行啊你，比我多。」
@@ -323,7 +312,7 @@ IF IS_COW:A_ID && IS_COW:B_ID
 	PRINTFORML 「那倒是。不过挤完以后舒服多了——早上胀得跟石头似的。」
 	PRINTL
 	PRINTFORML 两人相视一笑，那是只有产奶牛才懂的默契。
-ELSEIF IS_COW:A_ID
+ELSEIF (CFLAG:A_ID:乳牛 || CFLAG:A_ID:洗脑)
 	PRINTFORML %CALLNAME:A_ID%揉了揉胸口：「你也来挤奶？」
 	PRINTFORML %CALLNAME:B_ID%点点头，有些不好意思：「……胀得睡不着。以前从来没有过这种体验。」
 	PRINTFORML %CALLNAME:A_ID%一副过来人的表情：「没事，慢慢就习惯了。我以前也以为会很奇怪，现在觉得跟吃饭喝水差不多。」
@@ -344,7 +333,7 @@ ENDIF
 
 PRINTFORML 牧场角落的水槽边，%CALLNAME:A_ID%和%CALLNAME:B_ID%正在洗刷挤奶桶。桶里还残留着奶香。
 
-IF HAS_FALLEN:A_ID && HAS_FALLEN:B_ID
+IF GROUPMATCH(CSTR:A_ID:陷落状态,"恋慕","爱慕","献身","隶属") && GROUPMATCH(CSTR:B_ID:陷落状态,"恋慕","爱慕","献身","隶属")
 	PRINTFORML 「今天主人夸我产奶稳定了。」%CALLNAME:A_ID%说话时眼睛都在发光。
 	PRINTFORML %CALLNAME:B_ID%不服气地哼了一声：「那是你昨天偷吃了我那份饲料！明天换我，肯定比你多。」
 	PRINTFORML 「行啊，比比看。输的人给赢的人刷一周的桶。」
@@ -365,13 +354,13 @@ ENDIF
 
 PRINTFORML 两个%CSTR:A_ID:种族%的女人在劳作间隙碰上了。同族相见，总有些说不清的感觉——既亲近，又尴尬。
 
-IF HAS_FALLEN:A_ID && HAS_FALLEN:B_ID
+IF GROUPMATCH(CSTR:A_ID:陷落状态,"恋慕","爱慕","献身","隶属") && GROUPMATCH(CSTR:B_ID:陷落状态,"恋慕","爱慕","献身","隶属")
 	PRINTFORML 「你也是%CSTR:A_ID:种族%的？在这牧场里同族不多了。」
 	PRINTFORML 「可不是。以前在族里的时候三天两头聚会，现在……就剩咱俩了。」
 	PRINTFORML 「剩咱俩就够了。至少跟你能说几句不用解释的话。」
 	PRINTFORML %CALLNAME:B_ID%笑了一下：「也是。有些话跟外族说了她们也听不懂。」
-ELSEIF HAS_FALLEN:A_ID || HAS_FALLEN:B_ID
-	IF HAS_FALLEN:A_ID
+ELSEIF GROUPMATCH(CSTR:A_ID:陷落状态,"恋慕","爱慕","献身","隶属") || GROUPMATCH(CSTR:B_ID:陷落状态,"恋慕","爱慕","献身","隶属")
+	IF GROUPMATCH(CSTR:A_ID:陷落状态,"恋慕","爱慕","献身","隶属")
 		PRINTFORML %CALLNAME:A_ID%看见同族，眼神亮了一下：「你……还好吗？」
 	ELSE
 		PRINTFORML %CALLNAME:B_ID%看见同族，眼神亮了一下：「你……还好吗？」
@@ -392,7 +381,7 @@ ENDIF
 
 PRINTFORML %CSTR:A_ID:种族%的%CALLNAME:A_ID%和%CSTR:B_ID:种族%的%CALLNAME:B_ID%今天难得坐在一起歇了口气。
 
-IF HAS_FALLEN:A_ID && HAS_FALLEN:B_ID
+IF GROUPMATCH(CSTR:A_ID:陷落状态,"恋慕","爱慕","献身","隶属") && GROUPMATCH(CSTR:B_ID:陷落状态,"恋慕","爱慕","献身","隶属")
 	PRINTFORML %CALLNAME:A_ID%递了杯水过去：「喝点吧。看你也累得够呛。」
 	PRINTFORML %CALLNAME:B_ID%接过来喝了一口，长长地出了口气：「谢了。这地方唯一的好处就是水还不错。」
 	PRINTFORML 「是吧。以前在族里听说过你们%CSTR:B_ID:种族%，没想到第一次打交道是在这种地方。」
@@ -426,17 +415,17 @@ ENDIF
 
 PRINTFORML 傍晚的挤奶房里，%CALLNAME:A_ID%和%CALLNAME:B_ID%正等着下一轮挤奶。空气中弥漫着一股淡淡的奶香。
 
-IF IS_COW:A_ID && IS_COW:B_ID
+IF (CFLAG:A_ID:乳牛 || CFLAG:A_ID:洗脑) && (CFLAG:B_ID:乳牛 || CFLAG:B_ID:洗脑)
 	PRINTFORML %CALLNAME:A_ID%把挤奶桶往地上一墩，大大咧咧地说：「知道吗，我现在觉得当奶牛比当人轻松。」
 	PRINTFORML %CALLNAME:B_ID%白了她一眼：「你那是脑子被挤坏了。」
 	PRINTFORML 「才没有。你看——不用思考，不用害怕，每天就吃、睡、产奶。以前在外面天天提心吊胆，现在呢？桶一满，任务完成。」
 	PRINTFORML %CALLNAME:B_ID%沉默了一会儿，忽然叹了口气：「……妈的，好像有点道理。」
-ELSEIF IS_COW:A_ID
+ELSEIF (CFLAG:A_ID:乳牛 || CFLAG:A_ID:洗脑)
 	PRINTFORML %CALLNAME:A_ID%已经开始自己按摩乳房了——手法娴熟得像个老手：「你也开始产奶了吧？我跟你说，提前揉开就不那么疼。」
 	PRINTFORML %CALLNAME:B_ID%将信将疑地看着她：「你确定？」
 	PRINTFORML 「骗你干嘛。刚产奶那阵子我疼得想撞墙，后来摸出门道了。」说着就示范起来。
 	PRINTFORML %CALLNAME:B_ID%犹豫了一下，还是跟着学了。两个女人在挤奶房里互相教学，画面看起来竟然有点温馨。
-ELSEIF IS_COW:B_ID
+ELSEIF (CFLAG:B_ID:乳牛 || CFLAG:B_ID:洗脑)
 	PRINTFORML %CALLNAME:B_ID%已经开始自己按摩乳房了：「你也开始产奶了吧？我跟你说，提前揉开就不那么疼。」
 	PRINTFORML %CALLNAME:A_ID%将信将疑地看着她：「你确定？」
 	PRINTFORML 「骗你干嘛。刚产奶那阵子我疼得想撞墙，后来摸出门道了。」
@@ -454,7 +443,7 @@ ENDIF
 
 PRINTFORML %CALLNAME:MILK_ID%刚挤完一轮，走路时还下意识护着胸口。%CALLNAME:NOMILK_ID%在旁边干活，忍不住多看了两眼。
 
-IF IS_COW:MILK_ID
+IF (CFLAG:MILK_ID:乳牛 || CFLAG:MILK_ID:洗脑)
 	PRINTFORML %CALLNAME:NOMILK_ID%犹豫了好一阵，终于开口：「那个……挤奶疼吗？」
 	PRINTFORML %CALLNAME:MILK_ID%回头看着她，嘴角一歪：「疼倒不疼，就是胀。胀得你满脑子只想着一件事——赶紧把奶弄出去。」
 	PRINTFORML 「……听起来像上瘾。」
@@ -474,13 +463,13 @@ ENDIF
 
 PRINTFORML 两个大肚子的女人在树荫下并排坐着，这是牧场里最常见也最奇异的一景。
 
-IF HAS_FALLEN:A_ID && HAS_FALLEN:B_ID
+IF GROUPMATCH(CSTR:A_ID:陷落状态,"恋慕","爱慕","献身","隶属") && GROUPMATCH(CSTR:B_ID:陷落状态,"恋慕","爱慕","献身","隶属")
 	PRINTFORML %CALLNAME:A_ID%摸着肚子，忽然笑了：「你说咱俩的孩子以后会不会认识？」
 	PRINTFORML %CALLNAME:B_ID%也笑了：「肯定认识啊。都在这个牧场里长大，想不认识都难。」
 	PRINTFORML 「那你希望是男孩还是女孩？」
 	PRINTFORML 「希望什么希望，健康就行。」%CALLNAME:B_ID%顿了顿，「不过要是女孩，希望别走咱们的老路。」
 	PRINTFORML %CALLNAME:A_ID%的笑容淡了一点，手在肚子上停了：「……是啊。」
-ELSEIF HAS_FALLEN:A_ID
+ELSEIF GROUPMATCH(CSTR:A_ID:陷落状态,"恋慕","爱慕","献身","隶属")
 	PRINTFORML %CALLNAME:A_ID%看着%CALLNAME:B_ID%那明显很紧张的样子，轻声说：「别怕。刚开始都这样——觉得肚子里多了个东西，很恐怖对吧？」
 	PRINTFORML %CALLNAME:B_ID%咬着嘴唇点了点头。
 	PRINTFORML 「慢慢就好了。等它第一次动的时候……」%CALLNAME:A_ID%把手放在自己肚子上，「你会觉得什么都值了。」
@@ -501,12 +490,12 @@ ENDIF
 
 PRINTFORML %CALLNAME:PREG_ID%扶着腰，慢慢走到%CALLNAME:NOPREG_ID%旁边。肚子已经很明显了，走路的姿势也变了。
 
-IF IS_COW:PREG_ID
+IF (CFLAG:PREG_ID:乳牛 || CFLAG:PREG_ID:洗脑)
 	PRINTFORML %CALLNAME:NOPREG_ID%看着她的肚子，不知道该说什么。
 	PRINTFORML %CALLNAME:PREG_ID%自己先开了口：「又怀又产奶，感觉自己都快变成牧场最高效的家畜了。」语气轻松得像在说今天的天气。
 	PRINTFORML %CALLNAME:NOPREG_ID%张了张嘴，最后只说了句：「……你倒是想得开。」
 	PRINTFORML 「想不开还能怎样？总不能一尸两命把自己气死。」
-ELSEIF HAS_FALLEN:PREG_ID
+ELSEIF GROUPMATCH(CSTR:PREG_ID:陷落状态,"恋慕","爱慕","献身","隶属")
 	PRINTFORML %CALLNAME:NOPREG_ID%帮她搬了个矮凳：「坐会儿吧，看你站都站不稳了。」
 	PRINTFORML %CALLNAME:PREG_ID%坐下时长出一口气：「谢了。这孩子真沉。以前看别人怀孕觉得没什么，轮到自己才知道每一步都像在爬山。」
 	PRINTFORML %CALLNAME:NOPREG_ID%在旁边坐下，犹豫了一下问：「是谁的……你知道吗？」
@@ -544,7 +533,7 @@ PRINTFORML 两个人都没再说话，但各自转过身时，脸上都带着差
 #DIM NOTLOVER_ID
 LOVER_ID = A_ID
 NOTLOVER_ID = B_ID
-IF HAS_FALLEN:B_ID
+IF GROUPMATCH(CSTR:B_ID:陷落状态,"恋慕","爱慕","献身","隶属")
 	LOVER_ID = B_ID
 	NOTLOVER_ID = A_ID
 ENDIF
@@ -567,7 +556,7 @@ PRINTFORML 天气沉闷得像压了一层棉被。%CALLNAME:A_ID%和%CALLNAME:B_
 
 PRINTFORML %CALLNAME:A_ID%先开口：「你说……那个人，他到底想怎样。」
 PRINTFORML %CALLNAME:B_ID%把手里一根草秆折成了两半：「谁知道。反正不是来救我们的。」
-IF HAS_YIELDED:A_ID || HAS_YIELDED:B_ID
+IF GROUPMATCH(CSTR:A_ID:陷落状态,"屈服") || GROUPMATCH(CSTR:B_ID:陷落状态,"屈服")
 	PRINTFORML 「但好像也不是来害我们的。」%CALLNAME:A_ID%补充了一句，语气不太确定。
 	PRINTFORML %CALLNAME:B_ID%把草秆一扔，站了起来：「干活吧。想太多也没用。至少现在有瓦遮头。」
 ELSE
@@ -586,13 +575,13 @@ ENDIF
 PRINTFORML %CALLNAME:HELPED_ID%扶着墙，大口喘气。今天的活太重了，腿都在打颤。
 PRINTFORML %CALLNAME:HELPER_ID%瞥了一眼，放下手里的工具走过去：「剩下的我来。你坐会儿。」
 
-IF HAS_FALLEN:HELPER_ID
+IF GROUPMATCH(CSTR:HELPER_ID:陷落状态,"恋慕","爱慕","献身","隶属")
 	PRINTFORML 「不用，我还能——」
 	PRINTFORML 「能什么能。脸都白了。逞强给谁看呢——他又不在。」%CALLNAME:HELPER_ID%不由分说地接过她手里的水桶。
 	PRINTFORML %CALLNAME:HELPED_ID%张了张嘴，最后闭上了。她靠着墙慢慢滑坐下来，膝盖都在发抖。
 	PRINTL
 	PRINTFORML %CALLNAME:HELPER_ID%拎着桶走出去几步，回头补了一句：「歇够了记得还我。下回轮到你帮我的时候我可不会客气。」
-ELSEIF HAS_FALLEN:HELPED_ID
+ELSEIF GROUPMATCH(CSTR:HELPED_ID:陷落状态,"恋慕","爱慕","献身","隶属")
 	PRINTFORML %CALLNAME:HELPED_ID%感激地看了她一眼：「谢谢。平时都是帮别人，被人帮还真不习惯。」
 	PRINTFORML %CALLNAME:HELPER_ID%已经开始干活了：「少废话。你今天这状态，不帮你是给自己添麻烦——你倒了活还不是得摊到我头上。」
 	PRINTFORML %CALLNAME:HELPED_ID%笑了笑，没有戳穿她拙劣的借口。
@@ -627,8 +616,8 @@ PRINTFORML 「换人？下次你我还得搭伙，别想跑。」%CALLNAME:A_ID%
 
 PRINTFORML 夜晚的牧场安静下来以后，%CALLNAME:A_ID%和%CALLNAME:B_ID%坐在畜棚后面的干草堆上。不知道是谁先提起了过去。
 
-IF IS_COW:A_ID || IS_COW:B_ID
-	IF IS_COW:A_ID
+IF (CFLAG:A_ID:乳牛 || CFLAG:A_ID:洗脑) || (CFLAG:B_ID:乳牛 || CFLAG:B_ID:洗脑)
+	IF (CFLAG:A_ID:乳牛 || CFLAG:A_ID:洗脑)
 		PRINTFORML %CALLNAME:A_ID%望着天上的星星：「我以前是个药师。给人看病、配药——那种日子现在想起来跟做梦一样。」
 	ELSE
 		PRINTFORML %CALLNAME:B_ID%望着天上的星星：「我以前是个药师。给人看病、配药——那种日子现在想起来跟做梦一样。」
@@ -636,7 +625,7 @@ IF IS_COW:A_ID || IS_COW:B_ID
 	PRINTFORML 「现在呢？给人配奶？」接话的人说完自己先笑了。
 	PRINTFORML 「去你的。」说话的人抓起一把干草扔过去。草屑飘了一脸，两个人都笑弯了腰。
 ELSE
-	IF HAS_FALLEN:A_ID || HAS_FALLEN:B_ID
+	IF GROUPMATCH(CSTR:A_ID:陷落状态,"恋慕","爱慕","献身","隶属") || GROUPMATCH(CSTR:B_ID:陷落状态,"恋慕","爱慕","献身","隶属")
 		PRINTFORML 「我以前住在镇上，开了个小裁缝铺。」第一个开口的人声音很轻，像在说别人的故事。
 		PRINTFORML 「嗯。我以前帮人放羊。」另一个人靠在草堆上，「羊比人好管。羊不会抓你。」
 		PRINTFORML 「会顶你。」
@@ -658,8 +647,8 @@ ENDIF
 
 PRINTFORML 今天不知道是谁先点了火。等回过神来，%CALLNAME:A_ID%和%CALLNAME:B_ID%已经在院子里对峙了。
 
-IF (IS_COW:A_ID && !IS_COW:B_ID) || (IS_COW:B_ID && !IS_COW:A_ID)
-	IF IS_COW:A_ID
+IF ((CFLAG:A_ID:乳牛 || CFLAG:A_ID:洗脑) && !(CFLAG:B_ID:乳牛 || CFLAG:B_ID:洗脑)) || ((CFLAG:B_ID:乳牛 || CFLAG:B_ID:洗脑) && !(CFLAG:A_ID:乳牛 || CFLAG:A_ID:洗脑))
+	IF (CFLAG:A_ID:乳牛 || CFLAG:A_ID:洗脑)
 		PRINTFORML %CALLNAME:B_ID%尖着嗓子：「你挤奶挤傻了吧！今天的水明明是我先打的，你插什么队！」
 		PRINTFORML %CALLNAME:A_ID%也不示弱：「你先打？你桶都没放在龙头下面！我数了三秒你人都不在！」
 	ELSE
@@ -670,7 +659,7 @@ IF (IS_COW:A_ID && !IS_COW:B_ID) || (IS_COW:B_ID && !IS_COW:A_ID)
 	PRINTFORML 「那就不叫占位！」
 	PRINTL
 	PRINTFORML 两个人互瞪了足足十秒，最后%CALLNAME:A_ID%一拳捶在墙上，%CALLNAME:B_ID%踢翻了旁边的空桶。然后各自扭头走开，谁都没赢。
-ELSEIF HAS_FALLEN:A_ID && HAS_FALLEN:B_ID
+ELSEIF GROUPMATCH(CSTR:A_ID:陷落状态,"恋慕","爱慕","献身","隶属") && GROUPMATCH(CSTR:B_ID:陷落状态,"恋慕","爱慕","献身","隶属")
 	PRINTFORML %CALLNAME:A_ID%推了%CALLNAME:B_ID%一把：「你少在主公面前献殷勤了！今天端茶倒水的活是我的！」
 	PRINTFORML %CALLNAME:B_ID%踉跄了一下，也不客气地推回去：「谁规定那是你的活？主公想喝谁倒的茶你管得着吗！」
 	PRINTFORML 「你——！」
@@ -692,7 +681,7 @@ ENDIF
 
 PRINTFORML %CALLNAME:A_ID%在储藏室角落里发现%CALLNAME:B_ID%的时候，她正抱着膝盖缩在麻袋中间，肩膀一抖一抖地抽着。
 
-IF !HAS_FALLEN:B_ID && !HAS_YIELDED:B_ID
+IF !GROUPMATCH(CSTR:B_ID:陷落状态,"恋慕","爱慕","献身","隶属") && !GROUPMATCH(CSTR:B_ID:陷落状态,"屈服")
 	; B还完全没屈服，在偷偷哭
 	PRINTFORML %CALLNAME:A_ID%在她旁边蹲下来，什么都没说，只是把一只手放在她背上。
 	PRINTFORML %CALLNAME:B_ID%被碰到的一瞬间僵住了，然后猛地抬起头——眼睛红得像兔子。
@@ -700,7 +689,7 @@ IF !HAS_FALLEN:B_ID && !HAS_YIELDED:B_ID
 	PRINTFORML %CALLNAME:A_ID%没有走开。她只是把那只手留在她背上，温温热热的：「哭吧。这儿没人听见。我以前也躲这儿哭过。」
 	PRINTFORML %CALLNAME:B_ID%死死咬着嘴唇，但眼泪止不住。过了很久，她才从牙缝里挤出两个字：「……真的？」
 	PRINTFORML %CALLNAME:A_ID%点了点头。
-ELSEIF IS_PREG:B_ID
+ELSEIF (CFLAG:B_ID:魔界_妊娠判明)
 	PRINTFORML %CALLNAME:A_ID%一看就明白了——孕期的情绪说来就来，挡不住。
 	PRINTFORML 她挨着%CALLNAME:B_ID%坐下，肩膀靠了过去：「又来那阵难受了？」
 	PRINTFORML %CALLNAME:B_ID%把脸埋进手臂里，闷声说：「我不知道为什么哭。就是……就是觉得什么都很难。」
@@ -716,6 +705,9 @@ ELSE
 	PRINTFORML %CALLNAME:A_ID%回头笑了笑：「不用一个月。一顿饭就行。」
 
 
+ENDIF
+
+
 ; ── 逃跑话题 ──
 @KOJO_SLAVE_INTERACTION_ESCAPE(A_ID, B_ID)
 #DIM A_ID
@@ -723,7 +715,7 @@ ELSE
 
 PRINTFORML %CALLNAME:A_ID%和%CALLNAME:B_ID%坐在仓库后面的矮墙下，四周没人。阳光从墙缝里漏进来，照得地上的尘土一清二楚。
 
-IF HAS_FALLEN:A_ID || HAS_FALLEN:B_ID
+IF GROUPMATCH(CSTR:A_ID:陷落状态,"恋慕","爱慕","献身","隶属") || GROUPMATCH(CSTR:B_ID:陷落状态,"恋慕","爱慕","献身","隶属")
 	PRINTFORML %CALLNAME:A_ID%压低声音：「你有没有……算了当我没问。」
 	PRINTFORML %CALLNAME:B_ID%侧过头看她，等了几秒：「想过逃跑对吧。我也想过。但后来就不想了。」
 	PRINTFORML 「为什么？」
@@ -744,8 +736,8 @@ ENDIF
 #DIM A_ID
 #DIM B_ID
 
-IF (HAS_FALLEN:A_ID && !HAS_FALLEN:B_ID) || (HAS_FALLEN:B_ID && !HAS_FALLEN:A_ID)
-	IF HAS_FALLEN:A_ID
+IF (GROUPMATCH(CSTR:A_ID:陷落状态,"恋慕","爱慕","献身","隶属") && !GROUPMATCH(CSTR:B_ID:陷落状态,"恋慕","爱慕","献身","隶属")) || (GROUPMATCH(CSTR:B_ID:陷落状态,"恋慕","爱慕","献身","隶属") && !GROUPMATCH(CSTR:A_ID:陷落状态,"恋慕","爱慕","献身","隶属"))
+	IF GROUPMATCH(CSTR:A_ID:陷落状态,"恋慕","爱慕","献身","隶属")
 		PRINTFORML %CALLNAME:B_ID%今天不知怎么的，看%CALLNAME:A_ID%干活时嘴边的微笑特别不顺眼。
 	ELSE
 		PRINTFORML %CALLNAME:A_ID%今天不知怎么的，看%CALLNAME:B_ID%干活时嘴边的微笑特别不顺眼。
@@ -754,7 +746,7 @@ IF (HAS_FALLEN:A_ID && !HAS_FALLEN:B_ID) || (HAS_FALLEN:B_ID && !HAS_FALLEN:A_ID
 	PRINTFORML 被骂的那个愣了一下，然后慢慢把手上的活放下。她的声音很平静：「不是想得开。是死心了。死心以后，能笑的地方就多了一点。」
 	PRINTFORML 骂人的那个张了张嘴，发现自己其实不是在气对方——是在气自己。气自己为什么还在意，气自己为什么做不到"死心"。
 	PRINTFORML 她弯腰把抹布捡起来，没再说话。
-ELSEIF IS_PREG:A_ID && !IS_PREG:B_ID
+ELSEIF (CFLAG:A_ID:魔界_妊娠判明) && !(CFLAG:B_ID:魔界_妊娠判明)
 	PRINTFORML %CALLNAME:B_ID%看着%CALLNAME:A_ID%被人搀着走过院子，手里的扫帚柄捏紧了。
 	PRINTFORML 不是嫉妒怀孩子——谁会嫉妒这种事。是嫉妒她被照顾。怀孕了有人扶，有人问，有人帮她干活。
 	PRINTFORML %CALLNAME:A_ID%经过她身边时，忽然停了下来：「……你是不是觉得不公平。」
@@ -777,14 +769,14 @@ ENDIF
 
 PRINTFORML 谁也没有说话。
 
-IF IS_PREG:A_ID && IS_PREG:B_ID
+IF (CFLAG:A_ID:魔界_妊娠判明) && (CFLAG:B_ID:魔界_妊娠判明)
 	PRINTFORML %CALLNAME:A_ID%和%CALLNAME:B_ID%并排躺在畜棚后面的干草堆上，各自摸着各自隆起的肚子。
 	PRINTFORML 偶尔有风吹过，偶尔有鸟叫。两个人都睁着眼睛看棚顶漏下来的光。
 	PRINTFORML 过了很久，%CALLNAME:A_ID%把手伸过去，握住了%CALLNAME:B_ID%的手。
 	PRINTFORML %CALLNAME:B_ID%没有转头，但手指收紧了一点。
 	PRINTL
 	PRINTFORML 不需要说话。在这个地方，能有一个不需要说话的人，就是最大的幸运了。
-ELSEIF HAS_FALLEN:A_ID && HAS_FALLEN:B_ID
+ELSEIF GROUPMATCH(CSTR:A_ID:陷落状态,"恋慕","爱慕","献身","隶属") && GROUPMATCH(CSTR:B_ID:陷落状态,"恋慕","爱慕","献身","隶属")
 	PRINTFORML %CALLNAME:A_ID%和%CALLNAME:B_ID%一起在水槽边洗衣服。肥皂泡在太阳下闪着彩色的光。
 	PRINTFORML %CALLNAME:A_ID%的衣服上有主人早上打翻的茶渍，%CALLNAME:B_ID%的袖子上沾了其他奴隶挤奶时溅到的奶渍。
 	PRINTFORML 两个人默默地搓着，偶尔把肥皂递给对方，没有说话。
@@ -812,7 +804,7 @@ IF CSTR:A_ID:种族 == "牛角族" || CSTR:B_ID:种族 == "牛角族"
 	PRINTFORML 「我怕碰坏了……」摸角的人又伸手碰了一下，这次大胆了一点，顺着纹路摸了摸。
 	PRINTFORML 「凉凉的。有点像石头，但是光滑的。」
 	PRINTFORML 被摸角的人忽然抖了一下：「别摸根！那里痒。」
-	IF IS_MILK:A_ID || IS_MILK:B_ID || IS_COW:A_ID || IS_COW:B_ID
+	IF (BASE:A_ID:母乳生产力 > 0) || (BASE:B_ID:母乳生产力 > 0) || (CFLAG:A_ID:乳牛 || CFLAG:A_ID:洗脑) || (CFLAG:B_ID:乳牛 || CFLAG:B_ID:洗脑)
 		PRINTFORML %CALLNAME:B_ID%缩回手，忽然笑了：「所以你这角……挤奶的时候会碍事吗？」
 		PRINTFORML %CALLNAME:A_ID%翻了个大白眼：「太碍事了。每次挤奶都得歪着脖子，不然角会撞到机器。你问这个干嘛——别笑！」
 	ENDIF

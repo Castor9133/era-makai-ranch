@@ -39,10 +39,11 @@ SIF CFLAG:0:早安咬奴隶ID == 0
 
 ; 找到被指定的奴隶
 FINDCHARA CFLAG:ID, CFLAG:0:早安咬奴隶ID
-SIF RESULT <= 0
+IF RESULT <= 0
 	; ID 无效，清除
 	CFLAG:0:早安咬奴隶ID = 0
 	RETURN
+ENDIF
 
 TARGET = RESULT
 
@@ -109,9 +110,10 @@ FLAG:补正技巧值 = 0
 
 ; 体力消耗（口交属于轻劳动）
 BASE:体力 = LIMIT(BASE:体力 - 50, 0, BASE:体力)
-; 清洁度下降
-IF !TALENT:洁癖
+; 清洁度下降（无「喜欢清洁」则不介意口腔污浊叙事）
+IF !TALENT:喜欢清洁
 	EQUIP:口腔污浊 = 1
+ENDIF
 
 ; 微弱快感
 SIF RAND:100 < 40
@@ -151,9 +153,10 @@ PRINTFORML 然后%SLANG_A()%轻轻含住了尚在晨勃中的%PENIS_CALL()%。
 
 SOURCE:射精 ++
 
-SIF CFLAG:魔界_妊娠判明
-	; 怀孕角色不触发受孕
+; 怀孕判明者不触发本节受孕加成
+IF CFLAG:魔界_妊娠判明
 	RETURN
+ENDIF
 
 ; 咽下判定：恋慕以上大概率咽下
 IF GROUPMATCH(CSTR:陷落状态,"恋慕","爱慕","献身")
@@ -164,7 +167,7 @@ IF GROUPMATCH(CSTR:陷落状态,"恋慕","爱慕","献身")
 		ENDIF
 	ELSE
 		PRINTFORML 白浊从%CALLNAME%嘴角溢出来了一些，但她没有擦。
-		IF !TALENT:洁癖
+		IF !TALENT:喜欢清洁
 			EQUIP:口腔污浊 = 1
 		ENDIF
 	ENDIF
@@ -179,7 +182,7 @@ IF GROUPMATCH(CSTR:陷落状态,"屈服","隶属")
 		PRINTFORML %CALLNAME%闭着眼，认命般咽了下去。
 	ELSE
 		PRINTFORML %CALLNAME%别过脸去，让精液淌在了地上。
-		IF !TALENT:洁癖
+		IF !TALENT:喜欢清洁
 			EQUIP:口腔污浊 = 1
 		ENDIF
 	ENDIF
